@@ -1,0 +1,87 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>
+    {% block title %}SHG{% endblock %}
+  </title>
+  {% block meta %}
+  
+  {% endblock %}
+  
+		<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+		
+    <!-- inline styles related to this page -->
+		<link rel="stylesheet" href="{% static 'css/app/app.css' %}" />
+
+
+		<!--[if !IE]> -->
+		<script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+
+		<!-- <![endif]-->
+
+		<!--[if IE]>
+		<script src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
+		<![endif]-->
+
+		<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+		<!-- page specific plugin scripts -->
+		<script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+		<script src="{% static 'js/jquery.dataTables.bootstrap.min.js' %}"></script>
+		<script src="{% static 'js/dataTables.buttons.min.js' %}"></script>
+		<script src="{% static 'js/buttons.flash.min.js' %}"></script>
+		<script src="{% static 'js/buttons.html5.min.js' %}"></script>
+		<script src="{% static 'js/buttons.print.min.js' %}"></script>
+		<script src="{% static 'js/buttons.colVis.min.js' %}"></script>
+		<script src="{% static 'js/dataTables.select.min.js' %}"></script>
+
+		<script src="{% static 'js/jquery.validate.min.js' %}"></script>
+		<script src="{% static 'js/moment.min.js' %}"></script>
+		
+    
+  {% block stylesheet %}
+  
+  {% endblock %}
+</head>
+<body>
+	<table>
+		<tr>
+			<td>
+				{% include 'includes/header.html' %}
+			</td>
+		</tr>
+		<tr>
+			<td>
+				{% include 'includes/messages.html' %}
+				<div class="server-message-top">
+			  </div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table>
+					<tr>
+						<td>
+							{% include 'includes/leftmenu.html' %}
+						</td>
+						<td>
+							{% block content %}{% endblock %}
+						</td>
+					</tr>		
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				{% include 'includes/footer.html' %}
+			</td>
+		</tr>
+	</table>
+  
+  <!-- inline scripts related to this page -->
+	<script src="{% static 'js/app/app.js' %}"></script>
+  {% block javascript %}{% endblock %}  
+</body>
+</html>

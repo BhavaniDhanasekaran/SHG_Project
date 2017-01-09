@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load static %}
+{% block title %}
+    DataTable page - {{ block.super }}
+{% endblock title %}
+
+<!-- page specific plugin scripts -->
+{% block javascript %}
+  
+	<script type="text/javascript"> 
+	 var role1 = '{{ ROLE1 }}';
+	 console.log('role1: ',role1);
+	 var role2 = '{{ ROLE2 }}';
+	 console.log('role2: ',role2);
+	</script>
+  
+  <script src="{% static 'js/app/samplejqdt/datatable1.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="main-content">
+    <div class="main-content-inner">
+        <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="ace-icon fa fa-home home-icon"></i>
+                    <a href="{% url 'home' %}">Home</a> </li>
+                <li class="active">DataTable1</li>
+            </ul>
+            <!-- /.breadcrumb -->
+
+            <div class="nav-search" id="nav-search">
+                <form class="form-search">
+                <span class="input-icon">
+					<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+					<i class="ace-icon fa fa-search nav-search-icon"></i>
+				</span>
+                </form>
+            </div>
+            <!-- /.nav-search -->
+        </div>
+
+        <div class="page-content">
+            <!-- /.page-header -->
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <!-- PAGE CONTENT BEGINS -->
+                    <div class="row">
+                        <!-- /.span -->
+                    </div>
+                    <!-- /.row -->
+                    <h4 class="pink">
+
+                        <a href="#modal-table" role="button" class="green" data-toggle="modal"></a>
+                    </h4>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="clearfix">
+                                <div class="pull-right tableTools-container"></div>
+                            </div>
+                            <div class="table-header">
+                                User List </div>
+
+                            <!-- div.table-responsive -->
+
+                            <!-- div.dataTables_borderWrap -->
+                            <div>
+                                <table id="id_datatable1"
+									   data-list-url="{% url 'ajax_datatable1list' %}"									   
+									   class="table table-striped table-bordered table-hover no-margin-bottom no-border-top"
+									   cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th>User Name</th>
+                                            <th>Email</th>
+											<th>Action</th>										
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+								<br>
+								<a class="btn btn-info" type="button"
+										id="aAddNew"
+										href="{% url 'adddata1' %}">
+									<i class="ace-icon fa fa-check bigger-110"></i>
+									Add New
+								</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+
+            <!-- PAGE CONTENT ENDS -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</div>
+<!-- /.page-content -->
+</div>
+</div>
+<!-- /.main-content -->
+
+{% endblock content %}
