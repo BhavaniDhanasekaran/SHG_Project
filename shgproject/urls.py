@@ -7,7 +7,7 @@ from django.conf.urls.static import static
 from django.conf.urls import include, url, handler400, handler403, handler404, handler500
 from django.contrib import admin
 from django.views.generic import TemplateView
-from shgapp.views import customerror, core, auth, accountprofile, samplejqdt, samplejqdt_ajax, groupmembersample
+from shgapp.views import customerror, core, auth, accountprofile, samplejqdt, samplejqdt_ajax, groupmembersample,index, task, kyc, masterData, camundaViews
 
 # custom error views
 handler400 = customerror.bad_request
@@ -123,6 +123,67 @@ groupmembersample_urlpatterns = [
 ]
 
 urlpatterns += groupmembersample_urlpatterns
+
+
+index_urlpatterns = [
+    url(r'^admin/', admin.site.urls),
+    url(r'^hello/', index.hello, name = 'hello'),
+]
+urlpatterns = index_urlpatterns
+
+
+task_urlpatterns = [
+    url(r'^dsdatecount/', task.dsdatecount, name = 'dcount'),
+    url(r'^dstasklist/', task.dstasklist, name = 'dstasklist'),
+    url(r'^taskunclaim/',task.taskunclaim, name = 'taskunclaim'),
+    url(r'^mytask/', task.mytask, name = 'mytask'),
+    
+]
+urlpatterns += task_urlpatterns
+
+
+kyc_urlpatterns = [
+    url(r'^dsgroupview2/',kyc.dsgroupview2, name = 'dsgroupview2'),
+    url(r'^dsgroupview/(?P<groupID>[^/]+)/(?P<loanID>[^/]+)',kyc.dsgroupview, name = 'dsgroupview'),    
+    url(r'^getGroupData/(?P<groupID>[^/]+)',kyc.getGroupData, name = 'getGroupData'),
+    url(r'^groupViewQuery/',kyc.groupViewQuery, name = 'groupViewQuery'),
+    url(r'^getIndMemberData/(?P<memberId>[^/]+)/(?P<groupId>[^/]+)/(?P<loanId>[^/]+)',kyc.getIndMemberData, name = 'getIndMemberData'), 
+    url(r'^getPinCodeDetails/(?P<pincode>[^/]+)',kyc.getPinCodeDetails, name = 'getPinCodeDetails'),
+    
+]
+urlpatterns += kyc_urlpatterns
+
+
+masterData_urlpatterns = [
+    url(r'^masterDataBank/',masterData.masterDataBank, name = 'masterDataBank'),
+    url(r'^masterIDProof/',masterData.masterIDProof, name = 'masterIDProof'),
+    url(r'^masterAddressProof/',masterData.masterAddressProof, name = 'masterAddressProof'),
+    url(r'^masterLoanPurpose/',masterData.masterLoanPurpose, name = 'masterLoanPurpose'),
+
+]
+urlpatterns += masterData_urlpatterns
+
+
+camundaViews_urlpatterns = [
+    url(r'^KYCTaskList/',camundaViews.KYCTaskList, name = 'KYCTaskList'),
+    url(r'^unassignedTaskList/',camundaViews.unassignedTaskList, name = 'unassignedTaskList'),
+    url(r'^assignedTaskList/',camundaViews.assignedTaskList, name = 'assignedTaskList'),
+    url(r'^tasksCount/',camundaViews.tasksCount, name = 'tasksCount'),
+    url(r'^task/(?P<id>[^/]+)/(?P<name>[^/]+)/user$', camundaViews.claim, name='claim'	),
+    url(r'^KYCTasksGroupByDate/(?P<dateFrom>[^/]+)/(?P<dateTo>[^/]+)',camundaViews.KYCTasksGroupByDate, name = 'KYCTasksGroupByDate'),
+    url(r'^KYCCheck/(?P<dateFrom>[^/]+)/(?P<dateTo>[^/]+)',camundaViews.KYCCheck, name = 'KYCCheck'),        
+    url(r'^queryRespTaskList/',camundaViews.queryRespTaskList, name = 'queryRespTaskList'),
+
+]
+urlpatterns += camundaViews_urlpatterns
+
+
+
+
+
+
+
+
 
 if django_settings.DEBUG:
     urlpatterns += static(django_settings.MEDIA_URL, document_root=django_settings.MEDIA_ROOT)
