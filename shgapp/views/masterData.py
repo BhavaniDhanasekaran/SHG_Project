@@ -18,9 +18,7 @@ sscoreClient = SSCoreClient()
 def masterDataBank(request):
     print "Inside masterDataBank(request):"
     try:
-	serialized_data = sscoreClient._urllib2_request('Master/bankdetail',{},requestType='GET')
-	print "serialized_data"
-	print serialized_data
+	serialized_data = sscoreClient._urllib2_request('/sangamam-core/Master/bankdetail',{},requestType='GET')
     	return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting master bank details.')
@@ -29,7 +27,7 @@ def masterDataBank(request):
 def masterIDProof(request):
     print "Inside masterIDProof(request):"
     try:
-	serialized_data = sscoreClient._urllib2_request('Master/idproofdetail',{},requestType='GET')
+	serialized_data = sscoreClient._urllib2_request('/sangamam-core/Master/idproofdetail',{},requestType='GET')
     	return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting ID proof master.')
@@ -38,7 +36,7 @@ def masterIDProof(request):
 def masterAddressProof(request):
     print "Inside masterAddressProof(request):"
     try:
-	serialized_data = sscoreClient._urllib2_request('Master/addressproofdetail',{},requestType='GET')
+	serialized_data = sscoreClient._urllib2_request('/sangamam-core/Master/addressproofdetail',{},requestType='GET')
     	return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while Address proof master.')
@@ -47,7 +45,7 @@ def masterAddressProof(request):
 def masterLoanPurpose(request):
     print "Inside masterLoanPurpose(request):"
     try:
-	serialized_data = sscoreClient._urllib2_request('Master/loanpurpose',{},requestType='GET')
+	serialized_data = sscoreClient._urllib2_request('/sangamam-core/Master/loanpurpose',{},requestType='GET')
     	return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting loan purpose master.')
