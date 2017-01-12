@@ -33,7 +33,7 @@ def getGroupData(request,groupID):
     try:
     	#context      = RequestContext(request)
     	bodyData = { "groupId": groupID} 
-    	groupMembersData = sscoreClient._urllib2_request('/sangamam-core/workflowDetailView/getallmembers', bodyData, requestType='POST')
+    	groupMembersData = sscoreClient._urllib2_request('workflowDetailView/getallmembers', bodyData, requestType='POST')
     	print "groupMembersData"
     	print json.dumps(groupMembersData)
     	#context.memberInfo = json.dumps(groupMembersData)
@@ -46,7 +46,7 @@ def getIndMemberData(request,memberId,groupId,loanId):
     print "Inside getIndMemberData(request,memberId,groupId):"
     try:
     	bodyData = { "groupId": str(groupId), "memberId":str(memberId),  "loanId": str(loanId), "entityType": "MEMBER","validationType": "PRE","groupIdValLocal": "N",	"groupLocalName": "",	"groupName": "N","userId": "1996" } 
-    	IndMemberData = sscoreClient._urllib2_request('/sangamam-core/workflowDetailView/workflowMemberDetail/', bodyData, requestType='POST')
+    	IndMemberData = sscoreClient._urllib2_request('workflowDetailView/workflowMemberDetail/', bodyData, requestType='POST')
     	print "IndMemberData"
     	print IndMemberData
         return HttpResponse(json.dumps(IndMemberData), content_type="application/json")
@@ -58,7 +58,7 @@ def getIndMemberData(request,memberId,groupId,loanId):
 def getPinCodeDetails(request,pincode):
     print "Inside getPinCodeDetails(request,pincode):"
     try:
-    	serialized_data = sscoreClient._urllib2_request('/sangamam-core/Master/VillageByPincode/'+str(pincode),{},requestType='GET')
+    	serialized_data = sscoreClient._urllib2_request('Master/VillageByPincode/'+str(pincode),{},requestType='GET')
     	return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('An expected error occurred while getting areas under this pincode.')

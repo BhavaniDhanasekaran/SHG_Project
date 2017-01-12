@@ -130,8 +130,7 @@ def assignedTaskList(request):
     for data in taskProVarList:
 	if data["processInstanceId"] in myTaskDict:
 	    myTaskDict[data["processInstanceId"]][data["name"] ] = data["value"]
-        	
-        	
+
     #Group Task Assign:	
     for key in myTaskDict:
         if myTaskDict[key].has_key("kyc"):

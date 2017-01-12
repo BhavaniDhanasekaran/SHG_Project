@@ -22,7 +22,7 @@ class SSCoreClient(object):
                     response = urllib2.urlopen(request)
                 else:
                     print 'SSCoreClient _urllib2_request GET: ', url
-                    request = urllib2.Request( url, json.dumps(params), headers = { 'Content-Type' : 'application/json' } )
+                    request = urllib2.Request( url, headers = { 'Content-Type' : 'application/json' } )
                     response = urllib2.urlopen(request)
             else:
                 print 'SSCoreClient _urllib2_request else: '
