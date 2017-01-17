@@ -201,6 +201,8 @@ def tasksCount( request ):
       	     		    queryCount = len(groupTaskList)
       	            	else:
       	            	    taskCount["Query Response"] = 0
+      	            else:
+      	            	    taskCount["Query Response"] = 0
 		else:
 		    taskCount [data["name"]] = taskCount[data["name"]] + 1
             else:
