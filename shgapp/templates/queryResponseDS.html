@@ -2,7 +2,14 @@
 {% load staticfiles %}
 {% block javascript %}
 <script src="{% static 'datajs/grouplist.js' %}"></script>
+<script src="{% static 'datajs/loadTaskList.js' %}"></script>
  <script type="text/javascript">
+ 	var groupId = '{{ groupId | escapejs }}';
+	var loanId = '{{ loanId | escapejs }}';
+	$(document).ready(function (){
+	 	getGroupData(groupId,loanId);
+	 	taskCount();
+	 });
     $(function () {
         $("#sel1").change(function () {
             if ($(this).val() == "Reject") {

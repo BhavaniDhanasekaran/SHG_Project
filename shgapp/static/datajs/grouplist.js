@@ -11,16 +11,22 @@ function getGroupData(groupID,loanId){
 			var memberId = groupData["data"][i]["memberId"];
 			var groupId = groupID;
 			if(document.getElementById("san_test")){
-			     	$("#san_test").append('<a onclick="getMemberDetails('+memberId+','+groupId+','+loanId+')" class="list-group-item">'+groupData["data"][i]["memberName"]+'</a>');
+			     	$("#san_test").append('<a onclick="getMemberDetails('+memberId+','+groupId+','+loanId+')" class="list-group-item" style="font-weight:bold;">'+groupData["data"][i]["memberName"]+'</a>');
 			}
 		}
 	    }
 	});
 }
 
-function redirectPage(groupID,loanID){
-	window.location = '/dsgroupview/'+groupID+'/'+loanID;
+function redirectPage(groupID,loanID,taskName){
+	if(taskName == "KYC Check"){
+		window.location = '/dsgroupview/'+groupID+'/'+loanID;
+	}
+	if(taskName == "Query Response"){
+		window.location = '/groupViewQuery2/'+groupID+'/'+loanID;
+	}
 }
+
 
 function getMemberDetails(memberId,groupId,loanId){
 	$.ajax({

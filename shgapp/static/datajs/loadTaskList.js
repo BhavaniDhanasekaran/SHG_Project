@@ -71,13 +71,19 @@ function loadAssignedTaskList(){
 		if(myTaskdata[key]["customerData"]){
 			var customerData = JSON.parse(myTaskdata[key]["customerData"]);
 			for(var data in customerData){
+				if(obj["taskName"] == "Query Response"){
+					obj["groupLocation"] = '<a class="tdViewQuery">'+customerData["groupLocation"]+'</a>';
+					obj["loanType"] = '<a class="tdViewQuery">'+"PLL"+'</a>';
+					obj["shgId"] = '<a class="tdViewQuery">'+"SHG ID"+'</a>';
+					obj["shgName"] = '<a class="tdViewQuery">'+"SHG Name"+'</a>';
+				}
 				obj["groupId"] = customerData["groupId"];
 				obj["loanId"] = customerData["loanId"];
 				obj["groupLocation"] = '<a class="tdViewData">'+customerData["groupLocation"]+'</a>';
 				obj["loanType"] = '<a class="tdViewData">'+"PLL"+'</a>';
 				obj["shgId"] = '<a class="tdViewData">'+"SHG ID"+'</a>';
 				obj["shgName"] = '<a class="tdViewData">'+"SHG Name"+'</a>';
-				obj["groupLoanId"] = obj["groupId"]+"_"+obj["loanId"];
+				obj["groupLoanId"] = obj["groupId"]+"_"+obj["loanId"]+"_"+myTaskdata[key]["name"];
 			}
 		obj["unClaim"] = '<button type="submit" onclick="unClaim('+"'"+obj["taskId"]+"'"+');" class="btn btn-Danger button">UnClaim</button>';
 		
@@ -116,7 +122,8 @@ $(document).ready(function (){
 		groupLoanIDSplit = groupLoanID.split("_");
 		groupID = groupLoanIDSplit[0];
 		loanID = groupLoanIDSplit[1];
-		redirectPage(groupID,loanID);
+		taskName = groupLoanIDSplit[2];
+		redirectPage(groupID,loanID,taskName);
 	});
 	$('.button').click(function() {
 	    	var nRow = $(this).parent().parent()[0];

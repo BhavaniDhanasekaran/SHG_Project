@@ -161,4 +161,4 @@ LOGOUT_URL = '/signout/'
 
 CAMUNDA_BASE_URL = 'http://192.168.10.88:8086/engine-rest/'
 
-SSCORE_BASE_URL = 'http://192.168.10.36:8085/sangamam-core/'
+SSCORE_BASE_URL = 'http://192.168.10.71:8085/sangamam-core/'
