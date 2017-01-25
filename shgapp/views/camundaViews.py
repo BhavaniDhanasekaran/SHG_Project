@@ -35,7 +35,7 @@ def unassignedTaskList(request):
 	groupTaskData	= []
 	    
 	grp_body_cont 	   = { "unassigned" : "true" , "candidateGroup" : "DataSupportTeam" }
-	groupTaskList	  = camundaClient._request('task?firstResult=0', grp_body_cont, requestType='POST')
+	groupTaskList	  = camundaClient._urllib2_request('task?firstResult=0', grp_body_cont, requestType='POST')
 
 	for data in groupTaskList:
 	    processInstancesArr.append(data["processInstanceId"])
@@ -72,7 +72,7 @@ def KYCTaskList(request):
 	groupTaskData	= []
 	    
 	grp_body_cont 	   = { "unassigned" : "true" , "candidateGroup" : "DataSupportTeam" }
-	groupTaskList	  = camundaClient._request('task?firstResult=0', grp_body_cont, requestType='POST')
+	groupTaskList	  = camundaClient._urllib2_request('task?firstResult=0', grp_body_cont, requestType='POST')
 	
 	for data in groupTaskList:
 	    processInstancesArr.append(data["processInstanceId"])
@@ -217,7 +217,7 @@ def tasksCount( request ):
             	if data["name"] == "KYC Check":
 		    taskCount [data["name"]] = taskCount[data["name"]] + 1
 		    grp_body_cont   = { "processVariables": [{"name"  : "kyc","operator" :"eq","value" : "resolved"	}],"unassigned" : "true","candidateGroup" :"DataSupportTeam"}
-		    groupTaskList	= camundaClient._request('task?firstResult=0', grp_body_cont, requestType='POST')
+		    groupTaskList	= camundaClient._urllib2_request('task?firstResult=0', grp_body_cont, requestType='POST')
            	
            	    if groupTaskList:
 		    	if groupTaskList[0]:

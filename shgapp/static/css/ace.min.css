@@ -301,7 +301,8 @@ pre.prettyprint {
 .no-radius,
 .pager>li>a,
 .pagination>li>a {
-    border-radius: 0!important
+    border-radius: 0!important;
+    cursor: pointer;
 }
 .alert .close {
     font-size: 16px

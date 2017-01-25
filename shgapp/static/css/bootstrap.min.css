@@ -101,7 +101,8 @@ sub {
     bottom: -.25em
 }
 img {
-    vertical-align: middle
+    vertical-align: middle;
+    cursor: pointer;
 }
 svg:not(:root) {
     overflow: hidden
