@@ -5,10 +5,12 @@
 <script src="{% static 'datajs/grouplist.js' %}"></script>
 <script src="{% static 'datajs/loadTaskList.js' %}"></script>
 <script src="{% static 'datajs/masterData.js' %}"></script>
+
 <script>
 	var groupId = '{{ groupId | escapejs }}';
 	var loanId = '{{ loanId | escapejs }}';
 	console.log(groupId,loanId);
+	console.log('{{user}}');
 	
 	$(document).ready(function(){
 		getGroupData(groupId,loanId);
@@ -19,565 +21,330 @@
 </script>
 
 {% endblock %}
-
 <!-- PAGE CONTENT BEGINS -->
 {% block content %}
 <div class="row">
-<!--second row strat-->
-<div class="col-xs-2" >
-    <div class="panel panel-default">
-        <div class="panel-heading">KYC Check  </div>
-        <div class="panel-body">
-            <div class="list-group" id="san_test">  </div>
+    <!--2row Start-->
+    <div class="col-xs-2 " >
+        <!--2row Start col2 start-->
+        <div class="panel panel-default">
+            <div class="panel-heading">Group Detail </div>
+            <div class="panel-body">
+                <div class="list-group" id="san_test">  </div>
+            </div>
         </div>
-        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   </div>
     </div>
-</div>
-<div class="col-xs-10" >
-    <div class="panel panel-default">
-        <div class="panel-heading">Rose Group (3242423 ) </div>
-        <div class="panel-body-danger">
-            <!-- tab start-->
-            <div class="tabbable">
-                <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
-                    <li class="active">
-                        <a id="memberData" data-toggle="tab" href="#home4">Member</a>                                               
-                    </li>
-                    <li>
-                        <a id="history" data-toggle="tab" onclick="listHistory();" href="#profile4">History</a>                                               
-                    </li>
-                    <li>
-                        <a id="documents" data-toggle="tab" href="#dropdown14">Documents</a>                                               
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div id="home4" class="tab-pane in active">
-                        <!-- form start-->
-                        <section >
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <img id="MEMBERPHOTO_docPath" class="img img-test" data-url="{% static 'images/naveen.jpg' %}" src="{% static 'images/naveen.jpg' %}" height="135" width="134"  />
-                                    &nbsp;&nbsp;&nbsp;<span id="memberNameLabel" class="label label-info arrowed-right arrowed-in  glyphicon-bookmark"> </span>
-                                    <br />
-                                    <br />
-                                </div>
-                                <!--secnod div started-->
-                                <div class="col-md-5">
-                                    <form class="form-horizontal" role="form">
-                                    <div class="profile-user-info profile-user-info-striped">
-                                        <div class="profile-info-row">
-                                            <div class="profile-info-name"> Name  </div>
-                                            <div class="profile-info-value">
-                                                <span class="editable">    <input type="text"  id="memberName" placeholder="Member Name"></span>                                                 
+    <!--2row Start col2 End-->
+    <div class="col-xs-10" >
+        <!--2row Start col-10 start-->
+        <div class="panel panel-default">
+            <div class="panel-heading">Rose Group <span id="groupId">{{groupId}}</span> </div>
+            <div class="panel-body-danger">
+                <!--2row panel body start-->
+                <div class="tabbable">
+                    <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
+                        <li class="active"><a data-toggle="tab" href="#home4">Member</a></li>
+                        <li><a data-toggle="tab" href="#profile4">Credit Enquiry</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="home4" class="tab-pane in active">
+                            <!-- form start-->
+                            <section>
+                                <div class="row">
+                                    <!-- tabrow start-->
+                                    <div class="col-md-2">
+		                            <img id="MEMBERPHOTO_docPath" class="img img-test" data-url="{% static 'images/naveen.jpg' %}" src="{% static 'images/naveen.jpg' %}" height="135" width="134"  />
+		                            &nbsp;&nbsp;&nbsp;<span id="memberNameLabel" class="label label-info arrowed-right arrowed-in  glyphicon-bookmark"> </span>
+		                            <br/>
+		                            <br/><label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">Member ID   :&nbsp&nbsp&nbsp <span id="memberId"></span></label><br/>
+		                            <label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">Loan ID    :&nbsp&nbsp&nbsp<span id="loanId"></span></label><br/>
+		                            <br />
+		                            <br />
+                                    </div>
+                                    <!-- tabrow  colmd-2 end-->
+                                    <div class="col-md-5">
+                                        <!-- tabrow  colmd-5 start-->
+                                        <form class="form-horizontal" role="form">
+                                        <span id="warningId" style="display:none;">*** Please select all the required fields ***</span>
+                                        <div class="profile-user-info profile-user-info-striped">
+                                            <div class="profile-info-row">
+                                                <div id="memberName_label" class="profile-info-name"> Name <font class="mandatory">*</font> </div>
+                                                <div class="profile-info-value">
+                                                    <span class="editable">    
+                                                    <input type="text"  id="memberName" placeholder="Member Name"></span>	
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="profile-info-row">
-                                            <div class="profile-info-name"> Age </div>
-                                            <div class="profile-info-value">
-                                                <span class="editable">    <input type="text"  id="age" placeholder="Age"></span>                                                 
+                                            <div class="profile-info-row">
+                                                <div id="age_label" class="profile-info-name"> Age <font class="mandatory">*</font></div>
+                                                <div class="profile-info-value">
+                                                    <span class="editable">  
+                                                    <input type="text"  id="age" placeholder="Age">
+                                                    </span>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="profile-info-row">
-                                            <div class="profile-info-name"> Spouse  </div>
-                                            <div class="profile-info-value">
-                                                <span class="editable">    <input type="text"  id="husbandName" placeholder="Spouse Name"></span>                                                 
+                                            <div class="profile-info-row">
+                                                <div id="husbandName_label" class="profile-info-name"> Spouse <font class="mandatory">*</font> </div>
+                                                <div class="profile-info-value">
+                                                    <span class="editable">    <input type="text"  id="husbandName" placeholder="Spouse Name"></span>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="profile-info-row">
-                                            <div class="profile-info-name"> Father </div>
-                                            <div class="profile-info-value">
-                                                <span class="editable">    <input type="text"  id="fatherName" placeholder="Father Name"></span>                                                 
+                                            <div class="profile-info-row">
+                                                <div id="fatherName_label" class="profile-info-name"> Father <font class="mandatory">*</font> </div>
+                                                <div class="profile-info-value"> 
+                                                    <span class="editable">    <input type="text"  id="fatherName" placeholder="Father Name"></span> 
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="profile-info-row">
-                                            <div class="profile-info-name"> Address </div>
-                                            <div class="profile-info-value">
-                                                <span class="editable">
-                                                <textarea class="form-control" rows="3" width="150px" id="address" placeholder="Address"></textarea>    
-                                                </span>                                                 
+                                            <div class="profile-info-row">
+                                                <div id="address_label" class="profile-info-name"> Address <font class="mandatory">*</font></div>
+                                                <div class="profile-info-value"> 
+                                                    <span class="editable">
+                                                    <textarea class="form-control" rows="3" width="150px" id="address" placeholder="Address"></textarea>    
+                                                    </span> 
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="profile-info-row">
-                                            <div class="profile-info-name"> Role </div>
-                                            <div class="profile-info-value">
-                                                <span class="editable">  <input type="text" readonly="readonly" id="roleName"> </font></span>                                                    
+                                            <div class="profile-info-row">
+                                                <div class="profile-info-name"> Role </div>
+                                                <div class="profile-info-value"> 
+                                                    <span class="editable">  <input type="text" readonly="readonly" id="roleName"> </font></span>	
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="profile-info-row">
-                                            <div class="profile-info-name"> Village </div>
-                                            <div class="profile-info-value">
-                                                <span class="editable" ><input type="text" id="villageName" placeholder="Village Name"></input></span>                                                 
+                                            <div class="profile-info-row">
+                                                <div id="villageName_label" class="profile-info-name"> Village <font class="mandatory">*</font></div>
+                                                <div class="profile-info-value">
+                                                    <span class="editable" ><input type="text" id="villageName" placeholder="Village Name"></input></span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!--secnod div ended-->
-                                <div class="col-md-5">
-                                    <div class="profile-user-info profile-user-info-striped">
-                                        <div class="profile-info-row">
-                                            <div class="profile-info-name"> ID Proof </div>
-                                            <div class="profile-info-value">
-                                                <span class="editable">    <input type="text"  id="idProofValue"></span>    
-                                                &nbsp;&nbsp; 
-                                                <div id="idProof" style="display:inline-block;">
-                                                <img id="IDPROOF_docPath" class="img img-test" style="width:30px;height:21px;" data-url="{% static 'images/danny2.jpg' %}" src="{% static 'images/danny2.jpg' %}" ></img>
-                                                <img id="IDPROOF_2_docPath" class="img img-test" style="width:30px;height:21px;" data-url="{% static 'images/danny2.jpg' %}" src="{% static 'images/danny2.jpg' %}" >
-                                                <!--button type="button" class="btn btn-info btn-md btn-danger" id="myBtn2">view proof</button--></img></div>
+                                    <!-- tabrow  colmd-5 END-->
+                                    <div class="col-md-5">
+                                        <!-- tabrow  2 colmd-5 sTART-->
+                                        <div class="profile-user-info profile-user-info-striped">
+                                            <div class="profile-info-row">
+                                                <div id="idProofValue_label" class="profile-info-name"> ID Proof <font class="mandatory">*</font></div>
+                                               <div class="profile-info-value">
+		                                        <span class="editable">    <input type="text"  id="idProofValue"></span>    
+		                                        &nbsp;&nbsp; 
+		                                        <div id="idProof" style="display:inline-block;">
+		                                        <img id="IDPROOF_docPath" class="img img-test" style="width:30px;height:21px;" data-url="" src="" ></img>
+		                                        <img id="IDPROOF_2_docPath" class="img img-test" style="width:30px;height:21px;" data-url="" src="" >
+		                                        <!--button type="button" class="btn btn-info btn-md btn-danger" id="myBtn2">view proof</button--></img></div>
+                                               </div>
                                             </div>
-                                        </div>
-                                        <div class="profile-info-row">
-                                            <div class="profile-info-name"> Address Proof </div>
-                                            <div class="profile-info-value">
-                                                <span class="editable" >    <input type="text"  id="addressProofValue"></span>
-                                                &nbsp;&nbsp; 
-                                                <div id="idProof" style="display:inline-block;">
-                                                <img id="ADDRESSPROOF_docPath" class="img img-test" style="width:30px;height:21px;" data-url="{% static 'images/danny1.jpg' %}" src="{% static 'images/danny1.jpg' %}" ></img>
-                                                <img id="ADDRESSPROOF_2_docPath" class="img img-test" style="width:30px;height:21px;" data-url="{% static 'images/ration_card2.jpg' %}" src="{% static 'images/ration_card2.jpg' %}" >
-                                                <!--button type="button" class="btn btn-info btn-md btn-danger" id="myBtn2">view proof</button--></img></div>    
+                                            <div class="profile-info-row">
+                                                <div id="addressProofValue_label" class="profile-info-name"> Address Proof <font class="mandatory">*</font></div>
+                                                <div class="profile-info-value">
+		                                        <span class="editable" >    <input type="text"  id="addressProofValue"></span>
+		                                        &nbsp;&nbsp; 
+		                                        <div id="idProof" style="display:inline-block;">
+		                                        <img id="ADDRESSPROOF_docPath" class="img img-test" style="width:30px;height:21px;" data-url="" src="" ></img>
+		                                        <img id="ADDRESSPROOF_2_docPath" class="img img-test" style="width:30px;height:21px;" data-url="" src="" >
+		                                        <!--button type="button" class="btn btn-info btn-md btn-danger" id="myBtn2">view proof</button--></img></div>    
+                                            	</div>
                                             </div>
-                                        </div>
-                                        <div class="profile-info-row">
-                                            <div class="profile-info-name"> SB Account  </div>
-                                            <div class="profile-info-value">
+                                            <div class="profile-info-row">
+                                                <div id="sbAccountNumber_label" class="profile-info-name"> SB Account  <font class="mandatory">*</font></div>
+                                                <div class="profile-info-value">
                                                 <span class="editable" >    <input type="text"  id="sbAccountNumber"></span> &nbsp;&nbsp;                                                    
-                                                <div style="display:inline-block;"><img id="SBACCOUNTPASSBOOK_docPath" class="img img-test" style="width:30px;height:21px;" data-url="{% static 'images/danny1.jpg' %}" src="{% static 'images/danny1.jpg' %}" ></img></div>
+                                                <div style="display:inline-block;"><img id="SBACCOUNTPASSBOOK_docPath" class="img img-test" style="width:30px;height:21px;" data-url="" src="" ></img></div>
                                             </div>
-                                        </div>
-                                        <div class="profile-info-row">
-                                            <div class="profile-info-name"> Bank name </div>
-                                            <div class="profile-info-value">
-                                                <span class="editable">
-                                                    <select id="bankId" style="width:99%;">
-                                                    </select>
-                                                </span>
                                             </div>
+                                            <div class="profile-info-row">
+                                                <div id="bankId_label" class="profile-info-name"> Bank name <font class="mandatory">*</font></div>
+                                                <div class="profile-info-value">
+                                                    <span class="editable">
+                                                    <select id="bankId" style="width:99%;"></select>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-info-row">
+                                                <div id="sbAccountName_label" class="profile-info-name"> Name (as in Bank Account) <font class="mandatory">*</font> </div>
+                                                <div class="profile-info-value">
+                                                    <span class="editable" >   <input type="text"  id="sbAccountName"></span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-info-row">
+                                            	<div id="branch_label" class="profile-info-name">Bank branch Name <font class="mandatory">*</font></div>
+		                                    <div class="profile-info-value">
+		                                        <span class="editable" >    <input type="text"  id="branch"></span>                                                   
+		                                    </div>
+                                           </div>
                                         </div>
-                                        <div class="profile-info-row">
-                                            <div class="profile-info-name"> Name (as in Bank Account) * </div>
+                                    </div>
+                                    <!-- tabrow  2 colmd-5 END-->
+                                </div>
+                                <!-- tabrow END-->
+                                <br>								
+                                <div class="row">
+                                    <!--- tab 2form row started -->		
+                                    <div class="col-md-2">
+                                        <!-- tabrow   2form colmd-2 start-->
+                                        
+                                    </div>
+                                    <!-- tabrow   2form colmd-2 end-->
+                                    <div class="col-md-5">
+                                        <!-- tabrow   2form colmd-5 start-->
+                                        <div class="profile-user-info profile-user-info-striped">
+                                            <div class="profile-info-row">
+                                                <div id="permanentAddress_label" class="profile-info-name"> Permanent Addresss <font class="mandatory">*</font></div>
+                                                <div class="profile-info-value"> 
+                                                    <span class="editable">    
+                                                    <textarea class="form-control" rows="3" id="permanentAddress"></textarea> 
+                                                    </span> 
+                                                </div>
+                                            </div>
+                                            <div class="profile-info-row">
+                                                <div id="pincode_label" class="profile-info-name"> Pin Code <font class="mandatory">*</font></div>
+                                                <div class="profile-info-value"> 
+                                                    <span class="editable">    <input type="text" id="pincode" onchange="areasUnderPincode()" ></span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-info-row">
+                                                <div id="villages_label" class="profile-info-name"> Area <font class="mandatory">*</font></div>
+                                                <div class="profile-info-value">
+                                                    <span class="editable">
+                                                        <select id="villages" style="width:49%;">
+                                                            <option value="" >Select Area </option>
+                                                        </select>
+                                                </div>
+                                            </div>
+                                            <div class="profile-info-row">
+                                            <div id="mobileNo_label" class="profile-info-name"> Mobile no <font class="mandatory">*</font></div>
                                             <div class="profile-info-value">
-                                                <span class="editable" >    <input type="text"  id="sbAccountName"></span>                                                   
+                                            <span class="editable" >    <input type="text" id="mobileNo" ></span>
+                                            </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <br>
-                                </div>
-                            </div>
-                            <!-- ROW END -->
-                            <br>
-                            <div class="row">
-                                <div class="col-md-2"> 
-                                    <!--span class="label label-lg label-primary arrowed arrowed-right">CB Response <b>:Eligble</b></span-->             
-                                </div>
-                                <div class="col-md-5">
+                                    <!-- tabrow   2form colmd-5 End-->
+                                    <div class="col-md-5">               <!-- tabrow   2form  second colmd-5 start-->
                                     <div class="profile-user-info profile-user-info-striped">
-                                        <div class="profile-info-row">
-                                            <div class="profile-info-name"> Permanent Addresss</div>
-                                            <div class="profile-info-value">
-                                                <span class="editable">    
-                                                <textarea class="form-control" rows="3" id="permanentAddress"></textarea> 
-                                                </span>                                                 
-                                            </div>
-                                        </div>
-                                        <div class="profile-info-row">
-                                            <div class="profile-info-name"> Pin Code  </div>
-                                            <div class="profile-info-value">
-                                                <span class="editable">    <input type="text" id="pincode" onchange="areasUnderPincode()" ></span>                                                 
-                                            </div>
-                                        </div>
-                                        <div class="profile-info-row">
-                                            <div class="profile-info-name"> Area </div>
-                                            <div class="profile-info-value">
-                                                <span class="editable">
-                                                    <select id="villages" style="width:49%;">
-                                                    	<option value="" >Select Area</option>
-                                                    </select>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="profile-info-row">
-                                            <div class="profile-info-name"> Mobile no </div>
-                                            <div class="profile-info-value">
-                                                <span class="editable" id="username">    <input type="text" id="mobileNo" ></span>                                                  
-                                            </div>
-                                        </div>
+                                    <div class="profile-info-row">
+                                    <div id="idProofTypeId_label" class="profile-info-name"> Id  Proof Type <font class="mandatory">*</font></div>
+                                    <div class="profile-info-value">
+                                    <select id="idProofTypeId" style="width:99%;"></select>
                                     </div>
-                                </div>
-                                <div class="col-md-5">
-                                    <div class="profile-user-info profile-user-info-striped">
-                                        <div class="profile-info-row">
-                                            <div class="profile-info-name"> Id  Proof Type</div>
-                                            <div class="profile-info-value">
-                                                <select id="idProofTypeId" style="width:99%;">
-                                                   
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="profile-info-row">
-                                            <div class="profile-info-name"> Address Proof Type </div>
-                                            <div class="profile-info-value">
-                                                <select id="addressProofTypeId" style="width:99%;">
-                                                </select>
-                                                </span>                                                 
-                                            </div>
-                                        </div>
-                                        <div class="profile-info-row">
-                                            <div class="profile-info-name"> Loan Amount  </div>
-                                            <div class="profile-info-value">
-                                                <span class="editable">    <input type="text" id="loanAmount"></span>                                                  
-                                            </div>
-                                        </div>
-                                        <div class="profile-info-row">
-                                            <div class="profile-info-name"> Loan purpose  </div>
-                                            <div class="profile-info-value">
-                                                <span class="editable">
-                                                    <select id="loanPurpose" style="width:99%;">>
-                                                    </select>
-                                                </span>
-                                            </div>
-                                        </div>
                                     </div>
+                                    <div class="profile-info-row">
+                                    <div id="addressProofTypeId_label" class="profile-info-name"> Address Proof Type <font class="mandatory">*</font></div>
+                                    <div class="profile-info-value">
+                                    <select id="addressProofTypeId" style="width:99%;">
+                                    </select>
+                                    </span> </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                    <div id="loanAmount_label" class="profile-info-name"> Loan Amount <font class="mandatory">*</font></div>
+                                    <div class="profile-info-value">
+                                    <span class="editable">    <input type="text" id="loanAmount"></span>  
+                                    </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                    <div id="loanTypeValue_label" class="profile-info-name"> Loan purpose <font class="mandatory">*</font></div>
+                                    <div class="profile-info-value"> 
+                                    <span class="editable">
+                                    <select id="loanTypeValue" style="width:99%;">
+                                    </select>
+                                    </span>
+                                    </div>
+                                    </div>
+                                    </div>
+                                    </div>      <!-- tabrow   2form  second colmd-5 end-->
                                 </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-md-2"></div>
-                                <div class="col-md-10">
+                                <!--- tab 2form row end -->		
+                                <br>
+                                <div class="row">
+                                    <!--- tab 3row start -->	
+                                    <div class="col-md-2"> </div>
+                                    <div id="commentDivId" class="col-md-10">
                                     <div class="form-group">
-                                        <label for="comment">Comment:</label>
+                                        <label id="comment_label" for="comment">Comment <font class="mandatory">*</font></label>
                                         <textarea class="form-control" rows="3" id="comment"></textarea>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-2"></div>
-                                    <div class="col-md-10">
-                                        &nbsp;&nbsp; <button type="button" class="btn btn-danger btn-md" id="myBtn2">Cancel</button>
-                                           <button type="button" class="btn btn-danger btn-md" id="myBtn2">Query</button>   
-                                           <button type="button" class="btn btn-success btn-md" id="myBtn2">Approve</button>
-                                           <button type="button" class="btn btn-danger btn-md" id="myBtn2">Reject</button>  
+                                    <div id="operationsDivId" class="col-md-10">
+                                        &nbsp;&nbsp; <!--button type="button" class="btn btn-danger btn-md" id="myBtn2">Cancel</button-->
+                                           <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCForm('Rework');">Rework</button>   
+                                           <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCForm('Approved');">Approve</button>
+                                           <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCForm('Rejected');">Reject</button>  
                                     </div>
                                 </div>
-                        </section>
-                        <div class="jquery-script-ads" style="margin:30px auto;" align="center">
-                          <div class="modal fade" id="myModal2" role="dialog" >
-			    <div class="modal-dialog">
-			      <div class="modal-content">
-				
-			      </div>
-			    </div>
-			  </div>
-                        <!-- SECTION END -->
-                        <!-- CONATINER END -->
-                        <!--form End--></div>
-                        </div>
-                        <div id="profile4" class="tab-pane">
-                            <div class="widget-box transparent">
-                                <div class="widget-header widget-header-small">
-                                    <h4 class="widget-title blue smaller">
-                                        <i class="ace-icon fa fa-rss orange"></i>
-                                        Recent Queries                                                  
-                                    </h4>
-                                </div>
-                                <div class="widget-body">
-                                    <div class="widget-main padding-8">
-                                        <div id="profile-feed-1" class="profile-feed">
-                                            <div class="profile-activity clearfix">
-                                                <div>
-                                                    <img class="pull-left" alt="Alex Doe's avatar" src="assets/images/avatars/avatar5.png" />
-                                                    <a class="user" href="#"> Alex Doe </a>
-                                                    changed his profile photo.
-                                                    <div class="time">
-                                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
-                                                        Wed Dec 07 2016 18:20:31                                                                    
+                                    <!--- tab final row end -->
+                            </section>
+                            <!-- SECTION END -->
+                            </div> 								<!--form End-->
+                            <div id="profile4" class="tab-pane">
+                                <!--TAB MENU2 CONTENT START-->
+                                <div class="page-content">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <!-- PAGE CONTENT BEGINS -->
+                                            <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
+                                                <div class="widget-box widget-color-blue" id="widget-box-2">
+                                                    <div class="widget-header">
+                                                        <h5 class="widget-title bigger lighter">
+                                                            Credit Enquiry                          
+                                                        </h5>
+                                                        <div class="widget-toolbar widget-toolbar-light no-border">
+                                                            <select id="simple-colorpicker-1" class="hide">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="widget-body">
+                                                        <div class="widget-main no-padding">
+                                                            <table class="table table-striped table-bordered table-hover">
+                                                                <thead class="thin-border-bottom">
+                                                                    <tr>
+                                                                        <th><i class="ace-icon fa fa-user"></i>S.No</th>
+                                                                        <th>Product</th>
+                                                                        <th>Status</th>
+                                                                        <th>Remarks</th>
+                                                                        <th>HM Response Date</th>
+                                                                        <th>Existing Loan Limit</th>
+                                                                        <th>Loan Amount Eligible</th>
+                                                                        <th>MFI Eligible</th>
+                                                                        <th>MFI 1 Name</th>
+                                                                        <th>Overdue_1</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="">1</td>
+                                                                        <td class="">PLL</td>
+                                                                        <td class="">ELIGIBLE</td>
+                                                                        <td class="">Eligible: 1 live Loan with other mfi</td>
+                                                                        <td class="">12/11/2016</td>
+                                                                        <td class="">28124</td>
+                                                                        <td class="">31876</td>
+                                                                        <td class="">1</td>
+                                                                        <td class="">INTREPID FINANCE AND LEASING</td>
+                                                                        <td class="">0</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="profile-activity clearfix">
-                                                <div>
-                                                    <img class="pull-left" alt="Susan Smith's avatar" src="assets/images/avatars/avatar1.png" />
-                                                    <a class="user" href="#"> Susan Smith </a>
-                                                    is now friends with Alex Doe.
-                                                    <div class="time">
-                                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
-                                                        Wed Dec 07 2016 18:20:3                                                                 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="profile-activity clearfix">
-                                                <div>
-                                                    <i class="pull-left thumbicon fa fa-check btn-success no-hover"></i>
-                                                    <a class="user" href="#"> Alex Doe </a>
-                                                    joined
-                                                    <a href="#">Country Music</a>
-                                                    group.
-                                                    <div class="time">
-                                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
-                                                        Wed Dec 07 2016 18:20:3                                                                 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="profile-activity clearfix">
-                                                <div>
-                                                    <i class="pull-left thumbicon fa fa-picture-o btn-info no-hover"></i>
-                                                    <a class="user" href="#"> Alex Doe </a>
-                                                    uploaded a new photo.
-                                                    <div class="time">
-                                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
-                                                        Wed Dec 07 2016 18:20:3                                                                 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="profile-activity clearfix">
-                                                <div>
-                                                    <img class="pull-left" alt="David Palms's avatar" src="assets/images/avatars/avatar4.png" />
-                                                    <a class="user" href="#"> David Palms </a>
-                                                    left a comment on Alex's wall.
-                                                    <div class="time">
-                                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
-                                                        Wed Dec 08 2016 1:20:3                                                                  
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="profile-activity clearfix">
-                                                <div>
-                                                    <i class="pull-left thumbicon fa fa-pencil-square-o btn-pink no-hover"></i>
-                                                    <a class="user" href="#"> Alex Doe </a>
-                                                    published a new blog post.
-                                                    <div class="time">
-                                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
-                                                        Wed Dec 09 2016 18:20:3                                                                 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="profile-activity clearfix">
-                                                <div>
-                                                    <img class="pull-left" alt="Alex Doe's avatar" src="assets/images/avatars/avatar5.png" />
-                                                    <a class="user" href="#"> Alex Doe </a>
-                                                    upgraded his skills.
-                                                    <div class="time">
-                                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
-                                                        Wed Dec 07 2016 18:20:3                                                                 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="profile-activity clearfix">
-                                                <div>
-                                                    <i class="pull-left thumbicon fa fa-key btn-info no-hover"></i>
-                                                    <a class="user" href="#"> Alex Doe </a>
-                                                    logged in.
-                                                    <div class="time">
-                                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
-                                                        Wed Dec 07 2016 18:20:3                                                                 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="profile-activity clearfix">
-                                                <div>
-                                                    <i class="pull-left thumbicon fa fa-power-off btn-inverse no-hover"></i>
-                                                    <a class="user" href="#"> Alex Doe </a>
-                                                    logged out.
-                                                    <div class="time">
-                                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
-                                                        Wed Dec 07 2016 18:20:3                                                                 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="profile-activity clearfix">
-                                                <div>
-                                                    <i class="pull-left thumbicon fa fa-key btn-info no-hover"></i>
-                                                    <a class="user" href="#"> Alex Doe </a>
-                                                    logged in.
-                                                    <div class="time">
-                                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
-                                                        Wed Dec 07 2016 18:20:3                                                                 
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <!-- /.span -->
                                         </div>
+                                        <!-- /.row -->
+                                        <!-- PAGE CONTENT ENDS -->
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="dropdown14" class="tab-pane">
-                            <div id="timeline-2" >
-                                <div class="row">
-                                    <div class="col-xs-12 col-sm-10 col-sm-offset-1">
-                                        <div class="timeline-container timeline-style2">
-                                            <span class="timeline-label">
-                                            <b>May 15</b>                                               </span>
-                                            <div class="timeline-items">
-                                                <div class="timeline-item clearfix">
-                                                    <div class="timeline-info">
-                                                        <span class="timeline-date">11:15 pm</span>
-                                                        <i class="timeline-indicator btn btn-info no-hover"></i>                                                        
-                                                    </div>
-                                                    <div class="widget-box transparent">
-                                                        <div class="widget-body">
-                                                            <div class="widget-main no-padding">
-                                                                <span class="bigger-110">
-                                                                <a href="#" class="purple bolder">Susan</a>
-                                                                reviewed a productdfds                                                                  </span>
-                                                                <br />
-                                                                <i class="ace-icon fa fa-hand-o-right grey bigger-125"></i>
-                                                                <a href="#">Click to read &hellip;</a>                                                              
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="timeline-item clearfix">
-                                                    <div class="timeline-info">
-                                                        <span class="timeline-date">12:30 pm</span>
-                                                        <i class="timeline-indicator btn btn-info no-hover"></i>                                                        
-                                                    </div>
-                                                    <div class="widget-box transparent">
-                                                        <div class="widget-body">
-                                                            <div class="widget-main no-padding">
-                                                                Going to
-                                                                <span class="green bolder">veg cafe</span>
-                                                                for lunch                                                               
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="timeline-item clearfix">
-                                                    <div class="timeline-info">
-                                                        <span class="timeline-date">11:15 pm</span>
-                                                        <i class="timeline-indicator btn btn-info no-hover"></i>                                                        
-                                                    </div>
-                                                    <div class="widget-box transparent">
-                                                        <div class="widget-body">
-                                                            <div class="widget-main no-padding">
-                                                                Designed a new logo for our website. Would appreciate feedback.
-                                                                <a href="#">
-                                                                Click to see
-                                                                <i class="ace-icon fa fa-search-plus blue bigger-110"></i>                                                                  </a>
-                                                                <div class="space-2"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="timeline-item clearfix">
-                                                    <div class="timeline-info">
-                                                        <span class="timeline-date">9:00 am</span>
-                                                        <i class="timeline-indicator btn btn-info no-hover"></i>                                                        
-                                                    </div>
-                                                    <div class="widget-box transparent">
-                                                        <div class="widget-body">
-                                                            <div class="widget-main no-padding"> Took the final exam. Phew! </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- /.timeline-items -->
-                                        </div>
-                                        <!-- /.timeline-container -->
-                                        <div class="timeline-container timeline-style2">
-                                            <span class="timeline-label">
-                                            <b>May 16</b>                                               </span>
-                                            <div class="timeline-items">
-                                                <div class="timeline-item clearfix">
-                                                    <div class="timeline-info">
-                                                        <span class="timeline-date">9:00 am</span>
-                                                        <i class="timeline-indicator btn btn-success no-hover"></i>                                                     
-                                                    </div>
-                                                    <div class="widget-box transparent">
-                                                        <div class="widget-body">
-                                                            <div class="widget-main no-padding">
-                                                                <div class="clearfix">
-                                                                    <div class="pull-left">
-                                                                        <span class="orange2 bolder">Haloween party</span>
-                                                                        Lots of fun at Haloween party.
-                                                                        <br />
-                                                                        Take a look at some pics:                                                                       
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="timeline-item clearfix">
-                                                    <div class="timeline-info">
-                                                        <span class="timeline-date">9:00 am</span>
-                                                        <i class="timeline-indicator btn btn-success no-hover"></i>                                                     
-                                                    </div>
-                                                    <div class="widget-box transparent">
-                                                        <div class="widget-body">
-                                                            <div class="widget-main no-padding">
-                                                                Anim pariatur cliche reprehenderit, enim eiusmod
-                                                                <span class="pink2 bolder">high life</span>
-                                                                accusamus terry richardson ad squid&hellip;                                                             
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="timeline-item clearfix">
-                                                    <div class="timeline-info">
-                                                        <span class="timeline-date">9:00 am</span>
-                                                        <i class="timeline-indicator btn btn-success no-hover"></i>                                                     
-                                                    </div>
-                                                    <div class="widget-box transparent">
-                                                        <div class="widget-body">
-                                                            <div class="widget-main no-padding"> Going to cafe for lunch </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="timeline-item clearfix">
-                                                    <div class="timeline-info">
-                                                        <span class="timeline-date">9:00 am</span>
-                                                        <i class="timeline-indicator btn btn-success no-hover"></i>                                                     
-                                                    </div>
-                                                    <div class="widget-box transparent">
-                                                        <div class="widget-body">
-                                                            <div class="widget-main no-padding">
-                                                                <span class="red bolder">Critical security patch released</span>
-                                                                <br />
-                                                                Please download the new patch for maximum security.                                                             
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- /.timeline-items -->
-                                        </div>
-                                        <!-- /.timeline-container -->
-                                        <div class="timeline-container timeline-style2">
-                                            <span class="timeline-label">
-                                            <b>May 17</b>                                               </span>
-                                            <div class="timeline-items">
-                                                <div class="timeline-item clearfix">
-                                                    <div class="timeline-info">
-                                                        <span class="timeline-date">9:00 am</span>
-                                                        <i class="timeline-indicator btn btn-grey no-hover"></i>                                                        
-                                                    </div>
-                                                    <div class="widget-box transparent">
-                                                        <div class="widget-body">
-                                                            <div class="widget-main no-padding">
-                                                                <span class="bolder blue">Lorum Ipsum</span>
-                                                                Anim pariatur cliche reprehenderit, enim eiusmod
-                                                                <span class="purple bolder">high life</span>
-                                                                accusamus terry richardson ad squid&hellip;                                                             
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- /.timeline-items -->
-                                        </div>
-                                        <!-- /.timeline-container -->
-                                    </div>
+                                    <!-- /.col -->
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <!--TAB MENU2 CONTENT END-->
                 </div>
+                <!-- TAB END-->
             </div>
+            <!--2row panel body end-->
         </div>
-        <!--- tab end>
-            </div>
-        <!-- PAGE CONTENT BEGINS -->
-        <!-- PAGE CONTENT ENDS -->
     </div>
-    <!-- /.col -->
+    <!--2row Start col-10 End-->
 </div>
-<!-- /.row -->
+<!--2row End-->
 {% endblock content %}
-

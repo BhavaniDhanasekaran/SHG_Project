@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 <!-- PAGE CONTENT BEGINS -->
+
+{% block javascript %}
+<script>
+    $(document).ready(function(){
+	taskCount();
+    });
+</script>
+<script src="{% static 'datajs/loadTaskList.js' %}"></script>
+{% endblock %}
 {% block content %}
 <!-- BOX1 BEGINS -->
 <div class="row">
@@ -12,7 +21,7 @@
                         <i class="fa fa-tasks fa-5x"></i> 
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">26</div>
+                        <div id="myTasks1" class="huge"></div>
                         <div>My Tasks!</div>
                     </div>
                 </div>
@@ -36,7 +45,7 @@
                         <i class="fa fa-comments fa-5x"></i>  
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">12</div>
+                        <div id="KYC_Check1" class="huge"></div>
                         <div>KYC Check</div>
                     </div>
                 </div>
@@ -60,7 +69,7 @@
                         <i class="fa fa-shopping-cart fa-5x"></i>  
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">124</div>
+                        <div id="Query_Response1" class="huge"></div>
                         <div>Query Response!</div>
                     </div>
                 </div>

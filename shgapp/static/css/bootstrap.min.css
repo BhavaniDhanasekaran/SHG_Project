@@ -10,6 +10,14 @@ sub,
 sup {
     vertical-align: baseline
 }
+.mandatory{
+    color: red;
+}
+#warningId{
+    color:red;
+    font-weight:bold;
+}
+
 hr,
 img {
     border: 0
@@ -5196,8 +5204,7 @@ a.thumbnail:hover {
 }
 a.list-group-item,
 button.list-group-item {
-    color: #555;
-    cursor:pointer;  /* Added by Bhavani - 9-1-2017 */
+    color: #555
 }
 a.list-group-item .list-group-item-heading,
 button.list-group-item .list-group-item-heading {

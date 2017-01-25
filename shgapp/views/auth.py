@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import password_reset, password_reset_confirm
 from shgapp.forms import SignUpForm
+from django.template import RequestContext
 
 def signup(request):
     if request.method == 'POST':
@@ -40,6 +41,7 @@ def signin(request):
             username = request.POST['username']
             password = request.POST['password']
             user = authenticate(username=username, password=password)
+            
             if user is not None:
                 if user.is_active:
                     login(request, user)

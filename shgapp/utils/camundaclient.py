@@ -26,7 +26,7 @@ class CamundaClient(object):
                     response = urllib2.urlopen(request)
                 else:
                     print 'CamundaClient _urllib2_request GET: ', url
-                    request = urllib2.Request( url, headers = { 'Content-Type' : 'application/json' } )
+                    request = urllib2.Request( url,headers = { 'Content-Type' : 'application/json' } )
                     response = urllib2.urlopen(request)
             else:
                 print 'CamundaClient _urllib2_request else: '

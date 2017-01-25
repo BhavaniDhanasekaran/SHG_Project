@@ -1,0 +1,160 @@
+{% load staticfiles %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+	   <title>Madura Micro Finance</title>
+	
+	   <link rel="icon" type="image/png" href="{% static 'images/favicon.ico' %}" />
+    
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <!-- bootstrap & fontawesome -->
+
+
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static  'font-awesome/4.5.0/css/font-awesome.min.css' %}" />
+
+
+
+    <!-- page specific plugin styles -->
+    <!-- text fonts -->
+    <link rel="stylesheet" href="{% static 'css/fonts.googleapis.com.css' %}" />
+    <!-- ace styles -->
+    <link rel="stylesheet" href="{% static 'css/ace.min.css' %}" class="ace-main-stylesheet" id="main-ace-style" />
+    <!--[if lte IE 9]>
+
+<link rel="stylesheet" href="{% static 'css/ace-part2.min.css'  %}" class="ace-main-stylesheet"/>
+
+<![endif]-->
+
+	<link rel="stylesheet" href="{% static 'css/jquery-ui.min.css'  %}" />	
+    <link rel="stylesheet" href="{% static 'css/ace-skins.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/ace-rtl.min.css'  %}" />
+    <link rel="stylesheet" href="{% static 'css/icon.min.css'  %}" />
+    <!--[if lte IE 9]>
+     <link rel="stylesheet" href="{% static 'css/ace-ie.min.css'  %}" />
+
+<![endif]-->
+    <!-- inline styles related to this page -->
+    <!-- ace settings handler -->
+
+    
+      <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+      <script src="{% static 'js/ace-extra.min.js' %}"></script>
+
+    </script>
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+    <!--[if lte IE 8]>
+     <script src="{% static 'js/html5shiv.min.js' %}"></script>
+     <script src="{% static 'js/respond.min.js' %}"></script>
+
+
+<![endif]-->
+  </head>
+  <!-- Header start -->
+  <body class="no-skin">
+    
+			  <!-- side bar start -->
+       
+       
+       
+	  
+				
+		
+		  
+		  <!-- body start  -->	
+
+          <div class="page-content">
+            <div class="row">
+              <div class="col-xs-12">
+                <!-- PAGE CONTENT BEGINS -->
+				
+				
+			
+								 
+             {% block content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+             {% endblock content %}
+							
+						
+						
+						
+								
+								
+								
+				
+				
+				
+                <!-- PAGE CONTENT ENDS -->
+              </div>
+              <!-- /.col -->
+            </div>
+            <!-- /.row -->
+          </div>
+          <!-- /.page-content -->
+        </div>
+      </div>
+      <!-- /.main-content -->
+	  
+	  
+	  		  <!-- body end  -->	
+			  
+			  
+			  
+	  <!-- Footer start  -->			  
+      {% include 'footer.html' %}
+	   <!-- Footer end  -->	
+    		
+    </div>
+
+    <!-- /.main-container -->
+    <!-- basic scripts -->
+    <!--[if !IE]> -->
+   
+    <!--script src="{% static 'js/jquery-ui.js'  %}"></script-->
+    
+  
+    <!-- <![endif]-->
+    <!--[if IE]>
+<script src="assets/js/jquery-1.11.3.min.js"></script>
+<![endif]-->
+{% block javascript %} {% endblock %}
+
+    <script type="text/javascript">
+      if('ontouchstart' in document.documentElement) document.write("<script src='{% static 'js/jquery.mobile.custom.min.js' %}>"+"<"+"/script>");
+    </script>
+    <script src="{% static 'js/bootstrap.min.js'  %}">
+   
+    </script>
+    <!-- page specific plugin scripts -->
+    <!-- ace scripts -->
+   <script src="{% static 'js/ace-elements.min.js'  %}">
+    </script>
+    <script src="{% static 'js/ace.min.js'  %}">
+    </script>
+
+    <!-- inline scripts related to this page -->
+  </body>
+</html>

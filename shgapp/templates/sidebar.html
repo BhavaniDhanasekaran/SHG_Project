@@ -1,150 +1,172 @@
+{% if group == "DataSupportTeam" %}
 <div class="sidebar-shortcuts" id="sidebar-shortcuts">
     <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
-        <button class="btn btn-success">
-        <i class="ace-icon fa fa-signal">
-        </i>						
-        </button>
-        <button class="btn btn-info">
-        <i class="ace-icon fa fa-pencil">
-        </i>						
-        </button>
-        <button class="btn btn-warning">
-        <i class="ace-icon fa fa-users">
-        </i>						
-        </button>
-        <button class="btn btn-danger">
-        <i class="ace-icon fa fa-cogs">
-        </i>						
-        </button>
+        <button class="btn btn-success"> <i class="ace-icon fa fa-signal"> </i> </button>
+        <button class="btn btn-info"> <i class="ace-icon fa fa-pencil"> </i> </button>
+        <button class="btn btn-warning"> <i class="ace-icon fa fa-users"> </i> </button>
+        <button class="btn btn-danger"> <i class="ace-icon fa fa-cogs"> </i> </button>
     </div>
-    <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
-        <span class="btn btn-success">
-        </span>
-        <span class="btn btn-info">
-        </span>
-        <span class="btn btn-warning">
-        </span>
-        <span class="btn btn-danger">
-        </span>					
-    </div>
+    <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini"> <span class="btn btn-success"> </span> <span class="btn btn-info"> </span> <span class="btn btn-warning"> </span> <span class="btn btn-danger"> </span> </div>
 </div>
-<!-- /.sidebar-shortcuts -->
-<ul class="nav nav-list" style="display:block;">
-    <li class="">
-        <a href="{% url 'assignedTaskList' %}">
-        <i class="menu-icon fa fa-pencil-square-o"></i>
+<ul class="nav nav-list">
+    <li class=""> 
+        <a href="{% url 'assignedTaskList' %}"> 
+        <i class="menu-icon fa fa-pencil-square-o"></i> 
         <span class="menu-text"> My Task 
         <span id="myTasks" class="badge badge-danger"></span>
-        </span></a> <b class="arrow"></b>
+        </span>
+        </a> 
+        <b class="arrow"></b> 
     </li>
     <li class="">
-        <a href="{% url 'KYCTaskList' %}">
-        <i class="menu-icon fa fa-pencil-square-o"></i>
-        <span class="menu-text"> KYC Check 
+        <a href="{% url 'KYCTaskList' %}"> 
+        <i class="menu-icon fa fa-pencil-square-o"></i> 
+        <span class="menu-text"> KYC Task 
         <span id="KYC_Check" class="badge badge-danger"></span>
-        </span>
-        </a> <b class="arrow"></b>
+        </span> 
+        </a> 
+        <b class="arrow"></b>
     </li>
     <li class="">
         <a href="{% url 'queryRespTaskList' %}">
-        <i class="menu-icon fa fa-comments-o"></i>
-        <span class="menu-text"> Query Response
+        <i class="menu-icon fa fa-comments-o"></i> 
+        <span class="menu-text"> Query Response 
         <span id="Query_Response" class="badge badge-danger"></span>
-        </span>						
-        </a> <b class="arrow"></b>
+        </span> 
+        </a>
+        <b class="arrow"></b>
     </li>
 </ul>
-<ul class="nav nav-list" style="display:none;">
-    <li class="">
-        <a href="{% url 'assignedTaskList' %}">
-        <i class="menu-icon fa fa-pencil-square-o"></i>
-        <span class="menu-text"> My Task 
-        <span id="myTaskCount" class="badge badge-danger"></span>
-        </span></a> <b class="arrow"></b>
-    </li>
-    <li class="">
-        <a href="{% url 'unassignedTaskList' %}">
-        <i class="menu-icon fa fa-pencil-square-o"></i>
-        <span class="menu-text"> BAT Approval 
-        <span id="batApprovalCount" class="badge badge-danger"></span>
-        </span>
-        </a> <b class="arrow"></b>
-    </li>
-    <li class="">
-        <a href="ds-querytask.html">
-        <i class="menu-icon fa fa-comments-o"></i>
-        <span class="menu-text"> Upload Document
-        <span id="uploadDocCount" class="badge badge-danger"></span>
-        </span>						
-        </a> <b class="arrow"></b>
-    </li>
-</ul>
-<ul class="nav nav-list" style="display:none;">
-    <li class="">
-        <a href="{% url 'assignedTaskList' %}">
-        <i class="menu-icon fa fa-pencil-square-o"></i>
-        <span class="menu-text"> My Task 
-        <span id="myTaskCount" class="badge badge-danger"></span>
-        </span></a> <b class="arrow"></b>
-    </li>
-    <li class="">
-        <a href="{% url 'unassignedTaskList' %}">
-        <i class="menu-icon fa fa-pencil-square-o"></i>
-        <span class="menu-text">Approve Task 
-        <span id="approveTaskCount" class="badge badge-danger"></span>
-        </span>
-        </a> <b class="arrow"></b>
-    </li>
-</ul>
-<ul class="nav nav-list" style="display:none;">
-    <li class="">
-        <a href="{% url 'assignedTaskList' %}">
-        <i class="menu-icon fa fa-pencil-square-o"></i>
-        <span class="menu-text"> My Task 
-        <span id="myTaskCount" class="badge badge-danger"></span>
-        </span></a> <b class="arrow"></b>
-    </li>
-    <li class="">
-        <a href="{% url 'unassignedTaskList' %}">
-        <i class="menu-icon fa fa-pencil-square-o"></i>
-        <span class="menu-text">Proposal Scrutiny
-        <span id="propScrutinyCount" class="badge badge-danger"></span>
-        </span>
-        </a> <b class="arrow"></b>
-    </li>
-    <li class="">
-        <a href="{% url 'unassignedTaskList' %}">
-        <i class="menu-icon fa fa-pencil-square-o"></i>
-        <span class="menu-text">Loan Approval
-        <span id="loanApprovalCount" class="badge badge-danger"></span>
-        </span>
-        </a> <b class="arrow"></b>
-    </li>
-</ul>
-
-<!-- /.nav-list -->
-<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
-    <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right">
-    </i>				
-</div>
+<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse"> <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"> </i> </div>
 </div>
 <div class="main-content">
-<div class="main-content-inner" id="main-content-inner">
+<div class="main-content-inner">
+    <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="#">Home </a> </li>
+            <!-- <li>
+                <a href="#">Other Pages
+                
+                </a>							
+                
+                </li>
+                
+                <li class="active">Blank Page
+                
+                </li>-->
+        </ul>
+        <!-- /.breadcrumb -->
+    </div>
+    {% endif %}
+    {% if group == "CLM_BM" %}
+    <!-- start BM login menu -->
+    <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+        <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+            <button class="btn btn-success"> <i class="ace-icon fa fa-signal"> </i> </button>
+            <button class="btn btn-info"> <i class="ace-icon fa fa-pencil"> </i> </button>
+            <button class="btn btn-warning"> <i class="ace-icon fa fa-users"> </i> </button>
+            <button class="btn btn-danger"> <i class="ace-icon fa fa-cogs"> </i> </button>
+        </div>
+        <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini"> <span class="btn btn-success"> </span> <span class="btn btn-info"> </span> <span class="btn btn-warning"> </span> <span class="btn btn-danger"> </span> </div>
+    </div>
+    <!-- /.sidebar-shortcuts -->
+    <ul class="nav nav-list">
+        <li class=""> <a href="{% url 'bmtasklist' %}"> <i class="menu-icon fa fa-pencil-square-o"></i> <span class="menu-text"> My Task <span class="badge badge-danger">3</span> </span></a> <b class="arrow"></b> </li>
+        <li class=""> <a href="BMMytaskList2.html"> <i class="menu-icon fa fa-pencil-square-o"></i> <span class="menu-text"> BAT Task <span class="badge badge-danger">1</span> </span> </a> <b class="arrow"></b></li>
+        <li class=""> <a href="BMMytaskList8.html"> <i class="menu-icon fa fa-pencil-square-o"></i> <span class="menu-text"> Upload Doc Task <span class="badge badge-danger">1</span> </span> </a> <b class="arrow"></b></li>
+        <li class=""> <a href="BMMyQueryTask6.html"> <i class="menu-icon fa fa-comments-o"></i> <span class="menu-text"> Query Task <span class="badge badge-danger">1</span> </span> </a> <b class="arrow"></b></li>
+        <li class=""> <a href="#"> <i class="menu-icon fa fa-comments-o"></i> <span class="menu-text"> Compelete Task <span class="badge badge-danger">1</span> </span> </a> <b class="arrow"></b></li>
+        <li class=""> <a href="#"> <i class="menu-icon fa fa-comments-o"></i> <span class="menu-text"> Loans <span class="badge badge-danger"></span> </span> </a> <b class="arrow"></b></li>
+        <li class=""> <a href="#"> <i class="menu-icon fa fa-comments-o"></i> <span class="menu-text"> Groups </span> </a> <b class="arrow"></b></li>
+        <li class=""> <a href="{% url 'mytask' %}"> <i class="menu-icon fa fa-comments-o"></i> <span class="menu-text"> Generate LOS <span class="badge badge-danger"></span> </span> </a> <b class="arrow"></b></li>
+    </ul>
+    <!-- /.nav-list -->
+    <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse"> <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"> </i> </div>
+</div>
+<div class="main-content">
+<div class="main-content-inner">
+    <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="#">Home </a> </li>
+            <li> <a href="#">Other Pages </a> </li>
+            <li class="active">Blank Page </li>
+        </ul>
+        <!-- /.breadcrumb -->
+    </div>
+    <!-- end of BM login menu -->
+    {% endif %}
+    {% if group == "RM" %}
+    <!-- Start of RM login menu -->
+    <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+        <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+            <button class="btn btn-success"> <i class="ace-icon fa fa-signal"> </i> </button>
+            <button class="btn btn-info"> <i class="ace-icon fa fa-pencil"> </i> </button>
+            <button class="btn btn-warning"> <i class="ace-icon fa fa-users"> </i> </button>
+            <button class="btn btn-danger"> <i class="ace-icon fa fa-cogs"> </i> </button>
+        </div>
+        <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini"> <span class="btn btn-success"> </span> <span class="btn btn-info"> </span> <span class="btn btn-warning"> </span> <span class="btn btn-danger"> </span> </div>
+    </div>
+    <ul class="nav nav-list">
+        <li class=""> <a href="{% url 'rmtasklist' %}"> <i class="menu-icon fa fa-pencil-square-o"></i> <span class="menu-text"> My Task <span class="badge badge-danger">1</span> </span></a> <b class="arrow"></b> </li>
+        <li class=""> <a href="{% url 'dcount' %}"> <i class="menu-icon fa fa-pencil-square-o"></i> <span class="menu-text"> Approve Task <span class="badge badge-danger">2</span> </span> </a> <b class="arrow"></b></li>
+        <li class=""> <a href="index.html"> <i class="menu-icon fa fa-comments-o"></i> <span class="menu-text"> Compelete Task </span> </a> <b class="arrow"></b></li>
+    </ul>
+    <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse"> <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"> </i> </div>
+</div>
+<div class="main-content">
+<div class="main-content-inner">
+    <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="#">Home </a> </li>
+            <!-- <li>
+                <a href="#">Other Pages
+                
+                </a>              
+                
+                </li>
+                
+                <li class="active">Blank Page
+                
+                </li>-->
+        </ul>
+        <!-- /.breadcrumb -->
+    </div>
+    <!-- end of RM login menu -->
+    {% endif %}
+    {% if group == "CreditTeam" %}
+    <!-- Start of CT login menu -->
+    <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+        <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+            <button class="btn btn-success"> <i class="ace-icon fa fa-signal"> </i> </button>
+            <button class="btn btn-info"> <i class="ace-icon fa fa-pencil"> </i> </button>
+            <button class="btn btn-warning"> <i class="ace-icon fa fa-users"> </i> </button>
+            <button class="btn btn-danger"> <i class="ace-icon fa fa-cogs"> </i> </button>
+        </div>
+        <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini"> <span class="btn btn-success"> </span> <span class="btn btn-info"> </span> <span class="btn btn-warning"> </span> <span class="btn btn-danger"> </span> </div>
+    </div>
+    <!-- /.sidebar-shortcuts -->
+    <ul class="nav nav-list">
+        <li class=""> <a href="{% url 'CTtasklist' %}"> <i class="menu-icon fa fa-pencil-square-o"></i> <span class="menu-text"> My Task <span class="badge badge-danger">1</span> </span></a> <b class="arrow"></b> </li>
+        <li class=""> <a href="CTMyTaskpropsal.html"> <i class="menu-icon fa fa-pencil-square-o"></i> <span class="menu-text"> scrutiny Task <span class="badge badge-danger">1</span> </span> </a> <b class="arrow"></b></li>
+        <li class=""> <a href="CTMyTaskLoan.html"> <i class="menu-icon fa fa-pencil-square-o"></i> <span class="menu-text">L - Approval Task <span class="badge badge-danger">1</span> </span> </a> <b class="arrow"></b></li>
+        <li class=""> <a href="#"> <i class="menu-icon fa fa-comments-o"></i> <span class="menu-text"> BM Reply <span class="badge badge-danger">1</span> </span> </a> <b class="arrow"></b></li>
+        <li class=""> <a href="#"> <i class="menu-icon fa fa-comments-o"></i> <span class="menu-text"> Raised Query <span class="badge badge-danger">1</span> </span> </a> <b class="arrow"></b></li>
+        <li class=""> <a href="#"> <i class="menu-icon fa fa-comments-o"></i> <span class="menu-text"> Loan Cancel <span class="badge badge-danger"></span> </span> </a> <b class="arrow"></b></li>
+        <li class=""> <a href="#"> <i class="menu-icon fa fa-comments-o"></i> <span class="menu-text"> Disbursed  Doc <span class="badge badge-danger"></span> </span> </a> <b class="arrow"></b></li>
+    </ul>
+    <!-- /.nav-list -->
+    <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse"> <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"> </i> </div>
+</div>
+<div class="main-content">
+<div class="main-content-inner">
 <div class="breadcrumbs ace-save-state" id="breadcrumbs">
     <ul class="breadcrumb">
-        <li>
-            <i class="ace-icon fa fa-home home-icon">
-            </i>
-            <a href="#">Home
-            </a>							
-        </li>
-        <li>
-            <a href="#">Other Pages
-            </a>							
-        </li>
-        <li class="active">Blank Page
-        </li>
+        <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="#">Home </a> </li>
+        <li> <a href="#">Other Pages </a> </li>
+        <li class="active">Blank Page </li>
     </ul>
     <!-- /.breadcrumb -->
 </div>
 <!-- side bar end -->
+<!-- END of CT login menu -->
+{% endif %}

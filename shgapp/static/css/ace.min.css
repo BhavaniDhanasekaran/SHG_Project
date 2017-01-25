@@ -5025,7 +5025,7 @@ button.btn:active {
 .btn.focus,
 .btn:focus {
     /*background-color: #ABBAC3!important;*/
-    background-color: #f7953d;!important;
+    background-color: #981B1B!important;
     border-color: #ABBAC3
 }
 .btn-default.focus:hover,

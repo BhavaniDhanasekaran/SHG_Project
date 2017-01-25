@@ -1,3 +1,9 @@
+var validationFields = ["memberName","age","husbandName","fatherName","address","villageName","idProofValue","addressProofValue","sbAccountNumber","bankId","sbAccountName",
+			"branch","permanentAddress","pincode","villages","mobileNo","idProofTypeId","addressProofTypeId","loanAmount","loanTypeValue","comment"];
+
+
+
+
 function areasUnderPincode(){
 	
 	var pincode = document.getElementById("pincode").value;
@@ -17,7 +23,8 @@ function areasUnderPincode(){
 				if(pincodeData["data"][0]){
 					$('#villages').append('<option value="" >   Select Area </option>');
 					for(var i = 0; i< pincodeData["data"].length; i++){
-						$('#villages').append('<option value="'+(i+1)+'">'+pincodeData["data"][i]+'</option>');
+					console.log(pincodeData["data"][i]);
+						$('#villages').append('<option value="'+pincodeData["data"][i]["villageId"]+'">'+pincodeData["data"][i]["villageName"]+'</option>');
 					}
 				}
 			}	
@@ -118,9 +125,9 @@ function setSelectOptionInForm(){
 	        dataType: 'json',
 	        success	: function (loanPurposeData) {
 			keyValueloanPurposeArray = loanPurposeData["data"].sort(function(a, b){ var a1= a.name, b1= b.name;    if(a1== b1) return 0;    return a1> b1? 1: -1; })
-			$('#loanPurpose').append('<option value="" > Select Loan Purpose </option>');
+			$('#loanTypeValue').append('<option value="" > Select Loan Purpose </option>');
 			for(var i = 0; i < Object.keys(keyValueloanPurposeArray).length ; i++){
-				$('#loanPurpose').append('<option value="'+keyValueloanPurposeArray[i].id+'">'+keyValueloanPurposeArray[i].name+'</option>');
+				$('#loanTypeValue').append('<option value="'+keyValueloanPurposeArray[i].id+'">'+keyValueloanPurposeArray[i].name+'</option>');
 			}	
 
 			$.each($('#loanPurpose option'), function(key, optionElement) {
@@ -132,7 +139,7 @@ function setSelectOptionInForm(){
 	    			 }
 			});
 			// Show full name in tooltip after choosing an option
-			$('#loanPurpose').change(function() {
+			$('#loanTypeValue').change(function() {
 				$(this).attr('title', ($(this).find('option:eq('+$(this).get(0).selectedIndex +')').attr('title')));
 			});
 	        }
@@ -141,3 +148,8 @@ function setSelectOptionInForm(){
 	
 	
 }
+
+
+
+
+

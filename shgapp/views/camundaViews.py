@@ -1,14 +1,19 @@
 from django.views.decorators 	import csrf
+from django.template import RequestContext
 from django.shortcuts import render,render_to_response
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.contrib.auth import authenticate, login, logout
 from django.conf import settings as django_settings
 from shgapp.utils.camundaclient import CamundaClient
+from django.contrib.auth.models import User
 from shgapp.utils.helper import Helper
 from shgapp.utils.shgexceptions import *
+from django.contrib.auth.decorators import login_required
 import json
 import urllib2
+import requests
 
 
 helper = Helper()
@@ -18,6 +23,13 @@ camundaClient = CamundaClient()
 def unassignedTaskList(request):
     try:
 	print "Inside unassignedTaskList(request): "
+	username = request.user
+	Grp = request.user.groups.all()
+        groups = request.user.groups.values_list('name',flat=True)  
+        print "grp:"
+        print groups[0]
+        
+        
 	processInstancesArr = []
 	groupTaskDict 	= {}
 	groupTaskData	= []
@@ -41,14 +53,19 @@ def unassignedTaskList(request):
     	for key in groupTaskDict:
             groupTaskData.append(groupTaskDict[key])
         
-    	return render_to_response('ds-tasklist.html', {"groupTaskList" : json.dumps(groupTaskData)})
+    	return render_to_response('ds-tasklist.html', {"groupTaskList" : json.dumps(groupTaskData),"group" :groups[0],"user":username})
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting task details.')
         
 
 def KYCTaskList(request):
     try:
-	print "Inside unassignedTaskList(request): "
+        username = request.user
+	print "Inside KYCTaskList(request): "
+	Grp = request.user.groups.all()
+        groups = request.user.groups.values_list('name',flat=True)  
+        print "grp:"
+        print groups[0]
 	processInstancesArr = []
 	processInstancesQRArr = []
 	groupTaskDict 	= {}
@@ -72,13 +89,17 @@ def KYCTaskList(request):
 	    if data["processInstanceId"] not in processInstancesQRArr:
             	groupTaskData.append(data)
 	
-    	return render_to_response('ds-datecount.html', {"groupTaskList" : json.dumps(groupTaskData)})
+    	return render_to_response('ds-datecount.html', {"groupTaskList" : json.dumps(groupTaskData),"group" :groups[0],"user":username})
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting task details.')
 
 
 def KYCTasksGroupByDate(request,dateFrom,dateTo):
     print "Inside KYCTasksGroupByDate(request): "
+    Grp = request.user.groups.all()
+    groups = request.user.groups.values_list('name',flat=True)  
+    print "grp:"
+    print groups[0]
     processInstancesQRArr = []
     processInstancesArr = []
     kycTaskDict 	= {}
@@ -109,8 +130,13 @@ def KYCTasksGroupByDate(request,dateFrom,dateTo):
     return HttpResponse(json.dumps(kycTaskData), content_type="application/json")
 
 
-
+@login_required
 def assignedTaskList(request):
+    username = request.user
+    Grp = request.user.groups.all()
+    groups = request.user.groups.values_list('name',flat=True)  
+    print "grp:"
+    print groups[0]
     print "Inside assignedTaskList(request): "
     processInstancesArr = []
     myTaskDict 	= {}
@@ -124,13 +150,14 @@ def assignedTaskList(request):
     bodyData = { "processInstanceIdIn": processInstancesArr }  
     taskProVarList	 = camundaClient._urllib2_request('variable-instance?deserializeValues=false', bodyData, requestType='POST')      
 	    
-    print "taskProVarList"
-    print taskProVarList
+    #print "taskProVarList"
+    #print taskProVarList
     #Process Variable Instance:
     for data in taskProVarList:
 	if data["processInstanceId"] in myTaskDict:
 	    myTaskDict[data["processInstanceId"]][data["name"] ] = data["value"]
-
+        	
+        	
     #Group Task Assign:	
     for key in myTaskDict:
         if myTaskDict[key].has_key("kyc"):
@@ -138,11 +165,8 @@ def assignedTaskList(request):
         myTaskData.append(myTaskDict[key])
     
     
-    print myTaskData
-        
-    return render_to_response('ds-mytask.html', {"myTaskList" :json.dumps(myTaskData)})
-    
-    
+    return render(request, 'ds-mytask.html',{"myTaskList" :json.dumps(myTaskData), "group" :groups[0],"user":username})
+
 def claim(request, id, name):
     print "name"
     print name
@@ -227,9 +251,19 @@ def tasksCount( request ):
         
       
 def KYCCheck(request,dateFrom,dateTo):
-    return render_to_response( 'ds-tasklist.html', {"dateFrom": dateFrom,"dateTo":dateTo})      
+    username = request.user
+    Grp = request.user.groups.all()
+    groups = request.user.groups.values_list('name',flat=True)  
+    print "grp:"
+    print groups[0]
+    return render_to_response( 'ds-tasklist.html', {"dateFrom": dateFrom,"dateTo":dateTo,"group" :groups[0],"user":username})      
     
 def queryRespTaskList(request):
+    username = request.user
+    Grp = request.user.groups.all()
+    groups = request.user.groups.values_list('name',flat=True)  
+    print "grp:"
+    print groups[0]
     processInstancesArr = []
     QRTaskDict 	= {}
     QRTaskData	= []
@@ -258,7 +292,8 @@ def queryRespTaskList(request):
     print "QRTaskData"
     print QRTaskData
     
-    return render_to_response('ds-tasklist.html', {"taskList" :json.dumps(QRTaskData)})
+    return render_to_response('ds-tasklist.html', {"taskList" :json.dumps(QRTaskData),"group" :groups[0],"user":username})
+
 
 
 

@@ -1,52 +1,22 @@
 from __future__ import unicode_literals
 from django.db import models
 import os.path
-#from django.contrib.auth.models import User
+from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.db import models
 from django.conf import settings as django_settings
-from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
-class CustomUser(AbstractUser):
-    pass
-
-class LocHierarchy(models.Model):
-   name = models.CharField(max_length=100)
-   class Meta:
-        db_table = 'shgapp_loc_hierarchy'
-   def __unicode__(self):
-        return self.name    
-
-class LocHierarchyGroup(models.Model):
-   name = models.CharField(max_length=100)
-   lochierarchies = models.ManyToManyField(LocHierarchy, related_name='shgapp_lochierarchygroup_lochierarchies')
-   class Meta:
-        db_table = 'shgapp_loc_hierarchy_group'
-   def __unicode__(self):
-        return self.name
-    
-class Role(models.Model):
-   name = models.CharField(max_length=100)
-   class Meta:
-        db_table = 'shgapp_role'
-   def __unicode__(self):
-        return self.name    
-
 class Profile(models.Model):
-    user = models.OneToOneField(django_settings.AUTH_USER_MODEL)
-    birth_date = models.DateField(null=True, blank=True)
-    personal_email = models.EmailField(null=True, blank=True)
-    address = models.CharField(max_length=150)
-    url = models.CharField(max_length=150, blank=True)
-    institution = models.CharField(max_length=50, blank=True)    
-    #role = models.PositiveSmallIntegerField(choices=django_settings.ROLE_CHOICES, null=True, blank=True)
-    roles = models.ManyToManyField(Role, related_name='shgapp_customuser_profile_roles')
-    lochierarchygroups = models.ManyToManyField(LocHierarchyGroup, related_name='shgapp_customuser_profile_lochierarchygroups')
+    user = models.OneToOneField(User)
+    public_email = models.EmailField(null=True, blank=True)
+    location = models.CharField(max_length=50)
+    url = models.CharField(max_length=50)
+    institution = models.CharField(max_length=50)
 
     class Meta:
-        db_table = 'shgapp_customuser_profile'
+        db_table = 'auth_profile'
 
     def get_url(self):
         url = self.url
@@ -82,5 +52,6 @@ def create_user_profile(sender, instance, created, **kwargs):
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
-post_save.connect(create_user_profile, sender=django_settings.AUTH_USER_MODEL)
-post_save.connect(save_user_profile, sender=django_settings.AUTH_USER_MODEL)
+post_save.connect(create_user_profile, sender=User)
+post_save.connect(save_user_profile, sender=User)
+

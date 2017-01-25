@@ -154,7 +154,11 @@ function taskCount(){
 						newKey += '_'+keySplit[key1];
 					}
 					if(document.getElementById(newKey)){
-						document.getElementById(newKey).innerHTML = data["Task"][key]; 
+						document.getElementById(newKey).innerHTML = data["Task"][key];
+						console.log(newKey+'1');
+						if(document.getElementById(newKey+'1')){
+							document.getElementById(newKey+'1').innerHTML = data["Task"][key];  
+						}
 					}
 				}
 			}
