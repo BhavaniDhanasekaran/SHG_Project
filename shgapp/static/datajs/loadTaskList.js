@@ -58,6 +58,7 @@ function loadUnassignedTaskList(data){
 
 function loadAssignedTaskList(){
 	var myTaskdata = JSON.parse(myTaskList);
+	console.log(myTaskdata);
 	var dataArray = [];
 	for(var key in myTaskdata){
 		var obj={};
@@ -66,7 +67,7 @@ function loadAssignedTaskList(){
 			obj["taskName"] = '<a class="tdViewData">'+myTaskdata[key]["name"]+'</a>';
 			obj["taskDate"] = '<a class="tdViewData">'+myTaskdata[key]["created"]+'</a>';
 			obj["taskId"]   = myTaskdata[key]["id"]
-		
+			obj["processInstanceId"] = myTaskdata[key]["processInstanceId"]
 		}
 		if(myTaskdata[key]["customerData"]){
 			var customerData = JSON.parse(myTaskdata[key]["customerData"]);
@@ -83,7 +84,7 @@ function loadAssignedTaskList(){
 				obj["loanType"] = '<a class="tdViewData">'+"PLL"+'</a>';
 				obj["shgId"] = '<a class="tdViewData">'+"SHG ID"+'</a>';
 				obj["shgName"] = '<a class="tdViewData">'+"SHG Name"+'</a>';
-				obj["groupLoanId"] = obj["groupId"]+"_"+obj["loanId"]+"_"+myTaskdata[key]["name"];
+				obj["groupLoanId"] = obj["groupId"]+"_"+obj["loanId"]+"_"+myTaskdata[key]["name"]+"_"+obj["taskId"]+"_"+obj["processInstanceId"];
 			}
 		obj["unClaim"] = '<button type="submit" onclick="unClaim('+"'"+obj["taskId"]+"'"+');" class="btn btn-Danger button">UnClaim</button>';
 		
@@ -123,11 +124,13 @@ $(document).ready(function (){
 		groupID = groupLoanIDSplit[0];
 		loanID = groupLoanIDSplit[1];
 		taskName = groupLoanIDSplit[2];
-		redirectPage(groupID,loanID,taskName);
+		taskId = groupLoanIDSplit[3];
+		processInstanceId = groupLoanIDSplit[4];
+		
+		redirectPage(groupID,loanID,taskName,taskId,processInstanceId);
 	});
 	$('.button').click(function() {
 	    	var nRow = $(this).parent().parent()[0];
-	    	console.log(nRow);
 	    	var table=$("#taskListTable").dataTable();
 		table.fnDeleteRow( nRow, null, true );
 		$('#taskListTable tr td:first-child').each(function(i){
@@ -155,7 +158,6 @@ function taskCount(){
 					}
 					if(document.getElementById(newKey)){
 						document.getElementById(newKey).innerHTML = data["Task"][key];
-						console.log(newKey+'1');
 						if(document.getElementById(newKey+'1')){
 							document.getElementById(newKey+'1').innerHTML = data["Task"][key];  
 						}

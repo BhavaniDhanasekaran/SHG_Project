@@ -40,8 +40,8 @@ urlpatterns += task_urlpatterns
 
 kyc_urlpatterns = [
     url(r'^dsgroupview2/',kyc.dsgroupview2, name = 'dsgroupview2'),
-    url(r'^dsgroupview/(?P<groupID>[^/]+)/(?P<loanID>[^/]+)',kyc.dsgroupview, name = 'dsgroupview'),    
-    url(r'^groupViewQuery2/(?P<groupID>[^/]+)/(?P<loanID>[^/]+)',kyc.groupViewQuery2, name = 'groupViewQuery2'),  
+    url(r'^dsgroupview/(?P<groupID>[^/]+)/(?P<loanID>[^/]+)/(?P<taskId>[^/]+)/(?P<processInstanceId>[^/]+)',kyc.dsgroupview, name = 'dsgroupview'),
+    url(r'^groupViewQuery2/(?P<groupID>[^/]+)/(?P<loanID>[^/]+)/(?P<taskId>[^/]+)/(?P<processInstanceId>[^/]+)',kyc.groupViewQuery2, name = 'groupViewQuery2'),  
     url(r'^getGroupData/(?P<groupID>[^/]+)',kyc.getGroupData, name = 'getGroupData'),
     url(r'^groupViewQuery/',kyc.groupViewQuery, name = 'groupViewQuery'),
     url(r'^getIndMemberData/(?P<memberId>[^/]+)/(?P<groupId>[^/]+)/(?P<loanId>[^/]+)',kyc.getIndMemberData, name = 'getIndMemberData'), 

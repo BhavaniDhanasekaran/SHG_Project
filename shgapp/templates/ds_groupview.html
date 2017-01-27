@@ -9,9 +9,10 @@
 <script>
 	var groupId = '{{ groupId | escapejs }}';
 	var loanId = '{{ loanId | escapejs }}';
-	console.log(groupId,loanId);
-	console.log('{{user}}');
+	var taskId = '{{ taskId | escapejs }}';
+	var processInstanceId = '{{ processInstanceId | escapejs }}';
 	
+	console.log(processInstanceId,taskId);
 	$(document).ready(function(){
 		getGroupData(groupId,loanId);
 		taskCount();

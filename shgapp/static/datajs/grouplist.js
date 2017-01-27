@@ -2,14 +2,12 @@ var validationFields = ["memberName","age","husbandName","fatherName","address",
 			"branch","permanentAddress","pincode","villages","mobileNo","idProofTypeId","addressProofTypeId","loanAmount","loanTypeValue","comment"];
 
 function getGroupData1(groupID,loanId){
-	console.log(groupID,loanId);
 	var memId;
 	$.ajax({
 	    url: '/getGroupData/'+groupID,
 	    dataType: 'json',
 	    success: function (data) {
 		groupData = data;
-		console.log(groupData);
 		for(var i=0;i<groupData["data"].length;i++){
 			var memberId = groupData["data"][i]["memberId"];
 			//var memberStatus = groupData["data"][i]["memberStatus"];
@@ -34,7 +32,6 @@ function getGroupData1(groupID,loanId){
 			    type: 'post',
 			    success: function (data) {
 				var memberStatus = data[memberId];
-				console.log(data[memberId]);
 				var memberStatusSplit = memberStatus.split('-');
 				memberStatus = memberStatusSplit[0];
 				if(memberStatus == "Y"){
@@ -60,7 +57,6 @@ function getGroupData1(groupID,loanId){
 
 
 function getGroupData(groupID,loanId){
-	console.log(groupID,loanId);
 	var memId;
 	$.ajax({
 	    url: '/getGroupData/'+groupID,
@@ -75,16 +71,22 @@ function getGroupData(groupID,loanId){
 			var groupId = groupID;
 			var className  = '';
 			if(memberStatus == "Active"){
-			     className = "list-group-item";
+			     className = "list-group-item Pending";
 			}
 			if(memberStatus == "Approved"){
-			     className = "list-group-item list-group-item-success";
+			     className = "list-group-item list-group-item-success Approved";
+			     //$("#operationsDivId").css("display","none");
+			    // $("#commentDivId").css("display","none");
 			}
 			if(memberStatus == "Rejected"){
-			     className = "list-group-item list-group-item-danger";
+			     className = "list-group-item list-group-item-danger Rejected";
+			    // $("#operationsDivId").css("display","none");
+		             //$("#commentDivId").css("display","none");
 			}
 			if(memberStatus == "Rework"){
-			    className = "list-group-item list-group-item-warning";
+			    className = "list-group-item list-group-item-warning Rework";
+			    //$("#operationsDivId").css("display","none");
+			    //$("#commentDivId").css("display","none");
 			}
 			if(document.getElementById("san_test")){
 			     	$("#san_test").append('<a id="'+memberId+'" onclick="getMemberDetails('+memberId+','+groupId+','+loanId+')" class="'+className+'" style="font-weight:bold;">'+groupData["data"][i]["memberName"]+'</a>');
@@ -98,18 +100,18 @@ function getGroupData(groupID,loanId){
 
 
 
-function redirectPage(groupID,loanID,taskName){
+function redirectPage(groupID,loanID,taskName,taskId,processInstanceId){
 	if(taskName == "KYC Check"){
-		window.location = '/dsgroupview/'+groupID+'/'+loanID;
+		window.location = '/dsgroupview/'+groupID+'/'+loanID+'/'+taskId+'/'+processInstanceId;
 	}
 	if(taskName == "Query Response"){
-		window.location = '/groupViewQuery2/'+groupID+'/'+loanID;
+		window.location = '/groupViewQuery2/'+groupID+'/'+loanID+'/'+taskId+'/'+processInstanceId;
 	}
 }
 
 
 function getMemberDetails(memberId,groupId,loanId){
-	if(document.getElementById(memberId).classList.item(2)){
+	if(document.getElementById(memberId).classList.item(3)){
 		$("#operationsDivId").css("display","none");
 		$("#commentDivId").css("display","none");
 		$("#comment").val("");
@@ -125,7 +127,6 @@ function getMemberDetails(memberId,groupId,loanId){
 	    dataType: 'json',
 	    success: function (data) {
 		var memberData = data;
-		console.log(data);
 		//var arrayKeys = ["occupations","villages""conflictList","highMarksList","memberFamilyDetails","memberDocumentDetails"];
 		var imgFiles = ["MEMBERPHOTO","IDPROOF","IDPROOF_2","ADDRESSPROOF","ADDRESSPROOF_2","SBACCOUNTPASSBOOK"];
 		
@@ -201,6 +202,10 @@ $(document).ready(function(){
 	    		document.getElementById("main-content-inner").className = "main-content-inner";
 	    	}
 	});
+	
+	
+	
+	
 });
 
 
@@ -317,22 +322,24 @@ function submitKYCForm(status){
 			     alert("Member Details Updated successfully");
 			     
 			     if(status == "Approved"){
-			     	document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-success";
+			     	document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-success Approved";
 			     	$("#operationsDivId").css("display","none");
 				$("#commentDivId").css("display","none");
 			     }
 			     if(status == "Rejected"){
-			     	document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-danger";
+			     	document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-danger Rejected";
 			     	$("#operationsDivId").css("display","none");
 				$("#commentDivId").css("display","none");
 			     }
 			     if(status == "Rework"){
-			     	document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-warning";
+			     	document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-warning Rework";
 			     	$("#operationsDivId").css("display","none");
 				$("#commentDivId").css("display","none");
 			     }
-			} else {
-				$.alert("Failed due to some Issue . Please try after sometime or contact your Administrator");
+			    checkForTaskCompletion();
+			} 
+			else {
+				alert("Failed due to some Issue . Please try after sometime or contact your Administrator");
 			}
 		},
 		data: JSON.stringify(dataObj)
@@ -341,5 +348,27 @@ function submitKYCForm(status){
 }
 
 
-
+function checkForTaskCompletion(){
+	var membersCount = document.getElementById("san_test").getElementsByTagName("a").length;
+	var approvedCount = $('.Approved').length;
+	var rejectedCount = $('.Rejected').length;
+	var reworkCount = $('.Rework').length;
+	var pendingCount =  $('.Pending').length;
+	
+	
+	var totalCount = approvedCount+rejectedCount+reworkCount+pendingCount;
+	console.log(membersCount,approvedCount,rejectedCount,reworkCount,totalCount);
+	if(totalCount == membersCount && reworkCount > 0){
+		console.log("rework");
+	}
+	if(totalCount == membersCount && reworkCount == 0 && pendingCount == 0){
+	
+	console.log("task completed");
+	
+	}
+	
+	
+	
+			     
+}
 

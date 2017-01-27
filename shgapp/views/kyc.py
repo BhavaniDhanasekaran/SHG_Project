@@ -1,4 +1,4 @@
-from django.shortcuts import render,render_to_response
+from django.shortcuts import render,render_to_response,reverse
 from django.views.decorators import csrf
 from   django.views.decorators.csrf  import csrf_protect, csrf_exempt
 from django.http import HttpResponseRedirect,HttpResponse,JsonResponse
@@ -14,13 +14,44 @@ helper = Helper()
 sscoreClient = SSCoreClient()
 
 @csrf_exempt
-def dsgroupview(request,groupID,loanID):
+def dsgroupview(request,groupID,loanID,taskId,processInstanceId):
     username = request.user
     Grp = request.user.groups.all()
     groups = request.user.groups.values_list('name',flat=True)  
     print "grp:"
     print groups[0]
-    return render_to_response( 'ds_groupview.html', {"groupId": groupID,"loanId":loanID,"group":groups[0],"user":username})
+    return render_to_response( 'ds_groupview.html', {"groupId": groupID,"loanId":loanID,"processInstanceId" :processInstanceId, "taskId" : taskId,"group":groups[0],"user":username})
+    
+@csrf_exempt
+def dsgroupview1(request):
+    username = request.user
+    groupId = ''
+    loanId  = ''
+    taskId  = ''
+    processInstanceId = ''
+    taskName = ''
+    Grp = request.user.groups.all()
+    groups = request.user.groups.values_list('name',flat=True)  
+    print "grp:"
+    print groups[0]
+    print request.body
+    try:
+	if request.method == "POST":
+	    formData = json.loads(request.body)
+	    groupId = formData["groupId"]
+	    loanId = formData["loanId"]
+	    taskId = formData["taskId"]
+	    taskName = formData["taskName"]
+	    processInstanceId = formData["processInstanceId"]
+	    if taskName == "KYC Check":
+	        return HttpResponseRedirect(reverse("dsgroupview2"))
+	        #return render(request, 'ds_groupview.html', {"groupId":groupId,"loanId":loanId,"taskId":taskId,"processInstanceId":processInstanceId,"group":groups[0],"user":username,})
+	    if taskName == "Query Response":
+	        return HttpResponseRedirect(reverse("groupViewQuery"))
+	        #return render(request,'queryResponseDS.html', {"groupId":groupId,"loanId":loanId,"taskId":taskId,"processInstanceId":processInstanceId,"group":groups[0],"user":username,})
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while getting process details.')
+
     
 def dsgroupview2(request):
     print "Inside dsgroupview2(request):"
@@ -29,15 +60,15 @@ def dsgroupview2(request):
     groups = request.user.groups.values_list('name',flat=True)  
     print "grp:"
     print groups[0]
-    return render(request, 'ds_groupview.html',{"group":groups[0],"user":username})  
+    return render_to_response('ds_groupview.html',{"group":groups[0],"user":username})  
 
-def groupViewQuery2(request,groupID,loanID):
+def groupViewQuery2(request,groupID,loanID,taskId,processInstanceId):
     username = request.user
     Grp = request.user.groups.all()
     groups = request.user.groups.values_list('name',flat=True)  
     print "grp:"
     print groups[0]
-    return render_to_response( 'queryResponseDS.html', {"groupId": groupID,"loanId":loanID,"group":groups[0],"user":username})
+    return render_to_response( 'queryResponseDS.html', {"groupId": groupID,"loanId":loanID,"processInstanceId" :processInstanceId, "taskId" : taskId,"group":groups[0],"user":username})
    
 def groupViewQuery(request):
     username = request.user
