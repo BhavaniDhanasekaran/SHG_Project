@@ -7,6 +7,8 @@
  <script type="text/javascript">
  	var groupId = '{{ groupId | escapejs }}';
 	var loanId = '{{ loanId | escapejs }}';
+	var taskId = '{{ taskId | escapejs }}';
+	var processInstanceId = '{{ processInstanceId | escapejs }}';
 	$(document).ready(function (){
 	 	getGroupData(groupId,loanId);
 	 	taskCount();

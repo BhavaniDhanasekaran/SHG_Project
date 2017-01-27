@@ -18,11 +18,11 @@ function loadUnassignedTaskList(data){
 				obj["loanId"] = customerData["loanId"];
 				obj["groupLocation"] = customerData["groupLocation"];
 				obj["loanType"] = "PLL";
-				obj["shgId"] = "SHG ID";
+				obj["shgId"] = customerData["groupId"];
 				obj["shgName"] = "SHG Name";
 				obj["groupLoanId"] = obj["groupId"]+"_"+obj["loanId"];
 			}
-		obj["claim"] = '<button type="submit" onclick="claim('+"'"+obj["taskId"]+"'"+');" class="btn btn-Danger button">Claim</button>';
+		obj["claim"] = '<button type="submit" onclick="claim('+"'"+obj["taskId"]+"'"+');" class="btn btn-danger btn-md button">Claim</button>';
 		
 		
 		}
@@ -82,11 +82,11 @@ function loadAssignedTaskList(){
 				obj["loanId"] = customerData["loanId"];
 				obj["groupLocation"] = '<a class="tdViewData">'+customerData["groupLocation"]+'</a>';
 				obj["loanType"] = '<a class="tdViewData">'+"PLL"+'</a>';
-				obj["shgId"] = '<a class="tdViewData">'+"SHG ID"+'</a>';
+				obj["shgId"] = '<a class="tdViewData">'+customerData["groupId"]+'</a>';
 				obj["shgName"] = '<a class="tdViewData">'+"SHG Name"+'</a>';
 				obj["groupLoanId"] = obj["groupId"]+"_"+obj["loanId"]+"_"+myTaskdata[key]["name"]+"_"+obj["taskId"]+"_"+obj["processInstanceId"];
 			}
-		obj["unClaim"] = '<button type="submit" onclick="unClaim('+"'"+obj["taskId"]+"'"+');" class="btn btn-Danger button">UnClaim</button>';
+		obj["unClaim"] = '<button type="submit" onclick="unClaim('+"'"+obj["taskId"]+"'"+');" class="btn btn-danger btn-md button">UnClaim</button>';
 		
 		}
 		dataArray.push(obj);
@@ -171,6 +171,7 @@ function taskCount(){
 
 
 function claim(d){
+console.log(d);
 	$.ajax({
 	    url: '/task/'+d+'/claim/user',
 	    dataType: 'json',

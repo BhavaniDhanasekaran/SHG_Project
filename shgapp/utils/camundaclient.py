@@ -49,6 +49,9 @@ class CamundaClient(object):
         elif response.getcode() == 400:
             print '_urllib2_parse_response getcode 400: ', response.getcode()
             raise ShgInvalidRequest('_urllib2_parse_response getcode: 400')
+        elif response.getcode() == 204:
+            print '_urllib2_parse_response getcode 204: ', response.getcode()
+            return "Successful"
         else:
             print '_urllib2_parse_response getcode else: ', response.getcode()
             raise ShgInvalidRequest('_urllib2_parse_response getcode: ', response.getcode())

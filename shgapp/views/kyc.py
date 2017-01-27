@@ -4,6 +4,7 @@ from   django.views.decorators.csrf  import csrf_protect, csrf_exempt
 from django.http import HttpResponseRedirect,HttpResponse,JsonResponse
 from django.conf import settings as django_settings
 from shgapp.utils.sscoreclient import SSCoreClient
+from shgapp.utils.camundaclient import CamundaClient
 from shgapp.utils.helper import Helper
 from shgapp.utils.shgexceptions import *
 import json
@@ -12,10 +13,12 @@ import requests
 
 helper = Helper()
 sscoreClient = SSCoreClient()
+camundaClient = CamundaClient()
 
 @csrf_exempt
 def dsgroupview(request,groupID,loanID,taskId,processInstanceId):
     username = request.user
+    print processInstanceId
     Grp = request.user.groups.all()
     groups = request.user.groups.values_list('name',flat=True)  
     print "grp:"
@@ -142,6 +145,7 @@ def updateKYCDetails(request):
 	    formData  = json.loads(request.body)
 	    bodyDataUpdation =  formData["formData"]
 	    bodymemberValidation =  formData["memValData"]
+	    taskId = formData["taskId"]
 	    print "bodymemberValidation"
 	    print bodymemberValidation
 	    print "bodyDataUpdation"
@@ -152,6 +156,12 @@ def updateKYCDetails(request):
             print memberValResponse["data"]
             
             if memberValResponse["data"]["status"] != "fail":
+            	message = {"message" : formData["message"]}
+            	print "message"
+            	print message
+            	commentUpdate = camundaClient._urllib2_request('task/'+taskId+'/comment/create',message,requestType='POST')    
+            	print "commentUpdate"
+            	print commentUpdate
                 dataUpdateResponse = sscoreClient._urllib2_request('workflowEdit/updateMemberGroupLoan',bodyDataUpdation,requestType='POST')
                 print "dataUpdateResponse"
                 print dataUpdateResponse

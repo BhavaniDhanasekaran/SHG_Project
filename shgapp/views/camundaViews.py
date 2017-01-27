@@ -1,13 +1,9 @@
-from django.views.decorators 	import csrf
+from django.views.decorators import csrf
+from django.views.decorators.csrf  import csrf_protect, csrf_exempt
 from django.template import RequestContext
 from django.shortcuts import render,render_to_response
-from django.http import HttpResponseRedirect
-from django.http import HttpResponse
-from django.http import JsonResponse
-from django.contrib.auth import authenticate, login, logout
-from django.conf import settings as django_settings
+from django.http import HttpResponseRedirect,HttpResponse,JsonResponse
 from shgapp.utils.camundaclient import CamundaClient
-from django.contrib.auth.models import User
 from shgapp.utils.helper import Helper
 from shgapp.utils.shgexceptions import *
 from django.contrib.auth.decorators import login_required
@@ -170,14 +166,16 @@ def assignedTaskList(request):
 def claim(request, id, name):
     print "name"
     print name
+    dataObjClaim = {}
     try:
 	#claim	
 	if name =="claim":	
 	    dataObjClaim = {"userId": "kermit"}
-	    url_claim   = django_settings.CAMUNDA_BASE_URL+'task/'+id+'/claim'
-        
-            r_claim     =  urllib2.Request(url_claim, json.dumps(dataObjClaim) , headers={'Content-Type': 'application/json'})
-            claimTask = urllib2.urlopen(r_claim).read()
+	    #url_claim   = django_settings.CAMUNDA_BASE_URL+'task/'+id+'/claim'
+            claimTask = camundaClient._urllib2_request('task/'+id+'/claim',dataObjClaim,requestType='POST')      
+            
+            #r_claim     =  urllib2.Request(url_claim, json.dumps(dataObjClaim) , headers={'Content-Type': 'application/json'})
+            #claimTask = urllib2.urlopen(r_claim).read()
 
 	    print "claimTask"
 	    print claimTask
@@ -186,10 +184,10 @@ def claim(request, id, name):
 	#Unclaim	
 	if name =="unclaim":
 	    dataObjUnclaim = {"userId": "kermit"}
-	    url_Unclaim = django_settings.CAMUNDA_BASE_URL+'task/'+id+'/unclaim'
-        
-            r_claim = urllib2.Request(url_Unclaim, json.dumps(dataObjUnclaim) ,  headers={'Content-Type': 'application/json'})
-            unClaimTask = urllib2.urlopen(r_claim).read()
+	    #url_Unclaim = django_settings.CAMUNDA_BASE_URL+'task/'+id+'/unclaim'
+            unClaimTask = camundaClient._urllib2_request('task/'+id+'/unclaim',dataObjClaim,requestType='POST')      
+            #r_claim = urllib2.Request(url_Unclaim, json.dumps(dataObjUnclaim) ,  headers={'Content-Type': 'application/json'})
+            #unClaimTask = urllib2.urlopen(r_claim).read()
 	    print "unClaimTask"
 	    print unClaimTask
 	    return HttpResponse(json.dumps(unClaimTask), content_type="application/json" )
@@ -295,6 +293,23 @@ def queryRespTaskList(request):
     return render_to_response('ds-tasklist.html', {"taskList" :json.dumps(QRTaskData),"group" :groups[0],"user":username})
 
 
+@csrf_exempt
+def updateTask(request):
+    try:
+        print "Entering updateTask(request) : "
+        if request.method == "POST":
+            print request.body
+            formData = json.loads(request.body)
+            bodyData = formData["processUpdate"]
+            taskId = formData["taskId"]
+            print "bodyData"
+            print bodyData
+            taskUpdateResponse =  camundaClient._urllib2_request('task/'+taskId+'/complete',bodyData,requestType='POST')      
+            print "taskUpdateResponse"
+            print taskUpdateResponse
+            return HttpResponse(json.dumps(taskUpdateResponse), content_type='text/plain')
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred.')    
 
 
 

@@ -12,7 +12,6 @@
 	var taskId = '{{ taskId | escapejs }}';
 	var processInstanceId = '{{ processInstanceId | escapejs }}';
 	
-	console.log(processInstanceId,taskId);
 	$(document).ready(function(){
 		getGroupData(groupId,loanId);
 		taskCount();

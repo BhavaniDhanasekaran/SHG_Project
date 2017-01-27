@@ -73,6 +73,7 @@ camundaViews_urlpatterns = [
     url(r'^KYCTasksGroupByDate/(?P<dateFrom>[^/]+)/(?P<dateTo>[^/]+)',camundaViews.KYCTasksGroupByDate, name = 'KYCTasksGroupByDate'),
     url(r'^KYCCheck/(?P<dateFrom>[^/]+)/(?P<dateTo>[^/]+)',camundaViews.KYCCheck, name = 'KYCCheck'),        
     url(r'^queryRespTaskList/',camundaViews.queryRespTaskList, name = 'queryRespTaskList'),
+    url(r'^updateTask/',camundaViews.updateTask, name = 'updateTask'),
 
 ]
 urlpatterns += camundaViews_urlpatterns

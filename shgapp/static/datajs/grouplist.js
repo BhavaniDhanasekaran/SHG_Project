@@ -312,6 +312,8 @@ function submitKYCForm(status){
 	};
 	dataObj['formData'] = dataDict;
 	dataObj['memValData'] = memValData;
+	dataObj['taskId'] = taskId;
+	dataObj['message'] = comment;
 	
 	$.ajax({
 		url: '/updateKYCDetails/',
@@ -358,17 +360,56 @@ function checkForTaskCompletion(){
 	
 	var totalCount = approvedCount+rejectedCount+reworkCount+pendingCount;
 	console.log(membersCount,approvedCount,rejectedCount,reworkCount,totalCount);
-	if(totalCount == membersCount && reworkCount > 0){
-		console.log("rework");
+	if(totalCount == membersCount && reworkCount > 0 && pendingCount == 0){
+		taskUpdate("raiseQuery");
 	}
 	if(totalCount == membersCount && reworkCount == 0 && pendingCount == 0){
-	
-	console.log("task completed");
-	
+		taskUpdate("approved");
 	}
-	
-	
-	
-			     
+	else{
+		return false;
+	}
 }
+
+function taskUpdate(status){
+	var taskUpdateURL = '';
+	var comment = '';
+	var processupdate = {
+				'variables': {
+					'kyc': {
+						'value': status
+					},
+				}
+			};	
+	var dataObj = {};
+	dataObj["processUpdate"] = processupdate;
+	dataObj["taskId"] = taskId;
+	dataObj["processInstanceId"] = processInstanceId;
+	if(document.getElementById("comment")){
+		comment = document.getElementById("comment").value;
+	}
+	dataObj["message"] = comment;
+	console.log(processupdate);
+	console.log(dataObj);
+	$.ajax({
+	    url: '/updateTask/',
+	    dataType: 'json',
+	    type: "post",
+	    success: function (data) {
+	    console.log("data111111111111");
+	    	console.log(data);
+	    	if(data == "Successful"){
+	    		window.location = '/assignedTaskList/';
+	    	}
+	    	else{
+			alert("Failed due to some Issue . Please try after sometime or contact your Administrator");	    	
+	    	}
+	    },
+	    data : JSON.stringify(dataObj)
+	});
+		
+}
+
+
+
 
