@@ -144,6 +144,8 @@ def updateKYCDetails(request):
 	if request.method == "POST":
 	    formData  = json.loads(request.body)
 	    bodyDataUpdation =  formData["formData"]
+	    print "bodyDataUpdation"
+	    print bodyDataUpdation
 	    bodymemberValidation =  formData["memValData"]
 	    taskId = formData["taskId"]
 	    print "bodymemberValidation"
@@ -186,6 +188,16 @@ def validateMember(request):
         return helper.bad_request('Unexpected error occurred while updating the KYC details.')
 
             
+def creditHistory(request,groupId):
+    print "Inside creditHistory(request,groupid):"
+    try:
+    	bodyData = { "groupId" : str(groupId)}
+        serialized_data = sscoreClient._urllib2_request('workflowDetailView/CreditEnquiry', bodyData ,requestType='POST')
+        print "serialized_data"
+        print  serialized_data
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while getting Credit History.')
 
 
 

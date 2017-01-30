@@ -48,7 +48,7 @@
     </div>
     <div class="col-xs-10" >
         <div class="panel panel-default">
-            <div class="panel-heading">Rose Group <span id="groupId">{{groupId}}</span> </div>
+            <div class="panel-heading">Group <span id="groupId">{{groupId}}</span> </div>
             <div class="panel-body-danger">
                 <!-- tab start-->
                 <div class="tabbable">
@@ -93,7 +93,7 @@
 		                                <div class="profile-info-row">
 		                                    <div class="profile-info-name"> Spouse  </div>
 		                                    <div class="profile-info-value">
-		                                        <span class="editable" id="spouseName"></span>													
+		                                        <span class="editable" id="husbandName"></span>													
 		                                    </div>
 		                                </div>
 		                                <div class="profile-info-row">
@@ -117,9 +117,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="profile-info-row">
-                                                    <div class="profile-info-name"> Village </div>
+                                                    <div class="profile-info-name"> Village / Area</div>
                                                     <div class="profile-info-value">
-                                                        <span class="editable" id="villageName">    </span>													
+                                                        <span class="editable" id="villageName">    </span>	
+                                                        <span style="visibility:hidden" id="villages">    </span>													
                                                     </div>
                                                 </div>
                                                 <div class="profile-info-row">
@@ -136,25 +137,13 @@
                                                         <span class="editable" id="pincode">   </span>													
                                                     </div>
                                                 </div>
-                                                <div class="profile-info-row">
-                                                    <div class="profile-info-name"> Area </div>
-                                                    <div class="profile-info-value">
-                                                        <span class="editable" id="villageId">
-                                                        </span>
-                                                    </div>
-                                                </div>
+                                                
                                                 <div class="profile-info-row">
                                                     <div class="profile-info-name"> Mobile no </div>
                                                     <div class="profile-info-value">
                                                         <span class="editable" id="mobileNo">    </span>													
                                                     </div>
                                                 </div>
-                                        </div>
-                                        <div class="space-20"></div>
-                                    </div>
-                                    <!--secnod div ended-->
-                                    <div class="col-md-5" style="margin-top: 2%;">
-                                    	 <div class="profile-user-info profile-user-info-striped">
                                                 <div class="profile-info-row">
                                                     <div class="profile-info-name"> ID Proof </div>
                                                     <div class="profile-info-value">
@@ -166,6 +155,13 @@
 		                                        <!--button type="button" class="btn btn-info btn-md btn-danger" id="myBtn2">view proof</button--></img></div>
                                                     </div>
                                                 </div>
+                                        </div>
+                                        <div class="space-20"></div>
+                                    </div>
+                                    <!--secnod div ended-->
+                                    <div class="col-md-5" style="margin-top: 2%;">
+                                    	 <div class="profile-user-info profile-user-info-striped">
+                                                
                                                 <div class="profile-info-row">
                                                     <div class="profile-info-name"> Address Proof </div>
                                                     <div class="profile-info-value">
@@ -188,8 +184,8 @@
                                                 <div class="profile-info-row">
                                                     <div class="profile-info-name"> Bank name </div>
                                                     <div class="profile-info-value">
-                                                        <span class="editable" id="bankName">
-                                                        </span>
+                                                        <span class="editable" id="bankName"></span>
+                                                        <span style="visibility:hidden"  id="bankId"></span>
                                                     </div>
                                                 </div>
                                                 <div class="profile-info-row">
@@ -207,13 +203,15 @@
                                                 <div class="profile-info-row">
                                                     <div class="profile-info-name"> Id  Proof Type</div>
                                                     <div class="profile-info-value">
-                                                    <span class="editable" id="idProofTypeId">   </span>
+                                                    <span class="editable" id="idProofTypeValue">   </span>
+                                                    <span style="visibility:hidden" id="idProofTypeId">   </span>
                                                     </div>
                                                 </div>
                                                 <div class="profile-info-row">
                                                     <div class="profile-info-name"> Address Proof Type </div>
                                                     <div class="profile-info-value">
-                                                     <span class="editable" id="addressProofTypeId">   </span>
+                                                     <span class="editable" id="addressProofTypeValue">   </span>
+                                                     <span  style="visibility:hidden" id="addressProofTypeId">   </span>
                                                     </div>
                                                 </div>
                                                 <div class="profile-info-row">
@@ -225,8 +223,8 @@
                                                 <div class="profile-info-row">
                                                     <div class="profile-info-name"> Loan purpose  </div>
                                                     <div class="profile-info-value">
-                                                        <span class="editable" id="loanTypeValue">
-                                                        </span>
+                                                        <span class="editable" id="loanTypeName"></span>
+                                                        <span  style="visibility:hidden" id="loanTypeValue">   </span>
                                                     </div>
                                                 </div>
                                    	 </div>
@@ -241,7 +239,7 @@
                                     </div></br>
                                     <div class="row">
 	                                <div class="col-md-2"></div>
-	                                <div class="col-md-10">
+	                                <div id="commentDivId" class="col-md-10">
 	                                    <div class="form-group">
 	                                        <label for="comment">Comment:</label>
 	                                        <textarea class="form-control" rows="3" style="width:94%;" id="comment"></textarea>
@@ -249,10 +247,10 @@
 	                                </div>
 		                        <div class="row">
 		                            <div class="col-md-2"></div>
-		                            <div class="col-md-10">&nbsp;&nbsp;
-		                                <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCForm('Rework');">Rework</button>   
-                                                <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCForm('Approved');">Approve</button>
-                                                <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCForm('Rejected');">Reject</button> 
+		                            <div id="operationsDivId" class="col-md-10">&nbsp;&nbsp;
+		                                <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCQueryForm('Rework');">Rework</button>   
+                                                <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCQueryForm('Approved');">Approve</button>
+                                                <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCQueryForm('Rejected');">Reject</button> 
 		                            </div>
 		                        </div>
 	            		    </section>

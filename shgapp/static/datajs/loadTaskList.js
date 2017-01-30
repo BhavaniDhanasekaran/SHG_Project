@@ -17,10 +17,16 @@ function loadUnassignedTaskList(data){
 				obj["groupId"] = customerData["groupId"];
 				obj["loanId"] = customerData["loanId"];
 				obj["groupLocation"] = customerData["groupLocation"];
-				obj["loanType"] = "PLL";
+				obj["loanType"] = customerData["loanTypeName"];
 				obj["shgId"] = customerData["groupId"];
-				obj["shgName"] = "SHG Name";
+				obj["shgName"] =customerData["groupName"];
 				obj["groupLoanId"] = obj["groupId"]+"_"+obj["loanId"];
+				obj["clusterName"] =customerData["clusterName"];
+				obj["centerName"] =customerData["centerName"];
+				obj["regionName"] =customerData["regionName"];
+				obj["loanApplicationDate"] =customerData["loanApplicationDate"];
+				obj["groupFormationDate"] =customerData["groupFormationDate"];
+				
 			}
 		obj["claim"] = '<button type="submit" onclick="claim('+"'"+obj["taskId"]+"'"+');" class="btn btn-danger btn-md button">Claim</button>';
 		
@@ -40,13 +46,17 @@ function loadUnassignedTaskList(data){
             "bSortable": true,    
 
             "aoColumns": [    
-                { "mData": "slNo", "sTitle": "S.No", "sWidth": "5%", className:"column"},     
-                { "mData": "taskName", "sTitle": "Task Name", "sWidth": "15%", className:"column"},                     
-                { "mData": "taskDate","sTitle": "Task Date"  , "sWidth": "10%", className:"column"},
-                { "mData": "loanType","sTitle": "Loan Type"  , "sWidth": "8%", className:"column"},
-                { "mData": "shgId","sTitle": "SHG ID"  , "sWidth": "10%", className:"column"},
-                { "mData": "shgName","sTitle": "SHG Name"  , "sWidth": "15%", className:"column"},
-                { "mData": "groupLocation","sTitle": "Group Location"  , "sWidth": "15%", className:"column"},
+                { "mData": "slNo", "sTitle": "S.No", "sWidth": "3%", className:"column"},     
+                { "mData": "taskName", "sTitle": "Task Name", "sWidth": "13%", className:"column"},                     
+                { "mData": "taskDate","sTitle": "Task Date"  , "sWidth": "8%", className:"column"},
+                { "mData": "loanType","sTitle": "Product Name"  , "sWidth": "8%", className:"column"},
+                { "mData": "shgId","sTitle": "SHG ID"  , "sWidth": "8%", className:"column"},
+                { "mData": "shgName","sTitle": "SHG Name"  , "sWidth": "10%", className:"column"},
+                { "mData": "loanApplicationDate","sTitle": "Loan App. Dt"  , "sWidth": "8%", className:"column"},
+                { "mData": "groupFormationDate","sTitle": "Grp Frmtn Dt"  , "sWidth": "8%", className:"column"},
+                { "mData": "regionName","sTitle": "Region Name"  , "sWidth": "12%", className:"column"},
+                { "mData": "clusterName","sTitle": "Cluster Name"  , "sWidth": "12%", className:"column"},
+                { "mData": "centerName","sTitle": "Center Name"  , "sWidth": "12%", className:"column"},
                 { "mData": "claim","sTitle": "Claim"  , "sWidth": "10%", className:"column"},
                   
             ],                       
@@ -81,10 +91,18 @@ function loadAssignedTaskList(){
 				obj["groupId"] = customerData["groupId"];
 				obj["loanId"] = customerData["loanId"];
 				obj["groupLocation"] = '<a class="tdViewData">'+customerData["groupLocation"]+'</a>';
-				obj["loanType"] = '<a class="tdViewData">'+"PLL"+'</a>';
+				obj["loanType"] = '<a class="tdViewData">'+customerData["loanTypeName"]+'</a>';
 				obj["shgId"] = '<a class="tdViewData">'+customerData["groupId"]+'</a>';
-				obj["shgName"] = '<a class="tdViewData">'+"SHG Name"+'</a>';
+				obj["shgName"] = '<a class="tdViewData">'+customerData["groupName"]+'</a>';
 				obj["groupLoanId"] = obj["groupId"]+"_"+obj["loanId"]+"_"+myTaskdata[key]["name"]+"_"+obj["taskId"]+"_"+obj["processInstanceId"];
+				obj["clusterName"] ='<a class="tdViewData">'+customerData["clusterName"]+'</a>';
+				obj["centerName"] ='<a class="tdViewData">'+customerData["centerName"]+'</a>';
+				obj["regionName"] ='<a class="tdViewData">'+customerData["regionName"]+'</a>';
+				obj["loanApplicationDate"] ='<a class="tdViewData">'+customerData["loanApplicationDate"]+'</a>';
+				obj["groupFormationDate"] ='<a class="tdViewData">'+customerData["groupFormationDate"]+'</a>';
+				
+				
+				
 			}
 		obj["unClaim"] = '<button type="submit" onclick="unClaim('+"'"+obj["taskId"]+"'"+');" class="btn btn-danger btn-md button">UnClaim</button>';
 		
@@ -102,13 +120,17 @@ function loadAssignedTaskList(){
             "bSortable": true,    
 
             "aoColumns": [    
-                { "mData": "slNo", "sTitle": "S.No", "sWidth": "5%", className:"column"},     
-                { "mData": "taskName", "sTitle": "Task Name", "sWidth": "15%", className:"column"},                     
-                { "mData": "taskDate","sTitle": "Task Date"  , "sWidth": "10%", className:"column"},
-                { "mData": "loanType","sTitle": "Loan Type"  , "sWidth": "8%", className:"column"},
-                { "mData": "shgId","sTitle": "SHG ID"  , "sWidth": "10%", className:"column"},
-                { "mData": "shgName","sTitle": "SHG Name"  , "sWidth": "15%", className:"column"},
-                { "mData": "groupLocation","sTitle": "Group Location"  , "sWidth": "15%", className:"column"},
+               { "mData": "slNo", "sTitle": "S.No", "sWidth": "3%", className:"column"},     
+                { "mData": "taskName", "sTitle": "Task Name", "sWidth": "13%", className:"column"},                     
+                { "mData": "taskDate","sTitle": "Task Date"  , "sWidth": "8%", className:"column"},
+                { "mData": "loanType","sTitle": "Product Name"  , "sWidth": "8%", className:"column"},
+                { "mData": "shgId","sTitle": "SHG ID"  , "sWidth": "8%", className:"column"},
+                { "mData": "shgName","sTitle": "SHG Name"  , "sWidth": "10%", className:"column"},
+                { "mData": "loanApplicationDate","sTitle": "Loan App. Dt"  , "sWidth": "8%", className:"column"},
+                { "mData": "groupFormationDate","sTitle": "Grp Frmtn Dt"  , "sWidth": "8%", className:"column"},
+                { "mData": "regionName","sTitle": "Region Name"  , "sWidth": "12%", className:"column"},
+                { "mData": "clusterName","sTitle": "Cluster Name"  , "sWidth": "12%", className:"column"},
+                { "mData": "centerName","sTitle": "Center Name"  , "sWidth": "12%", className:"column"},
                 { "mData": "unClaim","sTitle": "UnClaim"  , "sWidth": "10%", className:"column"},
                   
             ],                       
@@ -145,6 +167,7 @@ function taskCount(){
 	    url: '/tasksCount',
 	    dataType: 'json',
 	    success: function (data) {
+	    console.log(data);
 		if(data["Task"]){
 			for(var key in data["Task"]){
 				var newKey = '';

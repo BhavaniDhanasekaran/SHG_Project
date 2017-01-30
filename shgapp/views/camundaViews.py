@@ -18,18 +18,20 @@ camundaClient = CamundaClient()
 
 def unassignedTaskList(request):
     try:
-	print "Inside unassignedTaskList(request): "
+	print "Entering unassignedTaskList(request): view"
 	username = request.user
 	Grp = request.user.groups.all()
         groups = request.user.groups.values_list('name',flat=True)  
         print "grp:"
         print groups[0]
+        groupName = groups[0]
         
         
 	processInstancesArr = []
 	groupTaskDict 	= {}
 	groupTaskData	= []
-	    
+	
+	#grp_body_cont 	   = { "unassigned" : "true" , "candidateGroup" : str(groupName) }    
 	grp_body_cont 	   = { "unassigned" : "true" , "candidateGroup" : "DataSupportTeam" }
 	groupTaskList	  = camundaClient._urllib2_request('task?firstResult=0', grp_body_cont, requestType='POST')
 
@@ -48,7 +50,8 @@ def unassignedTaskList(request):
     	#Group Task Assign:	
     	for key in groupTaskDict:
             groupTaskData.append(groupTaskDict[key])
-        
+            
+        print "Exiting unassignedTaskList(request): view"
     	return render_to_response('ds-tasklist.html', {"groupTaskList" : json.dumps(groupTaskData),"group" :groups[0],"user":username})
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting task details.')
@@ -56,8 +59,8 @@ def unassignedTaskList(request):
 
 def KYCTaskList(request):
     try:
+        print "Entering KYCTaskList(request): view "
         username = request.user
-	print "Inside KYCTaskList(request): "
 	Grp = request.user.groups.all()
         groups = request.user.groups.values_list('name',flat=True)  
         print "grp:"
@@ -84,14 +87,15 @@ def KYCTaskList(request):
 	for data in groupTaskList:
 	    if data["processInstanceId"] not in processInstancesQRArr:
             	groupTaskData.append(data)
-	
+            	
+	print "Exiting KYCTaskList(request): view "
     	return render_to_response('ds-datecount.html', {"groupTaskList" : json.dumps(groupTaskData),"group" :groups[0],"user":username})
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting task details.')
 
 
 def KYCTasksGroupByDate(request,dateFrom,dateTo):
-    print "Inside KYCTasksGroupByDate(request): "
+    print "Entering KYCTasksGroupByDate(request,dateFrom,dateTo): view "
     Grp = request.user.groups.all()
     groups = request.user.groups.values_list('name',flat=True)  
     print "grp:"
@@ -122,18 +126,19 @@ def KYCTasksGroupByDate(request,dateFrom,dateTo):
     for key in kycTaskDict:
     	if key not in processInstancesQRArr:
             kycTaskData.append(kycTaskDict[key])
-            
+
+    print "Exiting KYCTasksGroupByDate(request,dateFrom,dateTo): view "        
     return HttpResponse(json.dumps(kycTaskData), content_type="application/json")
 
 
 @login_required
 def assignedTaskList(request):
+    print "Entering assignedTaskList(request): view"
     username = request.user
     Grp = request.user.groups.all()
     groups = request.user.groups.values_list('name',flat=True)  
     print "grp:"
     print groups[0]
-    print "Inside assignedTaskList(request): "
     processInstancesArr = []
     myTaskDict 	= {}
     myTaskData	= []
@@ -146,8 +151,6 @@ def assignedTaskList(request):
     bodyData = { "processInstanceIdIn": processInstancesArr }  
     taskProVarList	 = camundaClient._urllib2_request('variable-instance?deserializeValues=false', bodyData, requestType='POST')      
 	    
-    #print "taskProVarList"
-    #print taskProVarList
     #Process Variable Instance:
     for data in taskProVarList:
 	if data["processInstanceId"] in myTaskDict:
@@ -160,43 +163,35 @@ def assignedTaskList(request):
             myTaskDict[key]["name"] = "Query Response"
         myTaskData.append(myTaskDict[key])
     
-    
+    print "Exiting assignedTaskList(request): view"
     return render(request, 'ds-mytask.html',{"myTaskList" :json.dumps(myTaskData), "group" :groups[0],"user":username})
 
 def claim(request, id, name):
-    print "name"
-    print name
+    print "Entering claim(request, id, name): view"
     dataObjClaim = {}
     try:
 	#claim	
-	if name =="claim":	
+	if name =="claim":
+	    print name	
 	    dataObjClaim = {"userId": "kermit"}
-	    #url_claim   = django_settings.CAMUNDA_BASE_URL+'task/'+id+'/claim'
-            claimTask = camundaClient._urllib2_request('task/'+id+'/claim',dataObjClaim,requestType='POST')      
-            
-            #r_claim     =  urllib2.Request(url_claim, json.dumps(dataObjClaim) , headers={'Content-Type': 'application/json'})
-            #claimTask = urllib2.urlopen(r_claim).read()
-
-	    print "claimTask"
-	    print claimTask
+            claimTask = camundaClient._urllib2_request('task/'+id+'/claim',dataObjClaim,requestType='POST') 
+            print "Exiting claim(request, id, name): view"      
 	    return HttpResponse(json.dumps(claimTask), content_type="application/json" )
 
 	#Unclaim	
 	if name =="unclaim":
-	    dataObjUnclaim = {"userId": "kermit"}
-	    #url_Unclaim = django_settings.CAMUNDA_BASE_URL+'task/'+id+'/unclaim'
-            unClaimTask = camundaClient._urllib2_request('task/'+id+'/unclaim',dataObjClaim,requestType='POST')      
-            #r_claim = urllib2.Request(url_Unclaim, json.dumps(dataObjUnclaim) ,  headers={'Content-Type': 'application/json'})
-            #unClaimTask = urllib2.urlopen(r_claim).read()
-	    print "unClaimTask"
-	    print unClaimTask
+            print name	
+	    dataObjClaim = {"userId": "kermit"}
+            unClaimTask = camundaClient._urllib2_request('task/'+id+'/unclaim',dataObjClaim,requestType='POST')  
+            print "Exiting claim(request, id, name): view"     
 	    return HttpResponse(json.dumps(unClaimTask), content_type="application/json" )
-        
+     
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred.')
     
     
 def tasksCount( request ):
+    print "Entering tasksCount( request ): view"   
     try:	
         taskCount = {}
         queryCount = 0
@@ -242,6 +237,7 @@ def tasksCount( request ):
     
         response = HttpResponse(taskData, content_type='text/plain')
         response['Content-Length'] = len( taskData )
+        print "Exiting tasksCount( request ): view"   
         return response
 
     except ShgInvalidRequest, e:
@@ -249,14 +245,17 @@ def tasksCount( request ):
         
       
 def KYCCheck(request,dateFrom,dateTo):
+    print "Entering KYCCheck(request,dateFrom,dateTo): view"
     username = request.user
     Grp = request.user.groups.all()
     groups = request.user.groups.values_list('name',flat=True)  
     print "grp:"
     print groups[0]
+    print "Exiting KYCCheck(request,dateFrom,dateTo): view"
     return render_to_response( 'ds-tasklist.html', {"dateFrom": dateFrom,"dateTo":dateTo,"group" :groups[0],"user":username})      
     
 def queryRespTaskList(request):
+    print "Entering queryRespTaskList(request): view"
     username = request.user
     Grp = request.user.groups.all()
     groups = request.user.groups.values_list('name',flat=True)  

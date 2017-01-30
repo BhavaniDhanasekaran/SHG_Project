@@ -1,61 +1,6 @@
 var validationFields = ["memberName","age","husbandName","fatherName","address","villageName","idProofValue","addressProofValue","sbAccountNumber","bankId","sbAccountName",
 			"branch","permanentAddress","pincode","villages","mobileNo","idProofTypeId","addressProofTypeId","loanAmount","loanTypeValue","comment"];
 
-function getGroupData1(groupID,loanId){
-	var memId;
-	$.ajax({
-	    url: '/getGroupData/'+groupID,
-	    dataType: 'json',
-	    success: function (data) {
-		groupData = data;
-		for(var i=0;i<groupData["data"].length;i++){
-			var memberId = groupData["data"][i]["memberId"];
-			//var memberStatus = groupData["data"][i]["memberStatus"];
-			var groupId = groupID;
-			var className  = '';
-			
-			var dataObj = {};
-			var memValData = {
-				"memberId": memberId,
-				"groupId": groupID,
-				"loanId": loanId,
-				"subStatus": "Rework",
-				"userId": "1996",
-				"validationType": "PRE",
-				"entityType": "MEMBER"
-			};
-			dataObj['memValData'] = memValData;
-			$.ajax({
-			    url: '/validateMember/',
-			    dataType: 'json',
-			    async: false,
-			    type: 'post',
-			    success: function (data) {
-				var memberStatus = data[memberId];
-				var memberStatusSplit = memberStatus.split('-');
-				memberStatus = memberStatusSplit[0];
-				if(memberStatus == "Y"){
-				     className = "list-group-item list-group-item-success";
-				}
-				if(memberStatus == "R"){
-				     className = "list-group-item list-group-item-danger";
-				}
-				if(memberStatus == "N"){
-				    className = "list-group-item list-group-item-warning";
-				}
-				if(document.getElementById("san_test")){
-				     	$("#san_test").append('<a id="'+memberId+'" onclick="getMemberDetails('+memberId+','+groupId+','+loanId+')" class="'+className+'" style="font-weight:bold;">'+groupData["data"][i]["memberName"]+'</a>');
-				}
-			    },
-			    data: JSON.stringify(dataObj)
-			});
-		}
-	    }
-	});
-}
-
-
-
 function getGroupData(groupID,loanId){
 	var memId;
 	$.ajax({
@@ -70,29 +15,32 @@ function getGroupData(groupID,loanId){
 			var memberStatus = groupData["data"][i]["memberStatus"];
 			var groupId = groupID;
 			var className  = '';
+			console.log(memberStatus);
 			if(memberStatus == "Active"){
 			     className = "list-group-item Pending";
 			}
 			if(memberStatus == "Approved"){
 			     className = "list-group-item list-group-item-success Approved";
-			     //$("#operationsDivId").css("display","none");
-			    // $("#commentDivId").css("display","none");
+			     $("#operationsDivId").css("display","none");
+			     $("#commentDivId").css("display","none");
 			}
 			if(memberStatus == "Rejected"){
 			     className = "list-group-item list-group-item-danger Rejected";
-			    // $("#operationsDivId").css("display","none");
-		             //$("#commentDivId").css("display","none");
+			     $("#operationsDivId").css("display","none");
+		             $("#commentDivId").css("display","none");
 			}
 			if(memberStatus == "Rework"){
 			    className = "list-group-item list-group-item-warning Rework";
-			    //$("#operationsDivId").css("display","none");
-			    //$("#commentDivId").css("display","none");
+			    $("#operationsDivId").css("display","none");
+			    $("#commentDivId").css("display","none");
 			}
 			if(document.getElementById("san_test")){
-			     	$("#san_test").append('<a id="'+memberId+'" onclick="getMemberDetails('+memberId+','+groupId+','+loanId+')" class="'+className+'" style="font-weight:bold;">'+groupData["data"][i]["memberName"]+'</a>');
+			     	$("#san_test").append('<a id="'+memberId+'" onclick="getMemberDetails('+memberId+','+groupId+','+loanId+');" class="'+className+'" style="font-weight:bold;">'+groupData["data"][i]["memberName"]+'</a>');
 			}
 		}
 		getMemberDetails(memId,groupID,loanId);
+		//creditHistory(groupId,memId)
+		//creditHistory('+groupId+','+memberId+');
 	    }
 	});
 	
@@ -111,7 +59,7 @@ function redirectPage(groupID,loanID,taskName,taskId,processInstanceId){
 
 
 function getMemberDetails(memberId,groupId,loanId){
-	if(document.getElementById(memberId).classList.item(3)){
+	/*if(document.getElementById(memberId).classList.item(3)){
 		$("#operationsDivId").css("display","none");
 		$("#commentDivId").css("display","none");
 		$("#comment").val("");
@@ -120,6 +68,13 @@ function getMemberDetails(memberId,groupId,loanId){
 		$("#operationsDivId").css("display","block");
 		$("#commentDivId").css("display","block");
 		$("#comment").val("");
+	}*/
+	if($("#"+memberId).hasClass("list-group-item-action")){
+	console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!EfesafsdfdsfdsF");
+		
+	}
+	else{
+	console.log("!!!!!!!!!!!dsgsdfsdfdsf!!!!!!!!!!!!!EfesafsdfdsfdsF");
 	}
 	$.ajax({
 	    url: '/getIndMemberData/'+memberId+'/'+groupId+'/'+loanId,
@@ -170,6 +125,8 @@ function getMemberDetails(memberId,groupId,loanId){
 				}
 				if(tagname == "SPAN"){
 					document.getElementById(data).innerHTML = memberData["data"]["memberDetails"][data];
+					if(document.getElementById("villages").tagName == "SPAN")
+						document.getElementById("villages").innerHTML = memberData["data"]["memberDetails"]["villageId"];
 				}
 			}
 		}
@@ -208,13 +165,123 @@ $(document).ready(function(){
 	
 });
 
+function submitKYCQueryForm(status){
+	var name = document.getElementById("memberName").innerHTML;
+	var age = document.getElementById("age").innerHTML;
+	var spouse = document.getElementById("husbandName").innerHTML;
+	var father = document.getElementById("fatherName").innerHTML;
+	var address = document.getElementById("address").innerHTML;
+	var permanentAddress = document.getElementById("permanentAddress").innerHTML;
+	var pincode = document.getElementById("pincode").innerHTML;
+	var idProof = document.getElementById("idProofValue").innerHTML;
+	var idProofType = document.getElementById("idProofTypeId").innerHTML;
+	var addressProof = document.getElementById("addressProofValue").innerHTML;
+	var addressProofType = document.getElementById("addressProofTypeId").innerHTML;
+	var sbAccountNumber = document.getElementById("sbAccountNumber").innerHTML;
+	var bankId = document.getElementById("bankId").innerHTML;
+	var villageId = document.getElementById("villages").innerHTML;
+	var loanAmount = document.getElementById("loanAmount").innerHTML;
+	var loanPurpose = document.getElementById("loanTypeValue").innerHTML;
+	var sbAccountName = document.getElementById("sbAccountName").innerHTML;
+	var mobileNumber = document.getElementById("mobileNo").innerHTML;
+	var sbBranch = document.getElementById("branch").innerHTML;
+	var memberId = document.getElementById("memberId").innerHTML;	
+	var groupId = document.getElementById("groupId").innerHTML;
+	var loanId = document.getElementById("loanId").innerHTML;
+	var comment = document.getElementById("comment").innerHTML;
+	
+	
+	var dataObj = 	{};
+	
+	var memValData = {
+		"memberId": memberId,
+		"groupId": groupId,
+		"loanId": loanId,
+		"subStatus": status,
+		"userId": "1996",
+		"comment": comment,
+		"checkList": "",
+		"validationType": "PRE",
+		"entityType": "MEMBER"
+	};
+	
+	var dataDict = {
+		"entityType"		: "MEMBER",
+		"validationType"	: "KYC",
+		"memberId"		: memberId,
+		"groupId"		: groupId,
+		"loanId"		: loanId,
+		"userId"		: "1669",
+		"name"			: name,
+		"age"			: age,
+		"spouse"		: spouse,
+		"father"		: father,
+		"address"		: address,
+		"permanentAddress"	: permanentAddress,
+		"pincode"		: pincode,
+		"idProof"		: idProof,
+		"idProofType"		: idProofType,
+		"addressProof"		: addressProof,
+		"addressProofType"	: addressProofType,
+		"sbAccountNumber"	: sbAccountNumber,
+		"bankId"		: bankId,
+		"villageId"		: villageId,
+		"loanAmount"		: loanAmount,
+		"loanPurpose"		: loanPurpose,
+		"sbBranch"		: sbBranch,
+		"sbAccountName"		: sbAccountName,
+		"mobileNumber"		: mobileNumber
+	};
+	
+	console.log(dataDict);
+	dataObj['formData'] = dataDict;
+	dataObj['memValData'] = memValData;
+	dataObj['taskId'] = taskId;
+	dataObj['message'] = comment;
+	
+	$.ajax({
+		url: '/updateKYCDetails/',
+		type: 'post',
+		dataType: 'json',
+		success: function(data) {
+			if (data["message"] == "Member Loan updated successfully.") {
+			     alert("Member Details Updated successfully");
+			     
+			     if(status == "Approved"){
+			     	document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-success Approved";
+			     	$("#operationsDivId").css("display","none");
+				$("#commentDivId").css("display","none");
+			     }
+			     if(status == "Rejected"){
+			     	document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-danger Rejected";
+			     	$("#operationsDivId").css("display","none");
+				$("#commentDivId").css("display","none");
+			     }
+			     if(status == "Rework"){
+			     	document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-warning Rework";
+			     	$("#operationsDivId").css("display","none");
+				$("#commentDivId").css("display","none");
+			     }
+			    checkForTaskCompletion();
+			} 
+			else {
+				alert("Failed due to some Issue . Please try after sometime or contact your Administrator");
+			}
+		},
+		data: JSON.stringify(dataObj)
+	});
+
+}
+
+
+
+
 
 function submitKYCForm(status){
 	var mandatoryFieldsDict = {};
 	var count = 0;
    	var validation = 0;
     	var label = '';
-    	var html = '';
     	$("#alertContentId").html('');
 	for (var i = 0; i < validationFields.length; i++) {
 		if (document.getElementById("" + validationFields[i] + "")) {
@@ -230,8 +297,6 @@ function submitKYCForm(status){
 		    }
 		}
 	}	
-
-
 
 	var name = document.getElementById("memberName").value;
 	var age = document.getElementById("age").value;
@@ -249,7 +314,6 @@ function submitKYCForm(status){
 	var villageId = document.getElementById("villages").value;
 	var loanAmount = document.getElementById("loanAmount").value;
 	var loanPurpose = document.getElementById("loanTypeValue").value;
-	var sbBranch = document.getElementById("villages").value;
 	var sbAccountName = document.getElementById("sbAccountName").value;
 	var mobileNumber = document.getElementById("mobileNo").value;
 	var sbBranch = document.getElementById("branch").value;
@@ -259,7 +323,6 @@ function submitKYCForm(status){
 	var comment = document.getElementById("comment").value;
 	
 	
-	html += '<table style="margin:auto;width:90%;"><thead><tr><th>Empty Input Field</th><th> Input field type </th></tr></thead><tbody>';
 	if (validation == 1) {
 		$("#warningId").css("display","block");
 		return false;
@@ -310,6 +373,8 @@ function submitKYCForm(status){
 		"sbAccountName"		: sbAccountName,
 		"mobileNumber"		: mobileNumber
 	};
+	
+	console.log(dataDict);
 	dataObj['formData'] = dataDict;
 	dataObj['memValData'] = memValData;
 	dataObj['taskId'] = taskId;
@@ -396,7 +461,6 @@ function taskUpdate(status){
 	    dataType: 'json',
 	    type: "post",
 	    success: function (data) {
-	    console.log("data111111111111");
 	    	console.log(data);
 	    	if(data == "Successful"){
 	    		window.location = '/assignedTaskList/';
@@ -409,6 +473,31 @@ function taskUpdate(status){
 	});
 		
 }
+
+function creditHistory(groupId,memberId) {
+    $.ajax({
+        url: '/creditHistory/' + groupId,
+        dataType: 'json',
+        success: function(data) {
+            var creditData = data;
+	    console.log(data);
+            if(creditData.data){
+		    var found_names = $.grep(creditData.data, function(v) {
+		        return v.memberId == memberId;
+		    });
+		    var tr = $('<tr></tr>');
+		    $.each(found_names[0], function(index, val) {
+		        if ((index != "memberId") && (index != "memberName") && (index != "spouseName") && (index != "refId") && (index != "responseDate") &&
+		            (index != "appId") && (index != "overallLoanLimit") && (index != "noOfMFI") && (index != "existingMFI") && (index != "groupName") && (index != "appMemberId")) {
+		            $('<td>' + val + '</td>').appendTo(tr);
+		        }
+		    });
+		    tr.appendTo('#credit');
+            }
+        }
+    });
+}
+
 
 
 
