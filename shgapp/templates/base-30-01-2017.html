@@ -32,33 +32,6 @@
         <!-- ace settings handler -->
         <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
         <script src="{% static 'js/ace-extra.min.js' %}"></script>
-
-        <script src="{% static 'js/jquery-2.1.4.min.js' %}">    </script>
-        <script src="{% static 'js/datatables.min.js' %}"></script>
-        <script src="{% static 'js/dataTables.fixedHeader.min.js' %}"></script>
-        <script src="{% static 'js/fnPagingInfo.js' %}"></script>
-        <script src="{% static 'js/jquery.imagebox.js' %}"></script>
-        <script type="text/javascript">
-            if('ontouchstart' in document.documentElement) document.write("<script src='{% static 'js/jquery.mobile.custom.min.js' %}>"+"<"+"/script>");
-            
-        </script>
-        <script src="{% static 'js/bootstrap.min.js'  %}"></script>
-        <!-- page specific plugin scripts -->
-        <!-- ace scripts -->
-        <script src="{% static 'js/ace-elements.min.js'  %}"></script>
-        <script src="{% static 'js/ace.min.js'  %}"></script>
-
-    <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
-    <script src="{% static 'js/jquery.dataTables.bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/dataTables.buttons.min.js' %}"></script>
-    <script src="{% static 'js/buttons.flash.min.js' %}"></script>
-    <script src="{% static 'js/buttons.html5.min.js' %}"></script>
-    <script src="{% static 'js/buttons.print.min.js' %}"></script>
-    <script src="{% static 'js/buttons.colVis.min.js' %}"></script>
-    <script src="{% static 'js/dataTables.select.min.js' %}"></script>
-    <script src="{% static 'js/jquery.validate.min.js' %}"></script>
-    <script src="{% static 'js/moment.min.js' %}"></script>
-
         {% block javascript %} {% endblock %}
         <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
         <!--[if lte IE 8]>
@@ -96,7 +69,20 @@
         <!-- /.main-container -->
         <!-- basic scripts -->
         <!--[if !IE]> -->
-
+        <script src="{% static 'js/jquery-2.1.4.min.js' %}">    </script>
+        <script src="{% static 'js/datatables.min.js' %}"></script>
+        <script src="{% static 'js/dataTables.fixedHeader.min.js' %}"></script>
+        <script src="{% static 'js/fnPagingInfo.js' %}"></script>
+        <script src="{% static 'js/jquery.imagebox.js' %}"></script>
+        <script type="text/javascript">
+            if('ontouchstart' in document.documentElement) document.write("<script src='{% static 'js/jquery.mobile.custom.min.js' %}>"+"<"+"/script>");
+            
+        </script>
+        <script src="{% static 'js/bootstrap.min.js'  %}"></script>
+        <!-- page specific plugin scripts -->
+        <!-- ace scripts -->
+        <script src="{% static 'js/ace-elements.min.js'  %}"></script>
+        <script src="{% static 'js/ace.min.js'  %}"></script>
         <!-- inline scripts related to this page -->
     </body>
 </html>
