@@ -9,38 +9,48 @@ function getGroupData(groupID,loanId){
 	    success: function (data) {
 		groupData = data;
 		console.log(groupData);
-		for(var i=0;i<groupData["data"]["groupMemDetail"].length;i++){
-			memId = groupData["data"]["groupMemDetail"][0]["memberId"];
-			var memberId = groupData["data"]["groupMemDetail"][i]["memberId"];
-			var memberStatus = groupData["data"]["groupMemDetail"][i]["memberStatus"];
-			var groupId = groupID;
-			var className  = '';
-			console.log(memberStatus);
-			if(memberStatus == "Active"){
-			     className = "list-group-item list-group-item-action Pending";
-			}
-			if(memberStatus == "Approved"){
-			     className = "list-group-item list-group-item-action list-group-item-success Approved";
-			     $("#operationsDivId").css("display","none");
-			     $("#commentDivId").css("display","none");
-			}
-			if(memberStatus == "Rejected"){
-			     className = "list-group-item list-group-item-action list-group-item-danger Rejected";
-			     $("#operationsDivId").css("display","none");
-		             $("#commentDivId").css("display","none");
-			}
-			if(memberStatus == "Rework"){
-			    className = "list-group-item list-group-item-action list-group-item-warning Rework";
-			    $("#operationsDivId").css("display","none");
-			    $("#commentDivId").css("display","none");
-			}
-			if(document.getElementById("san_test")){
-			     	$("#san_test").append('<a id="'+memberId+'" onclick="getMemberDetails('+memberId+','+groupId+','+loanId+');" class="'+className+'" style="font-weight:bold;">'+groupData["data"]["groupMemDetail"][i]["memberName"]+'</a>');
-			}
+		if(groupData["data"]["groupMemDetail"]){
+		   	if(groupData["data"]["groupMemDetail"][0]){
+				for(var i=0;i<groupData["data"]["groupMemDetail"].length;i++){
+					memId = groupData["data"]["groupMemDetail"][0]["memberId"];
+					var memberId = groupData["data"]["groupMemDetail"][i]["memberId"];
+					var memberStatus = groupData["data"]["groupMemDetail"][i]["memberStatus"];
+					var groupId = groupID;
+					var className  = '';
+					console.log(memberStatus);
+					if(memberStatus == "Active"){
+					     className = "list-group-item list-group-item-action Pending";
+					}
+					if(memberStatus == "Approved"){
+					     className = "list-group-item list-group-item-action list-group-item-success Approved";
+					     $("#operationsDivId").css("display","none");
+					     $("#commentDivId").css("display","none");
+					}
+					if(memberStatus == "Rejected"){
+					     className = "list-group-item list-group-item-action list-group-item-danger Rejected";
+					     $("#operationsDivId").css("display","none");
+					     $("#commentDivId").css("display","none");
+					}
+					if(memberStatus == "Rework"){
+					    className = "list-group-item list-group-item-action list-group-item-warning Rework";
+					    $("#operationsDivId").css("display","none");
+					    $("#commentDivId").css("display","none");
+					}
+					if(document.getElementById("san_test")){
+					     	$("#san_test").append('<a id="'+memberId+'" onclick="getMemberDetails('+memberId+','+groupId+','+loanId+');" class="'+className+'" style="font-weight:bold;">'+groupData["data"]["groupMemDetail"][i]["memberName"]+'</a>');
+					}
+					if(document.getElementById("groupName") && groupData["data"]["groupName"]){
+						document.getElementById("groupName").innerHTML = groupData["data"]["groupName"];
+					}
+					if(document.getElementById("groupId") && groupData["data"]["appGroupId"]){
+						document.getElementById("groupName").innerHTML = groupData["data"]["appGroupId"];
+					}
+				}
+				getMemberDetails(memId,groupID,loanId);
+				//creditHistory(groupId,memId)
+				//creditHistory('+groupId+','+memberId+');
+		    	}
 		}
-		getMemberDetails(memId,groupID,loanId);
-		//creditHistory(groupId,memId)
-		//creditHistory('+groupId+','+memberId+');
 	    }
 	});
 	
