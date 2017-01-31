@@ -16,6 +16,10 @@ def dsQueryTaskList(request):
     return render(request, 'DsMyQueryTask.html')  
 
 
+
+
+
+
 def bmtasklist(request):
     return render(request, 'BMTasKList.html') 
 

@@ -20,7 +20,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-tasks fa-5x"></i> 
+                        <i class="glyphicon glyphicon-edit fa-5x"></i> 
                     </div>
                     <div class="col-xs-9 text-right">
                         <div id="myTasks1" class="huge"></div>
@@ -44,7 +44,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-comments fa-5x"></i>  
+                        <i class="glyphicon glyphicon-list-alt fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
                         <div id="KYC_Check1" class="huge"></div>
@@ -68,7 +68,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-shopping-cart fa-5x"></i>  
+                        <i class="glyphicon glyphicon-retweet fa-5x"></i>  
                     </div>
                     <div class="col-xs-9 text-right">
                         <div id="Query_Response1" class="huge"></div>
@@ -97,14 +97,14 @@
         <div class="panel panel-green">
             <div class="panel-heading">
                 <div class="row">
-                    <div class="col-xs-3"> <i class="fa fa-tasks fa-5x"></i> </div>
+                    <div class="col-xs-3"> <i class="glyphicon glyphicon-edit fa-5x"></i> </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge">1</div>
-                        <div>My Task</div>
+                        <div class="huge"></div>
+                        <div>My Tasks</div>
                     </div>
                 </div>
             </div>
-            <a href="ds-datecount.html">
+            <a href="{% url 'assignedBMTaskList' %}">
                 <div class="panel-footer">
                     <span class="pull-left">View Details</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                     <div class="clearfix"></div>
@@ -118,10 +118,10 @@
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <div class="row">
-                    <div class="col-xs-3"> <i class="fa fa-comments fa-5x"></i> </div>
+                    <div class="col-xs-3"> <i class="glyphicon glyphicon-user fa-5x"></i> </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge">12</div>
-                        <div>Query Task</div>
+                        <div>BAT Approval</div>
                     </div>
                 </div>
             </div>
@@ -139,10 +139,10 @@
         <div class="panel panel-yellow">
             <div class="panel-heading">
                 <div class="row">
-                    <div class="col-xs-3"> <i class="fa fa-shopping-cart fa-5x"></i> </div>
+                    <div class="col-xs-3"> <i class="glyphicon glyphicon-cloud-upload fa-5x"></i> </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge">2</div>
-                        <div>Group Task</div>
+                        <div>Upload Documents</div>
                     </div>
                 </div>
             </div>
@@ -160,10 +160,48 @@
         <div class="panel panel-red">
             <div class="panel-heading">
                 <div class="row">
-                    <div class="col-xs-3"> <i class="fa fa-support fa-5x"></i> </div>
+                    <div class="col-xs-3"> <i class="glyphicon glyphicon-share-alt fa-5x"></i> </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge">13</div>
-                        <div>Compelete Task </div>
+                        <div>Query Raised</div>
+                    </div>
+                </div>
+            </div>
+            <a href="#">
+                <div class="panel-footer">
+                    <span class="pull-left">View Details</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-teal">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3"> <i class="glyphicon glyphicon-plus-sign fa-5x"></i> </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">13</div>
+                        <div>Add New Members</div>
+                    </div>
+                </div>
+            </div>
+            <a href="#">
+                <div class="panel-footer">
+                    <span class="pull-left">View Details</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-orange">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3"> <i class="glyphicon glyphicon-print fa-5x"></i> </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">13</div>
+                        <div>Print Loan documents</div>
                     </div>
                 </div>
             </div>
@@ -179,10 +217,10 @@
 </div>
 </div>
 <!-- BOX 4 ends -->
-<div class="row">
+<!--div class="row">
     <div class="col-xs-12">
         <!-- BOX5 BEGINS -->
-        <div class="row">
+        <!--div class="row">
             <div class="col-lg-3 col-md-6">
                 <div class="panel panel-green">
                     <div class="panel-heading">
@@ -201,10 +239,10 @@
                         </div>
                     </a>
                 </div>
-            </div>
+            </div-->
             <!-- BOX5 Ends -->
             <!-- BOX6 Ends -->
-            <div class="col-lg-3 col-md-6">
+            <!--div class="col-lg-3 col-md-6">
                 <div class="panel panel-green">
                     <div class="panel-heading">
                         <div class="row">
@@ -222,10 +260,10 @@
                         </div>
                     </a>
                 </div>
-            </div>
+            </div-->
             <!-- BOX56 Ends -->
             <!-- BOX57 start -->
-            <div class="col-lg-3 col-md-6">
+            <!--div class="col-lg-3 col-md-6">
                 <div class="panel panel-green">
                     <div class="panel-heading">
                         <div class="row">
@@ -243,16 +281,16 @@
                         </div>
                     </a>
                 </div>
-            </div>
+            </div-->
             <!-- BOX57 start -->
-        </div>
+        <!--/div>
         <div class="row">
             <div class="col-xs-12">
                 <h3 class="header smaller lighter green">Pending Counts</h3>
             </div>
-        </div>
+        </div-->
         <!-- BOX1 BEGINS -->
-        <div class="row">
+        <!--div class="row">
             <div class="col-lg-3 col-md-6">
                 <div class="panel panel-green">
                     <div class="panel-heading">
@@ -271,10 +309,10 @@
                         </div>
                     </a>
                 </div>
-            </div>
+            </div-->
             <!-- BOX1 Ends -->
             <!-- BOX2 BEGINS -->
-            <div class="col-lg-3 col-md-6">
+            <!--div class="col-lg-3 col-md-6">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <div class="row">
@@ -292,10 +330,10 @@
                         </div>
                     </a>
                 </div>
-            </div>
+            </div-->
             <!-- BOX2 BEGINS -->
             <!-- BOX3 BEGINS -->
-            <div class="col-lg-3 col-md-6">
+            <!--div class="col-lg-3 col-md-6">
                 <div class="panel panel-yellow">
                     <div class="panel-heading">
                         <div class="row">
@@ -313,10 +351,10 @@
                         </div>
                     </a>
                 </div>
-            </div>
+            </div-->
             <!-- BOX3BEGINS -->
             <!-- BOX3 BEGINS -->
-            <div class="col-lg-3 col-md-6">
+            <!--div class="col-lg-3 col-md-6">
                 <div class="panel panel-yellow">
                     <div class="panel-heading">
                         <div class="row">
@@ -334,9 +372,9 @@
                         </div>
                     </a>
                 </div>
-            </div>
+            </div-->
             <!-- BOX3BEGINS -->
-            <div class="row">
+            <!--div class="row">
                 <div class="col-lg-3 col-md-6">
                     <div class="panel panel-green">
                         <div class="panel-heading">
@@ -355,7 +393,7 @@
                             </div>
                         </a>
                     </div>
-                </div>
+                </div-->
                 <!-- BOX3ENDS -->
                 {% endif %}
                 {% if group == "RM" %}
@@ -366,11 +404,11 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-tasks fa-5x"></i> 
+                                        <i class="glyphicon glyphicon-edit fa-5x"></i> 
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="huge">26</div>
-                                        <div>New Tasks!</div>
+                                        <div>My Tasks</div>
                                     </div>
                                 </div>
                             </div>
@@ -390,11 +428,11 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-comments fa-5x"></i>  
+                                        <i class="glyphicon glyphicon-check fa-5x"></i>  
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="huge">12</div>
-                                        <div>Query Response!</div>
+                                        <div>Approve/Reject Groups</div>
                                     </div>
                                 </div>
                             </div>
@@ -409,7 +447,7 @@
                     </div>
                     <!-- BOX2 BEGINS -->
                     <!-- BOX3 BEGINS -->
-                    <div class="col-lg-3 col-md-6">
+                    <!--div class="col-lg-3 col-md-6">
                         <div class="panel panel-yellow">
                             <div class="panel-heading">
                                 <div class="row">
@@ -430,10 +468,10 @@
                                 </div>
                             </a>
                         </div>
-                    </div>
+                    </div-->
                     <!-- BOX3BEGINS -->
                     <!-- BOX 4BEGINS -->
-                    <div class="col-lg-3 col-md-6">
+                    <!--div class="col-lg-3 col-md-6">
                         <div class="panel panel-red">
                             <div class="panel-heading">
                                 <div class="row">
@@ -454,7 +492,7 @@
                                 </div>
                             </a>
                         </div>
-                    </div>
+                    </div-->
                 </div>
             </div>
         </div>
@@ -468,11 +506,11 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="fa fa-tasks fa-5x"></i> 
+                                <i class="glyphicon glyphicon-edit fa-5x"></i> 
                             </div>
                             <div class="col-xs-9 text-right">
                                 <div class="huge">26</div>
-                                <div>New Tasks!</div>
+                                <div>My Tasks</div>
                             </div>
                         </div>
                     </div>
@@ -492,11 +530,33 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="fa fa-comments fa-5x"></i>  
+                                <i class="fa fa-support fa-5x"></i>  
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">13</div>
+                                <div>Scrunity Task</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-yellow">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="glyphicon glyphicon-share-alt fa-5x"></i>  
                             </div>
                             <div class="col-xs-9 text-right">
                                 <div class="huge">12</div>
-                                <div>Query  to BM!</div>
+                                <div>Raise Query</div>
                             </div>
                         </div>
                     </div>
@@ -512,15 +572,15 @@
             <!-- BOX2 BEGINS -->
             <!-- BOX3 BEGINS -->
             <div class="col-lg-3 col-md-6">
-                <div class="panel panel-yellow">
+                <div class="panel panel-red">
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="fa fa-shopping-cart fa-5x"></i>  
+                                <i class="glyphicon glyphicon-retweet fa-5x"></i>  
                             </div>
                             <div class="col-xs-9 text-right">
                                 <div class="huge">124</div>
-                                <div>Reply By BM</div>
+                                <div>Query Response</div>
                             </div>
                         </div>
                     </div>
@@ -535,28 +595,8 @@
             </div>
             <!-- BOX3BEGINS -->
             <!-- BOX 4BEGINS -->
-            <div class="col-lg-3 col-md-6">
-                <div class="panel panel-red">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-support fa-5x"></i>  
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge">13</div>
-                                <div>Completed Task</div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="#">
-                        <div class="panel-footer">
-                            <span class="pull-left">View Details</span>
-                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
-                </div>
-            </div>
+            
+            
         </div>
     </div>
 </div>
@@ -566,34 +606,34 @@
 <!-- BOX5 BEGINS -->
 <div class="row">
     <div class="col-lg-3 col-md-6">
-        <div class="panel panel-green">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-xs-3">
-                        <i class="fa fa-tasks fa-5x"></i> 
-                    </div>
-                    <div class="col-xs-9 text-right">
-                        <div class="huge">26</div>
-                        <div>Loan/Cheque Cancel</div>
-                    </div>
-                </div>
-            </div>
-            <a href="ds-datecount.html">
-                <div class="panel-footer">
-                    <span class="pull-left">View Details</span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                    <div class="clearfix"></div>
-                </div>
-            </a>
-        </div>
+	<div class="panel panel-teal">
+	    <div class="panel-heading">
+	        <div class="row">
+	            <div class="col-xs-3">
+	                <i class="glyphicon glyphicon-remove-sign fa-5x"></i> 
+	            </div>
+	            <div class="col-xs-9 text-right">
+	                <div class="huge">26</div>
+	                <div>Loan/Cheque Cancel</div>
+	            </div>
+	        </div>
+	    </div>
+	    <a href="ds-datecount.html">
+	        <div class="panel-footer">
+	            <span class="pull-left">View Details</span>
+	            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+	            <div class="clearfix"></div>
+	        </div>
+	    </a>
+	</div>
     </div>
     <!-- BOX5 Ends -->
     <div class="col-lg-3 col-md-6">
-        <div class="panel panel-green">
+        <div class="panel panel-orange">
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-xs-3">
-                        <i class="fa fa-tasks fa-5x"></i> 
+                        <i class="glyphicon glyphicon-file fa-5x"></i> 
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge">26</div>

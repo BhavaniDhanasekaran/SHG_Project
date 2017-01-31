@@ -1,4 +1,4 @@
-	.panel-green {
+.panel-green {
     border-color: #5cb85c;
 }
 
@@ -50,4 +50,40 @@
 
 .panel-yellow > a:hover {
     color: #df8a13;
+}
+
+.panel-orange {
+    border-color: #FF8C00;
+}
+
+.panel-orange > .panel-heading {
+    border-color: #FF8C00;
+    color: #fff;
+    background-color: #FF8C00;
+}
+
+.panel-orange > a {
+    color: #FF8C00;
+}
+
+.panel-orange > a:hover {
+    color: #FF8C00;
+}
+
+.panel-teal {
+    border-color: #008080;
+}
+
+.panel-teal > .panel-heading {
+    border-color: #008080;
+    color: #fff;
+    background-color: #008080;
+}
+
+.panel-teal > a {
+    color: #008080;
+}
+
+.panel-teal > a:hover {
+    color: #008080;
 }

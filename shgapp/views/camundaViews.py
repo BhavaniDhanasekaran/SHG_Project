@@ -139,6 +139,7 @@ def assignedTaskList(request):
     groups = request.user.groups.values_list('name',flat=True)  
     print "grp:"
     print groups[0]
+    groupName = groups[0]
     processInstancesArr = []
     myTaskDict 	= {}
     myTaskData	= []

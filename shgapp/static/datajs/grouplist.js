@@ -9,33 +9,33 @@ function getGroupData(groupID,loanId){
 	    success: function (data) {
 		groupData = data;
 		console.log(groupData);
-		for(var i=0;i<groupData["data"].length;i++){
-			memId = groupData["data"][0]["memberId"];
-			var memberId = groupData["data"][i]["memberId"];
-			var memberStatus = groupData["data"][i]["memberStatus"];
+		for(var i=0;i<groupData["data"]["groupMemDetail"].length;i++){
+			memId = groupData["data"]["groupMemDetail"][0]["memberId"];
+			var memberId = groupData["data"]["groupMemDetail"][i]["memberId"];
+			var memberStatus = groupData["data"]["groupMemDetail"][i]["memberStatus"];
 			var groupId = groupID;
 			var className  = '';
 			console.log(memberStatus);
 			if(memberStatus == "Active"){
-			     className = "list-group-item Pending";
+			     className = "list-group-item list-group-item-action Pending";
 			}
 			if(memberStatus == "Approved"){
-			     className = "list-group-item list-group-item-success Approved";
+			     className = "list-group-item list-group-item-action list-group-item-success Approved";
 			     $("#operationsDivId").css("display","none");
 			     $("#commentDivId").css("display","none");
 			}
 			if(memberStatus == "Rejected"){
-			     className = "list-group-item list-group-item-danger Rejected";
+			     className = "list-group-item list-group-item-action list-group-item-danger Rejected";
 			     $("#operationsDivId").css("display","none");
 		             $("#commentDivId").css("display","none");
 			}
 			if(memberStatus == "Rework"){
-			    className = "list-group-item list-group-item-warning Rework";
+			    className = "list-group-item list-group-item-action list-group-item-warning Rework";
 			    $("#operationsDivId").css("display","none");
 			    $("#commentDivId").css("display","none");
 			}
 			if(document.getElementById("san_test")){
-			     	$("#san_test").append('<a id="'+memberId+'" onclick="getMemberDetails('+memberId+','+groupId+','+loanId+');" class="'+className+'" style="font-weight:bold;">'+groupData["data"][i]["memberName"]+'</a>');
+			     	$("#san_test").append('<a id="'+memberId+'" onclick="getMemberDetails('+memberId+','+groupId+','+loanId+');" class="'+className+'" style="font-weight:bold;">'+groupData["data"]["groupMemDetail"][i]["memberName"]+'</a>');
 			}
 		}
 		getMemberDetails(memId,groupID,loanId);
@@ -69,13 +69,17 @@ function getMemberDetails(memberId,groupId,loanId){
 		$("#commentDivId").css("display","block");
 		$("#comment").val("");
 	}*/
-	if($("#"+memberId).hasClass("list-group-item-action")){
-	console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!EfesafsdfdsfdsF");
+	/*if($("#"+memberId).hasClass("list-group-item-action")){
+		$("#operationsDivId").css("display","none");
+		$("#commentDivId").css("display","none");
+		$("#comment").val("");
 		
 	}
 	else{
-	console.log("!!!!!!!!!!!dsgsdfsdfdsf!!!!!!!!!!!!!EfesafsdfdsfdsF");
-	}
+		$("#operationsDivId").css("display","block");
+		$("#commentDivId").css("display","block");
+		$("#comment").val("");
+	}*/
 	$.ajax({
 	    url: '/getIndMemberData/'+memberId+'/'+groupId+'/'+loanId,
 	    //type: 'post',

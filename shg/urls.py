@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.conf.urls import include, url, handler400, handler403, handler404, handler500
 from django.contrib import admin
 from django.views.generic import TemplateView
-from shgapp.views import index, task, kyc, auth,masterData, camundaViews
+from shgapp.views import index, task, kyc, auth,masterData, camundaViews, BMOperations
 
 index_urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -78,7 +78,13 @@ camundaViews_urlpatterns = [
 ]
 urlpatterns += camundaViews_urlpatterns
 
+BMOperations_urlpatterns = [
+    url(r'^assignedBMTaskList/',BMOperations.assignedBMTaskList, name = 'assignedBMTaskList'),
 
+
+
+]
+urlpatterns += BMOperations_urlpatterns
 
 
 

@@ -55,7 +55,7 @@ MIDDLEWARE = [
 ]
 
 
-ROOT_URLCONF = 'shg1.urls'
+ROOT_URLCONF = 'shg.urls'
 
 TEMPLATES = [
     {
@@ -73,7 +73,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'shg1.wsgi.application'
+WSGI_APPLICATION = 'shg.wsgi.application'
 
 
 # Database
@@ -152,5 +152,6 @@ STATICFILES_DIRS = [
 
 CAMUNDA_BASE_URL = 'http://192.168.10.88:8086/engine-rest/'
 SSCORE_BASE_URL = 'http://192.168.10.71:8085/sangamam-core/'
+#SSCORE_BASE_URL = 'http://192.168.10.71:8090/sangamam-core/'
 
 #CAMUNDA_BASE_URL2 = 'http://192.168.10.75:8082/engine-rest/'

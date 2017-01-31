@@ -28,7 +28,7 @@ function loadUnassignedTaskList(data){
 				obj["groupFormationDate"] =customerData["groupFormationDate"];
 				
 			}
-		obj["claim"] = '<button type="submit" onclick="claim('+"'"+obj["taskId"]+"'"+');" class="btn btn-danger btn-md button">Claim</button>';
+		obj["claim"] = '<button type="submit" onclick="claim('+"'"+obj["taskId"]+"'"+');window.location.reload();" class="btn btn-danger btn-md button">Claim</button>';
 		
 		
 		}

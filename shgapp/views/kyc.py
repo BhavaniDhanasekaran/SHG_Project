@@ -86,6 +86,8 @@ def getGroupData(request,groupID):
     print "Inside getGroupData(request):"
     try:
     	bodyData = { "groupId": groupID} 
+    	print "bodyData"
+    	print bodyData
     	groupMembersData = sscoreClient._urllib2_request('workflowDetailView/getallmembers', bodyData, requestType='POST')
     	print "groupMembersData"
     	print groupMembersData
@@ -123,9 +125,11 @@ def creditHistory(request,groupId):
     try:
     	bodyData = { "groupId" : str(groupId)}
         serialized_data = sscoreClient._urllib2_request('workflowDetailView/CreditEnquiry', bodyData ,requestType='POST')
+        print "serialized_data"
+        print serialized_data
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
-        return helper.bad_request('An expected error occurred while getting Credit History.')
+        return helper.bad_request('Unexpected error occurred while getting Credit History.')
 
 
 def DocumentView(request,groupId):
@@ -135,7 +139,7 @@ def DocumentView(request,groupId):
         serialized_data = sscoreClient._urllib2_request('workflowDetailView/GroupDocument', bodyData ,requestType='POST')
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
-        return helper.bad_request('An expected error occurred while getting Credit History.')
+        return helper.bad_request('Unexpected error occurred while getting Credit History.')
        
 @csrf_exempt
 def updateKYCDetails(request):
