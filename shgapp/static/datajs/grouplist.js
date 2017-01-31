@@ -3,6 +3,13 @@ var validationFields = ["memberName","age","husbandName","fatherName","address",
 
 function getGroupData(groupID,loanId){
 	var memId;
+	var totalCount = 0;
+	var penCount = 0;
+	var appCount = 0;
+	var rejCount = 0;
+	var rewCount = 0;
+	var theImg = '<div class="loading"><img style="width:350px;" src="/static/images/buffer-loading.gif">' + '<div style="padding-top:1%;" ><label style="padding-top:1%;">LOADING ...</label>' + '</div>' + '</div>';
+	$(".popup").empty().append(theImg).fadeIn();
 	$.ajax({
 	    url: '/getGroupData/'+groupID,
 	    dataType: 'json',
@@ -11,6 +18,7 @@ function getGroupData(groupID,loanId){
 		console.log(groupData);
 		if(groupData["data"]["groupMemDetail"]){
 		   	if(groupData["data"]["groupMemDetail"][0]){
+		   		totalCount = groupData["data"]["groupMemDetail"].length;
 				for(var i=0;i<groupData["data"]["groupMemDetail"].length;i++){
 					memId = groupData["data"]["groupMemDetail"][0]["memberId"];
 					var memberId = groupData["data"]["groupMemDetail"][i]["memberId"];
@@ -20,21 +28,19 @@ function getGroupData(groupID,loanId){
 					console.log(memberStatus);
 					if(memberStatus == "Active"){
 					     className = "list-group-item list-group-item-action Pending";
+					     penCount+=1;
 					}
 					if(memberStatus == "Approved"){
 					     className = "list-group-item list-group-item-action list-group-item-success Approved";
-					     $("#operationsDivId").css("display","none");
-					     $("#commentDivId").css("display","none");
+					     appCount +=1;
 					}
 					if(memberStatus == "Rejected"){
 					     className = "list-group-item list-group-item-action list-group-item-danger Rejected";
-					     $("#operationsDivId").css("display","none");
-					     $("#commentDivId").css("display","none");
+					     rejCount+=1;
 					}
 					if(memberStatus == "Rework"){
 					    className = "list-group-item list-group-item-action list-group-item-warning Rework";
-					    $("#operationsDivId").css("display","none");
-					    $("#commentDivId").css("display","none");
+					    rewCount+=1;
 					}
 					if(document.getElementById("san_test")){
 					     	$("#san_test").append('<a id="'+memberId+'" onclick="getMemberDetails('+memberId+','+groupId+','+loanId+');" class="'+className+'" style="font-weight:bold;">'+groupData["data"]["groupMemDetail"][i]["memberName"]+'</a>');
@@ -50,6 +56,16 @@ function getGroupData(groupID,loanId){
 				//creditHistory(groupId,memId)
 				//creditHistory('+groupId+','+memberId+');
 		    	}
+		}
+		console.log(penCount,appCount,rewCount,rejCount);
+		
+		if(penCount >= 1 && totalCount == (penCount+appCount+rewCount+rejCount)){
+			$("#operationsDivId").css("display","block");
+			$("#commentDivId").css("display","block");
+		}
+		else{
+			$("#operationsDivId").css("display","none");
+			$("#commentDivId").css("display","none");
 		}
 	    }
 	});
