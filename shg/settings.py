@@ -82,10 +82,10 @@ WSGI_APPLICATION = 'shg.wsgi.application'
 '''DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'testsangamam.cwxetrwsi128.ap-southeast-1.rds.amazonaws.com',
-        'USER': 'sangamam',
-        'PASSWORD': 'Madura890',
-        'HOST': '127.0.0.1',
+        'NAME': 'shg_test_django',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'vvlmadura.cwxetrwsi128.ap-southeast-1.rds.amazonaws.com',
         'PORT': '5432',
     }
 }'''
