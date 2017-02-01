@@ -526,8 +526,6 @@ function creditHistory(groupId,memberId) {
 		   	 $('#creditData').css("display","none");
 		    	 $('#nodata').css("display","block");
 		    }
-		    
-		    
             }
         }
     });
