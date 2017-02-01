@@ -8,14 +8,19 @@ function getGroupData(groupID,loanId){
 	var appCount = 0;
 	var rejCount = 0;
 	var rewCount = 0;
-	var theImg = '<div class="loading"><img style="width:350px;" src="/static/images/buffer-loading.gif">' + '<div style="padding-top:1%;" ><label style="padding-top:1%;">LOADING ...</label>' + '</div>' + '</div>';
-	$(".popup").empty().append(theImg).fadeIn();
+	disableActiveTab();
 	$.ajax({
 	    url: '/getGroupData/'+groupID,
 	    dataType: 'json',
+	    beforeSend: function(){
+     		$("#loading").show();
+	    },
+	    complete: function(){
+		$("#loading").hide();
+	    },
 	    success: function (data) {
 		groupData = data;
-		console.log(groupData);
+		enableActiveTab();
 		if(groupData["data"]["groupMemDetail"]){
 		   	if(groupData["data"]["groupMemDetail"][0]){
 		   		totalCount = groupData["data"]["groupMemDetail"].length;
@@ -25,7 +30,6 @@ function getGroupData(groupID,loanId){
 					var memberStatus = groupData["data"]["groupMemDetail"][i]["memberStatus"];
 					var groupId = groupID;
 					var className  = '';
-					console.log(memberStatus);
 					if(memberStatus == "Active"){
 					     className = "list-group-item list-group-item-action Pending";
 					     penCount+=1;
@@ -43,7 +47,7 @@ function getGroupData(groupID,loanId){
 					    rewCount+=1;
 					}
 					if(document.getElementById("san_test")){
-					     	$("#san_test").append('<a id="'+memberId+'" onclick="getMemberDetails('+memberId+','+groupId+','+loanId+');" class="'+className+'" style="font-weight:bold;">'+groupData["data"]["groupMemDetail"][i]["memberName"]+'</a>');
+					     	$("#san_test").append('<a id="'+memberId+'" onclick="getMemberDetails('+memberId+','+groupId+','+loanId+');creditHistory('+groupId+','+memberId+');" class="'+className+'" style="font-weight:bold;">'+groupData["data"]["groupMemDetail"][i]["memberName"]+'</a>');
 					}
 					if(document.getElementById("groupName") && groupData["data"]["groupName"]){
 						document.getElementById("groupName").innerHTML = groupData["data"]["groupName"];
@@ -53,12 +57,10 @@ function getGroupData(groupID,loanId){
 					}
 				}
 				getMemberDetails(memId,groupID,loanId);
-				//creditHistory(groupId,memId)
-				//creditHistory('+groupId+','+memberId+');
+				creditHistory(groupId,memId);
+				
 		    	}
 		}
-		console.log(penCount,appCount,rewCount,rejCount);
-		
 		if(penCount >= 1 && totalCount == (penCount+appCount+rewCount+rejCount)){
 			$("#operationsDivId").css("display","block");
 			$("#commentDivId").css("display","block");
@@ -67,6 +69,9 @@ function getGroupData(groupID,loanId){
 			$("#operationsDivId").css("display","none");
 			$("#commentDivId").css("display","none");
 		}
+	    },
+	    error: function (jqXHR, textStatus, errorThrown) {
+           	enableActiveTab();
 	    }
 	});
 	
@@ -78,23 +83,13 @@ function redirectPage(groupID,loanID,taskName,taskId,processInstanceId){
 	if(taskName == "KYC Check"){
 		window.location = '/dsgroupview/'+groupID+'/'+loanID+'/'+taskId+'/'+processInstanceId;
 	}
-	if(taskName == "Query Response"){
+	if(taskName == "Query Response" || taskName == "Conduct BAT- Member approval in CRM"){
 		window.location = '/groupViewQuery2/'+groupID+'/'+loanID+'/'+taskId+'/'+processInstanceId;
 	}
 }
 
 
 function getMemberDetails(memberId,groupId,loanId){
-	/*if(document.getElementById(memberId).classList.item(3)){
-		$("#operationsDivId").css("display","none");
-		$("#commentDivId").css("display","none");
-		$("#comment").val("");
-	}
-	else{
-		$("#operationsDivId").css("display","block");
-		$("#commentDivId").css("display","block");
-		$("#comment").val("");
-	}*/
 	/*if($("#"+memberId).hasClass("list-group-item-action")){
 		$("#operationsDivId").css("display","none");
 		$("#commentDivId").css("display","none");
@@ -106,11 +101,19 @@ function getMemberDetails(memberId,groupId,loanId){
 		$("#commentDivId").css("display","block");
 		$("#comment").val("");
 	}*/
+	disableActiveTab();
 	$.ajax({
 	    url: '/getIndMemberData/'+memberId+'/'+groupId+'/'+loanId,
 	    //type: 'post',
 	    dataType: 'json',
+	    beforeSend: function(){
+     		$("#loading").show();
+	    },
+	    complete: function(){
+		$("#loading").hide();
+	    },
 	    success: function (data) {
+	    	enableActiveTab();
 		var memberData = data;
 		//var arrayKeys = ["occupations","villages""conflictList","highMarksList","memberFamilyDetails","memberDocumentDetails"];
 		var imgFiles = ["MEMBERPHOTO","IDPROOF","IDPROOF_2","ADDRESSPROOF","ADDRESSPROOF_2","SBACCOUNTPASSBOOK"];
@@ -163,6 +166,9 @@ function getMemberDetails(memberId,groupId,loanId){
 		
 		document.getElementById("groupId").innerHTML = groupId;
 		document.getElementById("loanId").innerHTML = loanId;
+	    },
+	    error: function (jqXHR, textStatus, errorThrown) {
+           	enableActiveTab();
 	    }
 	});
 }
@@ -237,7 +243,8 @@ function submitKYCQueryForm(status){
 	
 	var dataDict = {
 		"entityType"		: "MEMBER",
-		"validationType"	: "KYC",
+		"validationType"	: "POST",
+		//"validationType"	: "KYC",
 		"memberId"		: memberId,
 		"groupId"		: groupId,
 		"loanId"		: loanId,
@@ -263,7 +270,6 @@ function submitKYCQueryForm(status){
 		"mobileNumber"		: mobileNumber
 	};
 	
-	console.log(dataDict);
 	dataObj['formData'] = dataDict;
 	dataObj['memValData'] = memValData;
 	dataObj['taskId'] = taskId;
@@ -302,10 +308,6 @@ function submitKYCQueryForm(status){
 	});
 
 }
-
-
-
-
 
 function submitKYCForm(status){
 	var mandatoryFieldsDict = {};
@@ -404,7 +406,6 @@ function submitKYCForm(status){
 		"mobileNumber"		: mobileNumber
 	};
 	
-	console.log(dataDict);
 	dataObj['formData'] = dataDict;
 	dataObj['memValData'] = memValData;
 	dataObj['taskId'] = taskId;
@@ -454,7 +455,6 @@ function checkForTaskCompletion(){
 	
 	
 	var totalCount = approvedCount+rejectedCount+reworkCount+pendingCount;
-	console.log(membersCount,approvedCount,rejectedCount,reworkCount,totalCount);
 	if(totalCount == membersCount && reworkCount > 0 && pendingCount == 0){
 		taskUpdate("raiseQuery");
 	}
@@ -484,14 +484,11 @@ function taskUpdate(status){
 		comment = document.getElementById("comment").value;
 	}
 	dataObj["message"] = comment;
-	console.log(processupdate);
-	console.log(dataObj);
 	$.ajax({
 	    url: '/updateTask/',
 	    dataType: 'json',
 	    type: "post",
 	    success: function (data) {
-	    	console.log(data);
 	    	if(data == "Successful"){
 	    		window.location = '/assignedTaskList/';
 	    	}
@@ -510,22 +507,48 @@ function creditHistory(groupId,memberId) {
         dataType: 'json',
         success: function(data) {
             var creditData = data;
-	    console.log(data);
             if(creditData.data){
 		    var found_names = $.grep(creditData.data, function(v) {
-		        return v.memberId == memberId;
+		        return v.ssMemberId == memberId;
 		    });
-		    var tr = $('<tr></tr>');
-		    $.each(found_names[0], function(index, val) {
-		        if ((index != "memberId") && (index != "memberName") && (index != "spouseName") && (index != "refId") && (index != "responseDate") &&
-		            (index != "appId") && (index != "overallLoanLimit") && (index != "noOfMFI") && (index != "existingMFI") && (index != "groupName") && (index != "appMemberId")) {
-		            $('<td>' + val + '</td>').appendTo(tr);
-		        }
-		    });
-		    tr.appendTo('#credit');
+		    console.log(found_names);
+		    if(found_names[0]){
+			    $('#creditData').css("display","block");
+			    $('#creditData').css("display","table-row");
+			    $('#nodata').css("display","none");
+			    $.each(found_names[0], function(index, val) {
+				    if(document.getElementById(index)){
+				    	document.getElementById(index).innerHTML = val;
+				    }
+			    });
+		    }
+		    else{
+		   	 $('#creditData').css("display","none");
+		    	 $('#nodata').css("display","block");
+		    }
+		    
+		    
             }
         }
     });
+}
+
+
+
+function disableActiveTab(){
+	if(document.getElementsByClassName("active")){
+		if(document.getElementsByClassName("active")[0]){
+			document.getElementsByClassName("active")[0].className = "inactive";
+		}
+	}
+}
+
+function enableActiveTab(){
+	if(document.getElementsByClassName("inactive")){
+		if(document.getElementsByClassName("inactive")[0]){
+			document.getElementsByClassName("inactive")[0].className = "active";
+		}
+	}	
 }
 
 

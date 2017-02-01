@@ -4,7 +4,20 @@ def dsdatecount(request):
     return render(request, 'ds-datecount.html')
 
 def dstasklist(request):
-    return render(request, 'ds-tasklist.html')
+    username = request.user
+    Grp = request.user.groups.all()
+    groups = request.user.groups.values_list('name',flat=True)  
+    print "grp:"
+    print groups[0]
+    return render(request, 'ds-tasklist.html', {"group":groups[0],"user":username})  
+
+def dstasklistByName(request,taskName):
+    username = request.user
+    Grp = request.user.groups.all()
+    groups = request.user.groups.values_list('name',flat=True)  
+    print "grp:"
+    print groups[0]
+    return render(request, 'ds-tasklist.html', {"taskName":taskName,"group":groups[0],"user":username}) 
 
 def taskunclaim(request):
     return render(request, 'ds-tasklist-unclaim.html')    
@@ -14,10 +27,6 @@ def mytask(request):
 
 def dsQueryTaskList(request):
     return render(request, 'DsMyQueryTask.html')  
-
-
-
-
 
 
 def bmtasklist(request):

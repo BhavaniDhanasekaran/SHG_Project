@@ -24,6 +24,7 @@ urlpatterns += auth_urlpatterns
 task_urlpatterns = [
     url(r'^dsdatecount/', task.dsdatecount, name = 'dcount'),
     url(r'^dstasklist/', task.dstasklist, name = 'dstasklist'),
+    url(r'^dstasklistByName/(?P<taskName>[^/]+)', task.dstasklistByName, name = 'dstasklistByName'),
     url(r'^taskunclaim/',task.taskunclaim, name = 'taskunclaim'),
     url(r'^DsQueryTaskList/',task.dsQueryTaskList, name = 'DsQueryTaskList'),
     url(r'^mytask/', task.mytask, name = 'mytask'),
@@ -79,9 +80,7 @@ camundaViews_urlpatterns = [
 urlpatterns += camundaViews_urlpatterns
 
 BMOperations_urlpatterns = [
-    url(r'^assignedBMTaskList/',BMOperations.assignedBMTaskList, name = 'assignedBMTaskList'),
-
-
+    url(r'^getBMTasksByTaskName/(?P<taskName>[^/]+)',BMOperations.getBMTasksByTaskName, name = 'getBMTasksByTaskName'),
 
 ]
 urlpatterns += BMOperations_urlpatterns

@@ -104,7 +104,7 @@ function loadAssignedTaskList(){
 				
 				
 			}
-		obj["unClaim"] = '<button type="submit" onclick="unClaim('+"'"+obj["taskId"]+"'"+');" class="btn btn-danger btn-md button">UnClaim</button>';
+		obj["unClaim"] = '<button type="submit" onclick="unClaim('+"'"+obj["taskId"]+"'"+');window.location.reload();" class="btn btn-danger btn-md button">UnClaim</button>';
 		
 		}
 		dataArray.push(obj);
@@ -157,7 +157,9 @@ $(document).ready(function (){
 		table.fnDeleteRow( nRow, null, true );
 		$('#taskListTable tr td:first-child').each(function(i){
 	        $(this).html(parseInt(i+1));
+	        taskCount();
 		});
+		taskCount();
 	});
 });
 
@@ -280,6 +282,22 @@ function redirectKYCPage(date){
 	var date = date+"T00:00:00";
 	var nextDate = setNextDate(date);
 	window.location = '/KYCCheck/'+date+'/'+nextDate;
+}
+
+function redirectToTaskPage(taskName){
+	window.location = '/dstasklistByName/'+taskName;
+}
+function getBMTasksByTaskName(taskName){
+	$.ajax({
+	    url: '/getBMTasksByTaskName/'+taskName,
+	    dataType: 'json',
+	    success: function (data) {
+	    console.log(data);
+		taskCount();
+		loadUnassignedTaskList(data);
+	    }
+	});	
+
 }
 
 

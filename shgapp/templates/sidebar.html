@@ -13,7 +13,7 @@
         <a href="{% url 'assignedTaskList' %}"> 
         <i class="menu-icon glyphicon glyphicon-edit"></i> 
         <span class="menu-text"> My Task 
-        <span id="myTasks" class="badge badge-danger"></span>
+        <span id="myTasks" class="badge badge-danger">0</span>
         </span>
         </a> 
         <b class="arrow"></b> 
@@ -22,7 +22,7 @@
         <a href="{% url 'KYCTaskList' %}"> 
         <i class="menu-icon glyphicon glyphicon-list-alt"></i> 
         <span class="menu-text"> KYC Task 
-        <span id="KYC_Check" class="badge badge-danger"></span>
+        <span id="KYC_Check" class="badge badge-danger">0</span>
         </span> 
         </a> 
         <b class="arrow"></b>
@@ -31,7 +31,7 @@
         <a href="{% url 'queryRespTaskList' %}">
         <i class="menu-icon glyphicon glyphicon-retweet"></i> 
         <span class="menu-text"> Query Response 
-        <span id="Query_Response" class="badge badge-danger"></span>
+        <span id="Query_Response" class="badge badge-danger">0</span>
         </span> 
         </a>
         <b class="arrow"></b>
@@ -72,55 +72,55 @@
     <!-- /.sidebar-shortcuts -->
     <ul class="nav nav-list">
         <li class=""> 
-            <a href="{% url 'bmtasklist' %}"> 
+            <a href="{% url 'assignedTaskList' %}"> 
                 <i class="menu-icon glyphicon glyphicon-edit"></i>
                 <span class="menu-text"> My Tasks 
-                    <span id="myTasks" class="badge badge-danger"></span> 
+                    <span id="myTasks" class="badge badge-danger">0</span> 
                 </span>
             </a>
             <b class="arrow"></b> 
         </li>
         <li class=""> 
-            <a href="BMMytaskList2.html"> 
+            <a href="#" onclick="redirectToTaskPage('Conduct BAT- Member approval in CRM');"> 
                 <i class="menu-icon glyphicon glyphicon-user"></i> 
                 <span class="menu-text"> BAT Approval
-                    <span class="badge badge-danger"></span> 
+                    <span id="Conduct_BAT-_Member_approval_in_CRM" class="badge badge-danger">0</span> 
                 </span> 
             </a> 
             <b class="arrow"></b>
         </li>
         <li class=""> 
-            <a href="BMMytaskList8.html"> 
+            <a href="#" onclick="redirectToTaskPage('Upload loan documents in Web application');"> 
                 <i class="menu-icon glyphicon glyphicon-cloud-upload"></i>
                 <span class="menu-text"> Upload Docs
-                    <span class="badge badge-danger"></span>
+                    <span id="Upload_loan_documents_in_Web_application" class="badge badge-danger">0</span>
                  </span> 
              </a> 
              <b class="arrow"></b>
          </li>
         <li class=""> 
-            <a href="BMMyQueryTask6.html"> 
+            <a href="#" onclick="redirectToTaskPage('Resolve Data Support Team Query');"> 
                 <i class="menu-icon glyphicon glyphicon-share-alt"></i> 
                 <span class="menu-text"> Query Raised
-                    <span class="badge badge-danger"></span>
+                    <span id="Resolve_Data_Support_Team_Query" class="badge badge-danger">0</span>
                 </span> 
            </a> 
            <b class="arrow"></b>
         </li>
         <li class=""> 
-            <a href="BMMyQueryTask6.html"> 
+            <a href="#" onclick="redirectToTaskPage('Add New Members');"> 
                 <i class="menu-icon glyphicon glyphicon-plus-sign"></i> 
                 <span class="menu-text"> Add new members
-                    <span class="badge badge-danger"></span>
+                    <span id="Add_New_Members" class="badge badge-danger">0</span>
                 </span> 
            </a> 
            <b class="arrow"></b>
         </li>
         <li class=""> 
-            <a href="BMMyQueryTask6.html"> 
+            <a href="#" onclick="redirectToTaskPage('Print Loan Documents & FSR');"> 
                 <i class="menu-icon glyphicon glyphicon-print "></i> 
                 <span class="menu-text"> Print Loan Docs
-                    <span class="badge badge-danger"></span>
+                    <span id="Print_Loan_Documents_&_FSR" class="badge badge-danger">0</span>
                 </span> 
            </a> 
            <b class="arrow"></b>

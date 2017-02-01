@@ -15,42 +15,35 @@ import requests
 helper = Helper()
 camundaClient = CamundaClient()
 
-def assignedBMTaskList(request):
-    try:
-	print "Entering unassignedTaskList(request): view"
-	username = request.user
+
+def getBMTasksByTaskName(request,taskName):
+     try:
+        print "Entering getBMTasksByTaskName(request): view "
+        username = request.user
 	Grp = request.user.groups.all()
         groups = request.user.groups.values_list('name',flat=True)  
-        print "grp:"
-        print groups[0]
-        groupName = groups[0]
-        
-        
 	processInstancesArr = []
+	processInstancesQRArr = []
 	groupTaskDict 	= {}
 	groupTaskData	= []
-	
-	#grp_body_cont 	   = { "unassigned" : "true" , "candidateGroup" : str(groupName) }    
-	grp_body_cont 	   = { "unassigned" : "true" , "candidateGroup" : "CLM_BM" }
+	    
+	grp_body_cont 	   = { "unassigned" : "true" , "name" : taskName }
 	groupTaskList	  = camundaClient._urllib2_request('task?firstResult=0', grp_body_cont, requestType='POST')
-
+	
 	for data in groupTaskList:
 	    processInstancesArr.append(data["processInstanceId"])
             groupTaskDict[data["processInstanceId"]] = data
-	    
-	bodyData = { "processInstanceIdIn": processInstancesArr }  
-	taskProVarList	 = camundaClient._urllib2_request('variable-instance?deserializeValues=false', bodyData, requestType='POST')      
-	    
-	#Process Variable Instance:
-	for data in taskProVarList:
-	    if data["processInstanceId"] in groupTaskDict:
+            
+        bodyData = { "processInstanceIdIn": processInstancesArr }  
+        taskProVarList	 = camundaClient._urllib2_request('variable-instance?deserializeValues=false', bodyData, requestType='POST')   
+        for data in taskProVarList:
+            if data["processInstanceId"] in groupTaskDict:
 	        groupTaskDict[data["processInstanceId"]][data["name"] ] = data["value"]
         	
-    	#Group Task Assign:	
-    	for key in groupTaskDict:
-            groupTaskData.append(groupTaskDict[key])
-            
-        print "Exiting unassignedTaskList(request): view"
-    	return render_to_response('ds-tasklist.html', {"groupTaskList" : json.dumps(groupTaskData),"group" :groups[0],"user":username})
-    except ShgInvalidRequest, e:
+     	for key in groupTaskDict:
+    	    groupTaskData.append(groupTaskDict[key])
+        
+	return HttpResponse(json.dumps(groupTaskData), content_type="application/json")
+     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting task details.')
+    

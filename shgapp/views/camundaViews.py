@@ -143,26 +143,39 @@ def assignedTaskList(request):
     processInstancesArr = []
     myTaskDict 	= {}
     myTaskData	= []
-    myTaskList		= camundaClient._urllib2_request('task?&assignee=kermit', {}, requestType='GET')
+    myTaskList		= camundaClient._urllib2_request('task?&assignee='+str(username), {}, requestType='GET')
 
     for data in myTaskList:
-	processInstancesArr.append(data["processInstanceId"])
-        myTaskDict[data["processInstanceId"]] = data
+    	if groupName == "CLM_BM":
+    	    processInstancesArr.append(data["processInstanceId"])
+    	    dictKey = data["processInstanceId"]+"_"+data["id"]
+            myTaskDict[dictKey] = data 
+    	
+    	else:
+	    processInstancesArr.append(data["processInstanceId"])
+            myTaskDict[data["processInstanceId"]] = data
+            
 	    
     bodyData = { "processInstanceIdIn": processInstancesArr }  
     taskProVarList	 = camundaClient._urllib2_request('variable-instance?deserializeValues=false', bodyData, requestType='POST')      
-	    
     #Process Variable Instance:
     for data in taskProVarList:
-	if data["processInstanceId"] in myTaskDict:
-	    myTaskDict[data["processInstanceId"]][data["name"] ] = data["value"]
-        	
+    	if groupName == "CLM_BM":
+    	    for key in myTaskDict:
+    	    	if key.find(data["processInstanceId"]) != -1:
+	            myTaskDict[key][data["name"] ] = data["value"]
+	else:
+	    if data["processInstanceId"] in myTaskDict:
+	        myTaskDict[data["processInstanceId"]][data["name"] ] = data["value"]
         	
     #Group Task Assign:	
     for key in myTaskDict:
-        if myTaskDict[key].has_key("kyc"):
-            myTaskDict[key]["name"] = "Query Response"
-        myTaskData.append(myTaskDict[key])
+        if groupName == "DataSupportTeam":
+            if myTaskDict[key].has_key("kyc"):
+                myTaskDict[key]["name"] = "Query Response"
+            myTaskData.append(myTaskDict[key])
+        if groupName == "CLM_BM":
+            myTaskData.append(myTaskDict[key])
     
     print "Exiting assignedTaskList(request): view"
     return render(request, 'ds-mytask.html',{"myTaskList" :json.dumps(myTaskData), "group" :groups[0],"user":username})
@@ -170,11 +183,12 @@ def assignedTaskList(request):
 def claim(request, id, name):
     print "Entering claim(request, id, name): view"
     dataObjClaim = {}
+    username = request.user
     try:
 	#claim	
 	if name =="claim":
 	    print name	
-	    dataObjClaim = {"userId": "kermit"}
+	    dataObjClaim = {"userId": str(username)}
             claimTask = camundaClient._urllib2_request('task/'+id+'/claim',dataObjClaim,requestType='POST') 
             print "Exiting claim(request, id, name): view"      
 	    return HttpResponse(json.dumps(claimTask), content_type="application/json" )
@@ -182,7 +196,7 @@ def claim(request, id, name):
 	#Unclaim	
 	if name =="unclaim":
             print name	
-	    dataObjClaim = {"userId": "kermit"}
+	    dataObjClaim = {"userId": str(username)}
             unClaimTask = camundaClient._urllib2_request('task/'+id+'/unclaim',dataObjClaim,requestType='POST')  
             print "Exiting claim(request, id, name): view"     
 	    return HttpResponse(json.dumps(unClaimTask), content_type="application/json" )
@@ -193,48 +207,62 @@ def claim(request, id, name):
     
 def tasksCount( request ):
     print "Entering tasksCount( request ): view"   
-    try:	
+    try:
+        username = request.user
+        Grp = request.user.groups.all()
+        groups = request.user.groups.values_list('name',flat=True)  
+        groupName = groups[0]	
         taskCount = {}
         queryCount = 0
         incrementTaskCount = 0 
-        mytaskURL = camundaClient._urllib2_request('task', {"assignee" : "kermit"}, requestType='POST')
-        urlTask = camundaClient._urllib2_request('task', {"candidateGroup" : "DataSupportTeam"}, requestType='POST')
+        mytaskURL = camundaClient._urllib2_request('task', {"assignee" : str(username)}, requestType='POST')
+        urlTask = camundaClient._urllib2_request('task', {"candidateGroup" : str(groupName)}, requestType='POST')
+        print "urlTask"
+        print urlTask
         for data in mytaskURL:
             if data["name"]:
             	incrementTaskCount += 1
             	taskCount["myTasks"]  = incrementTaskCount 
             else:
                 taskCount["myTasks"]  = incrementTaskCount 
-        	
-        for data in urlTask:
-            if data["name"] in taskCount:
-            	if data["name"] == "KYC Check":
-		    taskCount [data["name"]] = taskCount[data["name"]] + 1
-		    grp_body_cont   = { "processVariables": [{"name"  : "kyc","operator" :"eq","value" : "resolved"	}],"unassigned" : "true","candidateGroup" :"DataSupportTeam"}
-		    groupTaskList	= camundaClient._urllib2_request('task?firstResult=0', grp_body_cont, requestType='POST')
-           	
-           	    if groupTaskList:
-		    	if groupTaskList[0]:
-		     	    taskCount["Query Response"] = len(groupTaskList)
-      	     		    queryCount = len(groupTaskList)
-      	            	else:
-      	            	    taskCount["Query Response"] = 0
-      	            else:
-      	            	    taskCount["Query Response"] = 0
-		else:
-		    taskCount [data["name"]] = taskCount[data["name"]] + 1
-            else:
-                taskCount [data["name"]] = 1  
-                
         
-        if taskCount.has_key('KYC Check'):
-	    taskCount ["KYC Check"]  = taskCount["KYC Check"] - queryCount
-	else:
-            taskCount ["KYC Check"] = 0
-            taskCount["Query Response"] = 0 
+        if groupName == "DataSupportTeam":	
+	    for data in urlTask:
+		if data["name"] in taskCount:
+		    if data["name"] == "KYC Check":
+			taskCount [data["name"]] = taskCount[data["name"]] + 1
+			grp_body_cont   = { "processVariables": [{"name"  : "kyc","operator" :"eq","value" : "resolved"	}],"unassigned" : "true","candidateGroup" :"DataSupportTeam"}
+			groupTaskList	= camundaClient._urllib2_request('task?firstResult=0', grp_body_cont, requestType='POST')
+		   	
+		   	if groupTaskList:
+			    if groupTaskList[0]:
+			        taskCount["Query Response"] = len(groupTaskList)
+	      	     		queryCount = len(groupTaskList)
+	      	            else:
+	      	                taskCount["Query Response"] = 0
+	      	        else:
+	      	            taskCount["Query Response"] = 0
+		    else:
+			taskCount [data["name"]] = taskCount[data["name"]] + 1
+		else:
+		    taskCount [data["name"]] = 1  
+            if taskCount.has_key('KYC Check'):
+	         taskCount ["KYC Check"]  = taskCount["KYC Check"] - queryCount
+            else:
+                 taskCount ["KYC Check"] = 0
+                 taskCount["Query Response"] = 0 
+        
+        if groupName == "CLM_BM":	  
+            for data in urlTask:
+		if data["name"] in taskCount: 
+		    taskCount [data["name"]] = taskCount[data["name"]] + 1    
+                else:
+		    taskCount [data["name"]] = 1
         
         taskData = {  'Task' : taskCount   }
         taskData = json.dumps(taskData)	
+    	print "taskData"
+    	print taskData
     
         response = HttpResponse(taskData, content_type='text/plain')
         response['Content-Length'] = len( taskData )
@@ -315,4 +343,6 @@ def updateTask(request):
 
    
  
+
+
 

@@ -6,6 +6,8 @@
     var taskList    = '{{ taskList | escapejs }}';
     var dateFrom = '{{ dateFrom | escapejs }}';
     var dateTo = '{{ dateTo | escapejs }}';
+    var taskName = '{{ taskName | escapejs }}';
+    console.log(taskName);
     if(taskList){
     	taskList = JSON.parse(taskList);
     }
@@ -13,6 +15,9 @@
     $(document).ready(function(){
     	if(dateFrom && dateTo){
 		KYCTasksGroupByDate(dateFrom,dateTo);
+	}
+	if(taskName){
+		getBMTasksByTaskName(taskName);
 	}
     	taskCount();
 	loadUnassignedTaskList(taskList);
