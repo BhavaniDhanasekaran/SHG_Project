@@ -3,8 +3,14 @@
 {% block javascript %}
 
 <script src="{% static 'datajs/grouplist.js' %}"></script>
+<script src="{% static 'datajs/loadTaskList.js' %}"></script>
 <script src="{% static 'datajs/masterData.js' %}"></script>
+<script>
+$(document).ready(function(){
+taskCount();
 
+});
+</script>
 
 {% endblock %}
 

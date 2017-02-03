@@ -1,13 +1,16 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block javascript %}
-
+<script src="{% static 'datajs/loadTaskList.js' %}"></script>
+<script src="{% static 'datajs/grouplist.js' %}"></script>
 <script>
     var taskList    = '{{ taskList | escapejs }}';
     var dateFrom = '{{ dateFrom | escapejs }}';
     var dateTo = '{{ dateTo | escapejs }}';
     var taskName = '{{ taskName | escapejs }}';
-    console.log(taskName);
+    var group = '{{ group | escapejs }}';
+    
+    console.log(taskName,group);
     if(taskList){
     	taskList = JSON.parse(taskList);
     }
@@ -17,15 +20,17 @@
 		KYCTasksGroupByDate(dateFrom,dateTo);
 	}
 	if(taskName){
-		getBMTasksByTaskName(taskName);
+		if(group == "CLM_BM"){ 
+			getBMTasksByTaskName(taskName);
+			
+		}
 	}
     	taskCount();
 	loadUnassignedTaskList(taskList);
 	
     });
 </script>
-<script src="{% static 'datajs/loadTaskList.js' %}"></script>
-<script src="{% static 'datajs/grouplist.js' %}"></script>
+
 {% endblock %}
 <!-- PAGE CONTENT BEGINS -->
 {% block content %}

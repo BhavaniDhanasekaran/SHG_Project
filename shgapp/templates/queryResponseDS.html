@@ -7,6 +7,7 @@
     var groupId = '{{ groupId | escapejs }}';
     var loanId = '{{ loanId | escapejs }}';
     var taskId = '{{ taskId | escapejs }}';
+    var group = '{{ group | escapejs }}';
     var processInstanceId = '{{ processInstanceId | escapejs }}';
     $(document).ready(function (){
     	getGroupData(groupId,loanId);
@@ -14,21 +15,7 @@
     	$("#idProof").imageBox();
     $("#unbind-pos").draggable();
     });
-      $(function () {
-          $("#sel1").change(function () {
-              if ($(this).val() == "Reject") {
-                  $("#dvPassport").show();
-              } 
       
-      else if ($(this).val() == "Rework") {
-                  $("#dvPassport").show();
-              }
-      
-      else {
-                  $("#dvPassport").hide();
-              }
-          });
-      });
 </script>
 {% endblock %}
 <!-- PAGE CONTENT BEGINS -->
@@ -47,7 +34,7 @@
 </div>
 <div class="col-xs-10" >
 <div class="panel panel-default" style="overflow-x:auto;">
-    <div class="panel-heading"><span id="groupName"></span> <span id="groupId"></span> </div>
+    <div class="panel-heading"><span id="groupName"></span> &nbsp&nbsp&nbsp( <span id="appGroupId"></span> )<span id="groupId" style="visibility:hidden;"></span> </div>
     <div class="panel-body-danger">
         <!-- tab start-->
         <div class="tabbable">
@@ -68,8 +55,9 @@
                                 <img id="MEMBERPHOTO_docPath" class="img img-test" data-url="{% static 'images/naveen.jpg' %}" src="{% static 'images/naveen.jpg' %}" height="135" width="134"  />
                                 &nbsp;&nbsp;&nbsp;<span id="memberNameLabel" class="label label-info arrowed-right arrowed-in  glyphicon-bookmark"> </span>
                                 <br/>
-                                <br/><label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">Member ID   :&nbsp&nbsp&nbsp <span id="memberId"></span></label><br/>
+                                <br/><label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">Member ID   :&nbsp&nbsp&nbsp <span id="appMemberId"></span></label><br/>
                                 <label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">Loan ID    :&nbsp&nbsp&nbsp<span id="loanId"></span></label><br/>
+                                <span id="memberId" style="visibility:hidden;"></span>
                                 <br />
                                 <br />
                             </div>
@@ -224,6 +212,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <span  style="visibility:hidden" id="memberStatus"></span>
                             </div>
                             <div class="row">
                                 <div class="col-md-2"></div>
@@ -245,9 +234,11 @@
                                 <div class="row">
                                     <div class="col-md-2"></div>
                                     <div id="operationsDivId" class="col-md-10">&nbsp;&nbsp;
-                                        <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCQueryForm('Rework');">Rework</button>   
-                                        <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCQueryForm('Approved');">Approve</button>
-                                        <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCQueryForm('Rejected');">Reject</button> 
+                                    	{% if group == "DataSupportTeam" %} 
+                                        <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="updateMemValidationStatus('Rework');">Rework</button>   
+                                        {% endif %}
+                                        <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="updateMemValidationStatus('Approved');">Approve</button>
+                                        <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="updateMemValidationStatus('Rejected');">Reject</button> 
                                     </div>
                                 </div>
                     </section>

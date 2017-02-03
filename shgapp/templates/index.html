@@ -4,9 +4,12 @@
 <script>
     var group = '{{group | escapejs}}';
     console.log(group);
+   
     $(document).ready(function(){
 	taskCount();
+	$("#loading").hide();
     });
+   
 </script>
 <script src="{% static 'datajs/loadTaskList.js' %}"></script>
 {% endblock javascript %}

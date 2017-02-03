@@ -25,7 +25,7 @@
 {% block content %}
 <div class="row">
     <!--2row Start-->
-    <div class="col-xs-2 " >
+    <div class="col-lg-2 pricing-box" >
         <!--2row Start col2 start-->
         <div class="panel panel-default">
             <div class="panel-heading">Group Detail </div>
@@ -36,10 +36,10 @@
     </div>
     
     <!--2row Start col2 End-->
-    <div class="col-xs-10" >
+    <div class="col-lg-10" >
         <!--2row Start col-10 start-->
         <div class="panel panel-default" style="overflow-x:auto;">
-            <div class="panel-heading"><span id="groupName"></span> <span id="groupId"></span> </div>
+            <div class="panel-heading"><span id="groupName"></span> &nbsp&nbsp&nbsp( <span id="appGroupId"></span> ) <span id="groupId" style="visibility:hidden;"></span> </div>
             <div class="panel-body-danger">
                 <!--2row panel body start-->
                 <div class="tabbable">
@@ -57,8 +57,10 @@
 		                            <img id="MEMBERPHOTO_docPath" class="img img-test" data-url="{% static 'images/naveen.jpg' %}" src="{% static 'images/naveen.jpg' %}" height="135" width="134"  />
 		                            &nbsp;&nbsp;&nbsp;<span id="memberNameLabel" class="label label-info arrowed-right arrowed-in  glyphicon-bookmark"> </span>
 		                            <br/>
-		                            <br/><label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">Member ID   :&nbsp&nbsp&nbsp <span id="memberId"></span></label><br/>
+		                            <br/><label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">Member ID   :&nbsp&nbsp&nbsp <span id="appMemberId"></span></label><br/>
 		                            <label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">Loan ID    :&nbsp&nbsp&nbsp<span id="loanId"></span></label><br/>
+		                            <span id="memberId" style="visibility:hidden;"></span>
+		                            <span id="memberStatus" ></span>
 		                            <br />
 		                            <br />
                                     </div>

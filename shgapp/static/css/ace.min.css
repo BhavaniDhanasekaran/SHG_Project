@@ -8209,7 +8209,7 @@ screen and (min--moz-device-pixel-ratio: 1.2) and (max--moz-device-pixel-ratio: 
 }
 .form-actions {
     display: block;
-    background-color: #F5F5F5;
+    /*background-color: #F5F5F5;*/
     border-top: 1px solid #E5E5E5;
     margin-bottom: 20px;
     margin-top: 20px;

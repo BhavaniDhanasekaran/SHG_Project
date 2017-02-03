@@ -1,7 +1,14 @@
 var validationFields = ["memberName","age","husbandName","fatherName","address","villageName","idProofValue","addressProofValue","sbAccountNumber","bankId","sbAccountName",
 			"branch","permanentAddress","pincode","villages","mobileNo","idProofTypeId","addressProofTypeId","loanAmount","loanTypeValue","comment"];
 
-
+var loanTypeDict = {
+   "PLL" : "1",
+   "ATL" : "2",
+   "VVL" : "532",
+   "VV2" : "534",
+   "RVL" : "537",
+   "BDL" : "538"
+};
 
 
 function areasUnderPincode(){

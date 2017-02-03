@@ -328,7 +328,10 @@ def updateTask(request):
         if request.method == "POST":
             print request.body
             formData = json.loads(request.body)
-            bodyData = formData["processUpdate"]
+            if formData["processUpdate"]:
+            	bodyData = formData["processUpdate"]
+            else: 
+            	bodyData = {}
             taskId = formData["taskId"]
             print "bodyData"
             print bodyData
@@ -340,8 +343,21 @@ def updateTask(request):
         return helper.bad_request('Unexpected error occurred.')    
 
 
+def taskComplete(processUpdate,taskId):
+    try:
+        print "Entering taskComplete(processUpdate,taskId) : "
+        if processUpdate:
+        	bodyData = json.dumps(processUpdate)
+        else:
+        	bodyData = {}
+        taskId 	= taskId
+        taskUpdateResponse =  camundaClient._urllib2_request('task/'+taskId+'/complete',bodyData,requestType='POST')     
+        return taskUpdateResponse
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred.')  
 
-   
+
+         
  
 
 

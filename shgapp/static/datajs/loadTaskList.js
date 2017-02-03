@@ -1,7 +1,7 @@
 function loadUnassignedTaskList(data){
 	var groupTaskdata = data;
-	//var groupTaskdata = JSON.parse(groupTaskList);
 	var dataArray = [];
+	$("#loading").hide();
 	for(var key in groupTaskdata){
 		var obj={};
 		if(groupTaskdata[key]["name"]  && groupTaskdata[key]["created"]){
@@ -18,7 +18,8 @@ function loadUnassignedTaskList(data){
 				obj["loanId"] = customerData["loanId"];
 				obj["groupLocation"] = customerData["groupLocation"];
 				obj["loanType"] = customerData["loanTypeName"];
-				obj["shgId"] = customerData["groupId"];
+				//obj["shgId"] = customerData["groupId"];
+				obj["shgId"] = customerData["appGroupId"];
 				obj["shgName"] =customerData["groupName"];
 				obj["groupLoanId"] = obj["groupId"]+"_"+obj["loanId"];
 				obj["clusterName"] =customerData["clusterName"];
@@ -28,7 +29,7 @@ function loadUnassignedTaskList(data){
 				obj["groupFormationDate"] =customerData["groupFormationDate"];
 				
 			}
-		obj["claim"] = '<button type="submit" onclick="claim('+"'"+obj["taskId"]+"'"+');window.location.reload();" class="btn btn-danger btn-md button">Claim</button>';
+		obj["claim"] = '<button type="submit" onclick="claim('+"'"+obj["taskId"]+"'"+');" class="btn btn-danger btn-md button">Claim</button>';
 		
 		
 		}
@@ -37,6 +38,7 @@ function loadUnassignedTaskList(data){
 	}
 	var table = $('#taskListTable').dataTable({
             data: dataArray,
+	    "pageLength": 50,
             rowId: "groupLoanId",
             destroy: true,  
             "bProcessing": true,
@@ -46,7 +48,7 @@ function loadUnassignedTaskList(data){
             "bSortable": true,    
 
             "aoColumns": [    
-                { "mData": "slNo", "sTitle": "S.No", "sWidth": "3%", className:"column"},     
+                //{ "mData": "slNo", "sTitle": "S.No", "sWidth": "3%", className:"column"},     
                 { "mData": "taskName", "sTitle": "Task Name", "sWidth": "13%", className:"column"},                     
                 { "mData": "taskDate","sTitle": "Task Date"  , "sWidth": "8%", className:"column"},
                 { "mData": "loanType","sTitle": "Product Name"  , "sWidth": "8%", className:"column"},
@@ -62,13 +64,13 @@ function loadUnassignedTaskList(data){
             ],                       
         }).fnDestroy();
         table = $('#taskListTable').DataTable( {
-            //paging: false
+            "pageLength": 50 
         } );  
  }
 
 function loadAssignedTaskList(){
+	$("#loading").hide();
 	var myTaskdata = JSON.parse(myTaskList);
-	console.log(myTaskdata);
 	var dataArray = [];
 	for(var key in myTaskdata){
 		var obj={};
@@ -92,9 +94,10 @@ function loadAssignedTaskList(){
 				obj["loanId"] = customerData["loanId"];
 				obj["groupLocation"] = '<a class="tdViewData">'+customerData["groupLocation"]+'</a>';
 				obj["loanType"] = '<a class="tdViewData">'+customerData["loanTypeName"]+'</a>';
-				obj["shgId"] = '<a class="tdViewData">'+customerData["groupId"]+'</a>';
+				//obj["shgId"] = '<a class="tdViewData">'+customerData["groupId"]+'</a>';
+				obj["shgId"] = '<a class="tdViewData">'+customerData["appGroupId"]+'</a>';
 				obj["shgName"] = '<a class="tdViewData">'+customerData["groupName"]+'</a>';
-				obj["groupLoanId"] = obj["groupId"]+"_"+obj["loanId"]+"_"+myTaskdata[key]["name"]+"_"+obj["taskId"]+"_"+obj["processInstanceId"];
+				obj["groupLoanId"] = obj["groupId"]+"_"+obj["loanId"]+"_"+myTaskdata[key]["name"]+"_"+obj["taskId"]+"_"+obj["processInstanceId"]+"_"+customerData["loanTypeName"];
 				obj["clusterName"] ='<a class="tdViewData">'+customerData["clusterName"]+'</a>';
 				obj["centerName"] ='<a class="tdViewData">'+customerData["centerName"]+'</a>';
 				obj["regionName"] ='<a class="tdViewData">'+customerData["regionName"]+'</a>';
@@ -104,15 +107,17 @@ function loadAssignedTaskList(){
 				
 				
 			}
-		obj["unClaim"] = '<button type="submit" onclick="unClaim('+"'"+obj["taskId"]+"'"+');window.location.reload();" class="btn btn-danger btn-md button">UnClaim</button>';
+		obj["unClaim"] = '<button type="submit" onclick="unClaim('+"'"+obj["taskId"]+"'"+');" class="btn btn-danger btn-md button">UnClaim</button>';
 		
 		}
 		dataArray.push(obj);
 	}
 	var table = $('#taskListTable').dataTable({
             data: dataArray,
+            "pageLength": 50,
             rowId: "groupLoanId",
             destroy: true,  
+            
             "bProcessing": true,
             "scrollY": true,
             fixedHeader : true,
@@ -120,7 +125,7 @@ function loadAssignedTaskList(){
             "bSortable": true,    
 
             "aoColumns": [    
-               { "mData": "slNo", "sTitle": "S.No", "sWidth": "3%", className:"column"},     
+              // { "mData": "slNo", "sTitle": "S.No", "sWidth": "3%", className:"column"},     
                 { "mData": "taskName", "sTitle": "Task Name", "sWidth": "13%", className:"column"},                     
                 { "mData": "taskDate","sTitle": "Task Date"  , "sWidth": "8%", className:"column"},
                 { "mData": "loanType","sTitle": "Product Name"  , "sWidth": "8%", className:"column"},
@@ -135,10 +140,14 @@ function loadAssignedTaskList(){
                   
             ],                       
         }).fnDestroy();
-        table = $('#taskListTable').DataTable( { } );  
+        table = $('#taskListTable').DataTable( {
+        	"pageLength": 50 
+        } );  
 }
 
 $(document).ready(function (){
+	taskCount();
+	
 	$('.tdViewData').click(function() {
 	    	var trId = $(this).closest('tr').attr('id');
 	    	var groupLoanID = trId;
@@ -148,20 +157,68 @@ $(document).ready(function (){
 		taskName = groupLoanIDSplit[2];
 		taskId = groupLoanIDSplit[3];
 		processInstanceId = groupLoanIDSplit[4];
-		
-		redirectPage(groupID,loanID,taskName,taskId,processInstanceId);
+		loanType = groupLoanIDSplit[5];
+		window.location = '/SHGForm/'+groupID+'/'+loanID+'/'+taskId+'/'+processInstanceId+'/'+taskName+'/'+loanType;
+		//redirectPage(groupID,loanID,taskName,taskId,processInstanceId);
+	});
+	$('.paginate_button').click(function() {
+		triggerLoadFunc();
+	});
+	$('.dataTables_length').click(function() {
+		triggerLoadFunc();
+	});
+	$('.dataTables_filter').click(function() {
+		triggerLoadFunc();
+	});
+	$('.sorting').click(function() {
+		triggerLoadFunc();
 	});
 	$('.button').click(function() {
 	    	var nRow = $(this).parent().parent()[0];
 	    	var table=$("#taskListTable").dataTable();
 		table.fnDeleteRow( nRow, null, true );
-		$('#taskListTable tr td:first-child').each(function(i){
-	        $(this).html(parseInt(i+1));
-	        taskCount();
-		});
-		taskCount();
+		var rows = $('#taskListTable >tbody >tr').length;
+		if(rows == 1){
+			if($('td').hasClass('dataTables_empty')) {
+				window.location.reload();
+			}
+		}
 	});
+	$('.progress .progress-bar').css("width",
+                function() {
+                    return $(this).attr("aria-valuenow") + "%";
+                }
+        );
 });
+
+function triggerLoadFunc(){
+	taskCount();
+	$('.tdViewData').click(function() {
+	    	var trId = $(this).closest('tr').attr('id');
+	    	var groupLoanID = trId;
+		groupLoanIDSplit = groupLoanID.split("_");
+		groupID = groupLoanIDSplit[0];
+		loanID = groupLoanIDSplit[1];
+		taskName = groupLoanIDSplit[2];
+		taskId = groupLoanIDSplit[3];
+		processInstanceId = groupLoanIDSplit[4];
+		window.location = '/SHGForm/'+groupID+'/'+loanID+'/'+taskId+'/'+processInstanceId+'/'+taskName;
+		//redirectPage(groupID,loanID,taskName,taskId,processInstanceId);
+	});
+	$('.button').click(function() {
+	    	var nRow = $(this).parent().parent()[0];
+	    	var table=$("#taskListTable").dataTable();
+		table.fnDeleteRow( nRow, null, true );
+		var rows = $('#taskListTable >tbody >tr').length;
+		if(rows == 1){
+			if($('td').hasClass('dataTables_empty')) {
+				window.location.reload();
+			}
+		}
+	});
+	
+
+}
 
 
 function taskCount(){
@@ -169,7 +226,6 @@ function taskCount(){
 	    url: '/tasksCount',
 	    dataType: 'json',
 	    success: function (data) {
-	    console.log(data);
 		if(data["Task"]){
 			for(var key in data["Task"]){
 				var newKey = '';
@@ -190,13 +246,13 @@ function taskCount(){
 				}
 			}
 		}
+	   
 	    }
 	});
 }
 
 
 function claim(d){
-console.log(d);
 	$.ajax({
 	    url: '/task/'+d+'/claim/user',
 	    dataType: 'json',
@@ -217,6 +273,7 @@ function unClaim(d){
 }
 
 function filterKYCTasksByDate(){
+	$("#loading").hide();
 	var groupTaskdata = JSON.parse(groupTaskList);
 	var dateDict = {};
 	var dateArray=[];
@@ -255,8 +312,15 @@ function KYCTasksGroupByDate(dateFrom,dateto){
 	$.ajax({
 	    url: '/KYCTasksGroupByDate/'+dateFrom+'/'+dateto,
 	    dataType: 'json',
+	    beforeSend: function(){
+     		$("#loading").show();
+	    },
+	    complete: function(){
+		$("#loading").hide();
+	    },
 	    success: function (data) {
 	    	loadUnassignedTaskList(data);
+	    	triggerLoadFunc();
 	    }
 	});
 }
@@ -291,10 +355,16 @@ function getBMTasksByTaskName(taskName){
 	$.ajax({
 	    url: '/getBMTasksByTaskName/'+taskName,
 	    dataType: 'json',
+	    beforeSend: function(){
+     		$("#loading").show();
+	    },
+	    complete: function(){
+		$("#loading").hide();
+	    },
 	    success: function (data) {
-	    console.log(data);
 		taskCount();
 		loadUnassignedTaskList(data);
+		triggerLoadFunc();
 	    }
 	});	
 

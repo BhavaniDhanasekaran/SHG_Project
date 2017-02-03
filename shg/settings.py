@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'shg.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
-DATABASES = {
+'''DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'shg_test_django',
@@ -88,10 +88,10 @@ DATABASES = {
         'HOST': 'vvlmadura.cwxetrwsi128.ap-southeast-1.rds.amazonaws.com',
         'PORT': '5432',
     }
-}
+}'''
 
 
-'''DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'shg3db',
@@ -100,7 +100,7 @@ DATABASES = {
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
-}'''
+}
 
 
 # Password validation
@@ -150,8 +150,17 @@ STATICFILES_DIRS = [
     '/var/www/static/',
 ]
 
-CAMUNDA_BASE_URL = 'http://52.221.13.230:8086/engine-rest/'
-SSCORE_BASE_URL = 'http://52.221.14.215:8085/sangamam-core/'
-#CAMUNDA_BASE_URL = 'http://192.168.10.88:8086/engine-rest/'
-#SSCORE_BASE_URL = 'http://192.168.10.71:8085/sangamam-core/'
+#CAMUNDA_BASE_URL = 'http://52.221.13.230:8086/engine-rest/'
+#SSCORE_BASE_URL = 'http://52.221.14.215:8085/sangamam-core/'
+CAMUNDA_BASE_URL = 'http://192.168.10.88:8086/engine-rest/'
+SSCORE_BASE_URL = 'http://192.168.10.71:8085/sangamam-core/'
 
+
+
+
+AWS_ACCESS_KEY_ID='AKIAI5V5HCE63MCHXEUA'
+AWS_SECRET_ACCESS_KEY='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'
+AWS_REGION_NAME='ap-southeast-1'
+AWS_BUCKET_NAME = 'testingdocuments.mmfl.in'
+AWS_BUCKET_FOLDER_PATH = 'shgbpm/legaldocuments/'
+AWS_S3_BASE_URL='https://s3-ap-southeast-1.amazonaws.com/testingdocuments.mmfl.in/shgbpm/legaldocuments/'
