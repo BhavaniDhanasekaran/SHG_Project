@@ -131,6 +131,7 @@ function uploaddoc(fileid,docName,groupId){
                        $("#"+fileid+"_1").css("display","none");
                         $("#"+fileid+"_2").css("display","block");
                         $("#"+fileid+"_2").attr('onClick', 'window.open('+"'"+s3url+"'"+');');
+                       //$("#"+fileid+"_2").attr('onClick', 'window.open ('+"'"+s3url+"'"+',"mywindow","menubar=1,resizable=1,width=350,height=250");'); 
                   }
                   else 
                   {
