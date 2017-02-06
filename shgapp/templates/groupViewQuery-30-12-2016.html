@@ -1,0 +1,890 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block javascript %}
+<script src="{% static 'datajs/grouplist.js' %}"></script>
+{% endblock %}
+<!-- PAGE CONTENT BEGINS -->
+{% block content %}
+
+                    <div class="row">
+                        <!--second row strat-->
+                        <div class="col-xs-2" >
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Group Detail </div>
+                                <div class="panel-body">
+                                    <div class="list-group" id="san_test">
+                                    </div>
+                                </div>
+                                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	  </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-10" >
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Rose Group (3242423 ) </div>
+                                <div class="panel-body-danger">
+                                    <!-- tab start-->
+                                    <div class="tabbable">
+                                        <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
+                                            <li class="active">
+                                                <a data-toggle="tab" href="#home4">Member</a>												
+                                            </li>
+                                            <li>
+                                                <a data-toggle="tab" href="#profile4">Credit Enquiry</a>												
+                                            </li>
+                                            <li>
+                                                <a data-toggle="tab" href="#dropdown14">Documents</a>												
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div id="home4" class="tab-pane in active">
+                                                <!-- form start-->
+                                                <section >
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            <img src="/home/testuser/shg1/shgapp/static/images/naveen.jpg" height="135" width="134" class="img-rounded img-responsive" />
+                                                            &nbsp;&nbsp;&nbsp;<span id="memberNameLabel"  class="label label-info arrowed-right arrowed-in  glyphicon-bookmark"> </span>
+                                                            <br />
+                                                            <br />
+                                                            <script type="text/javascript">
+                                                                $(function () {
+                                                                    $("#sel1").change(function () {
+                                                                        if ($(this).val() == "Reject") {
+                                                                            $("#dvPassport").show();
+                                                                        } 
+                                                                
+                                                                else if ($(this).val() == "Rework") {
+                                                                            $("#dvPassport").show();
+                                                                        }
+                                                                
+                                                                else {
+                                                                            $("#dvPassport").hide();
+                                                                        }
+                                                                    });
+                                                                });
+                                                            </script>
+                                                        </div>
+                                                        <!--secnod div started-->
+                                                        <div class="col-md-5">
+                                                            <form class="form-horizontal" role="form">
+                                                            <div class="profile-user-info profile-user-info-striped">
+                                                                <div class="profile-info-row">
+                                                                    <div class="profile-info-name"> Name  </div>
+                                                                    <div class="profile-info-value">
+                                                                        <span class="editable" id="memberName"></span>													
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-info-row">
+                                                                    <div class="profile-info-name"> Age </div>
+                                                                    <div class="profile-info-value">
+                                                                        <span class="editable" id="age"> </span>													
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-info-row">
+                                                                    <div class="profile-info-name"> Spouse  </div>
+                                                                    <div class="profile-info-value">
+                                                                        <span class="editable" id="spouseName"></span>													
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-info-row">
+                                                                    <div class="profile-info-name"> Father </div>
+                                                                    <div class="profile-info-value">
+                                                                        <span class="editable" id="fatherName"></span>													
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-info-row">
+                                                                    <div class="profile-info-name"> Address </div>
+                                                                    <div class="profile-info-value">
+                                                                        <span class="editable" id="address">
+                                                                       
+                                                                        </span>													
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-info-row">
+                                                                    <div class="profile-info-name"> Role </div>
+                                                                    <div class="profile-info-value">
+                                                                        <span class="editable" id="roleName"> </span>													
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-info-row">
+                                                                    <div class="profile-info-name"> Village </div>
+                                                                    <div class="profile-info-value">
+                                                                        <span class="editable" id="villageName">    </span>													
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--secnod div ended-->
+                                                        <div class="col-md-5">
+                                                            <div class="profile-user-info profile-user-info-striped">
+                                                                <div class="profile-info-row">
+                                                                    <div class="profile-info-name"> ID Proof </div>
+                                                                    <div class="profile-info-value">
+                                                                        <span class="editable" id="idProofValue">    </span>	
+                                                                        &nbsp;&nbsp; <button type="button" class="btn btn-info btn-md btn-danger" id="myBtn2">view proof</button>												
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-info-row">
+                                                                    <div class="profile-info-name"> Address Proof </div>
+                                                                    <div class="profile-info-value">
+                                                                        <span class="editable" id="addressProofValue">    </span>
+                                                                        &nbsp;&nbsp; <button type="button" class="btn btn-info btn-md btn-danger" id="myBtn3">view proof</button>		
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-info-row">
+                                                                    <div class="profile-info-name"> SB Account  </div>
+                                                                    <div class="profile-info-value">
+                                                                        <span class="editable" id="sbAccountNumber">  </span>													
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-info-row">
+                                                                    <div class="profile-info-name"> Bank name </div>
+                                                                    <div class="profile-info-value">
+                                                                        <span class="editable" id="username">
+                                                                            <select>
+                                                                                <option> SBI</option>
+                                                                                <option> Indian Bank</option>
+                                                                                <option> ICC</option>
+                                                                            </select>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-info-row">
+                                                                    <div class="profile-info-name"> Name (as in Bank Account) * </div>
+                                                                    <div class="profile-info-value">
+                                                                        <span class="editable" id="sbAccountName">   </span>													
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+                                                        </div>
+                                                    </div>
+                                                    <!-- ROW END -->
+                                                    <br>
+                                                    <div class="row">
+                                                        <div class="col-md-2"> 
+                                                            <span class="label label-lg label-primary arrowed arrowed-right">CB Response <b>:Eligble</b></span>
+                                                        </div>
+                                                        <div class="col-md-5">
+                                                            <div class="profile-user-info profile-user-info-striped">
+                                                                <div class="profile-info-row">
+                                                                    <div class="profile-info-name"> Permanent Addresss</div>
+                                                                    <div class="profile-info-value">
+                                                                        <span class="editable" id="permanentAddress">    
+                                                                        
+                                                                        </span>													
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-info-row">
+                                                                    <div class="profile-info-name"> Pin Code  </div>
+                                                                    <div class="profile-info-value">
+                                                                        <span class="editable" id="pincode">   </span>													
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-info-row">
+                                                                    <div class="profile-info-name"> Area </div>
+                                                                    <div class="profile-info-value">
+                                                                        <span class="editable" >
+                                                                            <select>
+                                                                                <option> Guidyatam </option>
+                                                                                <option> Kattakulathur</option>
+                                                                                <option> kondapeti</option>
+                                                                            </select>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-info-row">
+                                                                    <div class="profile-info-name"> Mobile no </div>
+                                                                    <div class="profile-info-value">
+                                                                        <span class="editable" id="mobileNo">    </span>													
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-5">
+                                                            <div class="profile-user-info profile-user-info-striped">
+                                                                <div class="profile-info-row">
+                                                                    <div class="profile-info-name"> Id  Proof Type</div>
+                                                                    <div class="profile-info-value">
+                                                                        <select>
+                                                                            <option> Addhar Card</option>
+                                                                            <option> Pan Card</option>
+                                                                            <option> Driving licence</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-info-row">
+                                                                    <div class="profile-info-name"> Address Proof Type </div>
+                                                                    <div class="profile-info-value">
+                                                                        <select>
+                                                                            <option> Driving licence</option>
+                                                                            <option> Addhar Card</option>
+                                                                            <option> Ration Card</option>
+                                                                        </select>
+                                                                        </span>													
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-info-row">
+                                                                    <div class="profile-info-name"> Loan Amount  </div>
+                                                                    <div class="profile-info-value">
+                                                                        <span class="editable" id="loanAmount">   </span>													
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-info-row">
+                                                                    <div class="profile-info-name"> Loan purpose  </div>
+                                                                    <div class="profile-info-value">
+                                                                        <span class="editable">
+                                                                            <select>
+                                                                                <option> Agricultural</option>
+                                                                                <option> Pet Shop</option>
+                                                                                <option> Tea Shop</option>
+                                                                            </select>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <br>
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                        </div>
+                                                        <div class="col-md-10">
+                                                            <div class="form-group">
+                                                                <label for="comment">Comment:</label>
+                                                                <textarea class="form-control" rows="3" id="comment"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-2"></div>
+                                                            <div class="col-md-10">
+                                                                &nbsp;&nbsp; <button type="button" class="btn btn-danger btn-md" id="myBtn2">Cancel</button>
+                                                                   <button type="button" class="btn btn-danger btn-md" id="myBtn2">Query</button>	
+                                                                   <button type="button" class="btn btn-danger btn-md" id="myBtn2">Approve</button>
+                                                                   <button type="button" class="btn btn-danger btn-md" id="myBtn2">Reject</button>	
+                                                            </div>
+                                                        </div>
+                                                </section>
+                                                <!-- SECTION END -->
+                                                <!-- CONATINER END -->
+                                                <!--form End-->
+                                                </div>
+                                                <div id="profile4" class="tab-pane">
+                                                    <div class="page-content">
+                                                        <div class="row">
+                                                            <div class="col-xs-12">
+                                                                <!-- PAGE CONTENT BEGINS -->
+                                                                <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
+                                                                    <div class="widget-box widget-color-blue" id="widget-box-2">
+                                                                        <div class="widget-header">
+                                                                            <h5 class="widget-title bigger lighter">
+                                                                                Credit Enquiry                          
+                                                                            </h5>
+                                                                            <div class="widget-toolbar widget-toolbar-light no-border">
+                                                                                <select id="simple-colorpicker-1" class="hide">
+                                                                                    <option selected="" data-class="blue" value="#981b1b">#307ECC</option>
+                                                                                    <option data-class="blue2" value="#981b1b">#5090C1</option>
+                                                                                    <option data-class="blue3" value="#981b1b">#6379AA</option>
+                                                                                    <option data-class="green" value="#981b1b">#82AF6F</option>
+                                                                                    <option data-class="green2" value="#981b1b">#2E8965</option>
+                                                                                    <option data-class="green3" value="#981b1b">#5FBC47</option>
+                                                                                    <option data-class="red" value="#981b1b">#E2755F</option>
+                                                                                    <option data-class="red2" value="#981b1b">#E04141</option>
+                                                                                    <option data-class="red3" value="#981b1b">#D15B47</option>
+                                                                                    <option data-class="orange" value="#981b1b">#FFC657</option>
+                                                                                    <option data-class="purple" value="#981b1b">#7E6EB0</option>
+                                                                                    <option data-class="pink" value="#981b1b">#CE6F9E</option>
+                                                                                    <option data-class="dark" value="#981b1b">#404040</option>
+                                                                                    <option data-class="grey" value="#981b1b">#848484</option>
+                                                                                    <option data-class="default" value="#981b1b">#EEE</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="widget-body">
+                                                                            <div class="widget-main no-padding">
+                                                                                <table class="table table-striped table-bordered table-hover">
+                                                                                    <thead class="thin-border-bottom">
+                                                                                        <tr>
+                                                                                            <th><i class="ace-icon fa fa-user"></i>S.No</th>
+                                                                                            <th>Product</th>
+                                                                                            <th>Status</th>
+                                                                                            <th>Remarks</th>
+                                                                                            <th>HM Response Date</th>
+                                                                                            <th>Existing Loan Limit</th>
+                                                                                            <th>Loan Amount Eligible</th>
+                                                                                            <th>MFI Eligible</th>
+                                                                                            <th>MFI 1 Name</th>
+                                                                                            <th>Overdue_1</th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <tr>
+                                                                                            <td class="">1</td>
+                                                                                            <td class="">PLL</td>
+                                                                                            <td class="">ELIGIBLE</td>
+                                                                                            <td class="">Eligible: 1 live Loan with other mfi</td>
+                                                                                            <td class="">12/11/2016</td>
+                                                                                            <td class="">28124</td>
+                                                                                            <td class="">31876</td>
+                                                                                            <td class="">1</td>
+                                                                                            <td class="">INTREPID FINANCE AND LEASING</td>
+                                                                                            <td class="">0</td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- /.span -->
+                                                            </div>
+                                                            <!-- /.row -->
+                                                            <!-- PAGE CONTENT ENDS -->
+                                                        </div>
+                                                        <!-- /.col -->
+                                                    </div>
+                                                </div>
+                                                <div id="dropdown14" class="tab-pane">
+                                                    <div id="timeline-2" >
+                                                        <div class="row">
+                                                            <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+                                                                <div class="timeline-container timeline-style2">
+                                                                    <span class="timeline-label">
+                                                                    <b>May 15</b>												</span>
+                                                                    <div class="timeline-items">
+                                                                        <div class="timeline-item clearfix">
+                                                                            <div class="timeline-info">
+                                                                                <span class="timeline-date">11:15 pm</span>
+                                                                                <i class="timeline-indicator btn btn-info no-hover"></i>														
+                                                                            </div>
+                                                                            <div class="widget-box transparent">
+                                                                                <div class="widget-body">
+                                                                                    <div class="widget-main no-padding">
+                                                                                        <span class="bigger-110">
+                                                                                        <a href="#" class="purple bolder">Susan</a>
+                                                                                        reviewed a productdfds																	</span>
+                                                                                        <br />
+                                                                                        <i class="ace-icon fa fa-hand-o-right grey bigger-125"></i>
+                                                                                        <a href="#">Click to read &hellip;</a>																
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="timeline-item clearfix">
+                                                                            <div class="timeline-info">
+                                                                                <span class="timeline-date">12:30 pm</span>
+                                                                                <i class="timeline-indicator btn btn-info no-hover"></i>														
+                                                                            </div>
+                                                                            <div class="widget-box transparent">
+                                                                                <div class="widget-body">
+                                                                                    <div class="widget-main no-padding">
+                                                                                        Going to
+                                                                                        <span class="green bolder">veg cafe</span>
+                                                                                        for lunch																
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="timeline-item clearfix">
+                                                                            <div class="timeline-info">
+                                                                                <span class="timeline-date">11:15 pm</span>
+                                                                                <i class="timeline-indicator btn btn-info no-hover"></i>														
+                                                                            </div>
+                                                                            <div class="widget-box transparent">
+                                                                                <div class="widget-body">
+                                                                                    <div class="widget-main no-padding">
+                                                                                        Designed a new logo for our website. Would appreciate feedback.
+                                                                                        <a href="#">
+                                                                                        Click to see
+                                                                                        <i class="ace-icon fa fa-search-plus blue bigger-110"></i>																	</a>
+                                                                                        <div class="space-2"></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="timeline-item clearfix">
+                                                                            <div class="timeline-info">
+                                                                                <span class="timeline-date">9:00 am</span>
+                                                                                <i class="timeline-indicator btn btn-info no-hover"></i>														
+                                                                            </div>
+                                                                            <div class="widget-box transparent">
+                                                                                <div class="widget-body">
+                                                                                    <div class="widget-main no-padding"> Took the final exam. Phew! </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- /.timeline-items -->
+                                                                </div>
+                                                                <!-- /.timeline-container -->
+                                                                <div class="timeline-container timeline-style2">
+                                                                    <span class="timeline-label">
+                                                                    <b>May 16</b>												</span>
+                                                                    <div class="timeline-items">
+                                                                        <div class="timeline-item clearfix">
+                                                                            <div class="timeline-info">
+                                                                                <span class="timeline-date">9:00 am</span>
+                                                                                <i class="timeline-indicator btn btn-success no-hover"></i>														
+                                                                            </div>
+                                                                            <div class="widget-box transparent">
+                                                                                <div class="widget-body">
+                                                                                    <div class="widget-main no-padding">
+                                                                                        <div class="clearfix">
+                                                                                            <div class="pull-left">
+                                                                                                <span class="orange2 bolder">Haloween party</span>
+                                                                                                Lots of fun at Haloween party.
+                                                                                                <br />
+                                                                                                Take a look at some pics:																		
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="timeline-item clearfix">
+                                                                            <div class="timeline-info">
+                                                                                <span class="timeline-date">9:00 am</span>
+                                                                                <i class="timeline-indicator btn btn-success no-hover"></i>														
+                                                                            </div>
+                                                                            <div class="widget-box transparent">
+                                                                                <div class="widget-body">
+                                                                                    <div class="widget-main no-padding">
+                                                                                        Anim pariatur cliche reprehenderit, enim eiusmod
+                                                                                        <span class="pink2 bolder">high life</span>
+                                                                                        accusamus terry richardson ad squid&hellip;																
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="timeline-item clearfix">
+                                                                            <div class="timeline-info">
+                                                                                <span class="timeline-date">9:00 am</span>
+                                                                                <i class="timeline-indicator btn btn-success no-hover"></i>														
+                                                                            </div>
+                                                                            <div class="widget-box transparent">
+                                                                                <div class="widget-body">
+                                                                                    <div class="widget-main no-padding"> Going to cafe for lunch </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="timeline-item clearfix">
+                                                                            <div class="timeline-info">
+                                                                                <span class="timeline-date">9:00 am</span>
+                                                                                <i class="timeline-indicator btn btn-success no-hover"></i>														
+                                                                            </div>
+                                                                            <div class="widget-box transparent">
+                                                                                <div class="widget-body">
+                                                                                    <div class="widget-main no-padding">
+                                                                                        <span class="red bolder">Critical security patch released</span>
+                                                                                        <br />
+                                                                                        Please download the new patch for maximum security.																
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- /.timeline-items -->
+                                                                </div>
+                                                                <!-- /.timeline-container -->
+                                                                <div class="timeline-container timeline-style2">
+                                                                    <span class="timeline-label">
+                                                                    <b>May 17</b>												</span>
+                                                                    <div class="timeline-items">
+                                                                        <div class="timeline-item clearfix">
+                                                                            <div class="timeline-info">
+                                                                                <span class="timeline-date">9:00 am</span>
+                                                                                <i class="timeline-indicator btn btn-grey no-hover"></i>														
+                                                                            </div>
+                                                                            <div class="widget-box transparent">
+                                                                                <div class="widget-body">
+                                                                                    <div class="widget-main no-padding">
+                                                                                        <span class="bolder blue">Lorum Ipsum</span>
+                                                                                        Anim pariatur cliche reprehenderit, enim eiusmod
+                                                                                        <span class="purple bolder">high life</span>
+                                                                                        accusamus terry richardson ad squid&hellip;																
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- /.timeline-items -->
+                                                                </div>
+                                                                <!-- /.timeline-container -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--- tab end>
+                                    </div>
+                                    </div>
+                                    
+                                                              
+                                                                </div>
+                                                              
+                                                              
+                                                              </div> <!--second row Ended-->
+                                <!-- PAGE CONTENT BEGINS -->
+                                <!-- PAGE CONTENT ENDS -->
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.page-content -->
+                </div>
+            </div>
+            <!-- /.main-content -->
+            <!-- Modal -->
+            <div id="dialog-confirm" class="hide">
+                <div class="alert alert-info bigger-110">
+                    These items will be permanently deleted and cannot be recovered.											
+                </div>
+                <div class="space-6"></div>
+                <p class="bigger-110 bolder center grey">
+                    <i class="ace-icon fa fa-hand-o-right blue bigger-120"></i>
+                    Are you sure?											
+                </p>
+            </div>
+            <!-- #dialog-confirm -->
+            <!-- Modal -->
+            <div class="modal fade" id="myModal2" role="dialog" >
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">×</button>
+                            <h4 class="modal-title">AADAR CARD</h4>
+                        </div>
+                        <div class="modal-body">
+                            <img src="http://cdn.aadharcardkendra.org.in/wp-content/uploads/2015/03/generated-aadhar-card.jpg" width="500" height="300">        
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal End -->		
+            <!-- Modal -->
+            <div class="modal fade" id="myModal3" role="dialog" >
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">×</button>
+                            <h4 class="modal-title">Driving  licence</h4>
+                        </div>
+                        <div class="modal-body">
+                            <img src="licence.jpg" width="500" height="300">        
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal End -->
+            <!--modal start query view -->
+            <div id="right-menu" class="modal aside" data-body-scroll="false" data-offset="true" data-placement="right" 
+                data-fixed="true" data-backdrop="false" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header no-padding">
+                            <div class="table-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                <span class="white">&times;</span>													</button>
+                                Queries												
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <!--- query resolution started -->
+                            <div class="widget-box transparent">
+                                <div class="widget-header widget-header-small">
+                                    <h4 class="widget-title blue smaller">
+                                        <i class="ace-icon fa fa-rss orange"></i>
+                                        Recent Queries													
+                                    </h4>
+                                </div>
+                                <div class="widget-body">
+                                    <div class="widget-main padding-8">
+                                        <div id="profile-feed-1" class="profile-feed">
+                                            <div class="profile-activity clearfix">
+                                                <div>
+                                                    <a class="user" href="#"> Data Support Team: </a>
+                                                    Please upload photo
+                                                    <div class="time">
+                                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                                                        Wed Dec 07 2016 18:20:31																	
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="profile-activity clearfix">
+                                                <div>
+                                                    <a class="user" href="#"> MRA: </a>
+                                                    Photo was uploaded
+                                                    <div class="time">
+                                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                                                        Wed Dec 07 2016 18:20:3																	
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="profile-activity clearfix">
+                                                <div>
+                                                    <a class="user" href="#"> MRA: </a>
+                                                    Photo was uploaded
+                                                    <div class="time">
+                                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                                                        Wed Dec 07 2016 18:20:3																	
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="profile-activity clearfix">
+                                                <div>
+                                                    <a class="user" href="#"> MRA: </a>
+                                                    Photo was uploaded
+                                                    <div class="time">
+                                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                                                        Wed Dec 07 2016 18:20:3																	
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="profile-activity clearfix">
+                                                <div>
+                                                    <a class="user" href="#"> MRA: </a>
+                                                    Photo was uploaded
+                                                    <div class="time">
+                                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                                                        Wed Dec 07 2016 18:20:3																	
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="profile-activity clearfix">
+                                                <div>
+                                                    <a class="user" href="#"> MRA: </a>
+                                                    Photo was uploaded
+                                                    <div class="time">
+                                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                                                        Wed Dec 07 2016 18:20:3																	
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="profile-activity clearfix">
+                                                <div>
+                                                    <a class="user" href="#"> MRA: </a>
+                                                    Photo was uploaded
+                                                    <div class="time">
+                                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                                                        Wed Dec 07 2016 18:20:3																	
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="profile-activity clearfix">
+                                                <div>
+                                                    <a class="user" href="#"> MRA: </a>
+                                                    Photo was uploaded
+                                                    <div class="time">
+                                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                                                        Wed Dec 07 2016 18:20:3																	
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="profile-activity clearfix">
+                                                <div>
+                                                    <a class="user" href="#"> MRA: </a>
+                                                    Photo was uploaded
+                                                    <div class="time">
+                                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                                                        Wed Dec 07 2016 18:20:3																	
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="profile-activity clearfix">
+                                                <div>
+                                                    <a class="user" href="#"> MRA: </a>
+                                                    Photo was uploaded
+                                                    <div class="time">
+                                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                                                        Wed Dec 07 2016 18:20:3																	
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="profile-activity clearfix">
+                                                <div>
+                                                    <a class="user" href="#"> MRA: </a>
+                                                    Photo was uploaded
+                                                    <div class="time">
+                                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                                                        Wed Dec 07 2016 18:20:3																	
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="profile-activity clearfix">
+                                                <div>
+                                                    <a class="user" href="#"> MRA: </a>
+                                                    Photo was uploaded
+                                                    <div class="time">
+                                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                                                        Wed Dec 07 2016 18:20:3																	
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="profile-activity clearfix">
+                                                <div>
+                                                    <a class="user" href="#"> MRA: </a>
+                                                    Photo was uploaded
+                                                    <div class="time">
+                                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                                                        Wed Dec 07 2016 18:20:3																	
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="profile-activity clearfix">
+                                                <div>
+                                                    <a class="user" href="#"> MRA: </a>
+                                                    Photo was uploaded
+                                                    <div class="time">
+                                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                                                        Wed Dec 07 2016 18:20:3																	
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="profile-activity clearfix">
+                                                <div>
+                                                    <a class="user" href="#"> MRA: </a>
+                                                    Photo was uploaded
+                                                    <div class="time">
+                                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                                                        Wed Dec 07 2016 18:20:3																	
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--- query resolution end -->
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                    <button id="commentsBtn" class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn" data-target="#right-menu" data-toggle="modal"  type="button">
+                    Comments	</button>
+                    <!-- /.modal-dialog -->
+                    <!--modal  query end-->
+                    
+                </div>
+            </div>
+          
+            <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+            <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>			</a>		
+        </div>{% endblock content %}
+        <!-- /.main-container -->
+        <!-- basic scripts -->
+        <!--[if !IE]> -->
+        <script src="assets/js/jquery-2.1.4.min.js"></script>
+        <!-- <![endif]-->
+        <!--[if IE]>
+        <script src="assets/js/jquery-1.11.3.min.js"></script>
+        <![endif]-->
+        <script type="text/javascript">
+            if('ontouchstart' in document.documentElement) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+        </script>
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+        <!--<style>
+            body .modal {
+                width: inherit;
+               margin-left: -280px;
+            }
+            </style>-->
+        <!-- page specific plugin scripts -->
+        <script>
+            $(document).ready(function(){
+            	$("#myBtn2").click(function(){
+            		$("#myModal2").modal({ modal: false ,backdrop: false,   keyboard: true,});
+            		$("#myModal2").draggable();
+            	});
+            	
+            	$("#myBtn3").click(function(){
+            		$("#myModal3").modal({ modal: false ,backdrop: false,   keyboard: true,});
+            		$("#myModal3").draggable();
+            	});
+            });
+            
+        </script>
+        <script>
+            $(document).ready(function(){
+            	
+            	$("#divSchedule").dialog({show: "slide", modal: false, autoOpen: false,width: "auto",height: "auto"});
+            	$("#btn").click(function () {
+            		$("#divSchedule").dialog("open"); 
+            		return false;
+            	});
+            });
+        </script>
+        <script>
+            $( "#id-btn-dialog2" ).on('click', function(e) {
+            
+            			
+            		e.preventDefault();
+            	
+            		$( "#dialog-confirm" ).removeClass('hide').dialog({
+            			resizable: false,
+            			width: '320',
+            			modal: false,
+            			
+            			buttons: [
+            				{
+            					html: "<i class='ace-icon fa fa-trash-o bigger-110'></i>&nbsp; Delete all items",
+            					"class" : "btn btn-danger btn-minier",
+            					click: function() {
+            						$( this ).dialog( "close" );
+            					}
+            				}
+            				,
+            				{
+            					html: "<i class='ace-icon fa fa-times bigger-110'></i>&nbsp; Cancel",
+            					"class" : "btn btn-minier",
+            					click: function() {
+            						$( this ).dialog( "close" );
+            					}
+            				}
+            			]
+            		});
+            	});
+        </script>
+        <!-- ace scripts -->
+        <script src="assets/js/ace-elements.min.js"></script>
+        <script src="assets/js/ace.min.js"></script>
+        <script type="text/javascript">
+        
+            
+        
+        
+        
+        
+            jQuery(function($) {
+            	$('.modal.aside').ace_aside();
+            	
+            	$('#aside-inside-modal').addClass('aside').ace_aside({container: '#my-modal > .modal-dialog'});
+            	
+            	//$('#top-menu').modal('show')
+            	
+            	$(document).one('ajaxloadstart.page', function(e) {
+            		//in ajax mode, remove before leaving page
+            		$('.modal.aside').remove();
+            		$(window).off('.aside')
+            	});
+            	
+            	
+            	//make content sliders resizable using jQuery UI (you should include jquery ui files)
+            	//$('#right-menu > .modal-dialog').resizable({handles: "w", grid: [ 20, 0 ], minWidth: 200, maxWidth: 600});
+            	
+            	$('#right-menu > .modal-dialog').css("width", "300");
+            	
+            })
+        </script>
+        <!-- inline scripts related to this page -->
+

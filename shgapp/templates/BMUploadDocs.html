@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block javascript %}
+<script src="{% static 'datajs/grouplist.js' %}"></script>
+<script src="{% static 'datajs/loadTaskList.js' %}"></script>
+<script src="{% static 'datajs/masterData.js' %}"></script>
+<script src="{% static 'datajs/DocUPload.js' %}"></script>
+
+<script>
+  var groupId = '{{ groupId | escapejs }}';
+    var loanId = '{{ loanId | escapejs }}';
+    var taskId = '{{ taskId | escapejs }}';
+    var taskName = '{{ taskName | escapejs }}';
+    var group = '{{ group | escapejs }}';
+    var loanType = '{{ loanType | escapejs }}';
+$(document).ready(function (){
+	loanTypeId = loanTypeDict[loanType];
+	loanDocument(loanTypeId);
+	taskCount();
+	loadGroupRoles(groupId,loanId,taskName);
+	$("#loading").hide();
+});
+</script>
+{% endblock %}
+<!-- PAGE CONTENT BEGINS -->
+{% block content %}
+<div class="row">
+<!--2row Start-->
+<div class="col-xs-3 " >
+    <!--2row Start col3 start-->
+    <div class="panel panel-default">
+        <div class="panel-heading">Group Detail </div>
+        <div class="panel-body">
+            <!--2row Start col3 body start-->
+            <div class="profile-user-info profile-user-info-striped">
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> SHG Name </div>
+                    <div class="profile-info-value"> <span class="editable" id="groupName"></span> </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> Formation Date </div>
+                    <div class="profile-info-value"> <span class="editable" id="groupFormationDate"></span> </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> SHG Address </div>
+                    <div class="profile-info-value"> <span class="editable" id="shgaddress"></span> </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> Animator </div>
+                    <div class="profile-info-value">
+                        <span class="editable" id="animator">
+                           
+                        </span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> Rep 1</div>
+                    <div class="profile-info-value">
+                        <span class="editable" id="rep1">
+                        </span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> Rep 2</div>
+                    <div class="profile-info-value">
+                        <span class="editable" id="rep2">
+                        </span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> SHG Id </div>
+                    <div class="profile-info-value"> <span class="editable" id="appGroupId"></span> </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> MDA </div>
+                    <div class="profile-info-value"> <span class="editable" id="mda"></span> </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> MWA</div>
+                    <div class="profile-info-value"> <span class="editable" id="mwa"></span> </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> Village </div>
+                    <div class="profile-info-value"> <span class="editable" id="villageName"></span></div>
+                </div>
+                
+            </div>
+        </div>
+        <!--2row Start col3 body end-->
+    </div>
+</div>
+<!--2row Start col2 End-->
+<div class="col-xs-9" >
+    <!--2row Start col-10 start-->
+    <div class="panel panel-default">
+        <div class="panel-heading"><span id="groupName1"></span>  &nbsp&nbsp&nbsp( <span id="appGroupId1"></span> )<span id="groupId" style="visibility:hidden;"></span> </div>
+        <div class="panel-body-danger">
+            <!--2row panel body start-->
+            <div class="tabbable">
+                <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
+                    <li class="active"><a data-toggle="tab" href="#upload">Upload Doc</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="upload" class="tab-pane in active">
+                        <!-- form start-->
+                        <section>
+                            <!---upload doc startion-->
+                            <div class="page-content">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <!-- PAGE CONTENT BEGINS -->
+                                        <form name = "form" enctype = "multipart/form-data" action = "{% url "ajax_progress_bar_upload" %}" method = "POST" >{% csrf_token %}
+                                        <table class="table table-bordered" >
+                                            <thead>
+                                                <tr>
+                                                    <th>Doc ID</th>
+                                                    <th>Document Name</th>
+                                                    <th>Upload / View Doc</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="records_table">
+                                            </tbody>
+                                        </table>
+                                        </form>
+                                        <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2"> </div>
+                                        <!-- /.span -->
+                                    </div>
+                                    <!-- /.row -->
+                                    <!-- PAGE CONTENT ENDS -->
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                            <!--upload doc end-->
+                        </section>
+                        <!-- SECTION END -->
+                    </div>
+                    <!--form End-->
+                </div>
+                <!-- TAB END-->
+            </div>
+            <!--2row panel body end-->
+        </div>
+    </div>
+    <!--2row Start col-10 End-->
+</div>
+<!--2row End-->
+<div class="row">
+    <div class="col-md-offset-3 col-xs-9">
+        <div class="clearfix form-actions">
+            <div class="col-md-offset-3 col-md-9">
+                <button onclick="updateTask('Approved');" class="btn btn-info" type="button">
+                <i class="ace-icon fa fa-check bigger-110"></i>
+                Approve
+                </button>
+                &nbsp; &nbsp; &nbsp;
+                <button onclick="window.location.href='/assignedTaskList/';"class="btn" type="reset">
+                <i class="ace-icon fa fa-close bigger-110"></i>
+                Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal-progress" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Uploading...</h4>
+        </div>
+        <div class="modal-body">
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: 0%;">0%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
