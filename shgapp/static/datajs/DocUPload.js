@@ -130,6 +130,7 @@ function uploaddoc(fileid,docName,groupId){
                        alert("Document Uploaded Successfully.");
                        $("#"+fileid+"_1").css("display","none");
                         $("#"+fileid+"_2").css("display","block");
+                        $("#"+fileid+"_2").attr('onClick', 'window.open('+"'"+s3url+"'"+');');
                   }
                   else 
                   {

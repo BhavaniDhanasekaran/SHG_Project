@@ -7,7 +7,10 @@ function loadUnassignedTaskList(data){
 		if(groupTaskdata[key]["name"]  && groupTaskdata[key]["created"]){
 			obj["slNo"] = parseInt(key)+1;
 			obj["taskName"] = groupTaskdata[key]["name"];
-			obj["taskDate"] = groupTaskdata[key]["created"];
+			var createdDateTime = groupTaskdata[key]["created"].split("T");
+			var createdDate = createdDateTime[0].split("-");
+			createdDate = createdDate[2]+"-"+createdDate[1]+"-"+createdDate[0]
+			obj["taskDate"] = createdDate+ " at " +createdDateTime[1];
 			obj["taskId"]   = groupTaskdata[key]["id"]
 		
 		}
@@ -25,8 +28,11 @@ function loadUnassignedTaskList(data){
 				obj["clusterName"] =customerData["clusterName"];
 				obj["centerName"] =customerData["centerName"];
 				obj["regionName"] =customerData["regionName"];
-				obj["loanApplicationDate"] =customerData["loanApplicationDate"];
-				obj["groupFormationDate"] =customerData["groupFormationDate"];
+				var loanAppDt = customerData["loanApplicationDate"].split("-");
+				var grpFormDt = customerData["groupFormationDate"].split("-");
+				
+				obj["loanApplicationDate"] =loanAppDt[2]+"-"+loanAppDt[1]+"-"+loanAppDt[0];
+				obj["groupFormationDate"] =grpFormDt[2]+"-"+grpFormDt[1]+"-"+grpFormDt[0];
 				
 			}
 		obj["claim"] = '<button type="submit" onclick="claim('+"'"+obj["taskId"]+"'"+');" class="btn btn-danger btn-md button">Claim</button>';
@@ -54,8 +60,8 @@ function loadUnassignedTaskList(data){
                 { "mData": "loanType","sTitle": "Product Name"  , "sWidth": "8%", className:"column"},
                 { "mData": "shgId","sTitle": "SHG ID"  , "sWidth": "8%", className:"column"},
                 { "mData": "shgName","sTitle": "SHG Name"  , "sWidth": "10%", className:"column"},
-                { "mData": "loanApplicationDate","sTitle": "Loan App. Dt"  , "sWidth": "8%", className:"column"},
-                { "mData": "groupFormationDate","sTitle": "Grp Frmtn Dt"  , "sWidth": "8%", className:"column"},
+                { "mData": "loanApplicationDate","sTitle": "Loan App. Dt"  , "sWidth": "9%", className:"column"},
+                { "mData": "groupFormationDate","sTitle": "Grp Frmtn Dt"  , "sWidth": "9%", className:"column"},
                 { "mData": "regionName","sTitle": "Region Name"  , "sWidth": "12%", className:"column"},
                 { "mData": "clusterName","sTitle": "Cluster Name"  , "sWidth": "12%", className:"column"},
                 { "mData": "centerName","sTitle": "Center Name"  , "sWidth": "12%", className:"column"},
@@ -77,7 +83,11 @@ function loadAssignedTaskList(){
 		if(myTaskdata[key]["name"]  && myTaskdata[key]["created"]){
 			obj["slNo"] = parseInt(key)+1;
 			obj["taskName"] = '<a class="tdViewData">'+myTaskdata[key]["name"]+'</a>';
-			obj["taskDate"] = '<a class="tdViewData">'+myTaskdata[key]["created"]+'</a>';
+			var createdDateTime = myTaskdata[key]["created"].split("T");
+			var createdDate = createdDateTime[0].split("-");
+			createdDate = createdDate[2]+"-"+createdDate[1]+"-"+createdDate[0]
+			//obj["taskDate"] = createdDate+ " @ " +createdDateTime[1];
+			obj["taskDate"] = '<a class="tdViewData">'+createdDate+ " at " +createdDateTime[1]+'</a>';
 			obj["taskId"]   = myTaskdata[key]["id"]
 			obj["processInstanceId"] = myTaskdata[key]["processInstanceId"]
 		}
@@ -101,8 +111,10 @@ function loadAssignedTaskList(){
 				obj["clusterName"] ='<a class="tdViewData">'+customerData["clusterName"]+'</a>';
 				obj["centerName"] ='<a class="tdViewData">'+customerData["centerName"]+'</a>';
 				obj["regionName"] ='<a class="tdViewData">'+customerData["regionName"]+'</a>';
-				obj["loanApplicationDate"] ='<a class="tdViewData">'+customerData["loanApplicationDate"]+'</a>';
-				obj["groupFormationDate"] ='<a class="tdViewData">'+customerData["groupFormationDate"]+'</a>';
+				var loanAppDt = customerData["loanApplicationDate"].split("-");
+				var grpFormDt = customerData["groupFormationDate"].split("-");
+				obj["loanApplicationDate"] ='<a class="tdViewData">'+loanAppDt[2]+"-"+loanAppDt[1]+"-"+loanAppDt[0]+'</a>';
+				obj["groupFormationDate"] ='<a class="tdViewData">'+grpFormDt[2]+"-"+grpFormDt[1]+"-"+grpFormDt[0]+'</a>';
 				
 				
 				
@@ -131,8 +143,8 @@ function loadAssignedTaskList(){
                 { "mData": "loanType","sTitle": "Product Name"  , "sWidth": "8%", className:"column"},
                 { "mData": "shgId","sTitle": "SHG ID"  , "sWidth": "8%", className:"column"},
                 { "mData": "shgName","sTitle": "SHG Name"  , "sWidth": "10%", className:"column"},
-                { "mData": "loanApplicationDate","sTitle": "Loan App. Dt"  , "sWidth": "8%", className:"column"},
-                { "mData": "groupFormationDate","sTitle": "Grp Frmtn Dt"  , "sWidth": "8%", className:"column"},
+                { "mData": "loanApplicationDate","sTitle": "Loan App. Dt"  , "sWidth": "9%", className:"column"},
+                { "mData": "groupFormationDate","sTitle": "Grp Frmtn Dt"  , "sWidth": "9%", className:"column"},
                 { "mData": "regionName","sTitle": "Region Name"  , "sWidth": "12%", className:"column"},
                 { "mData": "clusterName","sTitle": "Cluster Name"  , "sWidth": "12%", className:"column"},
                 { "mData": "centerName","sTitle": "Center Name"  , "sWidth": "12%", className:"column"},
@@ -147,7 +159,6 @@ function loadAssignedTaskList(){
 
 $(document).ready(function (){
 	taskCount();
-	
 	$('.tdViewData').click(function() {
 	    	var trId = $(this).closest('tr').attr('id');
 	    	var groupLoanID = trId;
@@ -202,7 +213,7 @@ function triggerLoadFunc(){
 		taskName = groupLoanIDSplit[2];
 		taskId = groupLoanIDSplit[3];
 		processInstanceId = groupLoanIDSplit[4];
-		window.location = '/SHGForm/'+groupID+'/'+loanID+'/'+taskId+'/'+processInstanceId+'/'+taskName;
+		window.location = '/SHGForm/'+groupID+'/'+loanID+'/'+taskId+'/'+processInstanceId+'/'+taskName+'/'+loanType;
 		//redirectPage(groupID,loanID,taskName,taskId,processInstanceId);
 	});
 	$('.button').click(function() {
@@ -280,17 +291,19 @@ function filterKYCTasksByDate(){
 	var finalDict =  [];
 	var html = '';
 	var i=0;
+	var monthDict = {"01":"Jan","02":"Feb","03":"Mar","04":"Apr","05":"May","06":"Jun","07":"Jul","08":"Aug","09":"Sep","10":"Oct","11":"Nov","12":"Dec"};
 	for(var key in groupTaskdata){
 		if(groupTaskdata[key]){
 			var obj = {};
 			if(groupTaskdata[key]["created"]){
 				var datesplit = groupTaskdata[key]["created"].split("T");
-				if($.inArray(datesplit[0], dateArray) == -1){
-					dateArray.push(datesplit[0]);
-					dateDict[datesplit[0]] = i+1;
+				var taskDate = datesplit[0].split("-")[2]+"-"+monthDict[datesplit[0].split("-")[1]]+"-"+datesplit[0].split("-")[0];
+				if($.inArray(taskDate, dateArray) == -1){
+					dateArray.push(taskDate);
+					dateDict[taskDate] = i+1;
 				}
 				else{
-					dateDict[datesplit[0]] = dateDict[datesplit[0]]+1;
+					dateDict[taskDate] = dateDict[taskDate]+1;
 				}
 			}
 		}
