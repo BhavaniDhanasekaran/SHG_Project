@@ -158,14 +158,14 @@ function UpdateUrl(groupId, oldfileName, s3url, fileid) {
             console.log(data.message);
             if (data.message == 'Group Document Uploaded Successfully.') {
                 //$("#loading").hide();
-                alert("Document Uploaded Successfully.");
+                $.alert("Document Uploaded Successfully.");
                 $("#" + fileid + "_1").css("display", "none");
                 $("#" + fileid + "_3").css("display", "block");
                 $("#" + fileid + "_2").css("display", "block");
                 $("#" + fileid + "_2").attr('onClick', 'window.open(' + "'" + s3url + "'" + ');');
                 //$("#"+fileid+"_2").attr('onClick', 'window.open ('+"'"+s3url+"'"+',"mywindow","menubar=1,resizable=1,width=350,height=250");'); 
             } else {
-                alert("Error Upload");
+                $.alert("Error Upload");
             }
         },
         data: JSON.stringify(dataObj)
@@ -228,11 +228,11 @@ function EditUrl(groupId, UniqueId, s3url, newdoceditId) {
         success: function(data) {
             if (data.message == "Group Document Updated Successfully.") {
                 //$("#loading").hide();
-                alert("Document Updated Successfully.");
+                $.alert("Document Updated Successfully.");
                 $("#" + newdoceditId + "_2").attr('onClick', 'window.open(' + "'" + s3url + "'" + ');');
                 //$("#"+fileid+"_2").attr('onClick', 'window.open ('+"'"+s3url+"'"+',"mywindow","menubar=1,resizable=1,width=350,height=250");'); 
             } else {
-                alert("Error update");
+                $.alert("Error update");
             }
         },
         data: JSON.stringify(dataObj2)
