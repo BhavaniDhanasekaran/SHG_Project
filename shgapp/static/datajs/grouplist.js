@@ -8,7 +8,7 @@ function getGroupData(groupID,loanId){
 	var appCount = 0;
 	var rejCount = 0;
 	var rewCount = 0;
-	disableActiveTab();
+	//disableActiveTab();
 	$.ajax({
 	    url: '/getGroupData/'+groupID,
 	    dataType: 'json',
@@ -21,7 +21,7 @@ function getGroupData(groupID,loanId){
 	    },
 	    success: function (data) {
 		groupData = data;
-		enableActiveTab();
+		//enableActiveTab();
 		if(groupData["data"]["groupMemDetail"]){
 		   	if(groupData["data"]["groupMemDetail"][0]){
 		   		totalCount = groupData["data"]["groupMemDetail"].length;
@@ -65,19 +65,12 @@ function getGroupData(groupID,loanId){
 				
 		    	}
 		}
-		/*if(penCount >= 1 && totalCount == (penCount+appCount+rewCount+rejCount)){
-			$("#operationsDivId").css("display","block");
-			$("#commentDivId").css("display","block");
-		}
-		else{
-			$("#operationsDivId").css("display","none");
-			$("#commentDivId").css("display","none");
-		}*/
 	    },
 	    error: function (jqXHR, textStatus, errorThrown) {
-           	enableActiveTab();
+           	//enableActiveTab();
 	    }
 	});
+	getHistComments(processInstanceId);
 	
 }
 
@@ -92,23 +85,11 @@ function getGroupData(groupID,loanId){
 	}
 }*/
 
-
-
-
-
 function getMemberDetails(memberId,groupId,loanId){
-	/*if($("#"+memberId).hasClass("list-group-item-action")){
-		$("#operationsDivId").css("display","none");
-		$("#commentDivId").css("display","none");
-		$("#comment").val("");
-		
+	if(document.getElementById("comment")){
+		document.getElementById("comment").value = "";	
 	}
-	else{
-		$("#operationsDivId").css("display","block");
-		$("#commentDivId").css("display","block");
-		$("#comment").val("");
-	}*/
-	disableActiveTab();
+	//disableActiveTab();
 	$.ajax({
 	    url: '/getIndMemberData/'+memberId+'/'+groupId+'/'+loanId,
 	    //type: 'post',
@@ -121,7 +102,7 @@ function getMemberDetails(memberId,groupId,loanId){
 		$("#loading").hide();
 	    },
 	    success: function (data) {
-	    	enableActiveTab();
+	    	//enableActiveTab();
 		var memberData = data;
 		console.log(memberData);
 		//var arrayKeys = ["occupations","villages""conflictList","highMarksList","memberFamilyDetails","memberDocumentDetails"];
@@ -149,7 +130,7 @@ function getMemberDetails(memberId,groupId,loanId){
 		}
 		
 		for(var data in memberData["data"]["memberDetails"]){
-			document.getElementById("memberNameLabel").innerHTML = memberData["data"]["memberDetails"]["memberName"];
+			//document.getElementById("memberNameLabel").innerHTML = memberData["data"]["memberDetails"]["memberName"];
 			
 			if(document.getElementById(data)){
 				if(data == "villages"){
@@ -177,11 +158,11 @@ function getMemberDetails(memberId,groupId,loanId){
 		document.getElementById("loanId").innerHTML = loanId;
 	    },
 	    error: function (jqXHR, textStatus, errorThrown) {
-           	enableActiveTab();
+           	//enableActiveTab();
 	    }
 	});
 }
-
+/*
 $(document).ready(function(){
 	$("#commentsBtn").on("click",function(){
 		var mainPane = document.getElementById("main-content-inner").className;
@@ -209,131 +190,19 @@ $(document).ready(function(){
 	
 	
 });
-
-/*function submitKYCQueryForm(status){
-	var name = document.getElementById("memberName").innerHTML;
-	var age = document.getElementById("age").innerHTML;
-	var spouse = document.getElementById("husbandName").innerHTML;
-	var father = document.getElementById("fatherName").innerHTML;
-	var address = document.getElementById("address").innerHTML;
-	var permanentAddress = document.getElementById("permanentAddress").innerHTML;
-	var pincode = document.getElementById("pincode").innerHTML;
-	var idProof = document.getElementById("idProofValue").innerHTML;
-	var idProofType = document.getElementById("idProofTypeId").innerHTML;
-	var addressProof = document.getElementById("addressProofValue").innerHTML;
-	var addressProofType = document.getElementById("addressProofTypeId").innerHTML;
-	var sbAccountNumber = document.getElementById("sbAccountNumber").innerHTML;
-	var bankId = document.getElementById("bankId").innerHTML;
-	var villageId = document.getElementById("villages").innerHTML;
-	var loanAmount = document.getElementById("loanAmount").innerHTML;
-	var loanPurpose = document.getElementById("loanTypeValue").innerHTML;
-	var sbAccountName = document.getElementById("sbAccountName").innerHTML;
-	var mobileNumber = document.getElementById("mobileNo").innerHTML;
-	var sbBranch = document.getElementById("branch").innerHTML;
-	var memberId = document.getElementById("memberId").innerHTML;	
-	var groupId = document.getElementById("groupId").innerHTML;
-	var loanId = document.getElementById("loanId").innerHTML;
-	var comment = document.getElementById("comment").innerHTML;
-	
-	
-	var dataObj = 	{};
-	
-	var memValData = {
-		"memberId": memberId,
-		"groupId": groupId,
-		"loanId": loanId,
-		"subStatus": status,
-		"userId": "1996",
-		"comment": comment,
-		"checkList": "",
-		"validationType": "POST",
-		"entityType": "MEMBER"
-	};
-	
-	var dataDict = {
-		"entityType"		: "MEMBER",
-		"validationType"	: "KYC",
-		"memberId"		: memberId,
-		"groupId"		: groupId,
-		"loanId"		: loanId,
-		"userId"		: "1669",
-		"name"			: name,
-		"age"			: age,
-		"spouse"		: spouse,
-		"father"		: father,
-		"address"		: address,
-		"permanentAddress"	: permanentAddress,
-		"pincode"		: pincode,
-		"idProof"		: idProof,
-		"idProofType"		: idProofType,
-		"addressProof"		: addressProof,
-		"addressProofType"	: addressProofType,
-		"sbAccountNumber"	: sbAccountNumber,
-		"bankId"		: bankId,
-		"villageId"		: villageId,
-		"loanAmount"		: loanAmount,
-		"loanPurpose"		: loanPurpose,
-		"sbBranch"		: sbBranch,
-		"sbAccountName"		: sbAccountName,
-		"mobileNumber"		: mobileNumber
-	};
-	
-	dataObj['formData'] = dataDict;
-	dataObj['memValData'] = memValData;
-	dataObj['taskId'] = taskId;
-	dataObj['message'] = comment;
-	
-	$.ajax({
-		url: '/updateKYCDetails/',
-		type: 'post',
-		dataType: 'json',
-		beforeSend: function(){
-			triggerLoadFunc();
-     			$("#loading").show();
-	    	},
-	    	complete: function(){
-			$("#loading").hide();
-	    	},
-		success: function(data) {
-			if (data["message"] == "Member Loan updated successfully.") {
-			     alert("Member Details Updated successfully");
-			     
-			     if(status == "Approved"){
-			     	document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-success Approved";
-			     	$("#operationsDivId").css("display","none");
-				$("#commentDivId").css("display","none");
-			     }
-			     if(status == "Rejected"){
-			     	document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-danger Rejected";
-			     	$("#operationsDivId").css("display","none");
-				$("#commentDivId").css("display","none");
-			     }
-			     if(status == "Rework"){
-			     	document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-warning Rework";
-			     	$("#operationsDivId").css("display","none");
-				$("#commentDivId").css("display","none");
-			     }
-			    checkForTaskCompletion();
-			} 
-			else {
-				alert("Failed due to some Issue . Please try after sometime or contact your Administrator");
-			}
-		},
-		data: JSON.stringify(dataObj)
-	});
-}
 */
 
 function updateMemValidationStatus(status){
+	var memberName = document.getElementById("memberName").innerHTML;	
+	var appGroupId = document.getElementById("appGroupId").innerHTML;	
 	var memberId = document.getElementById("memberId").innerHTML;	
 	var groupId = document.getElementById("groupId").innerHTML;
 	var loanId = document.getElementById("loanId").innerHTML;
-	var comment = document.getElementById("comment").innerHTML;
-	var memStatus = document.getElementById("memberStatus").innerHTML;
+	var comment = document.getElementById("comment").value;
+	var memStatus = document.getElementById("memberValStatus").innerHTML;
+	var commentCamunda = comment+"*@*"+memberName+"*@*"+appGroupId;
 	
-	console.log("memStatus",memStatus);
-	
-	if(memStatus != "Active"){
+	if(memStatus != ""){
 		alert("Member already Validated!!!!");
 		return false;
 	}
@@ -343,6 +212,7 @@ function updateMemValidationStatus(status){
 	if(group == "DataSupportTeam"){
 		validationType  = "POST";
 	}
+	
 	var memValData = {
 		"memberId": memberId,
 		"groupId": groupId,
@@ -356,7 +226,10 @@ function updateMemValidationStatus(status){
 	};
 	var dataObj = {};
 	dataObj["memValData"] = memValData;
-	console.log(status);
+	dataObj["taskId"] = taskId;
+	if(status == "Rejected"){
+		dataObj['message'] = commentCamunda;
+	}
 	$.ajax({
 		url: '/updateMemValidationStatus/',
 		type: 'post',
@@ -412,6 +285,7 @@ function submitKYCForm(status){
 
 	var name = document.getElementById("memberName").value;
 	var age = document.getElementById("age").value;
+	var maritalStatus = document.getElementById("maritalStatus").value;
 	var spouse = document.getElementById("husbandName").value;
 	var father = document.getElementById("fatherName").value;
 	var address = document.getElementById("address").value;
@@ -431,13 +305,14 @@ function submitKYCForm(status){
 	var sbBranch = document.getElementById("branch").value;
 	var memberId = document.getElementById("memberId").innerHTML;	
 	var groupId = document.getElementById("groupId").innerHTML;
+	var appGroupId = document.getElementById("appGroupId").innerHTML;
 	var loanId = document.getElementById("loanId").innerHTML;
 	var comment = document.getElementById("comment").value;
-	var memStatus = document.getElementById("memberStatus").innerHTML;
+	var memStatus = document.getElementById("memberValStatus").innerHTML;
+	var commentCamunda = comment+"*@*"+name+"*@*"+appGroupId;
 	
-	console.log("memStatus",memStatus);
 	
-	if(memStatus != "Active"){
+	if(memStatus != ""){
 		alert("Member already Validated!!!!");
 		return false;
 	}
@@ -473,6 +348,7 @@ function submitKYCForm(status){
 		"userId"		: "1669",
 		"name"			: name,
 		"age"			: age,
+		"maritalStatus"		: maritalStatus,
 		"spouse"		: spouse,
 		"father"		: father,
 		"address"		: address,
@@ -495,7 +371,10 @@ function submitKYCForm(status){
 	dataObj['formData'] = dataDict;
 	dataObj['memValData'] = memValData;
 	dataObj['taskId'] = taskId;
-	dataObj['message'] = comment;
+	if(status == "Rework" || status == "Rejected"){
+		dataObj['message'] = commentCamunda;
+	}
+	
 	
 	$.ajax({
 		url: '/updateKYCDetails/',
@@ -514,18 +393,12 @@ function submitKYCForm(status){
 			     alert("Member Details Updated successfully");
 			     if(status == "Approved"){
 			     	document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-success Approved";
-			     	//$("#operationsDivId").css("display","none");
-				//$("#commentDivId").css("display","none");
 			     }
 			     if(status == "Rejected"){
 			     	document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-danger Rejected";
-			     	//$("#operationsDivId").css("display","none");
-				//$("#commentDivId").css("display","none");
 			     }
 			     if(status == "Rework"){
 			     	document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-warning Rework";
-			     	//$("#operationsDivId").css("display","none");
-				//$("#commentDivId").css("display","none");
 			     }
 			    checkForTaskCompletion();
 			} 
@@ -713,7 +586,6 @@ function loadGroupRoles(groupId,loanId,taskName){
 }
 
 function updateGroupValStatus(status){
-	console.log(groupId,status);
 	if(document.getElementById("comment")){
 		comment = document.getElementById("comment").value;
 	}
@@ -728,8 +600,8 @@ function updateGroupValStatus(status){
 	var dataObj = {};
 	dataObj["groupValData"] = groupValData;
 	dataObj["taskId"] = taskId;
+	dataObj["message"] = comment;
 	
-	console.log(groupValData);
 	$.ajax({
 		url: '/updateGrpValidationStatus/',
 		dataType: 'json',
@@ -783,4 +655,47 @@ function updateTask(status){
 }
 
 
+
+function getHistComments(processId){
+	var htmlContent = '';
+	$.ajax({
+	    url: '/getHistoryComments/'+processId,
+	    dataType: 'json',
+	    success: function (data) {
+	    	var commentsJson = data;
+	    	var commentsList = Object.keys(commentsJson).map(function(key) {
+  		  return [key, commentsJson[key]];
+		});
+		var sortedData= commentsList.sort((function (a, b) { return new Date(a[1].startTime) - new Date(b[1].startTime) }));
+	    	for(var key in sortedData){
+	    		if(sortedData[key][1]["activityType"] == "userTask"){
+	    			if(sortedData[key][1]["comments"]){
+	    				if(sortedData[key][1]["comments"][0]){
+		    				var sortedcomments= sortedData[key][1]["comments"].sort((function (a, b) {  return new Date(a.time) - new Date(b.time) }));
+	    					for(var key1 in sortedcomments){
+	    						var cmtDateSplit = sortedcomments[key1]["time"].split("T");
+	    						var cmtDate  = cmtDateSplit[0].split("-");
+	    						cmtDate = cmtDate[2]+"-"+cmtDate[1]+"-"+cmtDate[0]+" at " +cmtDateSplit[1];
+	    						var commentSplit = sortedcomments[key1]["message"].split("*@*");
+	    						var comment = commentSplit[0];
+	    						var memberName = commentSplit[1]+"&nbsp(&nbsp"+commentSplit[2]+"&nbsp)";
+	    						
+							 htmlContent += '<div class="profile-activity clearfix"><div><a class="user" style="color:#981b1b;" href="#"><i class="glyphicon glyphicon-user"></i> '+sortedData[key][1]["assignee"]+':</a>  '
+							  +'&nbsp&nbsp<span style="color:black;">'+sortedData[key][1]["activityName"]+'</span>'
+							  +'<div style="font-weight:bold;color:darkslategrey;">Member : '+memberName+'<br></div>'
+							  +'&nbsp&nbsp&nbsp<span>'
+							  +comment+'</span><div class="time"><i class="ace-icon fa fa-clock-o bigger-110"></i><span > Commented on &nbsp&nbsp'
+							  +cmtDate+'</span></div></div></div>';
+						}
+				 	}
+				 }
+		    	}	
+	    	}
+	    	if(!htmlContent){
+	    		htmlContent = "No Comments"
+	    	}
+	    	document.getElementById("profile-feed-1").innerHTML = htmlContent;
+	    }
+	});
+}
 

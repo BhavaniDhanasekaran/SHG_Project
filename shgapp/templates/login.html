@@ -2,50 +2,41 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-        <meta charset="utf-8" />
-        <title>Madura Micro Finance</title>
-        <link rel="icon" type="image/png" href="{% static 'images/favicon.ico' %}" />
-        <meta name="description" content="" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-        <!--link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
-        <link rel="stylesheet" href="{% static  'font-awesome/4.5.0/css/font-awesome.min.css' %}" />
-        <link rel="stylesheet" href="{% static 'css/fonts.googleapis.com.css' %}" />
-        <link rel="stylesheet" href="{% static 'css/ace.min.css' %}" class="ace-main-stylesheet" id="main-ace-style" />
-        <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css'  %}" />
-        <link rel="stylesheet" href="{% static 'css/ace-skins.min.css' %}" />
-        <link rel="stylesheet" href="{% static 'css/ace-rtl.min.css'  %}" />
-        <link rel="stylesheet" href="{% static 'css/icon.min.css'  %}" /-->
-       
-        <link rel="stylesheet" href="/static/css/bootstrap.min.css" />
-		<link rel="stylesheet" href="/static/font-awesome/4.5.0/css/font-awesome.min.css" />
-		<link rel="stylesheet" href="/static/css/fonts.googleapis.com.css" />
-		<link rel="stylesheet" href="/static/css/ace.min.css" />
-		<link rel="stylesheet" href="/static/css/ace-rtl.min.css" /> <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
-        <script src="{% static 'js/ace-extra.min.js' %}"></script>
-        </script>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title>Madura Micro Finance</title>
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.ico' %}" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/font-awesome/4.5.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/static/css/fonts.googleapis.com.css" />
+    <link rel="stylesheet" href="/static/css/ace.min.css" />
+    <link rel="stylesheet" href="/static/css/ace-rtl.min.css" /> <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+    <script src="{% static 'js/ace-extra.min.js' %}"></script>
+    </script>
     </head>
     <!-- Header start -->
     <!--body class="no-skin">
         <div class="page-content">
             <div class="row">
                 <div class="col-xs-12"-->
-                    {% block content %}
-                    {% endblock content %}
-                </div>
-            </div>
-        </div>
-        </div>
-        </div>
-        </div>
-        {% block javascript %} {% endblock %}
-        <script type="text/javascript">
-            if('ontouchstart' in document.documentElement) document.write("<script src='{% static 'js/jquery.mobile.custom.min.js' %}>"+"<"+"/script>");
-            
-        </script>
-        <script src="{% static 'js/bootstrap.min.js'  %}"></script>
+    {% block content %}
+    {% endblock content %}
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    {% block javascript %} {% endblock %}
+    <script type="text/javascript">
+    if('ontouchstart' in document.documentElement) document.write("<script src='{% static 'js/jquery.mobile.custom.min.js' %}>"+"<"+"/script>");
+
+    </script>
+    <script src="{% static 'js/bootstrap.min.js'  %}"></script>
         <script src="{% static 'js/ace-elements.min.js'  %}"></script>
         <script src="{% static 'js/ace.min.js'  %}"></script>
-    </body>
-</html>
+        </body>
+        </html>
