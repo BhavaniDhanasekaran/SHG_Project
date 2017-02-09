@@ -328,7 +328,7 @@ def updateTask(request):
         if request.method == "POST":
             print request.body
             formData = json.loads(request.body)
-            if formData["processUpdate"]:
+            if formData.has_key("processUpdate"):
                 bodyData = formData["processUpdate"]
             else:
                 bodyData = {}

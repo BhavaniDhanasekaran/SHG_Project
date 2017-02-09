@@ -16,6 +16,7 @@ function loanDocument(loanTypeId) {
                 docURLDict[docUploadedDict[key]["documentName"]] = docUploadedDict[key]["documentPath"] + '*' + docUploadedDict[key]["docId"];
                 // console.log(docURLDict[docUploadedDict[key]["documentName"]]);
             }
+
             $.ajax({
                 url: '/loanDocument/' + loanTypeId,
                 dataType: 'json',
@@ -25,17 +26,16 @@ function loanDocument(loanTypeId) {
                     var countArray = [];
                     for (var key in documentData) {
                         for (var key1 in docURLDict) {
-                            console.log(key1);
                             if (key1 == (documentData[key]["documentName"].split("*")[0])) {
                                 countArray.push(parseInt(key) + 1);
                                 docRow += '<tr> <td>' + (parseInt(key) + 1) + '</td><td>' + documentData[key]["documentName"] + ' </td>' +
                                     '<td><input type = "file" name = "' + documentData[key]["documentName"] + '" id = "' + documentData[key]["documentId"] + '" style="display: none;" /></input>' +
                                     '<span><button type="button" style="display:none;" class="btn btn-primary js-upload-photos" id = "' + documentData[key]["documentId"] + '_1' + '" name="' + documentData[key]["documentName"] + '_' + documentData[key]["documentId"] + '"></span>' +
                                     '<span class="glyphicon glyphicon-cloud-upload"></span> Upload  </button>' +
-                                    '<span><button type="button"  onclick="window.open(' + "'" + docURLDict[key1].split("*")[0] + "'" + ');" class="btn btn-danger" id = "' + documentData[key]["documentId"] + '_2' + '" name="' + documentData[key]["documentName"] + '_' + documentData[key]["documentId"] + '"></span>' +
+                                    '<span><button type="button"  onclick="window.open(' + "'" + docURLDict[key1].split("*")[0] + "'" + ').focus();" class="btn btn-danger" id = "' + documentData[key]["documentId"] + '_2' + '" name="' + documentData[key]["documentName"] + '_' + documentData[key]["documentId"] + '"></span>' +
                                     '<span class="glyphicon glyphicon-cloud-upload"></span> View  </button>' +
-                                    '<input type = "file" id="' + docURLDict[key1].split("*")[1] + '" style="display: none;" /></input>' +
-                                    '<span>   <button type="button"  class="btn btn-success js-upload-photos2" id = "' + documentData[key]["documentId"] + '_1' + '" name="' + docURLDict[key1].split("*")[1] + '"></span>' +
+                                    '<input type = "file" id="' + documentData[key]["documentId"] + '_Edit' + '" style="display: none;" /></input>' +
+                                    '<span>   <button type="button"  class="btn btn-info js-upload-photos2" id = "' + documentData[key]["documentId"] + '_1' + '" name="' + docURLDict[key1].split("*")[1] + '"></span>' +
                                     '<span class="glyphicon glyphicon-edit"></span> Edit  </button></td></tr> ';
                             }
                         }
@@ -46,8 +46,8 @@ function loanDocument(loanTypeId) {
                                 '<span class="glyphicon glyphicon-cloud-upload"></span> Upload  </button>' +
                                 '<span><button type="button" style="display:none;" class="btn btn-danger" id = "' + documentData[key]["documentId"] + '_2' + '" name="' + documentData[key]["documentName"] + '_' + documentData[key]["documentId"] + '"></span>' +
                                 '<span class="glyphicon glyphicon-cloud-upload"></span> View  </button> ' +
-                                '<input type = "file" id="' + docURLDict[key1].split("*")[1] + '" style="display: none;" /></input>' +
-                                '<span><button type="button"   style="display: none;"  class="btn btn-success js-upload-photos2" id = "' + documentData[key]["documentId"] + '_3' + '" name="' + docURLDict[key1].split("*")[1] + '"></span>' +
+                                '<input type = "file" id="' + documentData[key]["documentId"] + '_Edit' + '" style="display: none;" /></input>' +
+                                '<span><button type="button"   style="display: none;"  class="btn btn-info js-upload-photos2" id = "' + documentData[key]["documentId"] + '_3' + '" name=""></span>' +
                                 '<span class="glyphicon glyphicon-edit"></span> Edit  </button></td></tr>';
                         }
                     }
@@ -160,10 +160,11 @@ function UpdateUrl(groupId, oldfileName, s3url, fileid) {
                 //$("#loading").hide();
                 $.alert("Document Uploaded Successfully.");
                 $("#" + fileid + "_1").css("display", "none");
-                $("#" + fileid + "_3").css("display", "block");
-                $("#" + fileid + "_2").css("display", "block");
-                $("#" + fileid + "_2").attr('onClick', 'window.open(' + "'" + s3url + "'" + ');');
-                //$("#"+fileid+"_2").attr('onClick', 'window.open ('+"'"+s3url+"'"+',"mywindow","menubar=1,resizable=1,width=350,height=250");'); 
+                $("#" + fileid + "_3").css("display", "inline-block");
+                $("#" + fileid + "_2").css("display", "inline-block");
+                $("#" + fileid + "_2").attr('onClick', 'window.open(' + "'" + s3url + "'" + ').focus();');
+                $("#" + fileid + "_3").attr('name', data.data);
+                //$("#"+fileid+"_2").attr('onClick', 'window.open ('+"'"+s3url+"'"+',"mywindow","menubar=1,resizable=1,width=350,height=250");');
             } else {
                 $.alert("Error Upload");
             }
@@ -173,11 +174,11 @@ function UpdateUrl(groupId, oldfileName, s3url, fileid) {
 }
 
 function Editdoc(UniqueId, newdoceditId) {
-    //console.log('newdoceditId');
-    //console.log(newdoceditId);
-    $("#" + UniqueId).click();
+    console.log('newdoceditId');
+    console.log(newdoceditId);
+    $("#" + newdoceditId + "_Edit").click();
     //$("#loading").show();
-    $("#" + UniqueId).fileupload({
+    $("#" + newdoceditId + "_Edit").fileupload({
         dataType: 'json',
         sequentialUploads: true,
         start: function(e) {
@@ -212,6 +213,7 @@ function Editdoc(UniqueId, newdoceditId) {
 }
 
 function EditUrl(groupId, UniqueId, s3url, newdoceditId) {
+    console.log(UniqueId);
     var dataObj2 = {};
     var uploadData = {
         "groupId": String(groupId),
@@ -229,8 +231,9 @@ function EditUrl(groupId, UniqueId, s3url, newdoceditId) {
             if (data.message == "Group Document Updated Successfully.") {
                 //$("#loading").hide();
                 $.alert("Document Updated Successfully.");
-                $("#" + newdoceditId + "_2").attr('onClick', 'window.open(' + "'" + s3url + "'" + ');');
-                //$("#"+fileid+"_2").attr('onClick', 'window.open ('+"'"+s3url+"'"+',"mywindow","menubar=1,resizable=1,width=350,height=250");'); 
+                $("#" + newdoceditId + "_2").attr('onClick', 'window.open(' + "'" + s3url + "'" + ').focus();');
+                //$("#" + newdoceditId + "_3").attr('name',data.data);
+                //$("#"+fileid+"_2").attr('onClick', 'window.open ('+"'"+s3url+"'"+',"mywindow","menubar=1,resizable=1,width=350,height=250");');
             } else {
                 $.alert("Error update");
             }

@@ -11,7 +11,7 @@
         var loanId = '{{ loanId | escapejs }}';
         var taskId = '{{ taskId | escapejs }}';
         var processInstanceId = '{{ processInstanceId | escapejs }}';
-
+        var group = '{{ group | escapejs }}';
         $(document).ready(function(){
             getGroupData(groupId,loanId);
             taskCount();
@@ -62,7 +62,8 @@
                                             <br/>
                                             <br/><label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">Member ID   :&nbsp&nbsp&nbsp <span id="appMemberId"></span></label><br/>
                                             <label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">Loan ID    :&nbsp&nbsp&nbsp<span id="loanId"></span></label><br/>
-                                            <label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">De-dup Status :&nbsp&nbsp<span id="dedupeStatus"></span></label>
+                                            <label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">De-dup Status :&nbsp&nbsp<span id="dedupeStatus"></span></label><br/>
+                                            <label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">CB Status :&nbsp&nbsp<span id="CBStatus"></span></label>
                                             <span id="memberId" style="visibility:hidden;"></span>
                                             <span id="memberValStatus" style="visibility:hidden;"></span><br>
 
@@ -73,7 +74,7 @@
                                         <div class="col-md-5">
                                             <!-- tabrow  colmd-5 start-->
                                             <form class="form-horizontal" role="form">
-                                                <span id="warningId" style="display:none;">*** Please select all the required fields ***</span>
+                                                <!--span id="warningId" style="display:none;">*** Please select all the required fields ***</span-->
                                                 <div class="profile-user-info profile-user-info-striped">
                                                     <div class="profile-info-row">
                                                         <div id="memberName_label" class="profile-info-name"> Name <font class="mandatory">*</font> </div>
@@ -187,7 +188,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="profile-info-row">
-                                                    <div id="branch_label" class="profile-info-name">Bank branch Name <font class="mandatory">*</font></div>
+                                                    <div id="branch_label" class="profile-info-name">Bank branch Name </div>
                                                     <div class="profile-info-value">
                                                         <span class="editable" >    <input type="text"  id="branch"></span>
                                                     </div>
@@ -280,7 +281,7 @@
                                         <div class="col-md-2"> </div>
                                         <div id="commentDivId" class="col-md-10">
                                             <div class="form-group">
-                                                <label id="comment_label" for="comment">Comment <font class="mandatory">*</font></label>
+                                                <label id="comment_label" for="comment">Comment </label>
                                                 <textarea class="form-control" rows="3" id="comment"></textarea>
                                             </div>
                                         </div>

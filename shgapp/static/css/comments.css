@@ -13,7 +13,7 @@ body {
     background-color: #fff;
     overflow-x: hidden;
     transition: 0.5s;
-    padding-top: 0;
+    padding-top: 0px;
     border: 1px solid #ddd;
 }
 
@@ -33,7 +33,7 @@ body {
 .sidenav .closebtn {
     position: absolute;
     top: 10;
-    left: 185px;
+    left: 200px;
     font-size: 36px;
     margin-right: 50px;
 }
@@ -44,6 +44,11 @@ body {
 }
 
 @media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
+  .sidenav {padding-top: 10px;}
   .sidenav a {font-size: 18px;}
 }
+
+.sidenav a {
+font-size: 15px;
+}
+
