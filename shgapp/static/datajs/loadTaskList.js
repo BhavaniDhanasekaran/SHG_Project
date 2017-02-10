@@ -21,7 +21,6 @@ function loadUnassignedTaskList(data){
 		if(groupTaskdata[key]["customerData"]){
 			var customerData = JSON.parse(groupTaskdata[key]["customerData"]);
 			var memberCount = customerData["memberDetails"].length;
-			console.log(memberCount);
 			for(var data in customerData){
 				obj["groupId"] = customerData["groupId"];
 				obj["loanId"] = customerData["loanId"];
@@ -102,7 +101,6 @@ function loadAssignedTaskList(){
 		if(myTaskdata[key]["customerData"]){
 			var customerData = JSON.parse(myTaskdata[key]["customerData"]);
 			var memberCount = customerData["memberDetails"].length;
-			console.log(memberCount);
 			for(var data in customerData){
 				if(obj["taskName"] == "Query Response"){
 					obj["groupLocation"] = '<a class="tdViewQuery">'+customerData["groupLocation"]+'</a>';
@@ -358,7 +356,6 @@ function setNextDate(date){
 	
 	var b_mm = back_GTM.getMonth()+1;
 	var b_yyyy = back_GTM.getFullYear();
-	console.log(b_dd,b_mm,b_yyyy);
 	if (b_dd < 10) {
 		b_dd = '0' + b_dd
 	}

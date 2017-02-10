@@ -146,7 +146,7 @@ def assignedTaskList(request):
     myTaskList		= camundaClient._urllib2_request('task?&assignee='+str(username), {}, requestType='GET')
 
     for data in myTaskList:
-        if groupName == "CLM_BM":
+        if groupName == "CLM_BM" or groupName == "CLM":
             processInstancesArr.append(data["processInstanceId"])
             dictKey = data["processInstanceId"]+"_"+data["id"]
             myTaskDict[dictKey] = data
@@ -160,7 +160,7 @@ def assignedTaskList(request):
     taskProVarList	 = camundaClient._urllib2_request('variable-instance?deserializeValues=false', bodyData, requestType='POST')
     #Process Variable Instance:
     for data in taskProVarList:
-        if groupName == "CLM_BM":
+        if groupName == "CLM_BM" or groupName == "CLM":
             for key in myTaskDict:
                 if key.find(data["processInstanceId"]) != -1:
                     myTaskDict[key][data["name"] ] = data["value"]
@@ -174,7 +174,7 @@ def assignedTaskList(request):
             if myTaskDict[key].has_key("kyc"):
                 myTaskDict[key]["name"] = "Query Response"
             myTaskData.append(myTaskDict[key])
-        if groupName == "CLM_BM":
+        if groupName == "CLM_BM" or groupName == "CLM":
             myTaskData.append(myTaskDict[key])
 
     print "Exiting assignedTaskList(request): view"
@@ -252,7 +252,7 @@ def tasksCount( request ):
                 taskCount ["KYC Check"] = 0
                 taskCount["Query Response"] = 0
 
-        if groupName == "CLM_BM":
+        if groupName == "CLM_BM" or groupName == "CLM":
             for data in urlTask:
                 if data["name"] in taskCount:
                     taskCount [data["name"]] = taskCount[data["name"]] + 1
@@ -328,7 +328,7 @@ def updateTask(request):
         if request.method == "POST":
             print request.body
             formData = json.loads(request.body)
-            if formData["processUpdate"]:
+            if formData.has_key("processUpdate"):
                 bodyData = formData["processUpdate"]
             else:
                 bodyData = {}

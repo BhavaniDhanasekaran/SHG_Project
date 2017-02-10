@@ -44,13 +44,13 @@
     <div class="main-content-inner" id="main-content-inner">
     <div class="breadcrumbs ace-save-state" id="breadcrumbs">
         <ul class="breadcrumb">
-            <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="#">Home </a> </li>
+            <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="{% url 'hello' %}">Home </a> </li>
         </ul>
 
         <!-- /.breadcrumb -->
     </div>
 {% endif %}
-{% if group == "CLM_BM" %}
+{% if group == "CLM_BM" or group == "CLM"%}
     <!-- start BM login menu -->
     <div class="sidebar-shortcuts" id="sidebar-shortcuts">
         <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
@@ -195,7 +195,7 @@
     <div class="main-content-inner" id="main-content-inner">
     <div class="breadcrumbs ace-save-state" id="breadcrumbs">
         <ul class="breadcrumb">
-            <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="#">Home </a> </li>
+            <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="{% url 'hello' %}">Home </a> </li>
 
         </ul>
         <!-- /.breadcrumb -->
@@ -230,7 +230,7 @@
     <div class="main-content-inner" id="main-content-inner">
     <div class="breadcrumbs ace-save-state" id="breadcrumbs">
         <ul class="breadcrumb">
-            <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="#">Home </a> </li>
+            <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="{% url 'hello' %}">Home </a> </li>
 
         </ul>
         <!-- /.breadcrumb -->

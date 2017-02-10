@@ -24,12 +24,13 @@ def getBMTasksByTaskName(request,taskName):
         username = request.user
         Grp = request.user.groups.all()
         groups = request.user.groups.values_list('name',flat=True)
+        groupName = groups[0]
         processInstancesArr = []
         processInstancesQRArr = []
         groupTaskDict 	= {}
         groupTaskData	= []
 
-        grp_body_cont 	   = { "unassigned" : "true" , "name" : taskName }
+        grp_body_cont 	   = { "unassigned" : "true" , "name" : taskName, "candidateGroup" : str(groupName) }
         groupTaskList	  = camundaClient._urllib2_request('task?firstResult=0', grp_body_cont, requestType='POST')
 
         for data in groupTaskList:

@@ -5,13 +5,14 @@
     <script src="{% static 'datajs/grouplist.js' %}"></script>
     <script src="{% static 'datajs/loadTaskList.js' %}"></script>
     <script src="{% static 'datajs/masterData.js' %}"></script>
+    <script src="{% static 'datajs/mysidenav.js' %}"></script>
 
     <script>
         var groupId = '{{ groupId | escapejs }}';
         var loanId = '{{ loanId | escapejs }}';
         var taskId = '{{ taskId | escapejs }}';
         var processInstanceId = '{{ processInstanceId | escapejs }}';
-
+        var group = '{{ group | escapejs }}';
         $(document).ready(function(){
             getGroupData(groupId,loanId);
             taskCount();
@@ -23,12 +24,12 @@
 {% endblock %}
 <!-- PAGE CONTENT BEGINS -->
 {% block content %}
-    <div class="row">
+    <div class="row" id="main">
         <!--2row Start-->
         <div class="col-lg-2 pricing-box" >
             <!--2row Start col2 start-->
             <div class="panel panel-default">
-                <div class="panel-heading">Group Detail </div>
+                <div class="panel-heading">Member Detail </div>
                 <div class="panel-body">
                     <div class="list-group" id="san_test">  </div>
                 </div>
@@ -48,9 +49,13 @@
                             <li><a data-toggle="tab" href="#profile4">Credit Enquiry</a></li>
                         </ul>
                         <div class="tab-content">
-                            <button id="commentsBtn" style="float:right;margin-top:-55px;margin-right:-11px" class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn" data-target="#right-menu" data-toggle="modal"  type="button">
-                                Comments
-                            </button>
+                            <div align="right" title="Comments">
+                                <span style="font-size:20px;cursor:pointer" onclick="toggleNav();" onclick="myFunction(this)">
+                                <button id="commentsBtn" style="float:right;margin-top:-55px;margin-right:-11px" class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn" data-target="#right-menu" data-toggle="modal"  type="button">
+                                    Comments
+                                </button>
+                                </span>
+                            </div>
                             <div id="home4" class="tab-pane in active">
                                 <!-- form start-->
                                 <section>
@@ -62,7 +67,8 @@
                                             <br/>
                                             <br/><label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">Member ID   :&nbsp&nbsp&nbsp <span id="appMemberId"></span></label><br/>
                                             <label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">Loan ID    :&nbsp&nbsp&nbsp<span id="loanId"></span></label><br/>
-                                            <label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">De-dup Status :&nbsp&nbsp<span id="dedupeStatus"></span></label>
+                                            <label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">De-dup Status :&nbsp&nbsp<span id="dedupeStatus"></span></label><br/>
+                                            <label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">CB Status :&nbsp&nbsp<span id="CBStatus"></span></label>
                                             <span id="memberId" style="visibility:hidden;"></span>
                                             <span id="memberValStatus" style="visibility:hidden;"></span><br>
 
@@ -73,7 +79,7 @@
                                         <div class="col-md-5">
                                             <!-- tabrow  colmd-5 start-->
                                             <form class="form-horizontal" role="form">
-                                                <span id="warningId" style="display:none;">*** Please select all the required fields ***</span>
+                                                <!--span id="warningId" style="display:none;">*** Please select all the required fields ***</span-->
                                                 <div class="profile-user-info profile-user-info-striped">
                                                     <div class="profile-info-row">
                                                         <div id="memberName_label" class="profile-info-name"> Name <font class="mandatory">*</font> </div>
@@ -96,8 +102,8 @@
                                                     <span class="editable">   
                                                     	<select id="maritalStatus" style="width:55%;">
                                                     	<option value="0">Select</option>
-                                                    	<option value="1">Married</option>
-                                                    	<option value="2">Unmarried</option>
+                                                    	<option value="1">UnMarried</option>
+                                                    	<option value="2">Married</option>
                                                     	<option value="3">Divorced</option>
                                                     	<option value="4">Seperated</option>
                                                     	<option value="5">Widow</option>
@@ -187,7 +193,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="profile-info-row">
-                                                    <div id="branch_label" class="profile-info-name">Bank branch Name <font class="mandatory">*</font></div>
+                                                    <div id="branch_label" class="profile-info-name">Bank branch Name </div>
                                                     <div class="profile-info-value">
                                                         <span class="editable" >    <input type="text"  id="branch"></span>
                                                     </div>
@@ -280,7 +286,7 @@
                                         <div class="col-md-2"> </div>
                                         <div id="commentDivId" class="col-md-10">
                                             <div class="form-group">
-                                                <label id="comment_label" for="comment">Comment <font class="mandatory">*</font></label>
+                                                <label id="comment_label" for="comment">Comment </label>
                                                 <textarea class="form-control" rows="3" id="comment"></textarea>
                                             </div>
                                         </div>

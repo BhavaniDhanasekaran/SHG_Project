@@ -4,6 +4,7 @@
 <script src="{% static 'datajs/grouplist.js' %}"></script>
 <script src="{% static 'datajs/loadTaskList.js' %}"></script>
 <script src="{% static 'datajs/masterData.js' %}"></script>
+<script src="{% static 'datajs/mysidenav.js' %}"></script>
 <script>
     var groupId = '{{ groupId | escapejs }}';
     var loanId = '{{ loanId | escapejs }}';
@@ -16,45 +17,10 @@
     
     });
 </script>
- <script>
-function openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
-    document.getElementById("main").style.marginRight = "250px";
-    document.body.style.backgroundColor = "rgba(0,0,0,0)";
-}
-
-function closeNav() {
-    document.getElementById("mySidenav").style.width = "0px";
-    document.getElementById("main").style.marginRight= "0px";
-    document.body.style.backgroundColor = "white";
-}
-</script>
 {% endblock %}
 <!-- PAGE CONTENT BEGINS -->
 {% block content %}
-
-<div id="mySidenav" class="sidenav">
- <div class="table-header">
-<a href="javascript:void(0)" class="closebtn" onClick="closeNav()"><span class="white">&times;</span></a>Queries</div>
-
-<div class="widget-body">
-                          <div class="widget-main padding-8">
-                            <div id="profile-feed-1" class="profile-feed">
-                              <div class="profile-activity clearfix">
-                                <div>
-
-                                  <div class="time">
-                                    <i class="ace-icon fa fa-clock-o bigger-110"></i>
-                                    Wed Dec 07 2016 18:20:31</div>
-                                    <div class="time">
-                                    <i class="ace-icon fa fa-clock-o bigger-110"></i>
-                                    Wed Dec 07 2016 18:20:31</div>
-                                  </div>
-                                </div>
-                              </div></div></div>
-</div>
-
-<div class="row" id="main"> 
+<div class="row" id="main">
     <!--2row Start col-10 start-->
     <div class="panel panel-default">
         <div class="panel-heading"><span id="groupName"></span>  &nbsp&nbsp&nbsp( <span id="appGroupId1"></span> )<span id="groupId" style="visibility:hidden;"></span> </div>
@@ -63,15 +29,16 @@ function closeNav() {
             <div class="tabbable">
                 <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
                     <li class="active"><a data-toggle="tab" href="#upload">Group Details</a></li>
-                
-               
                 </ul>
                 <div class="tab-content">
-                <div align="right" title="Comments"><span style="font-size:20px;cursor:pointer" onclick="openNav()">
-                <!--button class="btn btn-sm">Comments</button-->
-                 <button id="commentsBtn" style="float:right;margin-top:-55px;margin-right:-11px" class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn" data-target="#right-menu" data-toggle="modal"  type="button">
-			Comments	
-		</button></span></div>
+                    <div align="right" title="Comments">
+                        <span style="font-size:20px;cursor:pointer" onclick="openNav()">
+                            <!--button class="btn btn-sm">Comments</button-->
+                            <button id="commentsBtn" style="float:right;margin-top:-55px;margin-right:-11px" class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn" data-target="#right-menu" data-toggle="modal"  type="button">
+                                Comments
+                            </button>
+                        </span>
+                    </div>
                     <div id="upload" class="tab-pane in active">
                         <!-- form start-->
                         <section>
@@ -157,6 +124,6 @@ function closeNav() {
     </div>
     <!--2row End-->
 </div>
-</div>             
-
+</div>
+{% include 'query.html' %}
 {% endblock content %}
