@@ -20,7 +20,7 @@
                 KYCTasksGroupByDate(dateFrom,dateTo);
             }
             if(taskName){
-                if(group == "CLM_BM"){
+                if(group == "CLM_BM" || group == "CLM"){
                     getBMTasksByTaskName(taskName);
 
                 }
@@ -39,9 +39,27 @@
         <div class="widget-header">
             <h5 class="widget-title bigger lighter">
                 <i class="ace-icon fa fa-table"></i>
-               
+                Task List
             </h5>
-            
+            <div class="widget-toolbar widget-toolbar-light no-border">
+                <select id="simple-colorpicker-1" class="hide">
+                    <option selected="" data-class="blue" value="#981b1b">#307ECC</option>
+                    <option data-class="blue2" value="#981b1b">#5090C1</option>
+                    <option data-class="blue3" value="#981b1b">#6379AA</option>
+                    <option data-class="green" value="#981b1b">#82AF6F</option>
+                    <option data-class="green2" value="#981b1b">#2E8965</option>
+                    <option data-class="green3" value="#981b1b">#5FBC47</option>
+                    <option data-class="red" value="#981b1b">#E2755F</option>
+                    <option data-class="red2" value="#981b1b">#E04141</option>
+                    <option data-class="red3" value="#981b1b">#D15B47</option>
+                    <option data-class="orange" value="#981b1b">#FFC657</option>
+                    <option data-class="purple" value="#981b1b">#7E6EB0</option>
+                    <option data-class="pink" value="#981b1b">#CE6F9E</option>
+                    <option data-class="dark" value="#981b1b">#404040</option>
+                    <option data-class="grey" value="#981b1b">#848484</option>
+                    <option data-class="default" value="#981b1b">#EEE</option>
+                </select>
+            </div>
         </div>
         <div class="widget-body" style="overflow-x:auto;">
             <div class="widget-main no-padding">
@@ -51,6 +69,4 @@
             </div>
         </div>
     </div>
-
-    <br> <br> <br>
 {% endblock content %}

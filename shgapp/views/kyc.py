@@ -60,7 +60,7 @@ def getGroupData(request,groupID):
         Grp = request.user.groups.all()
         url = ''
         groups = request.user.groups.values_list('name', flat=True)
-        if groups[0] == "CLM_BM":
+        if groups[0] == "CLM_BM" or groups[0] == "CLM":
             validationLevel = "BM"
         if groups[0] == "DataSupportTeam":
             validationLevel = "KYC"
@@ -84,7 +84,7 @@ def getIndMemberData(request,memberId,groupId,loanId):
         if groupName == "DataSupportTeam":
             validationType = "PEN"
             validationLevel = "KYC"
-        if groupName == "CLM_BM":
+        if groupName == "CLM_BM" or groupName == "CLM":
             validationType = "POST"
             validationLevel = "BM"
         bodyData = { "groupId": str(groupId), "memberId":str(memberId),  "loanId": str(loanId), "validationLevel" : validationLevel, "entityType": "MEMBER","validationType": validationType, "userId": "1996" }
