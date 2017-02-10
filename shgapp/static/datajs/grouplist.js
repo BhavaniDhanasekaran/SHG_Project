@@ -21,6 +21,7 @@ function getGroupData(groupID,loanId){
         },
         success: function (data) {
             groupData = data;
+            console.log(groupData);
             enableActiveTab();
             if(groupData["data"]["groupMemDetail"]){
                 if(groupData["data"]["groupMemDetail"][0]){
@@ -65,8 +66,12 @@ function getGroupData(groupID,loanId){
 
                 }
             }
+            else{
+                $.alert(groupData["message"]);
+            }
         },
         error: function (jqXHR, textStatus, errorThrown) {
+            $. alert(textStatus,jqXHR,errorThrown);
             enableActiveTab();
         }
     });
@@ -107,69 +112,70 @@ function getMemberDetails(memberId,groupId,loanId){
             console.log(memberData);
             //var arrayKeys = ["occupations","villages""conflictList","highMarksList","memberFamilyDetails","memberDocumentDetails"];
             var imgFiles = ["MEMBERPHOTO","IDPROOF","IDPROOF_2","ADDRESSPROOF","ADDRESSPROOF_2","SBACCOUNTPASSBOOK"];
-            if(memberData["data"]["highMarksList"]){
-                if(memberData["data"]["highMarksList"][0]){
-                    $('#creditData').css("display","block");
-                    $('#creditData').css("display","table-row");
-                    $('#nodata').css("display","none");
-                    var creditData = memberData["data"]["highMarksList"][0];
-                    for(var index in creditData){
-                        if(document.getElementById(index)){
-                            document.getElementById(index).innerHTML = creditData[index];
+            if(memberData["data"]["memberDetails"]) {
+                if (memberData["data"]["highMarksList"]) {
+                    if (memberData["data"]["highMarksList"][0]) {
+                        $('#creditData').css("display", "block");
+                        $('#creditData').css("display", "table-row");
+                        $('#nodata').css("display", "none");
+                        var creditData = memberData["data"]["highMarksList"][0];
+                        for (var index in creditData) {
+                            if (document.getElementById(index)) {
+                                document.getElementById(index).innerHTML = creditData[index];
+                            }
+                            if (document.getElementById("CBStatus")) {
+                                document.getElementById("CBStatus").innerHTML = creditData["status"];
+                            }
                         }
-                        if(document.getElementById("CBStatus")){
-                            document.getElementById("CBStatus").innerHTML = creditData["status"];
+                    }
+                    else {
+                        $('#creditData').css("display", "none");
+                        $('#nodata').css("display", "block");
+                        if (document.getElementById("CBStatus")) {
+                            document.getElementById("CBStatus").innerHTML = "";
                         }
                     }
                 }
-                else{
-                    $('#creditData').css("display","none");
-                    $('#nodata').css("display","block");
-                    if(document.getElementById("CBStatus")){
-                        document.getElementById("CBStatus").innerHTML = "";
-                    }
-                }
-            }
-
-
-
-            if(memberData["data"]["memberDocumentDetails"]){
-                if(memberData["data"]["memberDocumentDetails"][0]){
-                    var memberDocumentsArray = memberData["data"]["memberDocumentDetails"];
-                    for(var key in memberDocumentsArray){
-                        if($.inArray(memberDocumentsArray[key]["documentType"], imgFiles) != -1){
-                            //Need to change with proper URL - Coded just for images display
-                            if(document.getElementById(memberDocumentsArray[key]["documentType"]+"_docPath")){
-                                    $("#"+memberDocumentsArray[key]["documentType"]+"_docPath").attr("src",memberDocumentsArray[key]["documentPath"]);
-                                    $("#"+memberDocumentsArray[key]["documentType"]+"_docPath").attr("data-url",memberDocumentsArray[key]["documentPath"]);
+                if (memberData["data"]["memberDocumentDetails"]) {
+                    if (memberData["data"]["memberDocumentDetails"][0]) {
+                        var memberDocumentsArray = memberData["data"]["memberDocumentDetails"];
+                        for (var key in memberDocumentsArray) {
+                            if ($.inArray(memberDocumentsArray[key]["documentType"], imgFiles) != -1) {
+                                //Need to change with proper URL - Coded just for images display
+                                if (document.getElementById(memberDocumentsArray[key]["documentType"] + "_docPath")) {
+                                    $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", memberDocumentsArray[key]["documentPath"]);
+                                    $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("data-url", memberDocumentsArray[key]["documentPath"]);
+                                }
                             }
                         }
                     }
                 }
-            }
-            for(var data in memberData["data"]["memberDetails"]){
-                if(document.getElementById(data)){
-                    if(data == "villages"){
-                        $('#villages').empty();
-                        var pincodeData = memberData["data"]["memberDetails"];
-                        $('#villages').append('<option value="" >   Select Area </option>');
-                        for(var i = 0; i< pincodeData[data].length; i++){
-                            $('#villages').append('<option value="'+pincodeData[data][i]["villageId"]+'">'+pincodeData[data][i]["villageName"]+'</option>');
+                for (var data in memberData["data"]["memberDetails"]) {
+                    if (document.getElementById(data)) {
+                        if (data == "villages") {
+                            $('#villages').empty();
+                            var pincodeData = memberData["data"]["memberDetails"];
+                            $('#villages').append('<option value="" >   Select Area </option>');
+                            for (var i = 0; i < pincodeData[data].length; i++) {
+                                $('#villages').append('<option value="' + pincodeData[data][i]["villageId"] + '">' + pincodeData[data][i]["villageName"] + '</option>');
+                            }
                         }
-                    }
-                    $("#villages").val(memberData["data"]["memberDetails"]["villageId"]);
-                    var tagname = document.getElementById(data).tagName;
-                    if(tagname == "INPUT" || tagname == "SELECT" || tagname == "TEXTAREA"){
-                        document.getElementById(data).value = memberData["data"]["memberDetails"][data];
-                    }
-                    if(tagname == "SPAN"){
-                        document.getElementById(data).innerHTML = memberData["data"]["memberDetails"][data];
-                        if(document.getElementById("villages").tagName == "SPAN")
-                            document.getElementById("villages").innerHTML = memberData["data"]["memberDetails"]["villageId"];
+                        $("#villages").val(memberData["data"]["memberDetails"]["villageId"]);
+                        var tagname = document.getElementById(data).tagName;
+                        if (tagname == "INPUT" || tagname == "SELECT" || tagname == "TEXTAREA") {
+                            document.getElementById(data).value = memberData["data"]["memberDetails"][data];
+                        }
+                        if (tagname == "SPAN") {
+                            document.getElementById(data).innerHTML = memberData["data"]["memberDetails"][data];
+                            if (document.getElementById("villages").tagName == "SPAN")
+                                document.getElementById("villages").innerHTML = memberData["data"]["memberDetails"]["villageId"];
+                        }
                     }
                 }
             }
-
+            else{
+                $.alert(memberData["message"]);
+            }
             document.getElementById("groupId").innerHTML = groupId;
             document.getElementById("loanId").innerHTML = loanId;
         },

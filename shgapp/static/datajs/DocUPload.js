@@ -35,7 +35,7 @@ function loanDocument(loanTypeId) {
                                     '<span><button type="button"  onclick="window.open(' + "'" + docURLDict[key1].split("*")[0] + "'" + ').focus();" class="btn btn-danger" id = "' + documentData[key]["documentId"] + '_2' + '" name="' + documentData[key]["documentName"] + '_' + documentData[key]["documentId"] + '"></span>' +
                                     '<span class="glyphicon glyphicon-cloud-upload"></span> View  </button>' +
                                     '<input type = "file" id="' + documentData[key]["documentId"] + '_Edit' + '" style="display: none;" /></input>' +
-                                    '<span>   <button type="button"  class="btn btn-info js-upload-photos2" id = "' + documentData[key]["documentId"] + '_1' + '" name="' + docURLDict[key1].split("*")[1] + '"></span>' +
+                                    '<span>   <button type="button"  class="btn btn-success js-upload-photos2" id = "' + documentData[key]["documentId"] + '_1' + '" name="' + docURLDict[key1].split("*")[1] + '"></span>' +
                                     '<span class="glyphicon glyphicon-edit"></span> Edit  </button></td></tr> ';
                             }
                         }
@@ -47,7 +47,7 @@ function loanDocument(loanTypeId) {
                                 '<span><button type="button" style="display:none;" class="btn btn-danger" id = "' + documentData[key]["documentId"] + '_2' + '" name="' + documentData[key]["documentName"] + '_' + documentData[key]["documentId"] + '"></span>' +
                                 '<span class="glyphicon glyphicon-cloud-upload"></span> View  </button> ' +
                                 '<input type = "file" id="' + documentData[key]["documentId"] + '_Edit' + '" style="display: none;" /></input>' +
-                                '<span><button type="button"   style="display: none;"  class="btn btn-info js-upload-photos2" id = "' + documentData[key]["documentId"] + '_3' + '" name=""></span>' +
+                                '<span><button type="button"   style="display: none;"  class="btn btn-success js-upload-photos2" id = "' + documentData[key]["documentId"] + '_3' + '" name=""></span>' +
                                 '<span class="glyphicon glyphicon-edit"></span> Edit  </button></td></tr>';
                         }
                     }
@@ -110,19 +110,24 @@ function uploaddoc(fileid, docName, groupId) {
         dataType: 'json',
         sequentialUploads: true,
         start: function(e) {
-            $("#modal-progress").modal("show");
+            //$("#modal-progress").modal("show");
+             disableActiveTab();
+            $("#loading").show();
+
         },
         stop: function(e) {
-            $("#modal-progress").modal("hide");
+            //$("#modal-progress").modal("hide");
+            $("#loading").hide()
+             enableActiveTab();
         },
-        progressall: function(e, data) {
+        /*progressall: function(e, data) {
             var progress = parseInt(data.loaded / data.total * 100, 10);
             var strProgress = progress + "%";
             $(".progress-bar").css({
                 "width": strProgress
             });
             $(".progress-bar").text(strProgress);
-        },
+        },*/
         done: function(e, data) {
             if (data.result.is_valid) {
                 var groupId = document.getElementById("groupId").innerHTML;
@@ -182,19 +187,24 @@ function Editdoc(UniqueId, newdoceditId) {
         dataType: 'json',
         sequentialUploads: true,
         start: function(e) {
-            $("#modal-progress").modal("show");
+           // $("#modal-progress").modal("show");
+             disableActiveTab();
+            $("#loading").show()
+
         },
         stop: function(e) {
-            $("#modal-progress").modal("hide");
+            //$("#modal-progress").modal("hide");
+            $("#loading").hide();
+             enableActiveTab();
         },
-        progressall: function(e, data) {
+        /*progressall: function(e, data) {
             var progress = parseInt(data.loaded / data.total * 100, 10);
             var strProgress = progress + "%";
             $(".progress-bar").css({
                 "width": strProgress
             });
             $(".progress-bar").text(strProgress);
-        },
+        },*/
         done: function(e, data) {
             if (data.result.is_valid) {
                 var groupId = document.getElementById("groupId").innerHTML;

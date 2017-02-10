@@ -156,12 +156,12 @@ $(document).ready(function (){
     <div class="col-md-offset-3 col-xs-9">
         <div class="clearfix form-actions">
             <div class="col-md-offset-3 col-md-9">
-                <button onclick="updateTask('Approved');" class="btn btn-info" type="button">
+                <button onclick="updateTask('Approved');" class="btn btn-danger" type="button">
                 <i class="ace-icon fa fa-check bigger-110"></i>
                 Approve
                 </button>
                 &nbsp; &nbsp; &nbsp;
-                <button onclick="window.location.href='/assignedTaskList/';"class="btn" type="reset">
+                <button onclick="window.location.href='/assignedTaskList/';"class="btn btn-danger" type="reset">
                 <i class="ace-icon fa fa-close bigger-110"></i>
                 Cancel
                 </button>
@@ -169,19 +169,6 @@ $(document).ready(function (){
         </div>
     </div>
 </div>
-<div class="modal fade" id="modal-progress" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Uploading...</h4>
-        </div>
-        <div class="modal-body">
-          <div class="progress">
-            <div class="progress-bar" role="progressbar" style="width: 0%;">0%</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+
   {% include 'query.html' %}
 {% endblock content %}
