@@ -8,7 +8,7 @@ function getGroupData(groupID,loanId){
     var appCount = 0;
     var rejCount = 0;
     var rewCount = 0;
-    //disableActiveTab();
+    disableActiveTab();
     $.ajax({
         url: '/getGroupData/'+groupID,
         dataType: 'json',
@@ -21,7 +21,7 @@ function getGroupData(groupID,loanId){
         },
         success: function (data) {
             groupData = data;
-            //enableActiveTab();
+            enableActiveTab();
             if(groupData["data"]["groupMemDetail"]){
                 if(groupData["data"]["groupMemDetail"][0]){
                     totalCount = groupData["data"]["groupMemDetail"].length;
@@ -67,7 +67,7 @@ function getGroupData(groupID,loanId){
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            //enableActiveTab();
+            enableActiveTab();
         }
     });
     getHistComments(processInstanceId);
@@ -89,7 +89,7 @@ function getMemberDetails(memberId,groupId,loanId){
     if(document.getElementById("comment")){
         document.getElementById("comment").value = "";
     }
-    //disableActiveTab();
+    disableActiveTab();
     $.ajax({
         url: '/getIndMemberData/'+memberId+'/'+groupId+'/'+loanId,
         //type: 'post',
@@ -102,7 +102,7 @@ function getMemberDetails(memberId,groupId,loanId){
             $("#loading").hide();
         },
         success: function (data) {
-            //enableActiveTab();
+            enableActiveTab();
             var memberData = data;
             console.log(memberData);
             //var arrayKeys = ["occupations","villages""conflictList","highMarksList","memberFamilyDetails","memberDocumentDetails"];
@@ -174,7 +174,7 @@ function getMemberDetails(memberId,groupId,loanId){
             document.getElementById("loanId").innerHTML = loanId;
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            //enableActiveTab();
+            enableActiveTab();
         }
     });
 }
@@ -706,7 +706,7 @@ function getHistComments(processId){
                                     if(commentSplit[1] != "" &&  commentSplit[2] != "") {
                                         var comment = commentSplit[0];
                                         var memberName = commentSplit[1] + "&nbsp(&nbsp" + commentSplit[2] + "&nbsp)";
-                                        htmlContent += '<div class="profile-activity clearfix"><div><a class="user" style="color:#981b1b;" href="#"><i class="glyphicon glyphicon-user"></i> ' + sortedData[key][1]["assignee"] + ':</a>  '
+                                        htmlContent += '<div class="profile-activity clearfix"><div><span style="font-weight:bold;color:#981b1b;"><i class="glyphicon glyphicon-user"></i> ' + sortedData[key][1]["assignee"] + ':</span>  '
                                             + '&nbsp&nbsp<span style="color:black;">' + sortedData[key][1]["activityName"] + '</span>'
                                             + '<div style="font-weight:bold;color:darkslategrey;">Member : ' + memberName + '<br></div>'
                                             + '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span style="font-style:italic;">'
@@ -715,12 +715,11 @@ function getHistComments(processId){
                                     }
                                 }
                                 else{
-                                	htmlContent += '<div class="profile-activity clearfix"><div><a class="user" style="color:#981b1b;" href="#"><i class="glyphicon glyphicon-user"></i> ' + sortedData[key][1]["assignee"] + ':</a>  '
+                                	htmlContent += '<div class="profile-activity clearfix"><div><span style="font-weight:bold;color:#981b1b;"><i class="glyphicon glyphicon-user"></i> ' + sortedData[key][1]["assignee"] + ':</span>  '
                                         + '&nbsp&nbsp<span style="color:black;">' + sortedData[key][1]["activityName"] + '</span></div>'
                                         + '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span style="font-style:italic;">'
                                         + '<i class="fa fa-comments" style="color:darkslategrey;" aria-hidden="true"></i>&nbsp'+sortedcomments[key1]["message"] + '</span><div class="time"><i class="ace-icon fa fa-clock-o bigger-110"></i><span > Commented on &nbsp&nbsp'
                                         + cmtDate + '</span></div></div></div>';
-
 								}
                             }
                         }

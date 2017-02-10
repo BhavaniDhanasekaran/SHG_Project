@@ -3,6 +3,7 @@
 {% block javascript %}
     <script src="{% static 'datajs/grouplist.js' %}"></script>
     <script src="{% static 'datajs/loadTaskList.js' %}"></script>
+    <script src="{% static 'datajs/mysidenav.js' %}"></script>
     <script type="text/javascript">
         var groupId = '{{ groupId | escapejs }}';
         var loanId = '{{ loanId | escapejs }}';
@@ -20,9 +21,9 @@
 {% endblock %}
 <!-- PAGE CONTENT BEGINS -->
 {% block content %}
-    <div class="row">
+    <div class="row" id="main">
         <!--second row strat-->
-        <div class="col-xs-2" >
+        <div class="col-lg-2 pricing-box" >
             <div class="panel panel-default">
                 <div class="panel-heading">Group Detail </div>
                 <div class="panel-body">
@@ -47,9 +48,13 @@
                             </li>
                         </ul>
                         <div class="tab-content">
-                            <button id="commentsBtn" style="float:right;margin-top:-55px;margin-right:-11px" class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn" data-target="#right-menu" data-toggle="modal"  type="button">
-                                Comments
-                            </button>
+                            <div align="right" title="Comments">
+                                <span style="font-size:20px;cursor:pointer" onclick="toggleNav();" onclick="myFunction(this)">
+                                <button id="commentsBtn" style="float:right;margin-top:-55px;margin-right:-11px" class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn" data-target="#right-menu" data-toggle="modal"  type="button">
+                                    Comments
+                                </button>
+                                </span>
+                            </div>
                             <div id="home4" class="tab-pane in active">
                                 <!-- form start-->
                                 <section>

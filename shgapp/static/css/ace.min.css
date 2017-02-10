@@ -10217,7 +10217,8 @@ th .lbl:only-child {
     font-size: 14px;
     line-height: 38px;
     padding-left: 12px;
-    margin-bottom: 1px
+    margin-bottom: 1px;
+    height:40px;
 }
 .table-header .close {
     margin-right: 8px;

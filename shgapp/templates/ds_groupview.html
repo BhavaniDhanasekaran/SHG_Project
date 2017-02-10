@@ -5,6 +5,7 @@
     <script src="{% static 'datajs/grouplist.js' %}"></script>
     <script src="{% static 'datajs/loadTaskList.js' %}"></script>
     <script src="{% static 'datajs/masterData.js' %}"></script>
+    <script src="{% static 'datajs/mysidenav.js' %}"></script>
 
     <script>
         var groupId = '{{ groupId | escapejs }}';
@@ -23,7 +24,7 @@
 {% endblock %}
 <!-- PAGE CONTENT BEGINS -->
 {% block content %}
-    <div class="row">
+    <div class="row" id="main">
         <!--2row Start-->
         <div class="col-lg-2 pricing-box" >
             <!--2row Start col2 start-->
@@ -48,9 +49,13 @@
                             <li><a data-toggle="tab" href="#profile4">Credit Enquiry</a></li>
                         </ul>
                         <div class="tab-content">
-                            <button id="commentsBtn" style="float:right;margin-top:-55px;margin-right:-11px" class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn" data-target="#right-menu" data-toggle="modal"  type="button">
-                                Comments
-                            </button>
+                            <div align="right" title="Comments">
+                                <span style="font-size:20px;cursor:pointer" onclick="toggleNav();" onclick="myFunction(this)">
+                                <button id="commentsBtn" style="float:right;margin-top:-55px;margin-right:-11px" class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn" data-target="#right-menu" data-toggle="modal"  type="button">
+                                    Comments
+                                </button>
+                                </span>
+                            </div>
                             <div id="home4" class="tab-pane in active">
                                 <!-- form start-->
                                 <section>
@@ -97,8 +102,8 @@
                                                     <span class="editable">   
                                                     	<select id="maritalStatus" style="width:55%;">
                                                     	<option value="0">Select</option>
-                                                    	<option value="1">Married</option>
-                                                    	<option value="2">Unmarried</option>
+                                                    	<option value="1">UnMarried</option>
+                                                    	<option value="2">Married</option>
                                                     	<option value="3">Divorced</option>
                                                     	<option value="4">Seperated</option>
                                                     	<option value="5">Widow</option>

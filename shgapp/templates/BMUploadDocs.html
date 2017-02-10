@@ -5,6 +5,7 @@
 <script src="{% static 'datajs/loadTaskList.js' %}"></script>
 <script src="{% static 'datajs/masterData.js' %}"></script>
 <script src="{% static 'datajs/DocUPload.js' %}"></script>
+<script src="{% static 'datajs/mysidenav.js' %}"></script>
 
 <script>
   var groupId = '{{ groupId | escapejs }}';
@@ -24,7 +25,7 @@ $(document).ready(function (){
 {% endblock %}
 <!-- PAGE CONTENT BEGINS -->
 {% block content %}
-<div class="row">
+<div class="row" id="main">
 <!--2row Start-->
 <div class="col-lg-3 pricing-box" >
     <!--2row Start col3 start-->
@@ -101,9 +102,13 @@ $(document).ready(function (){
                     <li class="active"><a data-toggle="tab" href="#upload">Upload Doc</a></li>
                 </ul>
                 <div class="tab-content">
-		        <button id="commentsBtn" style="float:right;margin-top:-55px;margin-right:-11px" class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn" data-target="#right-menu" data-toggle="modal"  type="button">
-				 Comments	
-			</button>
+		            <div align="right" title="Comments">
+                        <span style="font-size:20px;cursor:pointer" onclick="toggleNav();" onclick="myFunction(this)">
+                            <button id="commentsBtn" style="float:right;margin-top:-55px;margin-right:-11px" class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn" data-target="#right-menu" data-toggle="modal"  type="button">
+                                Comments
+                            </button>
+                        </span>
+                    </div>
                     <div id="upload" class="tab-pane in active">
                         <!-- form start-->
                         <section>

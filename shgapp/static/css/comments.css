@@ -33,9 +33,11 @@ body {
 .sidenav .closebtn {
     position: absolute;
     top: 10;
-    left: 200px;
+    left: 210px;
     font-size: 36px;
     margin-right: 50px;
+    background-color: #d12e2a;
+    border:0px;
 }
 
 #main {

@@ -1,65 +1,49 @@
-<!--modal start query view -->
-<div id="right-menu" class="modal aside" data-body-scroll="false" data-offset="true" data-placement="right"
-     data-fixed="true" data-backdrop="false" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header no-padding">
-                <div class="table-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                        <span class="white">&times;</span>
-                    </button>
-                    Queries
+<div id="mySidenav" class="sidenav">
+    <div class="table-header">
+        <button type="button" class="closebtn" onClick="closeNav()" data-dismiss="modal" aria-hidden="true">
+        <span class="white">&times;</span>
+        </button>
+        Queries
+    </div>
+    <div class="modal-body">
+        <!--- query resolution started -->
+        <div class="widget-box transparent">
+            <div class="widget-header widget-header-small">
+                <h4 class="widget-title blue smaller">
+                    <i class="ace-icon fa fa-rss orange"></i>
+                    Recent Queries
+                </h4>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main padding-8">
+                    <div id="profile-feed-1" class="profile-feed">
+                    </div>
                 </div>
             </div>
-            <div class="modal-body">
-                <!--- query resolution started -->
-                <div class="widget-box transparent">
-                    <div class="widget-header widget-header-small">
-                        <h4 class="widget-title blue smaller">
-                            <i class="ace-icon fa fa-rss orange"></i>
-                            Recent Queries
-                        </h4>
-                    </div>
-                    <div class="widget-body">
-                        <div class="widget-main padding-8">
-                            <div id="profile-feed-1" class="profile-feed">
-                                <!--div class="profile-activity clearfix">
-                                    <div>
+        </div>
+    </div>
+</div>
+</div>
+{% block javascript %}
+<script type="text/javascript">
+    jQuery(function($) {
+        $('.modal.aside').ace_aside();
 
-                                      <a class="user" href="#"> Data Team: </a>
-                                      Please upload photo
+        $('#aside-inside-modal').addClass('aside').ace_aside({container: '#my-modal > .modal-dialog'});
 
+        $('#right-menu').modal('show')
 
-                                      <div class="time">
-                                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
-                                        Wed Dec 07 2016 18:20:31</div>
-                                    </div>
-                                    </div-->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--- query resolution end -->
-                {% block javascript %}
-                    <script type="text/javascript">
-                        jQuery(function($) {
-                            $('.modal.aside').ace_aside();
-
-                            $('#aside-inside-modal').addClass('aside').ace_aside({container: '#my-modal > .modal-dialog'});
-
-                            $('#right-menu').modal('show')
-
-                            $(document).one('ajaxloadstart.page', function(e) {
-                                //in ajax mode, remove before leaving page
-                                $('.modal.aside').remove();
-                                $(window).off('.aside')
-                            });
+        $(document).one('ajaxloadstart.page', function(e) {
+            //in ajax mode, remove before leaving page
+            $('.modal.aside').remove();
+            $(window).off('.aside')
+        });
 
 
-                            //make content sliders resizable using jQuery UI (you should include jquery ui files)
-                            //$('#right-menu > .modal-dialog').resizable({handles: "w", grid: [ 20, 0 ], minWidth: 200, maxWidth: 600});
+        //make content sliders resizable using jQuery UI (you should include jquery ui files)
+        //$('#right-menu > .modal-dialog').resizable({handles: "w", grid: [ 20, 0 ], minWidth: 200, maxWidth: 600});
 
-                            $('#right-menu > .modal-dialog').css("width", "300");
-                        })
-                    </script>
-                {% endblock  %}
+        $('#right-menu > .modal-dialog').css("width", "300");
+    })
+</script>
+{% endblock  %}
