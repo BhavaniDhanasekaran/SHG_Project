@@ -71,7 +71,6 @@ function getGroupData(groupID,loanId){
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            $. alert(textStatus,jqXHR,errorThrown);
             enableActiveTab();
         }
     });
