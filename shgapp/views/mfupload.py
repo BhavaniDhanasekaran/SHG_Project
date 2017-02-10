@@ -35,7 +35,7 @@ def upload_to_filename(filename):
         create_random_string(),
         filename_ext.lower()
     )
-    
+
 def ajax_progress_bar_upload(request):
     print "called ajax_progress_bar_upload"
     print 'request: ', request
@@ -51,7 +51,7 @@ def ajax_progress_bar_upload(request):
                 Body=file)
             print  'ProgressBarUploadView done - upload_to_filename', uploadtofilename
             data = {'is_valid': True, 'name': uploadtofilename, 'url': settings.AWS_S3_BASE_URL + uploadtofilename}
-    except Exception, e:  
+    except Exception, e:
         print 'ajax_progress_bar_upload Exception e: ', e
         data = {'is_valid': False}
         return helper.bad_request('An expected error occurred while uploading document.')

@@ -55,6 +55,7 @@ kyc_urlpatterns = [
     url(r'^updateMemValidationStatus/',kyc.updateMemValidationStatus, name = 'updateMemValidationStatus'),
     url(r'^updateUrl/',kyc.updateUrl, name = 'updateUrl'),  
     url(r'^loanDocument/(?P<loanTypeId>[^/]+)',kyc.loanDocument, name = 'loanDocument'),
+    url(r'^editUrl/',kyc.editUrl, name = 'editUrl'),
 
     
     
@@ -83,6 +84,7 @@ camundaViews_urlpatterns = [
     url(r'^queryRespTaskList/',camundaViews.queryRespTaskList, name = 'queryRespTaskList'),
     url(r'^updateTask/',camundaViews.updateTask, name = 'updateTask'),
     url(r'^taskComplete/(?P<taskId>[^/]+)',camundaViews.taskComplete, name = 'taskComplete'),
+    url(r'^getHistoryComments/(?P<processId>[^/]+)',camundaViews.getHistoryComments, name = 'getHistoryComments'),
 
 ]
 urlpatterns += camundaViews_urlpatterns

@@ -2,280 +2,306 @@
 {% load staticfiles %}
 {% block javascript %}
 
-<script src="{% static 'datajs/grouplist.js' %}"></script>
-<script src="{% static 'datajs/loadTaskList.js' %}"></script>
-<script src="{% static 'datajs/masterData.js' %}"></script>
+    <script src="{% static 'datajs/grouplist.js' %}"></script>
+    <script src="{% static 'datajs/loadTaskList.js' %}"></script>
+    <script src="{% static 'datajs/masterData.js' %}"></script>
+    <script src="{% static 'datajs/mysidenav.js' %}"></script>
 
-<script>
-	var groupId = '{{ groupId | escapejs }}';
-	var loanId = '{{ loanId | escapejs }}';
-	var taskId = '{{ taskId | escapejs }}';
-	var processInstanceId = '{{ processInstanceId | escapejs }}';
-	
-	$(document).ready(function(){
-		getGroupData(groupId,loanId);
-		taskCount();
-		$("#idProof").imageBox();
-		$("#unbind-pos").draggable();
-	});
-</script>
+    <script>
+        var groupId = '{{ groupId | escapejs }}';
+        var loanId = '{{ loanId | escapejs }}';
+        var taskId = '{{ taskId | escapejs }}';
+        var processInstanceId = '{{ processInstanceId | escapejs }}';
+        var group = '{{ group | escapejs }}';
+        $(document).ready(function(){
+            getGroupData(groupId,loanId);
+            taskCount();
+            $("#idProof").imageBox();
+            $("#unbind-pos").draggable();
+        });
+    </script>
 
 {% endblock %}
 <!-- PAGE CONTENT BEGINS -->
 {% block content %}
-<div class="row">
-    <!--2row Start-->
-    <div class="col-lg-2 pricing-box" >
-        <!--2row Start col2 start-->
-        <div class="panel panel-default">
-            <div class="panel-heading">Group Detail </div>
-            <div class="panel-body">
-                <div class="list-group" id="san_test">  </div>
+    <div class="row" id="main">
+        <!--2row Start-->
+        <div class="col-lg-2 pricing-box" >
+            <!--2row Start col2 start-->
+            <div class="panel panel-default">
+                <div class="panel-heading">Member Detail </div>
+                <div class="panel-body">
+                    <div class="list-group" id="san_test">  </div>
+                </div>
             </div>
         </div>
-    </div>
-    
-    <!--2row Start col2 End-->
-    <div class="col-lg-10" >
-        <!--2row Start col-10 start-->
-        <div class="panel panel-default" style="overflow-x:auto;">
-            <div class="panel-heading"><span id="groupName"></span> &nbsp&nbsp&nbsp( <span id="appGroupId"></span> ) <span id="groupId" style="visibility:hidden;"></span> </div>
-            <div class="panel-body-danger">
-                <!--2row panel body start-->
-                <div class="tabbable">
-                    <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
-                        <li class="active"><a data-toggle="tab" href="#home4">Member</a></li>
-                        <li><a data-toggle="tab" href="#profile4">Credit Enquiry</a></li>
-                    </ul>
-                    <div class="tab-content">
-                        <div id="home4" class="tab-pane in active">
-                            <!-- form start-->
-                            <section>
-                                <div class="row">
-                                    <!-- tabrow start-->
-                                    <div class="col-md-2">
-		                            <img id="MEMBERPHOTO_docPath" class="img img-test" data-url="{% static 'images/naveen.jpg' %}" src="{% static 'images/naveen.jpg' %}" height="135" width="134"  />
-		                            &nbsp;&nbsp;&nbsp;<span id="memberNameLabel" class="label label-info arrowed-right arrowed-in  glyphicon-bookmark"> </span>
-		                            <br/>
-		                            <br/><label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">Member ID   :&nbsp&nbsp&nbsp <span id="appMemberId"></span></label><br/>
-		                            <label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">Loan ID    :&nbsp&nbsp&nbsp<span id="loanId"></span></label><br/>
-		                            <span id="memberId" style="visibility:hidden;"></span>
-		                            <span id="memberStatus" ></span>
-		                            <br />
-		                            <br />
-                                    </div>
-                                    <!-- tabrow  colmd-2 end-->
-                                    <div class="col-md-5">
-                                        <!-- tabrow  colmd-5 start-->
-                                        <form class="form-horizontal" role="form">
-                                        <span id="warningId" style="display:none;">*** Please select all the required fields ***</span>
-                                        <div class="profile-user-info profile-user-info-striped">
-                                            <div class="profile-info-row">
-                                                <div id="memberName_label" class="profile-info-name"> Name <font class="mandatory">*</font> </div>
-                                                <div class="profile-info-value">
+
+        <!--2row Start col2 End-->
+        <div class="col-lg-10" >
+            <!--2row Start col-10 start-->
+            <div class="panel panel-default" style="overflow-x:auto;">
+                <div class="panel-heading"><span id="groupName"></span> &nbsp&nbsp&nbsp( <span id="appGroupId"></span> ) <span id="groupId" style="visibility:hidden;"></span> </div>
+                <div class="panel-body-danger">
+                    <!--2row panel body start-->
+                    <div class="tabbable">
+                        <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
+                            <li class="active"><a data-toggle="tab" href="#home4">Member</a></li>
+                            <li><a data-toggle="tab" href="#profile4">Credit Enquiry</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div align="right" title="Comments">
+                                <span style="font-size:20px;cursor:pointer" onclick="toggleNav();" onclick="myFunction(this)">
+                                <button id="commentsBtn" style="float:right;margin-top:-55px;margin-right:-11px" class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn" data-target="#right-menu" data-toggle="modal"  type="button">
+                                    Comments
+                                </button>
+                                </span>
+                            </div>
+                            <div id="home4" class="tab-pane in active">
+                                <!-- form start-->
+                                <section>
+                                    <div class="row">
+                                        <!-- tabrow start-->
+                                        <div class="col-md-2">
+                                            <img id="MEMBERPHOTO_docPath" class="img img-test" data-url="{% static 'images/naveen.jpg' %}" src="{% static 'images/naveen.jpg' %}" height="135" width="134"  />
+                                            &nbsp;&nbsp;&nbsp;
+                                            <br/>
+                                            <br/><label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">Member ID   :&nbsp&nbsp&nbsp <span id="appMemberId"></span></label><br/>
+                                            <label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">Loan ID    :&nbsp&nbsp&nbsp<span id="loanId"></span></label><br/>
+                                            <label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">De-dup Status :&nbsp&nbsp<span id="dedupeStatus"></span></label><br/>
+                                            <label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">CB Status :&nbsp&nbsp<span id="CBStatus"></span></label>
+                                            <span id="memberId" style="visibility:hidden;"></span>
+                                            <span id="memberValStatus" style="visibility:hidden;"></span><br>
+
+                                            <br />
+                                            <br />
+                                        </div>
+                                        <!-- tabrow  colmd-2 end-->
+                                        <div class="col-md-5">
+                                            <!-- tabrow  colmd-5 start-->
+                                            <form class="form-horizontal" role="form">
+                                                <!--span id="warningId" style="display:none;">*** Please select all the required fields ***</span-->
+                                                <div class="profile-user-info profile-user-info-striped">
+                                                    <div class="profile-info-row">
+                                                        <div id="memberName_label" class="profile-info-name"> Name <font class="mandatory">*</font> </div>
+                                                        <div class="profile-info-value">
                                                     <span class="editable">    
-                                                    <input type="text"  id="memberName" placeholder="Member Name"></span>	
-                                                </div>
-                                            </div>
-                                            <div class="profile-info-row">
-                                                <div id="age_label" class="profile-info-name"> Age <font class="mandatory">*</font></div>
-                                                <div class="profile-info-value">
+                                                    <input type="text"  id="memberName" placeholder="Member Name"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="profile-info-row">
+                                                        <div id="age_label" class="profile-info-name"> Age <font class="mandatory">*</font></div>
+                                                        <div class="profile-info-value">
                                                     <span class="editable">  
                                                     <input type="text"  id="age" placeholder="Age">
                                                     </span>
-                                                </div>
-                                            </div>
-                                            <div class="profile-info-row">
-                                                <div id="husbandName_label" class="profile-info-name"> Spouse <font class="mandatory">*</font> </div>
-                                                <div class="profile-info-value">
-                                                    <span class="editable">    <input type="text"  id="husbandName" placeholder="Spouse Name"></span>
-                                                </div>
-                                            </div>
-                                            <div class="profile-info-row">
-                                                <div id="fatherName_label" class="profile-info-name"> Father <font class="mandatory">*</font> </div>
-                                                <div class="profile-info-value"> 
-                                                    <span class="editable">    <input type="text"  id="fatherName" placeholder="Father Name"></span> 
-                                                </div>
-                                            </div>
-                                            <div class="profile-info-row">
-                                                <div id="address_label" class="profile-info-name"> Address <font class="mandatory">*</font></div>
-                                                <div class="profile-info-value"> 
+                                                        </div>
+                                                    </div>
+                                                    <div class="profile-info-row">
+                                                        <div id="maritalStatus_label" class="profile-info-name"> Marital Status <font class="mandatory">*</font> </div>
+                                                        <div class="profile-info-value">
+                                                    <span class="editable">   
+                                                    	<select id="maritalStatus" style="width:55%;">
+                                                    	<option value="0">Select</option>
+                                                    	<option value="1">UnMarried</option>
+                                                    	<option value="2">Married</option>
+                                                    	<option value="3">Divorced</option>
+                                                    	<option value="4">Seperated</option>
+                                                    	<option value="5">Widow</option>
+                                                    	</select>
+                                                    </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="profile-info-row">
+                                                        <div id="husbandName_label" class="profile-info-name"> Spouse <font class="mandatory">*</font> </div>
+                                                        <div class="profile-info-value">
+                                                            <span class="editable">    <input type="text"  id="husbandName" placeholder="Spouse Name"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="profile-info-row">
+                                                        <div id="fatherName_label" class="profile-info-name"> Father <font class="mandatory">*</font> </div>
+                                                        <div class="profile-info-value">
+                                                            <span class="editable">    <input type="text"  id="fatherName" placeholder="Father Name"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="profile-info-row">
+                                                        <div id="address_label" class="profile-info-name"> Address <font class="mandatory">*</font></div>
+                                                        <div class="profile-info-value">
                                                     <span class="editable">
                                                     <textarea class="form-control" rows="3" width="150px" id="address" placeholder="Address"></textarea>    
-                                                    </span> 
+                                                    </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="profile-info-row">
+                                                        <div class="profile-info-name"> Role </div>
+                                                        <div class="profile-info-value">
+                                                            <span class="editable">  <input type="text" readonly="readonly" id="roleName"> </font></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="profile-info-row">
+                                                        <div id="villageName_label" class="profile-info-name"> Village <font class="mandatory">*</font></div>
+                                                        <div class="profile-info-value">
+                                                            <span class="editable" ><input type="text" id="villageName" placeholder="Village Name"></input></span>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="profile-info-row">
-                                                <div class="profile-info-name"> Role </div>
-                                                <div class="profile-info-value"> 
-                                                    <span class="editable">  <input type="text" readonly="readonly" id="roleName"> </font></span>	
-                                                </div>
-                                            </div>
-                                            <div class="profile-info-row">
-                                                <div id="villageName_label" class="profile-info-name"> Village <font class="mandatory">*</font></div>
-                                                <div class="profile-info-value">
-                                                    <span class="editable" ><input type="text" id="villageName" placeholder="Village Name"></input></span>
-                                                </div>
-                                            </div>
                                         </div>
-                                    </div>
-                                    <!-- tabrow  colmd-5 END-->
-                                    <div class="col-md-5">
-                                        <!-- tabrow  2 colmd-5 sTART-->
-                                        <div class="profile-user-info profile-user-info-striped">
-                                            <div class="profile-info-row">
-                                                <div id="idProofValue_label" class="profile-info-name"> ID Proof <font class="mandatory">*</font></div>
-                                               <div class="profile-info-value">
-		                                        <span class="editable">    <input type="text"  id="idProofValue"></span>    
-		                                        &nbsp;&nbsp; 
-		                                        <div id="idProof" style="display:inline-block;">
-		                                        <img id="IDPROOF_docPath" class="img img-test" style="width:30px;height:21px;" data-url="" src="" ></img>
-		                                        <img id="IDPROOF_2_docPath" class="img img-test" style="width:30px;height:21px;" data-url="" src="" >
-		                                        <!--button type="button" class="btn btn-info btn-md btn-danger" id="myBtn2">view proof</button--></img></div>
-                                               </div>
-                                            </div>
-                                            <div class="profile-info-row">
-                                                <div id="addressProofValue_label" class="profile-info-name"> Address Proof <font class="mandatory">*</font></div>
-                                                <div class="profile-info-value">
-		                                        <span class="editable" >    <input type="text"  id="addressProofValue"></span>
-		                                        &nbsp;&nbsp; 
-		                                        <div id="idProof" style="display:inline-block;">
-		                                        <img id="ADDRESSPROOF_docPath" class="img img-test" style="width:30px;height:21px;" data-url="" src="" ></img>
-		                                        <img id="ADDRESSPROOF_2_docPath" class="img img-test" style="width:30px;height:21px;" data-url="" src="" >
-		                                        <!--button type="button" class="btn btn-info btn-md btn-danger" id="myBtn2">view proof</button--></img></div>    
-                                            	</div>
-                                            </div>
-                                            <div class="profile-info-row">
-                                                <div id="sbAccountNumber_label" class="profile-info-name"> SB Account  <font class="mandatory">*</font></div>
-                                                <div class="profile-info-value">
-                                                <span class="editable" >    <input type="text"  id="sbAccountNumber"></span> &nbsp;&nbsp;                                                    
-                                                <div style="display:inline-block;"><img id="SBACCOUNTPASSBOOK_docPath" class="img img-test" style="width:30px;height:21px;" data-url="" src="" ></img></div>
-                                            </div>
-                                            </div>
-                                            <div class="profile-info-row">
-                                                <div id="bankId_label" class="profile-info-name"> Bank name <font class="mandatory">*</font></div>
-                                                <div class="profile-info-value">
+                                        <!-- tabrow  colmd-5 END-->
+                                        <div class="col-md-5">
+                                            <!-- tabrow  2 colmd-5 sTART-->
+                                            <div class="profile-user-info profile-user-info-striped">
+                                                <div class="profile-info-row">
+                                                    <div id="idProofValue_label" class="profile-info-name"> ID Proof <font class="mandatory">*</font></div>
+                                                    <div class="profile-info-value">
+                                                        <span class="editable">    <input type="text"  id="idProofValue"></span>
+                                                        &nbsp;&nbsp;
+                                                        <div id="idProof" style="display:inline-block;margin-top: 4px">
+                                                            <img id="IDPROOF_docPath" class="img img-test" style="width:30px;height:21px;" data-url="" src="" ></img>
+                                                            <img id="IDPROOF_2_docPath" class="img img-test" style="width:30px;height:21px;" data-url="" src="" >
+                                                            <!--button type="button" class="btn btn-info btn-md btn-danger" id="myBtn2">view proof</button--></img></div>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-info-row">
+                                                    <div id="addressProofValue_label" class="profile-info-name"> Address Proof <font class="mandatory">*</font></div>
+                                                    <div class="profile-info-value">
+                                                        <span class="editable" >    <input type="text"  id="addressProofValue"></span>
+                                                        &nbsp;&nbsp;
+                                                        <div id="idProof" style="display:inline-block;margin-top: 4px">
+                                                            <img id="ADDRESSPROOF_docPath" class="img img-test" style="width:30px;height:21px;" data-url="" src="" ></img>
+                                                            <img id="ADDRESSPROOF_2_docPath" class="img img-test" style="width:30px;height:21px;" data-url="" src="" >
+                                                            <!--button type="button" class="btn btn-info btn-md btn-danger" id="myBtn2">view proof</button--></img></div>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-info-row">
+                                                    <div id="sbAccountNumber_label" class="profile-info-name"> SB Account  <font class="mandatory">*</font></div>
+                                                    <div class="profile-info-value">
+                                                        <span class="editable" >    <input type="text"  id="sbAccountNumber"></span> &nbsp;&nbsp;
+                                                        <div style="display:inline-block;margin-top: 4px"><img id="SBACCOUNTPASSBOOK_docPath" class="img img-test" style="width:30px;height:21px;" data-url="" src="" ></img></div>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-info-row">
+                                                    <div id="bankId_label" class="profile-info-name"> Bank name <font class="mandatory">*</font></div>
+                                                    <div class="profile-info-value">
                                                     <span class="editable">
                                                     <select id="bankId" style="width:99%;"></select>
                                                     </span>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-info-row">
+                                                    <div id="sbAccountName_label" class="profile-info-name"> Name (as in Bank Account) <font class="mandatory">*</font> </div>
+                                                    <div class="profile-info-value">
+                                                        <span class="editable" >   <input type="text"  id="sbAccountName"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-info-row">
+                                                    <div id="branch_label" class="profile-info-name">Bank branch Name </div>
+                                                    <div class="profile-info-value">
+                                                        <span class="editable" >    <input type="text"  id="branch"></span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="profile-info-row">
-                                                <div id="sbAccountName_label" class="profile-info-name"> Name (as in Bank Account) <font class="mandatory">*</font> </div>
-                                                <div class="profile-info-value">
-                                                    <span class="editable" >   <input type="text"  id="sbAccountName"></span>
-                                                </div>
-                                            </div>
-                                            <div class="profile-info-row">
-                                            	<div id="branch_label" class="profile-info-name">Bank branch Name <font class="mandatory">*</font></div>
-		                                    <div class="profile-info-value">
-		                                        <span class="editable" >    <input type="text"  id="branch"></span>                                                   
-		                                    </div>
-                                           </div>
                                         </div>
+                                        <!-- tabrow  2 colmd-5 END-->
                                     </div>
-                                    <!-- tabrow  2 colmd-5 END-->
-                                </div>
-                                <!-- tabrow END-->
-                                <br>								
-                                <div class="row">
-                                    <!--- tab 2form row started -->		
-                                    <div class="col-md-2">
-                                        <!-- tabrow   2form colmd-2 start-->
-                                        
-                                    </div>
-                                    <!-- tabrow   2form colmd-2 end-->
-                                    <div class="col-md-5">
-                                        <!-- tabrow   2form colmd-5 start-->
-                                        <div class="profile-user-info profile-user-info-striped">
-                                            <div class="profile-info-row">
-                                                <div id="permanentAddress_label" class="profile-info-name"> Permanent Addresss <font class="mandatory">*</font></div>
-                                                <div class="profile-info-value"> 
+                                    <!-- tabrow END-->
+                                    <br>
+                                    <div class="row">
+                                        <!--- tab 2form row started -->
+                                        <div class="col-md-2">
+                                            <!-- tabrow   2form colmd-2 start-->
+
+                                        </div>
+                                        <!-- tabrow   2form colmd-2 end-->
+                                        <div class="col-md-5">
+                                            <!-- tabrow   2form colmd-5 start-->
+                                            <div class="profile-user-info profile-user-info-striped">
+                                                <div class="profile-info-row">
+                                                    <div id="permanentAddress_label" class="profile-info-name"> Permanent Addresss <font class="mandatory">*</font></div>
+                                                    <div class="profile-info-value">
                                                     <span class="editable">    
                                                     <textarea class="form-control" rows="3" id="permanentAddress"></textarea> 
-                                                    </span> 
+                                                    </span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="profile-info-row">
-                                                <div id="pincode_label" class="profile-info-name"> Pin Code <font class="mandatory">*</font></div>
-                                                <div class="profile-info-value"> 
-                                                    <span class="editable">    <input type="text" id="pincode" onchange="areasUnderPincode()" ></span>
+                                                <div class="profile-info-row">
+                                                    <div id="pincode_label" class="profile-info-name"> Pin Code <font class="mandatory">*</font></div>
+                                                    <div class="profile-info-value">
+                                                        <span class="editable">    <input type="text" id="pincode" onchange="areasUnderPincode()" ></span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="profile-info-row">
-                                                <div id="villages_label" class="profile-info-name"> Area <font class="mandatory">*</font></div>
-                                                <div class="profile-info-value">
+                                                <div class="profile-info-row">
+                                                    <div id="villages_label" class="profile-info-name"> Area <font class="mandatory">*</font></div>
+                                                    <div class="profile-info-value">
                                                     <span class="editable">
                                                         <select id="villages" style="width:49%;">
                                                             <option value="" >Select Area </option>
                                                         </select>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-info-row">
+                                                    <div id="mobileNo_label" class="profile-info-name"> Mobile no <font class="mandatory">*</font></div>
+                                                    <div class="profile-info-value">
+                                                        <span class="editable" >    <input type="text" id="mobileNo" ></span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="profile-info-row">
-                                            <div id="mobileNo_label" class="profile-info-name"> Mobile no <font class="mandatory">*</font></div>
-                                            <div class="profile-info-value">
-                                            <span class="editable" >    <input type="text" id="mobileNo" ></span>
-                                            </div>
-                                            </div>
                                         </div>
-                                    </div>
-                                    <!-- tabrow   2form colmd-5 End-->
-                                    <div class="col-md-5">               <!-- tabrow   2form  second colmd-5 start-->
-                                    <div class="profile-user-info profile-user-info-striped">
-                                    <div class="profile-info-row">
-                                    <div id="idProofTypeId_label" class="profile-info-name"> Id  Proof Type <font class="mandatory">*</font></div>
-                                    <div class="profile-info-value">
-                                    <select id="idProofTypeId" style="width:99%;"></select>
-                                    </div>
-                                    </div>
-                                    <div class="profile-info-row">
-                                    <div id="addressProofTypeId_label" class="profile-info-name"> Address Proof Type <font class="mandatory">*</font></div>
-                                    <div class="profile-info-value">
-                                    <select id="addressProofTypeId" style="width:99%;">
-                                    </select>
-                                    </span> </div>
-                                    </div>
-                                    <div class="profile-info-row">
-                                    <div id="loanAmount_label" class="profile-info-name"> Loan Amount <font class="mandatory">*</font></div>
-                                    <div class="profile-info-value">
-                                    <span class="editable">    <input type="text" id="loanAmount"></span>  
-                                    </div>
-                                    </div>
-                                    <div class="profile-info-row">
-                                    <div id="loanTypeValue_label" class="profile-info-name"> Loan purpose <font class="mandatory">*</font></div>
-                                    <div class="profile-info-value"> 
+                                        <!-- tabrow   2form colmd-5 End-->
+                                        <div class="col-md-5">               <!-- tabrow   2form  second colmd-5 start-->
+                                            <div class="profile-user-info profile-user-info-striped">
+                                                <div class="profile-info-row">
+                                                    <div id="idProofTypeId_label" class="profile-info-name"> Id  Proof Type <font class="mandatory">*</font></div>
+                                                    <div class="profile-info-value">
+                                                        <select id="idProofTypeId" style="width:99%;"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-info-row">
+                                                    <div id="addressProofTypeId_label" class="profile-info-name"> Address Proof Type <font class="mandatory">*</font></div>
+                                                    <div class="profile-info-value">
+                                                        <select id="addressProofTypeId" style="width:99%;">
+                                                        </select>
+                                                        </span> </div>
+                                                </div>
+                                                <div class="profile-info-row">
+                                                    <div id="loanAmount_label" class="profile-info-name"> Loan Amount <font class="mandatory">*</font></div>
+                                                    <div class="profile-info-value">
+                                                        <span class="editable">    <input type="text" id="loanAmount"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-info-row">
+                                                    <div id="loanTypeValue_label" class="profile-info-name"> Loan purpose <font class="mandatory">*</font></div>
+                                                    <div class="profile-info-value">
                                     <span class="editable">
                                     <select id="loanTypeValue" style="width:99%;">
                                     </select>
                                     </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>      <!-- tabrow   2form  second colmd-5 end-->
                                     </div>
-                                    </div>
-                                    </div>
-                                    </div>      <!-- tabrow   2form  second colmd-5 end-->
-                                </div>
-                                <!--- tab 2form row end -->		
-                                <br>
-                                <div class="row">
-                                    <!--- tab 3row start -->	
-                                    <div class="col-md-2"> </div>
-                                    <div id="commentDivId" class="col-md-10">
-                                    <div class="form-group">
-                                        <label id="comment_label" for="comment">Comment <font class="mandatory">*</font></label>
-                                        <textarea class="form-control" rows="3" id="comment"></textarea>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-2"></div>
-                                    <div id="operationsDivId" class="col-md-10">
-                                        &nbsp;&nbsp; <!--button type="button" class="btn btn-danger btn-md" id="myBtn2">Cancel</button-->
-                                           <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCForm('Rework');">Rework</button>   
-                                           <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCForm('Approved');">Approve</button>
-                                           <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCForm('Rejected');">Reject</button>  
-                                    </div>
-                                </div>
-                                    <!--- tab final row end -->
-                            </section>
-                            <!-- SECTION END -->
+                                    <!--- tab 2form row end -->
+                                    <br>
+                                    <div class="row">
+                                        <!--- tab 3row start -->
+                                        <div class="col-md-2"> </div>
+                                        <div id="commentDivId" class="col-md-10">
+                                            <div class="form-group">
+                                                <label id="comment_label" for="comment">Comment </label>
+                                                <textarea class="form-control" rows="3" id="comment"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2"></div>
+                                            <div id="operationsDivId" class="col-md-10">
+                                                &nbsp;&nbsp; <!--button type="button" class="btn btn-danger btn-md" id="myBtn2">Cancel</button-->
+                                                <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCForm('Rework');">Rework</button>
+                                                <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCForm('Approved');">Approve</button>
+                                                <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCForm('Rejected');">Reject</button>
+                                            </div>
+                                        </div>
+                                        <!--- tab final row end -->
+                                </section>
+                                <!-- SECTION END -->
                             </div> 								<!--form End-->
                             <div id="profile4" class="tab-pane">
                                 <!--TAB MENU2 CONTENT START-->
@@ -287,7 +313,7 @@
                                                 <div class="widget-box widget-color-blue" id="widget-box-2">
                                                     <div class="widget-header">
                                                         <h5 class="widget-title bigger lighter">
-                                                            Credit Enquiry                          
+                                                            Credit Enquiry
                                                         </h5>
                                                         <div class="widget-toolbar widget-toolbar-light no-border">
                                                             <select id="simple-colorpicker-1" class="hide">
@@ -298,66 +324,66 @@
                                                         <div class="widget-main no-padding" style="height: 200px; overflow: auto;">
                                                             <table class="table table-striped table-bordered table-hover">
                                                                 <thead class="thin-border-bottom">
-                                                                    <tr>
-									  <th>Product</th>
-									  <th>Status</th>
-									  <th>Remarks</th>
-									  <th>HM Response Date</th>
-									  <th>Existing Loan Limit</th>
-									  <th>Loan Amount Eligible</th>
-									  <th>MFI Eligible</th>
-									  
-									  <th>MFI 1 Name</th>                              
-									  <th>Overdue_1</th>
-									  <th>Loan Amount_1</th>
-									  <th>Balance_1</th>
-									  
-									  <th>MFI 2 Name</th>
-									  <th>Overdue_2</th>
-									  <th>Loan Amount_2</th>
-									  <th>Balance_2</th>
-									  
-									  <th>MFI 3 Name</th>
-									  <th>Overdue_3</th>                              
-									  <th>Loan Amount_3</th>
+                                                                <tr>
+                                                                    <th>Product</th>
+                                                                    <th>Status</th>
+                                                                    <th>Remarks</th>
+                                                                    <th>HM Response Date</th>
+                                                                    <th>Existing Loan Limit</th>
+                                                                    <th>Loan Amount Eligible</th>
+                                                                    <th>MFI Eligible</th>
 
-									  <th>Balance_3</th>
-									  <th>MFI 4 Name</th>
-									  <th>Overdue_4</th>
-									  <th>Loan Amount_4</th>
-									  <th>Balance_4</th>
-                                                                    </tr>
+                                                                    <th>MFI 1 Name</th>
+                                                                    <th>Overdue_1</th>
+                                                                    <th>Loan Amount_1</th>
+                                                                    <th>Balance_1</th>
+
+                                                                    <th>MFI 2 Name</th>
+                                                                    <th>Overdue_2</th>
+                                                                    <th>Loan Amount_2</th>
+                                                                    <th>Balance_2</th>
+
+                                                                    <th>MFI 3 Name</th>
+                                                                    <th>Overdue_3</th>
+                                                                    <th>Loan Amount_3</th>
+
+                                                                    <th>Balance_3</th>
+                                                                    <th>MFI 4 Name</th>
+                                                                    <th>Overdue_4</th>
+                                                                    <th>Loan Amount_4</th>
+                                                                    <th>Balance_4</th>
+                                                                </tr>
                                                                 </thead>
-                                                                <tbody id="credit"> 
-		                                                        <tr id="creditData">
-										<td id="s_product_type"></td>
-										<td id="status"></td>
-										<td id="remarks"></td>
-										<td id="hm_response_date"></td>
-										<td id="existing_loan_limit"></td>
-										<td id="loan_amount_eligible"></td>
-										<td id="no_of_mfi_eligible"></td>
-										<td id="name_of_mfi_1"></td>
-										<td id="overdue_amount_1"></td>
-										<td id="loan_amount_1"></td>
-										<td id="balance_1"></td>
-										<td id="name_of_mfi_2"></td>
-										<td id="overdue_amount_2"></td>
-										<td id="loan_amount_2"></td>
-										<td id="balance_2"></td>
-										<td id="name_of_mfi_3"></td>
-										<td id="overdue_amount_3"></td>
-										<td id="loan_amount_3"></td>
-										<td id="balance_3"></td>
-										<td id="name_of_mfi_4"></td>
-										<td id="overdue_amount_4"></td>
-										<td id="loan_amount_4"></td>
-										<td id="balance_4"></td>
-		                                                        </tr>
-		                                                       
+                                                                <tbody id="credit">
+                                                                <tr id="creditData">
+                                                                    <td id="s_product_type"></td>
+                                                                    <td id="status"></td>
+                                                                    <td id="remarks"></td>
+                                                                    <td id="hm_response_date"></td>
+                                                                    <td id="existing_loan_limit"></td>
+                                                                    <td id="loan_amount_eligible"></td>
+                                                                    <td id="no_of_mfi_eligible"></td>
+                                                                    <td id="name_of_mfi_1"></td>
+                                                                    <td id="overdue_amount_1"></td>
+                                                                    <td id="loan_amount_1"></td>
+                                                                    <td id="balance_1"></td>
+                                                                    <td id="name_of_mfi_2"></td>
+                                                                    <td id="overdue_amount_2"></td>
+                                                                    <td id="loan_amount_2"></td>
+                                                                    <td id="balance_2"></td>
+                                                                    <td id="name_of_mfi_3"></td>
+                                                                    <td id="overdue_amount_3"></td>
+                                                                    <td id="loan_amount_3"></td>
+                                                                    <td id="balance_3"></td>
+                                                                    <td id="name_of_mfi_4"></td>
+                                                                    <td id="overdue_amount_4"></td>
+                                                                    <td id="loan_amount_4"></td>
+                                                                    <td id="balance_4"></td>
+                                                                </tr>
+
                                                                 </tbody>
                                                             </table>
-                                                             <div id="nodata" style="display:none;font-weight:bold;margin:1%">No Data Available</div>
+                                                            <div id="nodata" style="display:none;font-weight:bold;margin:1%">No Data Available</div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -380,6 +406,7 @@
         </div>
     </div>
     <!--2row Start col-10 End-->
-</div>
-<!--2row End-->
+    </div>
+    <!--2row End-->
+    {% include 'query.html' %}
 {% endblock content %}

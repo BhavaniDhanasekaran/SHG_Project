@@ -1,7 +1,11 @@
+var monthDict = {"01":"Jan","02":"Feb","03":"Mar","04":"Apr","05":"May","06":"Jun","07":"Jul","08":"Aug","09":"Sep","10":"Oct","11":"Nov","12":"Dec"};
+
 function loadUnassignedTaskList(data){
 	var groupTaskdata = data;
 	var dataArray = [];
 	$("#loading").hide();
+	
+	
 	for(var key in groupTaskdata){
 		var obj={};
 		if(groupTaskdata[key]["name"]  && groupTaskdata[key]["created"]){
@@ -16,6 +20,7 @@ function loadUnassignedTaskList(data){
 		}
 		if(groupTaskdata[key]["customerData"]){
 			var customerData = JSON.parse(groupTaskdata[key]["customerData"]);
+			var memberCount = customerData["memberDetails"].length;
 			for(var data in customerData){
 				obj["groupId"] = customerData["groupId"];
 				obj["loanId"] = customerData["loanId"];
@@ -24,6 +29,7 @@ function loadUnassignedTaskList(data){
 				//obj["shgId"] = customerData["groupId"];
 				obj["shgId"] = customerData["appGroupId"];
 				obj["shgName"] =customerData["groupName"];
+				obj["memberCount"] =memberCount;
 				obj["groupLoanId"] = obj["groupId"]+"_"+obj["loanId"];
 				obj["clusterName"] =customerData["clusterName"];
 				obj["centerName"] =customerData["centerName"];
@@ -60,8 +66,9 @@ function loadUnassignedTaskList(data){
                 { "mData": "loanType","sTitle": "Product Name"  , "sWidth": "8%", className:"column"},
                 { "mData": "shgId","sTitle": "SHG ID"  , "sWidth": "8%", className:"column"},
                 { "mData": "shgName","sTitle": "SHG Name"  , "sWidth": "10%", className:"column"},
-                { "mData": "loanApplicationDate","sTitle": "Loan App. Dt"  , "sWidth": "9%", className:"column"},
-                { "mData": "groupFormationDate","sTitle": "Grp Frmtn Dt"  , "sWidth": "9%", className:"column"},
+                { "mData": "loanApplicationDate","sTitle": "Loan App. Dt"  , "sWidth": "10%", className:"column"},
+                { "mData": "groupFormationDate","sTitle": "Grp Frmtn Dt"  , "sWidth": "10%", className:"column"},
+                { "mData": "memberCount","sTitle": "Total Members"  , "sWidth": "8%", className:"column"},
                 { "mData": "regionName","sTitle": "Region Name"  , "sWidth": "12%", className:"column"},
                 { "mData": "clusterName","sTitle": "Cluster Name"  , "sWidth": "12%", className:"column"},
                 { "mData": "centerName","sTitle": "Center Name"  , "sWidth": "12%", className:"column"},
@@ -93,6 +100,7 @@ function loadAssignedTaskList(){
 		}
 		if(myTaskdata[key]["customerData"]){
 			var customerData = JSON.parse(myTaskdata[key]["customerData"]);
+			var memberCount = customerData["memberDetails"].length;
 			for(var data in customerData){
 				if(obj["taskName"] == "Query Response"){
 					obj["groupLocation"] = '<a class="tdViewQuery">'+customerData["groupLocation"]+'</a>';
@@ -107,6 +115,7 @@ function loadAssignedTaskList(){
 				//obj["shgId"] = '<a class="tdViewData">'+customerData["groupId"]+'</a>';
 				obj["shgId"] = '<a class="tdViewData">'+customerData["appGroupId"]+'</a>';
 				obj["shgName"] = '<a class="tdViewData">'+customerData["groupName"]+'</a>';
+				obj["memberCount"] = '<a class="tdViewData">'+memberCount+'</a>';
 				obj["groupLoanId"] = obj["groupId"]+"_"+obj["loanId"]+"_"+myTaskdata[key]["name"]+"_"+obj["taskId"]+"_"+obj["processInstanceId"]+"_"+customerData["loanTypeName"];
 				obj["clusterName"] ='<a class="tdViewData">'+customerData["clusterName"]+'</a>';
 				obj["centerName"] ='<a class="tdViewData">'+customerData["centerName"]+'</a>';
@@ -143,8 +152,9 @@ function loadAssignedTaskList(){
                 { "mData": "loanType","sTitle": "Product Name"  , "sWidth": "8%", className:"column"},
                 { "mData": "shgId","sTitle": "SHG ID"  , "sWidth": "8%", className:"column"},
                 { "mData": "shgName","sTitle": "SHG Name"  , "sWidth": "10%", className:"column"},
-                { "mData": "loanApplicationDate","sTitle": "Loan App. Dt"  , "sWidth": "9%", className:"column"},
-                { "mData": "groupFormationDate","sTitle": "Grp Frmtn Dt"  , "sWidth": "9%", className:"column"},
+                { "mData": "loanApplicationDate","sTitle": "Loan App. Dt"  , "sWidth": "10%", className:"column"},
+                { "mData": "groupFormationDate","sTitle": "Grp Frmtn Dt"  , "sWidth": "10%", className:"column"},
+                { "mData": "memberCount","sTitle": "Total Members"  , "sWidth": "4%", className:"column"},
                 { "mData": "regionName","sTitle": "Region Name"  , "sWidth": "12%", className:"column"},
                 { "mData": "clusterName","sTitle": "Cluster Name"  , "sWidth": "12%", className:"column"},
                 { "mData": "centerName","sTitle": "Center Name"  , "sWidth": "12%", className:"column"},
@@ -291,7 +301,7 @@ function filterKYCTasksByDate(){
 	var finalDict =  [];
 	var html = '';
 	var i=0;
-	var monthDict = {"01":"Jan","02":"Feb","03":"Mar","04":"Apr","05":"May","06":"Jun","07":"Jul","08":"Aug","09":"Sep","10":"Oct","11":"Nov","12":"Dec"};
+	
 	for(var key in groupTaskdata){
 		if(groupTaskdata[key]){
 			var obj = {};
@@ -343,6 +353,7 @@ function setNextDate(date){
 	var back_GTM = new Date(date); 
 	back_GTM.setDate(back_GTM.getDate() + 1);
 	var b_dd = back_GTM.getDate();
+	
 	var b_mm = back_GTM.getMonth()+1;
 	var b_yyyy = back_GTM.getFullYear();
 	if (b_dd < 10) {
@@ -356,11 +367,22 @@ function setNextDate(date){
 }
 
 function redirectKYCPage(date){
-	var date = date+"T00:00:00";
+	var dateSplit = date.split("-");
+	var key = val2key(dateSplit[1],monthDict);
+	var date = dateSplit[2]+"-"+key+"-"+dateSplit[0]+"T00:00:00";
 	var nextDate = setNextDate(date);
 	window.location = '/KYCCheck/'+date+'/'+nextDate;
 }
 
+function val2key(val,array){
+    for (var key in array) {
+        this_val = array[key];
+        if(this_val == val){
+            return key;
+            break;
+        }
+    }
+}
 function redirectToTaskPage(taskName){
 	window.location = '/dstasklistByName/'+taskName;
 }
@@ -384,3 +406,12 @@ function getBMTasksByTaskName(taskName){
 }
 
 
+function val2key(val,array){
+    for (var key in array) {
+        this_val = array[key];
+        if(this_val == val){
+            return key;
+            break;
+        }
+    }
+}

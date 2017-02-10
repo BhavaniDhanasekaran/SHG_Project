@@ -88,6 +88,9 @@ class CamundaClient(object):
         elif response.status_code == 400:
             print '_parse_response status_code 400', response.status_code
             raise ShgInvalidRequest('_parse_response status_code: ', response.status_code)
+        elif response.status_code == 204:
+            print '_parse_response status_code 204', response.status_code
+            return "Successful"
         else:
             print '_parse_response status_code else', response.status_code
             raise ShgInvalidRequest('_parse_response status_code:', response.status_code)

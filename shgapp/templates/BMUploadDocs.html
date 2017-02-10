@@ -5,6 +5,7 @@
 <script src="{% static 'datajs/loadTaskList.js' %}"></script>
 <script src="{% static 'datajs/masterData.js' %}"></script>
 <script src="{% static 'datajs/DocUPload.js' %}"></script>
+<script src="{% static 'datajs/mysidenav.js' %}"></script>
 
 <script>
   var groupId = '{{ groupId | escapejs }}';
@@ -24,9 +25,9 @@ $(document).ready(function (){
 {% endblock %}
 <!-- PAGE CONTENT BEGINS -->
 {% block content %}
-<div class="row">
+<div class="row" id="main">
 <!--2row Start-->
-<div class="col-xs-3 " >
+<div class="col-lg-3 pricing-box" >
     <!--2row Start col3 start-->
     <div class="panel panel-default">
         <div class="panel-heading">Group Detail </div>
@@ -41,10 +42,18 @@ $(document).ready(function (){
                     <div class="profile-info-name"> Formation Date </div>
                     <div class="profile-info-value"> <span class="editable" id="groupFormationDate"></span> </div>
                 </div>
+
+
                 <div class="profile-info-row">
                     <div class="profile-info-name"> SHG Address </div>
-                    <div class="profile-info-value"> <span class="editable" id="shgaddress"></span> </div>
+                    <textarea  rows="3" readonly="true" width="150px" id="shgaddress" placeholder="Address" style="margin: 0px; height: 77px; width: 218px;"></textarea>
+
                 </div>
+
+
+
+
+
                 <div class="profile-info-row">
                     <div class="profile-info-name"> Animator </div>
                     <div class="profile-info-value">
@@ -90,7 +99,7 @@ $(document).ready(function (){
     </div>
 </div>
 <!--2row Start col2 End-->
-<div class="col-xs-9" >
+<div class="col-lg-9" >
     <!--2row Start col-10 start-->
     <div class="panel panel-default">
         <div class="panel-heading"><span id="groupName1"></span>  &nbsp&nbsp&nbsp( <span id="appGroupId1"></span> )<span id="groupId" style="visibility:hidden;"></span> </div>
@@ -101,6 +110,13 @@ $(document).ready(function (){
                     <li class="active"><a data-toggle="tab" href="#upload">Upload Doc</a></li>
                 </ul>
                 <div class="tab-content">
+		            <div align="right" title="Comments">
+                        <span style="font-size:20px;cursor:pointer" onclick="toggleNav();" onclick="myFunction(this)">
+                            <button id="commentsBtn" style="float:right;margin-top:-55px;margin-right:-11px" class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn" data-target="#right-menu" data-toggle="modal"  type="button">
+                                Comments
+                            </button>
+                        </span>
+                    </div>
                     <div id="upload" class="tab-pane in active">
                         <!-- form start-->
                         <section>
@@ -148,12 +164,12 @@ $(document).ready(function (){
     <div class="col-md-offset-3 col-xs-9">
         <div class="clearfix form-actions">
             <div class="col-md-offset-3 col-md-9">
-                <button onclick="updateTask('Approved');" class="btn btn-info" type="button">
+                <button onclick="updateTask('Approved');" class="btn btn-danger" type="button">
                 <i class="ace-icon fa fa-check bigger-110"></i>
                 Approve
                 </button>
                 &nbsp; &nbsp; &nbsp;
-                <button onclick="window.location.href='/assignedTaskList/';"class="btn" type="reset">
+                <button onclick="window.location.href='/assignedTaskList/';"class="btn btn-danger" type="reset">
                 <i class="ace-icon fa fa-close bigger-110"></i>
                 Cancel
                 </button>
@@ -161,18 +177,6 @@ $(document).ready(function (){
         </div>
     </div>
 </div>
-<div class="modal fade" id="modal-progress" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Uploading...</h4>
-        </div>
-        <div class="modal-body">
-          <div class="progress">
-            <div class="progress-bar" role="progressbar" style="width: 0%;">0%</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+
+  {% include 'query.html' %}
 {% endblock content %}

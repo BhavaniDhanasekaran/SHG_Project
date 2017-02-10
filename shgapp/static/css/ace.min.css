@@ -8280,7 +8280,9 @@ textarea {
     -webkit-box-shadow: none!important;
     box-shadow: none!important;
     -webkit-transition-duration: .1s;
-    transition-duration: .1s
+    transition-duration: .1s;
+    width:90%;
+    
 }
 input[type=email]:hover,
 input[type=url]:hover,
@@ -10215,7 +10217,8 @@ th .lbl:only-child {
     font-size: 14px;
     line-height: 38px;
     padding-left: 12px;
-    margin-bottom: 1px
+    margin-bottom: 1px;
+    height:40px;
 }
 .table-header .close {
     margin-right: 8px;
@@ -18163,7 +18166,8 @@ input.typeahead.scrollable~.tt-menu {
     float: left;
     display: block;
     text-align: center;
-    border-radius: 6px 0 0 6px;
+    /*border-radius: 6px 0 0 6px;*/
+    border-radius: 6px 6px 6px 6px;
     opacity: .55;
     vertical-align: top;
     margin: 0

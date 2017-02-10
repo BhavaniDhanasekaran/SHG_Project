@@ -1,54 +1,56 @@
 {% if group == "DataSupportTeam" %}
-<div class="sidebar-shortcuts" id="sidebar-shortcuts">
-    <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
-        <button class="btn btn-success"> <i class="ace-icon fa fa-signal"> </i> </button>
-        <button class="btn btn-info"> <i class="ace-icon fa fa-pencil"> </i> </button>
-        <button class="btn btn-warning"> <i class="ace-icon fa fa-users"> </i> </button>
-        <button class="btn btn-danger"> <i class="ace-icon fa fa-cogs"> </i> </button>
+
+    <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+        <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+            <button class="btn btn-success"> <i class="ace-icon fa fa-signal"> </i> </button>
+            <button class="btn btn-info"> <i class="ace-icon fa fa-pencil"> </i> </button>
+            <button class="btn btn-warning"> <i class="ace-icon fa fa-users"> </i> </button>
+            <button class="btn btn-danger"> <i class="ace-icon fa fa-cogs"> </i> </button>
+        </div>
+        <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini"> <span class="btn btn-success"> </span> <span class="btn btn-info"> </span> <span class="btn btn-warning"> </span> <span class="btn btn-danger"> </span> </div>
     </div>
-    <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini"> <span class="btn btn-success"> </span> <span class="btn btn-info"> </span> <span class="btn btn-warning"> </span> <span class="btn btn-danger"> </span> </div>
-</div>
-<ul class="nav nav-list">
-    <li class=""> 
-        <a href="{% url 'assignedTaskList' %}"> 
-        <i class="menu-icon glyphicon glyphicon-edit"></i> 
-        <span class="menu-text"> My Task 
+    <ul class="nav nav-list">
+        <li class="">
+            <a href="{% url 'assignedTaskList' %}">
+                <i class="menu-icon glyphicon glyphicon-edit"></i>
+                <span class="menu-text"> My Task
         <span id="myTasks" class="badge badge-danger">0</span>
         </span>
-        </a> 
-        <b class="arrow"></b> 
-    </li>
-    <li class="">
-        <a href="{% url 'KYCTaskList' %}"> 
-        <i class="menu-icon glyphicon glyphicon-list-alt"></i> 
-        <span class="menu-text"> KYC Task 
+            </a>
+            <b class="arrow"></b>
+        </li>
+        <li class="">
+            <a href="{% url 'KYCTaskList' %}">
+                <i class="menu-icon glyphicon glyphicon-list-alt"></i>
+                <span class="menu-text"> KYC Task
         <span id="KYC_Check" class="badge badge-danger">0</span>
-        </span> 
-        </a> 
-        <b class="arrow"></b>
-    </li>
-    <li class="">
-        <a href="{% url 'queryRespTaskList' %}">
-        <i class="menu-icon glyphicon glyphicon-retweet"></i> 
-        <span class="menu-text"> Query Response 
+        </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+        <li class="">
+            <a href="{% url 'queryRespTaskList' %}">
+                <i class="menu-icon glyphicon glyphicon-retweet"></i>
+                <span class="menu-text"> Query Response
         <span id="Query_Response" class="badge badge-danger">0</span>
-        </span> 
-        </a>
-        <b class="arrow"></b>
-    </li>
-</ul>
-<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse"> <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"> </i> </div>
-</div>
-<div class="main-content">
-<div class="main-content-inner">
+        </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+    </ul>
+    <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse"> <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"> </i> </div>
+    </div>
+    <div class="main-content">
+    <div class="main-content-inner" id="main-content-inner">
     <div class="breadcrumbs ace-save-state" id="breadcrumbs">
         <ul class="breadcrumb">
-            <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="#">Home </a> </li>
+            <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="{% url 'hello' %}">Home </a> </li>
         </ul>
+
         <!-- /.breadcrumb -->
     </div>
-    {% endif %}
-    {% if group == "CLM_BM" %}
+{% endif %}
+{% if group == "CLM_BM" or group == "CLM"%}
     <!-- start BM login menu -->
     <div class="sidebar-shortcuts" id="sidebar-shortcuts">
         <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
@@ -61,100 +63,101 @@
     </div>
     <!-- /.sidebar-shortcuts -->
     <ul class="nav nav-list">
-        <li class=""> 
-            <a href="{% url 'assignedTaskList' %}"> 
+        <li class="">
+            <a href="{% url 'assignedTaskList' %}">
                 <i class="menu-icon glyphicon glyphicon-edit"></i>
                 <span class="menu-text"> My Tasks 
                     <span id="myTasks" class="badge badge-danger">0</span> 
                 </span>
             </a>
-            <b class="arrow"></b> 
-        </li>
-        <li class=""> 
-            <a href="#" onclick="redirectToTaskPage('Conduct BAT- Member approval in CRM');"> 
-                <i class="menu-icon glyphicon glyphicon-user"></i> 
-                <span class="menu-text"> BAT Approval
-                    <span id="Conduct_BAT-_Member_approval_in_CRM" class="badge badge-danger">0</span> 
-                </span> 
-            </a> 
             <b class="arrow"></b>
-        </li>
-        <li class=""> 
-            <a href="#" onclick="redirectToTaskPage('Upload loan documents in Web application');"> 
-                <i class="menu-icon glyphicon glyphicon-cloud-upload"></i>
-                <span class="menu-text"> Upload Docs
-                    <span id="Upload_loan_documents_in_Web_application" class="badge badge-danger">0</span>
-                 </span> 
-             </a> 
-             <b class="arrow"></b>
-         </li>
-        <li class=""> 
-            <a href="#" onclick="redirectToTaskPage('Resolve Data Support Team Query');"> 
-                <i class="menu-icon glyphicon glyphicon-share-alt"></i> 
-                <span class="menu-text"> Query Raised
-                    <span id="Resolve_Data_Support_Team_Query" class="badge badge-danger">0</span>
-                </span> 
-           </a> 
-           <b class="arrow"></b>
-        </li>
-        <li class=""> 
-            <a href="#" onclick="redirectToTaskPage('Add New Members');"> 
-                <i class="menu-icon glyphicon glyphicon-plus-sign"></i> 
-                <span class="menu-text"> Add new members
-                    <span id="Add_New_Members" class="badge badge-danger">0</span>
-                </span> 
-           </a> 
-           <b class="arrow"></b>
-        </li>
-        <li class=""> 
-            <a href="#" onclick="redirectToTaskPage('Print Loan Documents & FSR');"> 
-                <i class="menu-icon glyphicon glyphicon-print "></i> 
-                <span class="menu-text"> Print Loan Docs
-                    <span id="Print_Loan_Documents_&_FSR" class="badge badge-danger">0</span>
-                </span> 
-           </a> 
-           <b class="arrow"></b>
         </li>
         <li class="">
-            <a href="#">
-                <i class="menu-icon fa fa-comments-o"></i> 
-                <span class="menu-text"> Loans 
-                   <span class="badge badge-danger"></span> 
-                </span> 
-            </a> 
-            <b class="arrow"></b>
-        </li>
-        <li class=""> 
-            <a href="#"> 
-                <i class="menu-icon fa fa-comments-o"></i> 
-                <span class="menu-text"> Groups </span> 
+            <a href="#" onclick="redirectToTaskPage('Conduct BAT- Member approval in CRM');">
+                <i class="menu-icon glyphicon glyphicon-user"></i>
+                <span class="menu-text"> BAT Approval
+                    <span id="Conduct_BAT-_Member_approval_in_CRM" class="badge badge-danger">0</span> 
+                </span>
             </a>
             <b class="arrow"></b>
         </li>
-        <li class=""> 
-            <a href="{% url 'mytask' %}"> 
+        <li class="">
+            <a href="#" onclick="redirectToTaskPage('Upload loan documents in Web application');">
+                <i class="menu-icon glyphicon glyphicon-cloud-upload"></i>
+                <span class="menu-text"> Upload Docs
+                    <span id="Upload_loan_documents_in_Web_application" class="badge badge-danger">0</span>
+                 </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+        <li class="">
+            <a href="#" onclick="redirectToTaskPage('Resolve Data Support Team Query');">
+                <i class="menu-icon glyphicon glyphicon-share-alt"></i>
+                <span class="menu-text"> Query Raised
+                    <span id="Resolve_Data_Support_Team_Query" class="badge badge-danger">0</span>
+                </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+        <li class="">
+            <a href="#" onclick="redirectToTaskPage('Add New Members');">
+                <i class="menu-icon glyphicon glyphicon-plus-sign"></i>
+                <span class="menu-text"> Add new members
+                    <span id="Add_New_Members" class="badge badge-danger">0</span>
+                </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+        <li class="">
+            <a href="#" onclick="redirectToTaskPage('Print Loan Documents & FSR');">
+                <i class="menu-icon glyphicon glyphicon-print "></i>
+                <span class="menu-text"> Print Loan Docs
+                    <span id="Print_Loan_Documents_&_FSR" class="badge badge-danger">0</span>
+                </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+        <li class="">
+            <a href="#">
+                <i class="menu-icon fa fa-comments-o"></i>
+                <span class="menu-text"> Loans 
+                   <span class="badge badge-danger"></span> 
+                </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+        <li class="">
+            <a href="#">
+                <i class="menu-icon fa fa-comments-o"></i>
+                <span class="menu-text"> Groups </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+        <li class="">
+            <a href="{% url 'mytask' %}">
                 <i class="menu-icon fa fa-comments-o"></i>
                 <span class="menu-text"> Generate LOS 
                     <span class="badge badge-danger"></span> 
-                </span> 
-            </a> 
+                </span>
+            </a>
             <b class="arrow"></b>
         </li>
     </ul>
     <!-- /.nav-list -->
     <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse"> <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"> </i> </div>
-</div>
-<div class="main-content">
-<div class="main-content-inner">
+    </div>
+    <div class="main-content">
+    <div class="main-content-inner" id="main-content-inner">
     <div class="breadcrumbs ace-save-state" id="breadcrumbs">
         <ul class="breadcrumb">
             <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="{% url 'hello' %}">Home </a> </li>
         </ul>
+
         <!-- /.breadcrumb -->
     </div>
     <!-- end of BM login menu -->
-    {% endif %}
-    {% if group == "RM" %}
+{% endif %}
+{% if group == "RM" %}
     <!-- Start of RM login menu -->
     <div class="sidebar-shortcuts" id="sidebar-shortcuts">
         <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
@@ -166,49 +169,40 @@
         <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini"> <span class="btn btn-success"> </span> <span class="btn btn-info"> </span> <span class="btn btn-warning"> </span> <span class="btn btn-danger"> </span> </div>
     </div>
     <ul class="nav nav-list">
-        <li class=""> 
-	    <a href="{% url 'rmtasklist' %}"> 
-		<i class="menu-icon glyphicon glyphicon-edit"></i>
-		<span class="menu-text"> My Task 
+        <li class="">
+            <a href="{% url 'rmtasklist' %}">
+                <i class="menu-icon glyphicon glyphicon-edit"></i>
+                <span class="menu-text"> My Task
 		    <span id="myTasks" class="badge badge-danger"></span> 
 		</span>
-	    </a> 
-            <b class="arrow"></b> 
-        </li>
-        <li class=""> 
-            <a href="{% url 'dcount' %}"> 
-        	<i class="menu-icon glyphicon glyphicon-check"></i> 
-        	<span class="menu-text"> Approve Task 
-        	    <span class="badge badge-danger">2</span> 
-        	</span>
-            </a> 
+            </a>
             <b class="arrow"></b>
         </li>
-        
+        <li class="">
+            <a href="{% url 'dcount' %}">
+                <i class="menu-icon glyphicon glyphicon-check"></i>
+                <span class="menu-text"> Approve Task
+        	    <span class="badge badge-danger">2</span> 
+        	</span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+
     </ul>
     <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse"> <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"> </i> </div>
-</div>
-<div class="main-content">
-<div class="main-content-inner">
+    </div>
+    <div class="main-content">
+    <div class="main-content-inner" id="main-content-inner">
     <div class="breadcrumbs ace-save-state" id="breadcrumbs">
         <ul class="breadcrumb">
-            <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="#">Home </a> </li>
-            <!-- <li>
-                <a href="#">Other Pages
-                
-                </a>              
-                
-                </li>
-                
-                <li class="active">Blank Page
-                
-                </li>-->
+            <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="{% url 'hello' %}">Home </a> </li>
+
         </ul>
         <!-- /.breadcrumb -->
     </div>
     <!-- end of RM login menu -->
-    {% endif %}
-    {% if group == "CreditTeam" %}
+{% endif %}
+{% if group == "CreditTeam" %}
     <!-- Start of CT login menu -->
     <div class="sidebar-shortcuts" id="sidebar-shortcuts">
         <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
@@ -231,17 +225,16 @@
     </ul>
     <!-- /.nav-list -->
     <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse"> <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"> </i> </div>
-</div>
-<div class="main-content">
-<div class="main-content-inner">
-<div class="breadcrumbs ace-save-state" id="breadcrumbs">
-    <ul class="breadcrumb">
-        <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="#">Home </a> </li>
-        <li> <a href="#">Other Pages </a> </li>
-        <li class="active">Blank Page </li>
-    </ul>
-    <!-- /.breadcrumb -->
-</div>
-<!-- side bar end -->
-<!-- END of CT login menu -->
+    </div>
+    <div class="main-content">
+    <div class="main-content-inner" id="main-content-inner">
+    <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="{% url 'hello' %}">Home </a> </li>
+
+        </ul>
+        <!-- /.breadcrumb -->
+    </div>
+    <!-- side bar end -->
+    <!-- END of CT login menu -->
 {% endif %}
