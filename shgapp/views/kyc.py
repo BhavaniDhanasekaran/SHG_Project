@@ -55,7 +55,6 @@ def groupViewQuery(request):
 def getGroupData(request,groupID):
     print "Inside getGroupData(request):"
     try:
-
         username = request.user
         Grp = request.user.groups.all()
         url = ''

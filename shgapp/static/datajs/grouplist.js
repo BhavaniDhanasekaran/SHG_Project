@@ -214,7 +214,6 @@ function getMemberDetails(memberId,groupId,loanId){
  */
 
 function updateMemValidationStatus(status){
-    alert(status);
     var memberName = document.getElementById("memberName").innerHTML;
     var appMemberId = document.getElementById("appMemberId").innerHTML;
     var memberId = document.getElementById("memberId").innerHTML;
@@ -223,21 +222,15 @@ function updateMemValidationStatus(status){
     var comment = document.getElementById("comment").value;
     var memStatus = document.getElementById("memberValStatus").innerHTML;
     var commentCamunda = "";
-    alert(memStatus);
-
-    if(group == "CLM_BM"){
+    if(memStatus != ""){
+        $.alert("Member already Validated!!!!");
+        return false;
+    }
+    if(group == "CLM_BM" || group == "CLM"){
         validationType  = "CLMAPPROVAL";
-         if(memStatus != "PEN"){
-            $.alert("Member already Validated!!!!");
-            return false;
-         }
     }
     if(group == "DataSupportTeam"){
         validationType  = "POST";
-        if(memStatus != ""){
-            $.alert("Member already Validated!!!!");
-            return false;
-        }
     }
 
     var memValData = {
@@ -276,11 +269,13 @@ function updateMemValidationStatus(status){
         dataType: 'json',
         beforeSend: function(){
             triggerLoadFunc();
+            disableActiveTab();
             $("#loading").show();
         },
         complete: function(){
             triggerLoadFunc();
             $("#loading").hide();
+            enableActiveTab();
         },
         success:function(data){
             if(data["message"] == "Member validation completed successfully."){
@@ -439,11 +434,13 @@ function submitKYCForm(status){
         dataType: 'json',
         beforeSend: function(){
             triggerLoadFunc();
+            disableActiveTab();
             $("#loading").show();
         },
         complete: function(){
             triggerLoadFunc();
             $("#loading").hide();
+            enableActiveTab();
         },
         success: function(data) {
             if (data["message"] == "Member Loan updated successfully.") {
@@ -487,7 +484,7 @@ function checkForTaskCompletion(){
             taskUpdate(processStatus);
         }
     }
-    if(group == "CLM_BM"){
+    if(group == "CLM_BM" || group == "CLM"){
         var dataObj = {};
         dataObj["taskId"] = taskId;
         if(membersCount == (approvedCount+rejectedCount) && pendingCount == 0){
@@ -497,10 +494,12 @@ function checkForTaskCompletion(){
                 type: "post",
                 beforeSend: function(){
                     triggerLoadFunc();
+                    disableActiveTab();
                     $("#loading").show();
                 },
                 complete: function(){
                     triggerLoadFunc();
+                    enableActiveTab();
                     $("#loading").hide();
                 },
                 success:function(data){
@@ -541,10 +540,12 @@ function taskUpdate(status){
         type: "post",
         beforeSend: function(){
             triggerLoadFunc();
+            disableActiveTab();
             $("#loading").show();
         },
         complete: function(){
             $("#loading").hide();
+            enableActiveTab();
         },
         success: function (data) {
             if(data == "Successful"){
@@ -618,10 +619,12 @@ function loadGroupRoles(groupId,loanId,taskName){
         dataType: 'json',
         type : "post",
         beforeSend: function(){
+            disableActiveTab();
             $("#loading").show();
         },
         complete: function(){
             $("#loading").hide();
+            enableActiveTab();
         },
         success: function (data) {
             var groupDetails = data["data"]["groupDetails"];
@@ -661,11 +664,13 @@ function updateGroupValStatus(status){
         type:"post",
         beforeSend: function(){
             triggerLoadFunc();
+            disableActiveTab();
             $("#loading").show();
         },
         complete: function(){
             triggerLoadFunc();
             $("#loading").hide();
+            enableActiveTab();
         },
         success:function(data){
             if(data == "Successful"){
@@ -689,10 +694,12 @@ function updateTask(status){
         type: "post",
         beforeSend: function(){
             triggerLoadFunc();
+            disableActiveTab();
             $("#loading").show();
         },
         complete: function(){
             $("#loading").hide();
+            enableActiveTab();
         },
         success: function (data) {
             if(data == "Successful"){
