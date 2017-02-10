@@ -215,6 +215,7 @@ function getMemberDetails(memberId,groupId,loanId){
  */
 
 function updateMemValidationStatus(status){
+    alert(status);
     var memberName = document.getElementById("memberName").innerHTML;
     var appMemberId = document.getElementById("appMemberId").innerHTML;
     var memberId = document.getElementById("memberId").innerHTML;
@@ -223,16 +224,21 @@ function updateMemValidationStatus(status){
     var comment = document.getElementById("comment").value;
     var memStatus = document.getElementById("memberValStatus").innerHTML;
     var commentCamunda = "";
+    alert(memStatus);
 
-    if(memStatus != ""){
-        $.alert("Member already Validated!!!!");
-        return false;
-    }
     if(group == "CLM_BM"){
         validationType  = "CLMAPPROVAL";
+         if(memStatus != "PEN"){
+            $.alert("Member already Validated!!!!");
+            return false;
+         }
     }
     if(group == "DataSupportTeam"){
         validationType  = "POST";
+        if(memStatus != ""){
+            $.alert("Member already Validated!!!!");
+            return false;
+        }
     }
 
     var memValData = {
@@ -249,6 +255,13 @@ function updateMemValidationStatus(status){
     var dataObj = {};
     dataObj["memValData"] = memValData;
     dataObj["taskId"] = taskId;
+    var updateStatus = '';
+    if(status == "Approved") {
+        updateStatus = " approved";
+    }
+    if(status == "Rejected") {
+        updateStatus = " rejected";
+    }
     if(status == "Rejected"){
     	if(comment == ""){
     		$.alert("Please mention the reason for rejection");
@@ -272,7 +285,7 @@ function updateMemValidationStatus(status){
         },
         success:function(data){
             if(data["message"] == "Member validation completed successfully."){
-                $.alert("Member validation completed successfully!!");
+                $.alert(memberName+" has been "+updateStatus);
                 if(status == "Approved"){
                     document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-success Approved";
                 }
@@ -346,7 +359,6 @@ function submitKYCForm(status){
         $.alert("Please proceed after mandatory fields are entered");
         return false;
     }
-    
     if(memStatus != ""){
         $.alert("Member already Validated!!!!");
         return false;
@@ -400,6 +412,16 @@ function submitKYCForm(status){
     dataObj['formData'] = dataDict;
     dataObj['memValData'] = memValData;
     dataObj['taskId'] = taskId;
+    var updateStatus = '';
+    if(status == "Rework") {
+        updateStatus = " sent for Rework";
+    }
+    if(status == "Approved") {
+        updateStatus = " approved";
+    }
+    if(status == "Rejected") {
+        updateStatus = " rejected";
+    }
     if(status == "Rework" || status == "Rejected"){
         if(comment == ""){
         	$.alert("Please input Comment!");
@@ -426,7 +448,7 @@ function submitKYCForm(status){
         },
         success: function(data) {
             if (data["message"] == "Member Loan updated successfully.") {
-                $.alert("Member Details Updated successfully");
+                $.alert(name+" has been "+updateStatus);
                 if(status == "Approved"){
                     document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-success Approved";
                 }
@@ -469,7 +491,7 @@ function checkForTaskCompletion(){
     if(group == "CLM_BM"){
         var dataObj = {};
         dataObj["taskId"] = taskId;
-        if(membersCountl == (approvedCount+rejectedCount) && pendingCount == 0){
+        if(membersCount == (approvedCount+rejectedCount) && pendingCount == 0){
             $.ajax({
                 url: '/updateTask/',
                 dataType: 'json',
@@ -490,10 +512,11 @@ function checkForTaskCompletion(){
                 data: JSON.stringify(dataObj)
             });
         }
+        else{
+            return false;
+        }
     }
-    else{
-        return false;
-    }
+
 }
 function taskUpdate(status){
     var taskUpdateURL = '';
