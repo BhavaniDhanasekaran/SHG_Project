@@ -233,12 +233,25 @@ function updateMemValidationStatus(status){
     var comment = document.getElementById("comment").value;
     var memStatus = document.getElementById("memberValStatus").innerHTML;
     var commentCamunda = "";
+    var dataObj = {};
     if(memStatus != "" && memStatus != "PEN"){
         $.alert("Member already Validated!!!!");
         return false;
     }
     if(group == "CLM_BM" || group == "CLM"){
-        validationType  = "CLMAPPROVAL";
+        console.log("taskname",taskName)
+        if(taskName == "Resolve Data Support Team Query"){
+            validationType  = "POSTKYC";
+            var processUpdate = {
+                                'variables': {
+                                    'kyc': {
+                                        'value': "resolved"
+                                    },
+                                }
+                            };
+            dataObj["processupdate"] = processUpdate;
+        }
+
     }
     if(group == "DataSupportTeam"){
         validationType  = "POST";
@@ -255,9 +268,11 @@ function updateMemValidationStatus(status){
         "validationType": validationType,
         "entityType": "MEMBER"
     };
-    var dataObj = {};
+
     dataObj["memValData"] = memValData;
     dataObj["taskId"] = taskId;
+    console.log(dataObj);
+
     var updateStatus = '';
     if(status == "Approved") {
         updateStatus = " approved";
