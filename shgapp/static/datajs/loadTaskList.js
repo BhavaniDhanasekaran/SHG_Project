@@ -237,10 +237,7 @@ function triggerLoadFunc(){
 			}
 		}
 	});
-	
-
 }
-
 
 function taskCount(){
 	$.ajax({
@@ -386,23 +383,22 @@ function val2key(val,array){
 function redirectToTaskPage(taskName){
 	window.location = '/dstasklistByName/'+taskName;
 }
-function getBMTasksByTaskName(taskName){
+function getTasksByTaskName(taskName){
 	$.ajax({
-	    url: '/getBMTasksByTaskName/'+taskName,
+	    url: '/getTasksByTaskName/'+taskName,
 	    dataType: 'json',
 	    beforeSend: function(){
      		$("#loading").show();
 	    },
 	    complete: function(){
-		$("#loading").hide();
+			$("#loading").hide();
 	    },
 	    success: function (data) {
-		taskCount();
-		loadUnassignedTaskList(data);
-		triggerLoadFunc();
+			taskCount();
+			loadUnassignedTaskList(data);
+			triggerLoadFunc();
 	    }
 	});	
-
 }
 
 

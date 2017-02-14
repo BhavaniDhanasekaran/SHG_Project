@@ -103,10 +103,8 @@
                                     </div>
                                 </div>
                                 <div class="row-centered">
-                                    <div class="col-md-12" style="z-index: 20;">    
-                                          
+                                    <div class="col-md-12" style="z-index: 20;">
                                         <button type="button" class="btn btn-danger btn-md" onclick="updateGroupValStatus('Approved');">Approve</button>
-                                          
                                         <button type="button" class="btn btn-danger btn-md" onclick="updateGroupValStatus('Rejected');">Reject</button>
                                     </div>
                                 </div>
@@ -115,6 +113,131 @@
                         <!-- SECTION END -->
                         </div>                              <!--form End-->
                     </div>
+                    <!-- Credit history tab start  -->
+                    <div id="credithistory" class="tab-pane">
+                        <div class="page-content">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <!-- PAGE CONTENT BEGINS -->
+                                    <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
+                                        <div class="widget-box widget-color-blue" id="widget-box-2">
+                                            <div class="widget-header">
+                                                <h5 class="widget-title bigger lighter">
+                                                    Credit history Detail
+                                                </h5>
+                                                <div class="widget-toolbar widget-toolbar-light no-border">
+                                                    <select id="simple-colorpicker-1" class="hide">
+                                                        <option selected="" data-class="blue" value="#981b1b">#307ECC</option>
+                                                        <option data-class="blue2" value="#981b1b">#5090C1</option>
+                                                        <option data-class="default" value="#981b1b">#EEE</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="widget-body">
+                                                <div class="widget-main no-padding">
+                                                    <table class="table table-striped table-bordered table-hover">
+                                                        <thead class="thin-border-bottom">
+                                                            <tr>
+                                                                <th><i class="ace-icon fa fa-user"></i>S.No</th>
+                                                                <th>Product</th>
+                                                                <th>Status</th>
+                                                                <th>Remarks</th>
+                                                                <th>HM Response Date</th>
+                                                                <th>Existing Loan Limit</th>
+                                                                <th>Loan Amount Eligible</th>
+                                                                <th>MFI Eligible</th>
+                                                                <th>MFI 1 Name</th>
+                                                                <th>Overdue_1</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="">1</td>
+                                                                <td class="">PLL</td>
+                                                                <td class="">ELIGIBLE</td>
+                                                                <td class="">Eligible: 1 live Loan with other mfi</td>
+                                                                <td class="">12/11/2016</td>
+                                                                <td class="">28124</td>
+                                                                <td class="">31876</td>
+                                                                <td class="">1</td>
+                                                                <td class="">INTREPID FINANCE AND LEASING</td>
+                                                                <td class="">0</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.span -->
+                                </div>
+                                <!-- /.row -->
+                                <!-- PAGE CONTENT ENDS -->
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                    </div>
+                    <!-- Credit history tab end  -->
+                    <!-- Document tab start  -->
+                    <div id="dropdown14" class="tab-pane">
+                        <div class="page-content">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <!-- PAGE CONTENT BEGINS -->
+                                    <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
+                                        <div class="widget-box widget-color-blue" id="widget-box-2">
+                                            <div class="widget-header">
+                                                <h5 class="widget-title bigger lighter">
+                                                    Credit Enquiry
+                                                </h5>
+                                                <div class="widget-toolbar widget-toolbar-light no-border">
+                                                    <select id="simple-colorpicker-1" class="hide" title="">
+                                                        <option selected="" data-class="blue" value="#981b1b">#307ECC</option>
+                                                        <option data-class="blue2" value="#981b1b">#5090C1</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="widget-body">
+                                                <div class="widget-main no-padding">
+                                                    <table class="table table-striped table-bordered table-hover">
+                                                        <thead class="thin-border-bottom">
+                                                            <tr>
+                                                                <th><i class="ace-icon fa fa-user"></i>S.No</th>
+                                                                <th>Document Name</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="">1</td>
+                                                                <td class="">Document 1</td>
+                                                                <td class="">View</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="">2</td>
+                                                                <td class="">Document 2</td>
+                                                                <td class="">View</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="">3</td>
+                                                                <td class="">Document 3</td>
+                                                                <td class="">View</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.span -->
+                                </div>
+                                <!-- /.row -->
+                                <!-- PAGE CONTENT ENDS -->
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                    </div>
+                    <!-- Document tab ens  -->
                     <!-- TAB END-->
                 </div>
                 <!--2row panel body end-->
@@ -123,7 +246,6 @@
         <!--2row Start col-10 End-->
     </div>
     <!--2row End-->
-</div>
-</div>
+
 {% include 'query.html' %}
 {% endblock content %}

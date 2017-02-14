@@ -90,7 +90,7 @@ camundaViews_urlpatterns = [
 urlpatterns += camundaViews_urlpatterns
 
 BMOperations_urlpatterns = [
-    url(r'^getBMTasksByTaskName/(?P<taskName>[^/]+)',BMOperations.getBMTasksByTaskName, name = 'getBMTasksByTaskName'),
+    url(r'^getTasksByTaskName/(?P<taskName>[^/]+)',BMOperations.getTasksByTaskName, name = 'getTasksByTaskName'),
     url(r'^groupRoleDetails/',BMOperations.groupRoleDetails, name = 'groupRoleDetails'),
     url(r'^updateGrpValidationStatus/',BMOperations.updateGrpValidationStatus, name = 'updateGrpValidationStatus'),
 

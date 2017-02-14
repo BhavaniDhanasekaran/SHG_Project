@@ -176,6 +176,8 @@ def assignedTaskList(request):
             myTaskData.append(myTaskDict[key])
         if groupName == "CLM_BM" or groupName == "CLM":
             myTaskData.append(myTaskDict[key])
+        if groupName == "RM":
+            myTaskData.append(myTaskDict[key])
 
     print "Exiting assignedTaskList(request): view"
     return render(request, 'ds-mytask.html',{"myTaskList" :json.dumps(myTaskData), "group" :groups[0],"user":username})
@@ -217,6 +219,8 @@ def tasksCount( request ):
         incrementTaskCount = 0
         mytaskURL = camundaClient._urllib2_request('task', {"assignee" : str(username)}, requestType='POST')
         urlTask = camundaClient._urllib2_request('task', {"candidateGroup" : str(groupName)}, requestType='POST')
+        print ":mytaskURL"
+        print mytaskURL
         print "urlTask"
         print urlTask
         for data in mytaskURL:
@@ -253,6 +257,12 @@ def tasksCount( request ):
                 taskCount["Query Response"] = 0
 
         if groupName == "CLM_BM" or groupName == "CLM":
+            for data in urlTask:
+                if data["name"] in taskCount:
+                    taskCount [data["name"]] = taskCount[data["name"]] + 1
+                else:
+                    taskCount [data["name"]] = 1
+        if groupName == "RM":
             for data in urlTask:
                 if data["name"] in taskCount:
                     taskCount [data["name"]] = taskCount[data["name"]] + 1

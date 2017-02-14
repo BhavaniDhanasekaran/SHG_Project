@@ -18,9 +18,9 @@ sscoreClient = SSCoreClient()
 camundaClient = CamundaClient()
 
 
-def getBMTasksByTaskName(request,taskName):
+def getTasksByTaskName(request,taskName):
     try:
-        print "Entering getBMTasksByTaskName(request): view "
+        print "Entering getTasksByTaskName(request): view "
         username = request.user
         Grp = request.user.groups.all()
         groups = request.user.groups.values_list('name',flat=True)

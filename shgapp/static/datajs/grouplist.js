@@ -142,8 +142,19 @@ function getMemberDetails(memberId,groupId,loanId){
                             if ($.inArray(memberDocumentsArray[key]["documentType"], imgFiles) != -1) {
                                 //Need to change with proper URL - Coded just for images display
                                 if (document.getElementById(memberDocumentsArray[key]["documentType"] + "_docPath")) {
-                                    $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", memberDocumentsArray[key]["documentPath"]);
-                                    $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("data-url", memberDocumentsArray[key]["documentPath"]);
+                                    if((memberDocumentsArray[key]["documentPath"]).indexOf("Not Uploaded")){
+                                        if(memberDocumentsArray[key]["documentType"] + "_docPath" == "MEMBERPHOTO_docPath"){
+                                            $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", "/static/images/naveen.jpg");
+                                        }
+                                        else{
+                                            $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", "/static/images/no-data1.png");
+                                        }
+                                    }
+                                    else{
+                                         $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", memberDocumentsArray[key]["documentPath"]);
+                                        //$("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("alt", "NO Image");
+                                        $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("data-url", memberDocumentsArray[key]["documentPath"]);
+                                    }
                                 }
                             }
                         }
@@ -222,7 +233,7 @@ function updateMemValidationStatus(status){
     var comment = document.getElementById("comment").value;
     var memStatus = document.getElementById("memberValStatus").innerHTML;
     var commentCamunda = "";
-    if(memStatus != ""){
+    if(memStatus != "" && memStatus != "PEN"){
         $.alert("Member already Validated!!!!");
         return false;
     }
@@ -344,21 +355,19 @@ function submitKYCForm(status){
     var loanId          =     document.getElementById("loanId").innerHTML;
     var comment         =     document.getElementById("comment").value;
     var memStatus       =     document.getElementById("memberValStatus").innerHTML;
-    var appMemberId      =     document.getElementById("appMemberId").innerHTML;
+    var appMemberId     =     document.getElementById("appMemberId").innerHTML;
     appMemberId
     var commentCamunda  =     "";
-
+    console.log(memStatus);
     if (validation == 1) {
         //$("#warningId").css("display","block");
         $.alert("Please proceed after mandatory fields are entered");
         return false;
     }
-    if(memStatus != ""){
+    if(memStatus != "" && memStatus != "PEN"){
         $.alert("Member already Validated!!!!");
         return false;
     }
-    
-
 
     var dataObj = 	{};
 

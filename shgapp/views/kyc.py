@@ -60,7 +60,7 @@ def getGroupData(request,groupID):
         url = ''
         groups = request.user.groups.values_list('name', flat=True)
         if groups[0] == "CLM_BM" or groups[0] == "CLM":
-            validationLevel = "BM"
+            validationLevel = "KYCRWRK"
         if groups[0] == "DataSupportTeam":
             validationLevel = "KYC"
         bodyData = {"groupId": groupID, "validationLevel":validationLevel}
@@ -78,6 +78,7 @@ def getIndMemberData(request,memberId,groupId,loanId):
     try:
         username = request.user
         Grp = request.user.groups.all()
+        validationLevel = ""
         groups = request.user.groups.values_list('name',flat=True)
         groupName = groups[0]
         if groupName == "DataSupportTeam":
@@ -85,7 +86,7 @@ def getIndMemberData(request,memberId,groupId,loanId):
             validationLevel = "KYC"
         if groupName == "CLM_BM" or groupName == "CLM":
             validationType = "POST"
-            validationLevel = "BM"
+            validationLevel = "KYCRWRK"
         bodyData = { "groupId": str(groupId), "memberId":str(memberId),  "loanId": str(loanId), "validationLevel" : validationLevel, "entityType": "MEMBER","validationType": validationType, "userId": "1996" }
         IndMemberData = sscoreClient._urllib2_request('workflowDetailView/workflowMemberDetail/', bodyData, requestType='POST')
         print "IndMemberData"
