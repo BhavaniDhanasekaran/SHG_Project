@@ -47,9 +47,6 @@ def BMUploadDoc(request):
 def BMAddNewMember(request):
     return render(request, 'BMAddNewMember.html')
 
-
-
-
 def rmtasklist(request):
     return render(request, 'RMTaskList.html')
 

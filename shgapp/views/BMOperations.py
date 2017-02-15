@@ -32,7 +32,8 @@ def getTasksByTaskName(request,taskName):
 
         grp_body_cont 	   = { "unassigned" : "true" , "name" : taskName, "candidateGroup" : str(groupName) }
         groupTaskList	  = camundaClient._urllib2_request('task?firstResult=0', grp_body_cont, requestType='POST')
-
+        print "groupTaskList"
+        print groupTaskList
         for data in groupTaskList:
             processInstancesArr.append(data["processInstanceId"])
             groupTaskDict[data["processInstanceId"]] = data

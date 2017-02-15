@@ -10,7 +10,7 @@ function getGroupData(groupID,loanId){
     var rewCount = 0;
     disableActiveTab();
     $.ajax({
-        url: '/getGroupData/'+groupID,
+        url: '/getGroupData/'+groupID+'/'+taskName,
         dataType: 'json',
         beforeSend: function(){
             triggerLoadFunc();
@@ -48,6 +48,7 @@ function getGroupData(groupID,loanId){
                             className = "list-group-item list-group-item-action list-group-item-warning Rework";
                             rewCount+=1;
                         }
+                        console.log(taskName);
                         if(document.getElementById("san_test")){
                             $("#san_test").append('<a id="'+memberId+'" onclick="getMemberDetails('+memberId+','+groupId+','+loanId+');" class="'+className+'" style="font-weight:bold;">'+groupData["data"]["groupMemDetail"][i]["memberName"]+'</a>');
                         }
@@ -63,7 +64,6 @@ function getGroupData(groupID,loanId){
                     }
                     getMemberDetails(memId,groupID,loanId);
                     //creditHistory(groupId,memId);
-
                 }
             }
             else{
@@ -95,7 +95,7 @@ function getMemberDetails(memberId,groupId,loanId){
     }
     disableActiveTab();
     $.ajax({
-        url: '/getIndMemberData/'+memberId+'/'+groupId+'/'+loanId,
+        url: '/getIndMemberData/'+memberId+'/'+groupId+'/'+loanId+'/'+taskName,
         //type: 'post',
         dataType: 'json',
         beforeSend: function(){
@@ -239,19 +239,22 @@ function updateMemValidationStatus(status){
         return false;
     }
     if(group == "CLM_BM" || group == "CLM"){
-        console.log("taskname",taskName)
-        if(taskName == "Resolve Data Support Team Query"){
-            validationType  = "POSTKYC";
-            var processUpdate = {
-                                'variables': {
-                                    'kyc': {
-                                        'value': "resolved"
-                                    },
-                                }
-                            };
-            dataObj["processupdate"] = processUpdate;
+        if(taskName == "Resolve Data Support Team Query") {
+            validationType = "POSTKYC";
         }
-
+        if(taskName == "Conduct BAT- Member approval in CRM") {
+            validationType = "CLMAPPROVAL";
+            if(status == "Rejected"){
+                if(comment == ""){
+                    $.alert("Please input comment");
+                    return false;
+                }
+                else{
+                        commentCamunda = comment+"*@*"+memberName+"*@*"+appMemberId;
+                        dataObj['message'] = commentCamunda;
+                    }
+            }
+        }
     }
     if(group == "DataSupportTeam"){
         validationType  = "POST";
@@ -280,15 +283,7 @@ function updateMemValidationStatus(status){
     if(status == "Rejected") {
         updateStatus = " rejected";
     }
-    if(status == "Rejected"){
-    	if(comment == ""){
-    		$.alert("Please mention the reason for rejection");
-    		return false;
-		}else{
-    		commentCamunda = comment+"*@*"+memberName+"*@*"+appMemberId;
-    	    dataObj['message'] = commentCamunda;
-		}
-    }
+
     $.ajax({
         url: '/updateMemValidationStatus/',
         type: 'post',
@@ -315,11 +310,13 @@ function updateMemValidationStatus(status){
                 if(status == "Rework"){
                     document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-warning Rejected";
                 }
+                getHistComments(processInstanceId);
                 checkForTaskCompletion();
             }
         },
         data: JSON.stringify(dataObj)
     });
+
 }
 
 
@@ -469,6 +466,7 @@ function submitKYCForm(status){
         success: function(data) {
             if (data["message"] == "Member Loan updated successfully.") {
                 $.alert(name+" has been "+updateStatus);
+
                 if(status == "Approved"){
                     document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-success Approved";
                 }
@@ -478,6 +476,7 @@ function submitKYCForm(status){
                 if(status == "Rework"){
                     document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-warning Rework";
                 }
+                getHistComments(processInstanceId);
                 checkForTaskCompletion();
             }
             else {
@@ -486,7 +485,6 @@ function submitKYCForm(status){
         },
         data: JSON.stringify(dataObj)
     });
-
 }
 
 
@@ -510,6 +508,18 @@ function checkForTaskCompletion(){
     }
     if(group == "CLM_BM" || group == "CLM"){
         var dataObj = {};
+        console.log("taskname",taskName);
+        if(taskName == "Resolve Data Support Team Query"){
+            validationType  = "POSTKYC";
+            var processUpdate = {
+                                'variables': {
+                                    'kyc': {
+                                        'value': "resolved"
+                                    },
+                                }
+                            };
+            dataObj["processUpdate"] = processUpdate;
+        }
         dataObj["taskId"] = taskId;
         if(membersCount == (approvedCount+rejectedCount) && pendingCount == 0){
             $.ajax({
@@ -741,6 +751,7 @@ function updateTask(status){
 
 
 function getHistComments(processId){
+    console.log(processId);
     var htmlContent = '';
     $.ajax({
         url: '/getHistoryComments/'+processId,

@@ -20,12 +20,12 @@
                 KYCTasksGroupByDate(dateFrom,dateTo);
             }
             if(taskName){
-                if(group == "CLM_BM" || group == "CLM"){
+               // if(group == "CLM_BM" || group == "CLM"){
                     getTasksByTaskName(taskName);
-                }
-                if(group == "RM") {
-                    getTasksByTaskName(taskName);
-                }
+                //}
+                //if(group == "RM") {
+                  //  getTasksByTaskName(taskName);
+                //}
             }
             taskCount();
             loadUnassignedTaskList(taskList);

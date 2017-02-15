@@ -52,7 +52,7 @@ def groupViewQuery(request):
     return render(request, 'queryResponseDS.html',{"group":groups[0],"user":username})
 
 
-def getGroupData(request,groupID):
+def getGroupData(request,groupID,taskName):
     print "Inside getGroupData(request):"
     try:
         username = request.user
@@ -60,7 +60,10 @@ def getGroupData(request,groupID):
         url = ''
         groups = request.user.groups.values_list('name', flat=True)
         if groups[0] == "CLM_BM" or groups[0] == "CLM":
-            validationLevel = "KYCRWRK"
+            if taskName == "Resolve Data Support Team Query":
+                validationLevel = "KYCRWRK"
+            if taskName == "Conduct BAT- Member approval in CRM":
+                validationLevel = "BM"
         if groups[0] == "DataSupportTeam":
             validationLevel = "KYC"
         bodyData = {"groupId": groupID, "validationLevel":validationLevel}
@@ -73,9 +76,10 @@ def getGroupData(request,groupID):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while searching group.')
 
-def getIndMemberData(request,memberId,groupId,loanId):
-    print "Inside getIndMemberData(request,memberId,groupId):"
+def getIndMemberData(request,memberId,groupId,loanId,taskName):
+    print "Inside getIndMemberData(request,memberId,groupId,taskName):"
     try:
+        print taskName
         username = request.user
         Grp = request.user.groups.all()
         validationLevel = ""
@@ -86,8 +90,13 @@ def getIndMemberData(request,memberId,groupId,loanId):
             validationLevel = "KYC"
         if groupName == "CLM_BM" or groupName == "CLM":
             validationType = "POST"
-            validationLevel = "KYCRWRK"
+            if taskName == "Resolve Data Support Team Query":
+                validationLevel = "KYCRWRK"
+            if taskName == "Conduct BAT- Member approval in CRM":
+                validationLevel = "BM"
         bodyData = { "groupId": str(groupId), "memberId":str(memberId),  "loanId": str(loanId), "validationLevel" : validationLevel, "entityType": "MEMBER","validationType": validationType, "userId": "1996" }
+        print "bodyData"
+        print bodyData
         IndMemberData = sscoreClient._urllib2_request('workflowDetailView/workflowMemberDetail/', bodyData, requestType='POST')
         print "IndMemberData"
         print IndMemberData

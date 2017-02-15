@@ -247,7 +247,8 @@
                                             <div class="col-md-2"></div>
                                             <div id="commentDivId" class="col-md-10">
                                                 <div class="form-group">
-                                                    <label for="comment">Comment:</label>
+                                                    <label for="comment">Comment:</label>{% if taskName == "Resolve Data Support Team Query" %}<font class="mandatory">*</font>{%  endif %}
+
                                                     <textarea class="form-control" rows="3" style="width:94%;" id="comment"></textarea>
                                                 </div>
                                             </div>

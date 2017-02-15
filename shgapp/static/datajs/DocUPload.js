@@ -181,6 +181,7 @@ function UpdateUrl(groupId, oldfileName, s3url, fileid) {
 function Editdoc(UniqueId, newdoceditId) {
     console.log('newdoceditId');
     console.log(newdoceditId);
+    console.log(loanId);
     $("#" + newdoceditId + "_Edit").click();
     //$("#loading").show();
     $("#" + newdoceditId + "_Edit").fileupload({
@@ -213,7 +214,7 @@ function Editdoc(UniqueId, newdoceditId) {
                 //var newfileName=docName+'*'+fileid;
                 //// var oldfileName=docName;
                 var s3url = data.result.url;
-                EditUrl(groupId, UniqueId, s3url, newdoceditId);
+                EditUrl(groupId, UniqueId, s3url, newdoceditId,loanId);
                 $("#gallery tbody").prepend(
                     "<tr><td><a href='" + data.result.url + "'>" + data.result.name + "</a></td> <td><a href='" + data.result.url + "'>" + "delete" + "</a></td></tr>"
                 )
@@ -222,11 +223,11 @@ function Editdoc(UniqueId, newdoceditId) {
     });
 }
 
-function EditUrl(groupId, UniqueId, s3url, newdoceditId) {
+function EditUrl(groupId, UniqueId, s3url, newdoceditId,loanId) {
     console.log(UniqueId);
     var dataObj2 = {};
     var uploadData = {
-        "groupId": String(groupId),
+        "loanId": String(loanId),
         "id": String(UniqueId),
         "docSize": "0",
         "userId": "1996",

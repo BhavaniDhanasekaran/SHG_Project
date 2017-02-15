@@ -78,8 +78,7 @@ function loadUnassignedTaskList(data){
         }).fnDestroy();
         table = $('#taskListTable').DataTable( {
             "pageLength": 50 
-        } );
-        triggerLoadFunc();
+        } );  
  }
 
 function loadAssignedTaskList(){
@@ -206,6 +205,7 @@ $(document).ready(function (){
 			}
 		}
 	});
+
 });
 
 function triggerLoadFunc(){
@@ -233,7 +233,7 @@ function triggerLoadFunc(){
 			}
 		}
 	});
-	
+
 
 }
 
@@ -245,6 +245,7 @@ function taskCount(){
 	    success: function (data) {
 		if(data["Task"]){
 			for(var key in data["Task"]){
+				console.log(key);
 				var newKey = '';
 				var keySplit = key.split(" ");
 				for(var key1 in keySplit){
@@ -255,6 +256,7 @@ function taskCount(){
 						newKey += '_'+keySplit[key1];
 					}
 					if(document.getElementById(newKey)){
+						console.log(data["Task"][key]);
 						document.getElementById(newKey).innerHTML = data["Task"][key];
 						if(document.getElementById(newKey+'1')){
 							document.getElementById(newKey+'1').innerHTML = data["Task"][key];  
@@ -274,7 +276,7 @@ function claim(d){
 	    url: '/task/'+d+'/claim/user',
 	    dataType: 'json',
 	    success: function (data) {
-		taskCount();
+		triggerLoadFunc();
 	    }
 	});
 }
@@ -390,14 +392,14 @@ function getTasksByTaskName(taskName){
      		$("#loading").show();
 	    },
 	    complete: function(){
-		$("#loading").hide();
+			$("#loading").hide();
 	    },
 	    success: function (data) {
-		loadUnassignedTaskList(data);
-		triggerLoadFunc();
+			taskCount();
+			loadUnassignedTaskList(data);
+			triggerLoadFunc();
 	    }
 	});	
-
 }
 
 
