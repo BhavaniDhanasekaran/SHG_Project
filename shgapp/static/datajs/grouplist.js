@@ -109,7 +109,7 @@ function getMemberDetails(memberId,groupId,loanId){
             var memberData = data;
             console.log(memberData);
             //var arrayKeys = ["occupations","villages""conflictList","highMarksList","memberFamilyDetails","memberDocumentDetails"];
-            var imgFiles = ["MEMBERPHOTO","IDPROOF","IDPROOF_2","ADDRESSPROOF","ADDRESSPROOF_2","SBACCOUNTPASSBOOK"];
+            var imgFiles = ["MEMBERPHOTO","IDPROOF","IDPROOF_2","ADDRESSPROOF","ADDRESSPROOF_2","SBACCOUNTPASSBOOK","OVERLAPREPORT"];
             if(memberData["data"]["memberDetails"]) {
                 if (memberData["data"]["highMarksList"]) {
                     if (memberData["data"]["highMarksList"][0]) {
@@ -333,7 +333,7 @@ function updateMemValidationStatus(status){
             enableActiveTab();
         },
         success:function(data){
-            if(data["message"] == "Member validation completed successfully."){
+            if(data["code"] == "2029"){
                 $.alert(memberName+" has been "+updateStatus);
                 if(status == "Approved"){
                     document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-success Approved";
@@ -501,7 +501,7 @@ function submitKYCForm(status){
             enableActiveTab();
         },
         success: function(data) {
-            if (data["message"] == "Member Loan Group updated successfully.") {
+            if (data["code"] == "2024") {
                 $.alert(name+" has been "+updateStatus);
 
                 if(status == "Approved"){
@@ -778,14 +778,7 @@ function loadGroupRoles(groupId,loanId,taskName){
         url: '/groupRoleDetails/',
         dataType: 'json',
         type : "post",
-        beforeSend: function(){
-            disableActiveTab();
-            $("#loading").show();
-        },
-        complete: function(){
-            $("#loading").hide();
-            enableActiveTab();
-        },
+
         success: function (data) {
             var groupDetails = data["data"]["groupDetails"];
             console.log(groupDetails);
@@ -801,6 +794,11 @@ function loadGroupRoles(groupId,loanId,taskName){
         data: JSON.stringify(dataObj)
     });
 }
+
+
+
+
+
 
 function updateGroupValStatus(status){
     var validationType = '';
@@ -1003,7 +1001,7 @@ function updateGroupMemberStatus() {
         },
         success: function(data) {
             console.log(data);
-            if (data.message == 'Member Loan Group updated successfully.') {
+            if (data.code == '2024') {
                 $.alert("Member roles have been updated successfully");
             }
         },

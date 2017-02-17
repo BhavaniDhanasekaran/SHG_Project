@@ -162,8 +162,7 @@ function UpdateUrl(loanId,groupId, oldfileName, s3url, fileid) {
         dataType: 'json',
         type: "POST",
         success: function(data) {
-            console.log(data.message);
-            if (data.message == 'Loan Document Uploaded Successfully.') {
+            if (data.code == '8000') {
                 //$("#loading").hide();
                 $.alert("Document Uploaded Successfully.");
                 $("#" + fileid + "_1").css("display", "none");
@@ -241,7 +240,7 @@ function EditUrl(loanId,groupId, UniqueId, s3url, newdoceditId,loanId) {
         dataType: 'json',
         type: "POST",
         success: function(data) {
-            if (data.message == "Loan Document Updated Successfully.") {
+            if (data.code == "8001") {
                 //$("#loading").hide();
                 $.alert("Document Updated Successfully.");
                 $("#" + newdoceditId + "_2").attr('onClick', 'window.open(' + "'" + s3url + "'" + ').focus();');
