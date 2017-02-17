@@ -48,7 +48,6 @@ function getGroupData(groupID,loanId){
                             className = "list-group-item list-group-item-action list-group-item-warning Rework";
                             rewCount+=1;
                         }
-                        console.log(taskName);
                         if(document.getElementById("san_test")){
                             $("#san_test").append('<a id="'+memberId+'" onclick="getMemberDetails('+memberId+','+groupId+','+loanId+');" class="'+className+'" style="font-weight:bold;">'+groupData["data"]["groupMemDetail"][i]["memberName"]+'</a>');
                         }
@@ -107,7 +106,6 @@ function getMemberDetails(memberId,groupId,loanId){
         success: function (data) {
             enableActiveTab();
             var memberData = data;
-            console.log(memberData);
             //var arrayKeys = ["occupations","villages""conflictList","highMarksList","memberFamilyDetails","memberDocumentDetails"];
             var imgFiles = ["MEMBERPHOTO","IDPROOF","IDPROOF_2","ADDRESSPROOF","ADDRESSPROOF_2","SBACCOUNTPASSBOOK","OVERLAPREPORT"];
             if(memberData["data"]["memberDetails"]) {
@@ -305,7 +303,6 @@ function updateMemValidationStatus(status){
 
     dataObj["memValData"] = memValData;
     dataObj["taskId"] = taskId;
-    console.log(dataObj);
 
     var updateStatus = '';
     if(status == "Approved") {
@@ -407,7 +404,6 @@ function submitKYCForm(status){
     var appMemberId     =     document.getElementById("appMemberId").innerHTML;
     appMemberId
     var commentCamunda  =     "";
-    console.log(memStatus);
     if (validation == 1) {
         //$("#warningId").css("display","block");
         $.alert("Please proceed after mandatory fields are entered");
@@ -549,7 +545,6 @@ function checkForTaskCompletion(){
 
     if(group == "CLM_BM" || group == "CLM"){
         var dataObj = {};
-        console.log("taskname",taskName);
         if(taskName == "Resolve Data Support Team Query"){
             validationType  = "POSTKYC";
             var processUpdate = {
@@ -631,7 +626,6 @@ function taskUpdate(status){
         comment = document.getElementById("comment").value;
         dataObj["message"] = comment;
     }
-    console.log(dataObj);
     $.ajax({
         url: '/updateTask/',
         dataType: 'json',
@@ -659,23 +653,30 @@ function taskUpdate(status){
 }
 
 function creditHistory(loanId) {
-    console.log(typeof(loanId));
     var htmlContent= '';
     $.ajax({
         url: '/creditHistoryGroup/' + loanId,
         dataType: 'json',
         success: function(data) {
             var creditData = data;
+            var documentObj = [];
+            var docPath =''
             if(creditData.data){
-                console.log("creditData",creditData);
                 for(var i=0;i<creditData.data.length;i++) {
                     var creditObj  = creditData["data"][i]["creditInquiry"];
-                    var documentObj = creditData["data"][i]["memberDocument"]
-                    console.log(creditObj);
-                    htmlContent += '<tr><td> <button type="button" class="btn btn-info btn-md btn-danger" id="myBtn2">View</button></td>'
+                    documentObj = creditData["data"][i]["memberDocument"];
+                    var documentPath = '';
+                    for(var j=0;j<documentObj.length;j++){
+                        console.log(documentObj)
+                        if(documentObj[j]["documentType"] == "OVERLAPREPORT") {
+                            console.log(documentObj[j]["documentPath"])
+                            docPath = documentObj[j]["documentPath"];
+                        }
+                    }
+                    htmlContent += '<tr><td> <button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open('+"'"+docPath+"'"+');"+>View</button></td>'
                         +'<td>' + creditObj["appMemberId"] + '</td><td>'
                         + creditObj["memberName"] + '</td>'
-                        +'<td>' + creditObj["s_pr;oduct_type"] + '</td>'
+                        +'<td>' + creditObj["s_product_type"] + '</td>'
                         +'<td>' + creditObj["status"] + '</td>'
                         +'<td>' + creditObj["remarks"] + '</td>'
                         +'<td>' + creditObj["hm_response_date"] + '</td>'
@@ -698,12 +699,13 @@ function creditHistory(loanId) {
                         +'<td>' + creditObj["overdue_amount_4"] + '</td>'
                         +'<td>' + creditObj["loan_amount_4"] + '</td>'
                         +'<td>' + creditObj["balance_4"] + '</td>'
-                        +
                         +'</tr>';
                 }
             }
             document.getElementById("creditData").innerHTML = htmlContent;
+
         }
+
     });
 }
 
@@ -781,7 +783,6 @@ function loadGroupRoles(groupId,loanId,taskName){
 
         success: function (data) {
             var groupDetails = data["data"]["groupDetails"];
-            console.log(groupDetails);
             for(var key in groupDetails){
                 if(document.getElementById(key)){
                         document.getElementById(key).innerHTML = groupDetails[key];
