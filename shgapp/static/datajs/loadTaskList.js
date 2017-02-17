@@ -2,21 +2,32 @@ var monthDict = {"01":"Jan","02":"Feb","03":"Mar","04":"Apr","05":"May","06":"Ju
 
 function loadUnassignedTaskList(data){
 	var groupTaskdata = data;
+	console.log(groupTaskdata);
 	var dataArray = [];
 	$("#loading").hide();
-	
-	
+
+
 	for(var key in groupTaskdata){
 		var obj={};
 		if(groupTaskdata[key]["name"]  && groupTaskdata[key]["created"]){
 			obj["slNo"] = parseInt(key)+1;
-			obj["taskName"] = groupTaskdata[key]["name"];
+			if(groupTaskdata[key]["chekcbrespdate"]){
+				if(groupTaskdata[key]["chekcbrespdate"] == "resolved"){
+					obj["taskName"] = groupTaskdata[key]["name"]+' (BM Reply) ';
+				}
+				else{
+				    obj["taskName"] = groupTaskdata[key]["name"];
+                }
+			}
+			else{
+				obj["taskName"] = groupTaskdata[key]["name"];
+			}
 			var createdDateTime = groupTaskdata[key]["created"].split("T");
 			var createdDate = createdDateTime[0].split("-");
 			createdDate = createdDate[2]+"-"+createdDate[1]+"-"+createdDate[0]
 			obj["taskDate"] = createdDate+ " at " +createdDateTime[1];
 			obj["taskId"]   = groupTaskdata[key]["id"]
-		
+
 		}
 		if(groupTaskdata[key]["customerData"]){
 			var customerData = JSON.parse(groupTaskdata[key]["customerData"]);
@@ -36,32 +47,32 @@ function loadUnassignedTaskList(data){
 				obj["regionName"] =customerData["regionName"];
 				var loanAppDt = customerData["loanApplicationDate"].split("-");
 				var grpFormDt = customerData["groupFormationDate"].split("-");
-				
+
 				obj["loanApplicationDate"] =loanAppDt[2]+"-"+loanAppDt[1]+"-"+loanAppDt[0];
 				obj["groupFormationDate"] =grpFormDt[2]+"-"+grpFormDt[1]+"-"+grpFormDt[0];
-				
+
 			}
 		obj["claim"] = '<button type="submit" onclick="claim('+"'"+obj["taskId"]+"'"+');" class="btn btn-danger btn-md button">Claim</button>';
-		
-		
+
+
 		}
 		dataArray.push(obj);
-		
+
 	}
 	var table = $('#taskListTable').dataTable({
             data: dataArray,
 	    "pageLength": 50,
             rowId: "groupLoanId",
-            destroy: true,  
+            destroy: true,
             "bProcessing": true,
             "scrollY": true,
             fixedHeader : true,
             "sPaginationType": "full_numbers",
-            "bSortable": true,    
+            "bSortable": true,
 
-            "aoColumns": [    
-                //{ "mData": "slNo", "sTitle": "S.No", "sWidth": "3%", className:"column"},     
-                { "mData": "taskName", "sTitle": "Task Name", "sWidth": "13%", className:"column"},                     
+            "aoColumns": [
+                //{ "mData": "slNo", "sTitle": "S.No", "sWidth": "3%", className:"column"},
+                { "mData": "taskName", "sTitle": "Task Name", "sWidth": "13%", className:"column"},
                 { "mData": "taskDate","sTitle": "Task Date"  , "sWidth": "8%", className:"column"},
                 { "mData": "loanType","sTitle": "Product Name"  , "sWidth": "8%", className:"column"},
                 { "mData": "shgId","sTitle": "SHG ID"  , "sWidth": "8%", className:"column"},
@@ -73,24 +84,37 @@ function loadUnassignedTaskList(data){
                 { "mData": "clusterName","sTitle": "Cluster Name"  , "sWidth": "12%", className:"column"},
                 { "mData": "centerName","sTitle": "Center Name"  , "sWidth": "12%", className:"column"},
                 { "mData": "claim","sTitle": "Claim"  , "sWidth": "10%", className:"column"},
-                  
-            ],                       
+
+            ],
         }).fnDestroy();
         table = $('#taskListTable').DataTable( {
-            "pageLength": 50 
+            "pageLength": 50
         } );
-        triggerLoadFunc();
+       // triggerLoadFunc();
  }
 
 function loadAssignedTaskList(){
 	$("#loading").hide();
 	var myTaskdata = JSON.parse(myTaskList);
+	console.log(myTaskdata);
 	var dataArray = [];
 	for(var key in myTaskdata){
 		var obj={};
 		if(myTaskdata[key]["name"]  && myTaskdata[key]["created"]){
 			obj["slNo"] = parseInt(key)+1;
-			obj["taskName"] = '<a class="tdViewData">'+myTaskdata[key]["name"]+'</a>';
+			if(myTaskdata[key]["chekcbrespdate"]){
+				if(myTaskdata[key]["chekcbrespdate"] == "resolved"){
+					obj["taskName"] = '<a class="tdViewData">'+myTaskdata[key]["name"]+' (BM Reply) '+'</a>';
+					myTaskdata[key]["name"] = myTaskdata[key]["name"]+' (BM Reply)';
+				}
+				else{
+				    obj["taskName"] = '<a class="tdViewData">'+myTaskdata[key]["name"]+'</a>';
+					myTaskdata[key]["name"] = myTaskdata[key]["name"];
+                }
+			}
+			else{
+				obj["taskName"] = '<a class="tdViewData">'+myTaskdata[key]["name"]+'</a>';
+			}
 			var createdDateTime = myTaskdata[key]["created"].split("T");
 			var createdDate = createdDateTime[0].split("-");
 			createdDate = createdDate[2]+"-"+createdDate[1]+"-"+createdDate[0]
@@ -125,12 +149,12 @@ function loadAssignedTaskList(){
 				var grpFormDt = customerData["groupFormationDate"].split("-");
 				obj["loanApplicationDate"] ='<a class="tdViewData">'+loanAppDt[2]+"-"+loanAppDt[1]+"-"+loanAppDt[0]+'</a>';
 				obj["groupFormationDate"] ='<a class="tdViewData">'+grpFormDt[2]+"-"+grpFormDt[1]+"-"+grpFormDt[0]+'</a>';
-				
-				
-				
+
+
+
 			}
 		obj["unClaim"] = '<button type="submit" onclick="unClaim('+"'"+obj["taskId"]+"'"+');" class="btn btn-danger btn-md button">UnClaim</button>';
-		
+
 		}
 		dataArray.push(obj);
 	}
@@ -138,17 +162,17 @@ function loadAssignedTaskList(){
             data: dataArray,
             "pageLength": 50,
             rowId: "groupLoanId",
-            destroy: true,  
-            
+            destroy: true,
+
             "bProcessing": true,
             "scrollY": true,
             fixedHeader : true,
             "sPaginationType": "full_numbers",
-            "bSortable": true,    
+            "bSortable": true,
 
-            "aoColumns": [    
-              // { "mData": "slNo", "sTitle": "S.No", "sWidth": "3%", className:"column"},     
-                { "mData": "taskName", "sTitle": "Task Name", "sWidth": "13%", className:"column"},                     
+            "aoColumns": [
+              // { "mData": "slNo", "sTitle": "S.No", "sWidth": "3%", className:"column"},
+                { "mData": "taskName", "sTitle": "Task Name", "sWidth": "13%", className:"column"},
                 { "mData": "taskDate","sTitle": "Task Date"  , "sWidth": "8%", className:"column"},
                 { "mData": "loanType","sTitle": "Product Name"  , "sWidth": "8%", className:"column"},
                 { "mData": "shgId","sTitle": "SHG ID"  , "sWidth": "8%", className:"column"},
@@ -160,12 +184,12 @@ function loadAssignedTaskList(){
                 { "mData": "clusterName","sTitle": "Cluster Name"  , "sWidth": "12%", className:"column"},
                 { "mData": "centerName","sTitle": "Center Name"  , "sWidth": "12%", className:"column"},
                 { "mData": "unClaim","sTitle": "UnClaim"  , "sWidth": "10%", className:"column"},
-                  
-            ],                       
+
+            ],
         }).fnDestroy();
         table = $('#taskListTable').DataTable( {
-        	"pageLength": 50 
-        } );  
+        	"pageLength": 50
+        } );
 }
 
 $(document).ready(function (){
@@ -233,7 +257,7 @@ function triggerLoadFunc(){
 			}
 		}
 	});
-	
+
 
 }
 
@@ -257,13 +281,13 @@ function taskCount(){
 					if(document.getElementById(newKey)){
 						document.getElementById(newKey).innerHTML = data["Task"][key];
 						if(document.getElementById(newKey+'1')){
-							document.getElementById(newKey+'1').innerHTML = data["Task"][key];  
+							document.getElementById(newKey+'1').innerHTML = data["Task"][key];
 						}
 					}
 				}
 			}
 		}
-	   
+
 	    }
 	});
 }
@@ -297,7 +321,7 @@ function filterKYCTasksByDate(){
 	var finalDict =  [];
 	var html = '';
 	var i=0;
-	
+
 	for(var key in groupTaskdata){
 		if(groupTaskdata[key]){
 			var obj = {};
@@ -318,13 +342,13 @@ function filterKYCTasksByDate(){
 	  return [key, dateDict[key]];
 	});
 	var sortedData= dataList.sort((function (a, b) {return new Date(a[0]) - new Date(b[0]) }));
-	
-	for(var i=0;i<sortedData.length;i++){ 
+
+	for(var i=0;i<sortedData.length;i++){
 		html += '<tr><td>'+sortedData[i][0]+'</td><td><a id="'+sortedData[i][0]+'"href="#" onclick="redirectKYCPage(this.id);">'+sortedData[i][1]+'</a></td></tr>'
 	}
 	$('#tableData').append(html);
-	
-	
+
+
 }
 
 function KYCTasksGroupByDate(dateFrom,dateto){
@@ -346,10 +370,10 @@ function KYCTasksGroupByDate(dateFrom,dateto){
 
 
 function setNextDate(date){
-	var back_GTM = new Date(date); 
+	var back_GTM = new Date(date);
 	back_GTM.setDate(back_GTM.getDate() + 1);
 	var b_dd = back_GTM.getDate();
-	
+
 	var b_mm = back_GTM.getMonth()+1;
 	var b_yyyy = back_GTM.getFullYear();
 	if (b_dd < 10) {
@@ -396,7 +420,7 @@ function getTasksByTaskName(taskName){
 		loadUnassignedTaskList(data);
 		triggerLoadFunc();
 	    }
-	});	
+	});
 
 }
 

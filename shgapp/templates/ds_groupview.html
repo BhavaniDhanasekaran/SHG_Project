@@ -11,7 +11,7 @@
         var groupId = '{{ groupId | escapejs }}';
         var loanId = '{{ loanId | escapejs }}';
         var taskId = '{{ taskId | escapejs }}';
-        var taskName= '{{ taskName | escapejs }}';
+        var taskName= '{{ taskId | escapejs }}';
         var processInstanceId = '{{ processInstanceId | escapejs }}';
         var group = '{{ group | escapejs }}';
         $(document).ready(function(){
@@ -357,6 +357,7 @@
                                                                 </thead>
                                                                 <tbody id="credit">
                                                                 <tr id="creditData">
+                                                                    <td><button type="button" id="OVERLAPREPORT_docPath" class="btn btn-info btn-md btn-danger" >View</button></td>
                                                                     <td id="s_product_type"></td>
                                                                     <td id="status"></td>
                                                                     <td id="remarks"></td>

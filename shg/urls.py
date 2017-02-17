@@ -50,8 +50,9 @@ kyc_urlpatterns = [
     url(r'^getIndMemberData/(?P<memberId>[^/]+)/(?P<groupId>[^/]+)/(?P<loanId>[^/]+)/(?P<taskName>[^/]+)',kyc.getIndMemberData, name = 'getIndMemberData'),
     url(r'^getPinCodeDetails/(?P<pincode>[^/]+)',kyc.getPinCodeDetails, name = 'getPinCodeDetails'),
     url(r'^updateKYCDetails/',kyc.updateKYCDetails, name = 'updateKYCDetails'),
-    url(r'^creditHistory/(?P<groupId>[^/]+)',kyc.creditHistory, name = 'creditHistory'),
-    url(r'^DocumentView/(?P<groupId>[^/]+)',kyc.DocumentView, name = 'DocumentView'),
+    url(r'^creditHistory/(?P<loanId>[^/]+)',kyc.creditHistory, name = 'creditHistory'),
+    url(r'^creditHistoryGroup/(?P<loanId>[^/]+)', kyc.creditHistoryGroup, name='creditHistoryGroup'),
+    url(r'^DocumentView/(?P<loanId>[^/]+)',kyc.DocumentView, name = 'DocumentView'),
     url(r'^updateMemValidationStatus/',kyc.updateMemValidationStatus, name = 'updateMemValidationStatus'),
     url(r'^updateUrl/',kyc.updateUrl, name = 'updateUrl'),  
     url(r'^loanDocument/(?P<loanTypeId>[^/]+)',kyc.loanDocument, name = 'loanDocument'),
@@ -93,6 +94,7 @@ BMOperations_urlpatterns = [
     url(r'^getTasksByTaskName/(?P<taskName>[^/]+)',BMOperations.getTasksByTaskName, name = 'getTasksByTaskName'),
     url(r'^groupRoleDetails/',BMOperations.groupRoleDetails, name = 'groupRoleDetails'),
     url(r'^updateGrpValidationStatus/',BMOperations.updateGrpValidationStatus, name = 'updateGrpValidationStatus'),
+    url(r'^updateGroupMemberStatus/',BMOperations.updateGroupMemberStatus, name = 'updateGrpValidationStatus'),
 
 ]
 urlpatterns += BMOperations_urlpatterns

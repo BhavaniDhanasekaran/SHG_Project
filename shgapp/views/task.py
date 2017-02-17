@@ -76,7 +76,10 @@ def SHGForm(request,groupId,loanId,taskId,processId,taskName,loanType):
             "Resolve Data Support Team Query"			: "queryResponseDS.html",
             "Add New Members"					        : "BMAddNewMember.html",
             "Print Loan Documents & FSR"			    : "BMAddNewMember.html",
-            "Approve or Reject Group"                   : "BMAddNewMember.html"
+            "Approve or Reject Group"                   : "RmGroupApproval.html",
+            "Proposal scrutiny"                         : "proposalScrutiny.html",
+            "Proposal scrutiny (BM Reply)"              : "proposalScrutiny.html",
+            "Resolve Credit Team Query"                 : "queryResponseDS.html"
         }
         return render(request, templateName[taskName], {"loanType" :loanType, "groupId": groupId,"loanId":loanId,"processInstanceId" :processId, "taskId" : taskId,"taskName":taskName,"group":groups[0],"user":username})
     except ShgInvalidRequest, e:

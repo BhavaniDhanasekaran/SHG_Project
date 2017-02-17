@@ -176,7 +176,9 @@ def assignedTaskList(request):
             myTaskData.append(myTaskDict[key])
         if groupName == "CLM_BM" or groupName == "CLM":
             myTaskData.append(myTaskDict[key])
-        if groupName == "RM":
+        if groupName == "RM" or groupName == "rm":
+            myTaskData.append(myTaskDict[key])
+        if groupName == "CreditTeam":
             myTaskData.append(myTaskDict[key])
 
     print "Exiting assignedTaskList(request): view"
@@ -256,13 +258,7 @@ def tasksCount( request ):
                 taskCount ["KYC Check"] = 0
                 taskCount["Query Response"] = 0
 
-        if groupName == "CLM_BM" or groupName == "CLM":
-            for data in urlTask:
-                if data["name"] in taskCount:
-                    taskCount [data["name"]] = taskCount[data["name"]] + 1
-                else:
-                    taskCount [data["name"]] = 1
-        if groupName == "RM":
+        if groupName == "CLM_BM" or groupName == "CLM" or groupName == "RM" or groupName == "rm" or groupName == "CreditTeam":
             for data in urlTask:
                 if data["name"] in taskCount:
                     taskCount [data["name"]] = taskCount[data["name"]] + 1

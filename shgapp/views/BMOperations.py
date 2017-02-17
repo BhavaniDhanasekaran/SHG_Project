@@ -64,8 +64,6 @@ def groupRoleDetails(request):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting Credit History.')
 
-
-
 @csrf_exempt
 def updateGrpValidationStatus(request):
     print "Inside updateGrpValidationStatus(request):"
@@ -87,3 +85,18 @@ def updateGrpValidationStatus(request):
                 return HttpResponse(json.dumps(taskUpdateResponse), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while updating group status.')
+
+
+@csrf_exempt
+def updateGroupMemberStatus(request):
+    print "Inside updateGroupMemberStatus(request):"
+    try:
+        if request.method == "POST":
+            formData  = json.loads(request.body)
+            bodyGroupValidation =  formData["groupValData"]
+            validationResponse = sscoreClient._urllib2_request('workflowEdit/updateMemberGroupLoan',bodyGroupValidation,requestType='POST')
+            print "validationResponse"
+            print validationResponse
+            return HttpResponse(json.dumps(validationResponse), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('An expected error occurred while update Group Memeber Status details.')
