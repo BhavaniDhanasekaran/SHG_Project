@@ -667,9 +667,7 @@ function creditHistory(loanId) {
                     documentObj = creditData["data"][i]["memberDocument"];
                     var documentPath = '';
                     for(var j=0;j<documentObj.length;j++){
-                        console.log(documentObj)
                         if(documentObj[j]["documentType"] == "OVERLAPREPORT") {
-                            console.log(documentObj[j]["documentPath"])
                             docPath = documentObj[j]["documentPath"];
                         }
                     }
