@@ -7,6 +7,7 @@ import os
 from django.conf import settings
 import random
 import string
+import mimetypes
 from django.utils.timezone import now as timezone_now
 from django.contrib.auth.decorators import login_required
 from shgapp.utils.helper import Helper
@@ -44,11 +45,13 @@ def ajax_progress_bar_upload(request):
         for filename, file in request.FILES.iteritems():
             name = request.FILES[filename].name
             uploadtofilename = upload_to_filename(request.FILES[filename].name)
+            ctype = mimetypes.guess_type(uploadtofilename)
             print 'name: ', name
             print 'upload_to_filename name: ', uploadtofilename
+            print 'content type: ', mimetypes.guess_type(uploadtofilename)
             s3Resource.Bucket(settings.AWS_BUCKET_NAME).put_object(
                 Key=settings.AWS_BUCKET_FOLDER_PATH + uploadtofilename,
-                Body=file)
+                Body=file,ContentType='ctype')
             print  'ProgressBarUploadView done - upload_to_filename', uploadtofilename
             data = {'is_valid': True, 'name': uploadtofilename, 'url': settings.AWS_S3_BASE_URL + uploadtofilename}
     except Exception, e:

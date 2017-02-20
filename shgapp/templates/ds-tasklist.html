@@ -20,10 +20,12 @@
                 KYCTasksGroupByDate(dateFrom,dateTo);
             }
             if(taskName){
-                if(group == "CLM_BM" || group == "CLM"){
-                    getBMTasksByTaskName(taskName);
-
-                }
+               // if(group == "CLM_BM" || group == "CLM"){
+                    getTasksByTaskName(taskName);
+                //}
+                //if(group == "RM") {
+                  //  getTasksByTaskName(taskName);
+                //}
             }
             taskCount();
             loadUnassignedTaskList(taskList);
@@ -39,7 +41,7 @@
         <div class="widget-header">
             <h5 class="widget-title bigger lighter">
                 <i class="ace-icon fa fa-table"></i>
-                Task List
+                Task List - <span id="taskName">{{ taskName }}</span>
             </h5>
             <div class="widget-toolbar widget-toolbar-light no-border">
                 <select id="simple-colorpicker-1" class="hide">

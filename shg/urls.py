@@ -45,13 +45,14 @@ kyc_urlpatterns = [
     url(r'^dsgroupview2/',kyc.dsgroupview2, name = 'dsgroupview2'),
     url(r'^dsgroupview/(?P<groupID>[^/]+)/(?P<loanID>[^/]+)/(?P<taskId>[^/]+)/(?P<processInstanceId>[^/]+)',kyc.dsgroupview, name = 'dsgroupview'),
     url(r'^groupViewQuery2/(?P<groupID>[^/]+)/(?P<loanID>[^/]+)/(?P<taskId>[^/]+)/(?P<processInstanceId>[^/]+)',kyc.groupViewQuery2, name = 'groupViewQuery2'),  
-    url(r'^getGroupData/(?P<groupID>[^/]+)',kyc.getGroupData, name = 'getGroupData'),
+    url(r'^getGroupData/(?P<groupID>[^/]+)/(?P<taskName>[^/]+)',kyc.getGroupData, name = 'getGroupData'),
     url(r'^groupViewQuery/',kyc.groupViewQuery, name = 'groupViewQuery'),
-    url(r'^getIndMemberData/(?P<memberId>[^/]+)/(?P<groupId>[^/]+)/(?P<loanId>[^/]+)',kyc.getIndMemberData, name = 'getIndMemberData'), 
+    url(r'^getIndMemberData/(?P<memberId>[^/]+)/(?P<groupId>[^/]+)/(?P<loanId>[^/]+)/(?P<taskName>[^/]+)',kyc.getIndMemberData, name = 'getIndMemberData'),
     url(r'^getPinCodeDetails/(?P<pincode>[^/]+)',kyc.getPinCodeDetails, name = 'getPinCodeDetails'),
     url(r'^updateKYCDetails/',kyc.updateKYCDetails, name = 'updateKYCDetails'),
-    url(r'^creditHistory/(?P<groupId>[^/]+)',kyc.creditHistory, name = 'creditHistory'),
-    url(r'^DocumentView/(?P<groupId>[^/]+)',kyc.DocumentView, name = 'DocumentView'),
+    url(r'^creditHistory/(?P<loanId>[^/]+)',kyc.creditHistory, name = 'creditHistory'),
+    url(r'^creditHistoryGroup/(?P<loanId>[^/]+)', kyc.creditHistoryGroup, name='creditHistoryGroup'),
+    url(r'^DocumentView/(?P<loanId>[^/]+)',kyc.DocumentView, name = 'DocumentView'),
     url(r'^updateMemValidationStatus/',kyc.updateMemValidationStatus, name = 'updateMemValidationStatus'),
     url(r'^updateUrl/',kyc.updateUrl, name = 'updateUrl'),  
     url(r'^loanDocument/(?P<loanTypeId>[^/]+)',kyc.loanDocument, name = 'loanDocument'),
@@ -90,9 +91,10 @@ camundaViews_urlpatterns = [
 urlpatterns += camundaViews_urlpatterns
 
 BMOperations_urlpatterns = [
-    url(r'^getBMTasksByTaskName/(?P<taskName>[^/]+)',BMOperations.getBMTasksByTaskName, name = 'getBMTasksByTaskName'),
+    url(r'^getTasksByTaskName/(?P<taskName>[^/]+)',BMOperations.getTasksByTaskName, name = 'getTasksByTaskName'),
     url(r'^groupRoleDetails/',BMOperations.groupRoleDetails, name = 'groupRoleDetails'),
     url(r'^updateGrpValidationStatus/',BMOperations.updateGrpValidationStatus, name = 'updateGrpValidationStatus'),
+    url(r'^updateGroupMemberStatus/',BMOperations.updateGroupMemberStatus, name = 'updateGrpValidationStatus'),
 
 ]
 urlpatterns += BMOperations_urlpatterns

@@ -7,13 +7,16 @@
 <script src="{% static 'datajs/mysidenav.js' %}"></script>
 <script>
     var groupId = '{{ groupId | escapejs }}';
+    var group = '{{ group | escapejs }}';
     var loanId = '{{ loanId | escapejs }}';
     var taskName = '{{ taskName | escapejs }}';
     var taskId = '{{ taskId | escapejs }}';
+    var processInstanceId = '{{ processInstanceId | escapejs }}';
     
     $(document).ready(function(){
     taskCount();
     loadGroupRoles(groupId,loanId,taskName);
+    getHistComments(processInstanceId);
     
     });
 </script>
@@ -103,10 +106,10 @@
                                     </div>
                                 </div>
                                 <div class="row-centered">
-                                    <div class="col-md-12" style="z-index: 20;">    
-                                          
+                                    <div class="col-md-12" style="z-index: 20;">
+
                                         <button type="button" class="btn btn-danger btn-md" onclick="updateGroupValStatus('Approved');">Approve</button>
-                                          
+
                                         <button type="button" class="btn btn-danger btn-md" onclick="updateGroupValStatus('Rejected');">Reject</button>
                                     </div>
                                 </div>

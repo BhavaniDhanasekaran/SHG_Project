@@ -93,12 +93,22 @@
         <li class="">
             <a href="#" onclick="redirectToTaskPage('Resolve Data Support Team Query');">
                 <i class="menu-icon glyphicon glyphicon-share-alt"></i>
-                <span class="menu-text"> Query Raised
+                <span class="menu-text"> Resolve DST Query
                     <span id="Resolve_Data_Support_Team_Query" class="badge badge-danger">0</span>
                 </span>
             </a>
             <b class="arrow"></b>
         </li>
+        <li class="">
+            <a href="#" onclick="redirectToTaskPage('Resolve Credit Team Query');">
+                <i class="menu-icon glyphicon glyphicon-share-alt"></i>
+                <span class="menu-text"> Resolve CT Query
+                    <span id="Resolve_Credit_Team_Query" class="badge badge-danger">0</span>
+                </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+
         <li class="">
             <a href="#" onclick="redirectToTaskPage('Add New Members');">
                 <i class="menu-icon glyphicon glyphicon-plus-sign"></i>
@@ -157,7 +167,7 @@
     </div>
     <!-- end of BM login menu -->
 {% endif %}
-{% if group == "RM" %}
+{% if group == "RM" or  group == "rm" %}
     <!-- Start of RM login menu -->
     <div class="sidebar-shortcuts" id="sidebar-shortcuts">
         <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
@@ -170,20 +180,20 @@
     </div>
     <ul class="nav nav-list">
         <li class="">
-            <a href="{% url 'rmtasklist' %}">
+            <a href="{% url 'assignedTaskList' %}">
                 <i class="menu-icon glyphicon glyphicon-edit"></i>
                 <span class="menu-text"> My Task
-		    <span id="myTasks" class="badge badge-danger"></span> 
-		</span>
+                    <span id="myTasks" class="badge badge-danger">0</span>
+                </span>
             </a>
             <b class="arrow"></b>
         </li>
         <li class="">
-            <a href="{% url 'dcount' %}">
+            <a href="#" onclick="redirectToTaskPage('Approve or Reject Group');">
                 <i class="menu-icon glyphicon glyphicon-check"></i>
-                <span class="menu-text"> Approve Task
-        	    <span class="badge badge-danger">2</span> 
-        	</span>
+                <span class="menu-text"> App or Rej Grp
+        	        <span id="Approve_or_Reject_Group" class="badge badge-danger">0</span>
+        	    </span>
             </a>
             <b class="arrow"></b>
         </li>
@@ -215,13 +225,69 @@
     </div>
     <!-- /.sidebar-shortcuts -->
     <ul class="nav nav-list">
-        <li class=""> <a href="{% url 'CTtasklist' %}"> <i class="menu-icon fa fa-pencil-square-o"></i> <span class="menu-text"> My Task <span class="badge badge-danger">1</span> </span></a> <b class="arrow"></b> </li>
-        <li class=""> <a href="CTMyTaskpropsal.html"> <i class="menu-icon fa fa-pencil-square-o"></i> <span class="menu-text"> scrutiny Task <span class="badge badge-danger">1</span> </span> </a> <b class="arrow"></b></li>
-        <li class=""> <a href="CTMyTaskLoan.html"> <i class="menu-icon fa fa-pencil-square-o"></i> <span class="menu-text">L - Approval Task <span class="badge badge-danger">1</span> </span> </a> <b class="arrow"></b></li>
-        <li class=""> <a href="#"> <i class="menu-icon fa fa-comments-o"></i> <span class="menu-text"> BM Reply <span class="badge badge-danger">1</span> </span> </a> <b class="arrow"></b></li>
-        <li class=""> <a href="#"> <i class="menu-icon fa fa-comments-o"></i> <span class="menu-text"> Raised Query <span class="badge badge-danger">1</span> </span> </a> <b class="arrow"></b></li>
-        <li class=""> <a href="#"> <i class="menu-icon fa fa-comments-o"></i> <span class="menu-text"> Loan Cancel <span class="badge badge-danger"></span> </span> </a> <b class="arrow"></b></li>
-        <li class=""> <a href="#"> <i class="menu-icon fa fa-comments-o"></i> <span class="menu-text"> Disbursed  Doc <span class="badge badge-danger"></span> </span> </a> <b class="arrow"></b></li>
+        <li class="">
+            <a href="{% url 'assignedTaskList' %}">
+                <i class="menu-icon fa fa-pencil-square-o"></i>
+                <span class="menu-text"> My Tasks
+                    <span id="myTasks" class="badge badge-danger">0</span>
+                </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+        <li class="">
+            <a href="#" onclick="redirectToTaskPage('Proposal scrutiny');">
+                <i class="menu-icon fa fa-support"></i>
+                <span class="menu-text"> Proposal Scrutiny
+                    <span id="Proposal_scrutiny" class="badge badge-danger">0</span>
+                </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+        <li class="">
+            <a href="#">
+                <i class="menu-icon glyphicon glyphicon-share-alt"></i>
+                <span class="menu-text">L - Approval Task
+                    <span class="badge badge-danger">0</span>
+                </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+        <li class="">
+            <a href="#">
+                <i class="menu-icon glyphicon glyphicon-retweet"></i>
+                <span class="menu-text"> BM Reply
+                    <span class="badge badge-danger">0</span>
+                </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+        <li class="">
+            <a href="#">
+                <i class="menu-icon glyphicon glyphicon-remove-sign"></i>
+                <span class="menu-text"> Raised Query
+                    <span class="badge badge-danger">0</span>
+                </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+        <li class="">
+            <a href="#">
+                <i class="menu-icon glyphicon glyphicon-file"></i>
+                <span class="menu-text"> Loan Cancel
+                    <span class="badge badge-danger">0</span>
+                </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+        <li class="">
+            <a href="#">
+                <i class="menu-icon fa fa-comments-o"></i>
+                <span class="menu-text"> Disbursed  Doc
+                    <span class="badge badge-danger">0</span>
+                </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
     </ul>
     <!-- /.nav-list -->
     <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse"> <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"> </i> </div>

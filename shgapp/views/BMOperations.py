@@ -18,9 +18,9 @@ sscoreClient = SSCoreClient()
 camundaClient = CamundaClient()
 
 
-def getBMTasksByTaskName(request,taskName):
+def getTasksByTaskName(request,taskName):
     try:
-        print "Entering getBMTasksByTaskName(request): view "
+        print "Entering getTasksByTaskName(request): view "
         username = request.user
         Grp = request.user.groups.all()
         groups = request.user.groups.values_list('name',flat=True)
@@ -32,7 +32,8 @@ def getBMTasksByTaskName(request,taskName):
 
         grp_body_cont 	   = { "unassigned" : "true" , "name" : taskName, "candidateGroup" : str(groupName) }
         groupTaskList	  = camundaClient._urllib2_request('task?firstResult=0', grp_body_cont, requestType='POST')
-
+        print "groupTaskList"
+        print groupTaskList
         for data in groupTaskList:
             processInstancesArr.append(data["processInstanceId"])
             groupTaskDict[data["processInstanceId"]] = data
@@ -63,8 +64,6 @@ def groupRoleDetails(request):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting Credit History.')
 
-
-
 @csrf_exempt
 def updateGrpValidationStatus(request):
     print "Inside updateGrpValidationStatus(request):"
@@ -86,3 +85,18 @@ def updateGrpValidationStatus(request):
                 return HttpResponse(json.dumps(taskUpdateResponse), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while updating group status.')
+
+
+@csrf_exempt
+def updateGroupMemberStatus(request):
+    print "Inside updateGroupMemberStatus(request):"
+    try:
+        if request.method == "POST":
+            formData  = json.loads(request.body)
+            bodyGroupValidation =  formData["groupValData"]
+            validationResponse = sscoreClient._urllib2_request('workflowEdit/updateMemberGroupLoan',bodyGroupValidation,requestType='POST')
+            print "validationResponse"
+            print validationResponse
+            return HttpResponse(json.dumps(validationResponse), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('An expected error occurred while update Group Memeber Status details.')

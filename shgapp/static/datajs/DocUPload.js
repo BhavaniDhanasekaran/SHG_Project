@@ -6,10 +6,11 @@ function loanDocument(loanTypeId) {
     var documentData;
     var docUploadedDict = {};
     $.ajax({
-        url: '/DocumentView/' + groupId,
+        url: '/DocumentView/' + loanId,
         dataType: 'json',
         success: function(data) {
             docUploadedDict = data["data"];
+            console.log(docUploadedDict);
             for (var key in docUploadedDict) {
                 var docId = docUploadedDict[key]["documentName"].split("*")[1];
                 var docName = docUploadedDict[key]["documentName"].split("*")[0];
@@ -136,7 +137,7 @@ function uploaddoc(fileid, docName, groupId) {
                 var newfileName = docName + '*' + fileid;
                 var oldfileName = docName;
                 var s3url = data.result.url;
-                UpdateUrl(groupId, oldfileName, s3url, fileid);
+                UpdateUrl(loanId,groupId, oldfileName, s3url, fileid);
                 $("#gallery tbody").prepend(
                     "<tr><td><a href='" + data.result.url + "'>" + data.result.name + "</a></td> <td><a href='" + data.result.url + "'>" + "delete" + "</a></td></tr>"
                 )
@@ -145,10 +146,11 @@ function uploaddoc(fileid, docName, groupId) {
     });
 }
 
-function UpdateUrl(groupId, oldfileName, s3url, fileid) {
+function UpdateUrl(loanId,groupId, oldfileName, s3url, fileid) {
     var dataObj = {};
     var uploadData = {
         "groupId": String(groupId),
+        "loanId" : String(loanId),
         "name": String(oldfileName),
         "docSize": "0",
         "userId": "1996",
@@ -160,8 +162,7 @@ function UpdateUrl(groupId, oldfileName, s3url, fileid) {
         dataType: 'json',
         type: "POST",
         success: function(data) {
-            console.log(data.message);
-            if (data.message == 'Group Document Uploaded Successfully.') {
+            if (data.code == '8000') {
                 //$("#loading").hide();
                 $.alert("Document Uploaded Successfully.");
                 $("#" + fileid + "_1").css("display", "none");
@@ -181,6 +182,7 @@ function UpdateUrl(groupId, oldfileName, s3url, fileid) {
 function Editdoc(UniqueId, newdoceditId) {
     console.log('newdoceditId');
     console.log(newdoceditId);
+    console.log(loanId);
     $("#" + newdoceditId + "_Edit").click();
     //$("#loading").show();
     $("#" + newdoceditId + "_Edit").fileupload({
@@ -213,7 +215,7 @@ function Editdoc(UniqueId, newdoceditId) {
                 //var newfileName=docName+'*'+fileid;
                 //// var oldfileName=docName;
                 var s3url = data.result.url;
-                EditUrl(groupId, UniqueId, s3url, newdoceditId);
+                EditUrl(loanId,groupId, UniqueId, s3url, newdoceditId,loanId);
                 $("#gallery tbody").prepend(
                     "<tr><td><a href='" + data.result.url + "'>" + data.result.name + "</a></td> <td><a href='" + data.result.url + "'>" + "delete" + "</a></td></tr>"
                 )
@@ -222,11 +224,11 @@ function Editdoc(UniqueId, newdoceditId) {
     });
 }
 
-function EditUrl(groupId, UniqueId, s3url, newdoceditId) {
+function EditUrl(loanId,groupId, UniqueId, s3url, newdoceditId,loanId) {
     console.log(UniqueId);
     var dataObj2 = {};
     var uploadData = {
-        "groupId": String(groupId),
+        "loanId": String(loanId),
         "id": String(UniqueId),
         "docSize": "0",
         "userId": "1996",
@@ -238,7 +240,7 @@ function EditUrl(groupId, UniqueId, s3url, newdoceditId) {
         dataType: 'json',
         type: "POST",
         success: function(data) {
-            if (data.message == "Group Document Updated Successfully.") {
+            if (data.code == "8001") {
                 //$("#loading").hide();
                 $.alert("Document Updated Successfully.");
                 $("#" + newdoceditId + "_2").attr('onClick', 'window.open(' + "'" + s3url + "'" + ').focus();');

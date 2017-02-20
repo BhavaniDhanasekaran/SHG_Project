@@ -55,9 +55,9 @@ MIDDLEWARE = [
 ]
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 10 * 60 #
+SESSION_COOKIE_AGE = 15 * 60 #
 SESSION_SAVE_EVERY_REQUEST = True
-SESSION_SECURITY_EXPIRE_AFTER=10 * 60 
+SESSION_SECURITY_EXPIRE_AFTER=15 * 60
 ROOT_URLCONF = 'shg.urls'
 
 TEMPLATES = [
@@ -160,7 +160,12 @@ SSCORE_BASE_URL = 'http://192.168.10.71:8085/sangamam-core/'
 
 AWS_ACCESS_KEY_ID='AKIAI5V5HCE63MCHXEUA'
 AWS_SECRET_ACCESS_KEY='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'
+#AWS_REGION_NAME='ap-southeast-1'
+#AWS_BUCKET_NAME = 'testingdocuments.mmfl.in'
+#AWS_BUCKET_FOLDER_PATH = 'shgbpm/legaldocuments/'
+#AWS_S3_BASE_URL='https://s3-ap-southeast-1.amazonaws.com/testingdocuments.mmfl.in/shgbpm/legaldocuments/'
+
 AWS_REGION_NAME='ap-southeast-1'
 AWS_BUCKET_NAME = 'testingdocuments.mmfl.in'
-AWS_BUCKET_FOLDER_PATH = 'shgbpm/legaldocuments/'
-AWS_S3_BASE_URL='https://s3-ap-southeast-1.amazonaws.com/testingdocuments.mmfl.in/shgbpm/legaldocuments/'
+AWS_BUCKET_FOLDER_PATH = 'media/doc_data/documents/'
+AWS_S3_BASE_URL='http://testingdocuments.mmfl.in.s3.amazonaws.com/media/doc_data/documents/'
