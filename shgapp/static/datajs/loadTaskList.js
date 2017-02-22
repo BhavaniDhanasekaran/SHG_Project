@@ -30,7 +30,13 @@ function loadUnassignedTaskList(data){
 
 		}
 		if(groupTaskdata[key]["customerData"]){
-			var customerData = JSON.parse(groupTaskdata[key]["customerData"]);
+			var customerData;
+			if(typeof(groupTaskdata[key]["customerData"]) == "string") {
+				customerData = JSON.parse(groupTaskdata[key]["customerData"]);
+            }
+            if(typeof(groupTaskdata[key]["customerData"]) == "object"){
+				customerData = JSON.parse(groupTaskdata[key]["customerData"]["value"]);
+			}
 			var memberCount = customerData["memberDetails"].length;
 			for(var data in customerData){
 				obj["groupId"] = customerData["groupId"];
@@ -90,7 +96,9 @@ function loadUnassignedTaskList(data){
         table = $('#taskListTable').DataTable( {
             "pageLength": 50
         } );
-       // triggerLoadFunc();
+        if(taskName == "Query Response"){
+        	 triggerLoadFunc();
+		}
  }
 
 function loadAssignedTaskList(){
@@ -226,7 +234,9 @@ $(document).ready(function (){
 		var rows = $('#taskListTable >tbody >tr').length;
 		if(rows == 1){
 			if($('td').hasClass('dataTables_empty')) {
-				window.location.reload();
+				if(taskName != "Query Response"){
+					window.location.reload();
+				}
 			}
 		}
 	});
@@ -253,7 +263,9 @@ function triggerLoadFunc(){
 		var rows = $('#taskListTable >tbody >tr').length;
 		if(rows == 1){
 			if($('td').hasClass('dataTables_empty')) {
-				window.location.reload();
+				if(taskName != "Query Response"){
+					window.location.reload();
+				}
 			}
 		}
 	});

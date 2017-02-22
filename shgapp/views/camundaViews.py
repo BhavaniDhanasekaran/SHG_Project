@@ -1,16 +1,12 @@
-from django.views.decorators import csrf
-from django.views.decorators.csrf  import csrf_protect, csrf_exempt
-from django.template import RequestContext
+import json
+
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.shortcuts import render,render_to_response
-from django.http import HttpResponseRedirect,HttpResponse,JsonResponse
+from django.views.decorators.csrf  import csrf_exempt
 from shgapp.utils.camundaclient import CamundaClient
 from shgapp.utils.helper import Helper
 from shgapp.utils.shgexceptions import *
-from django.contrib.auth.decorators import login_required
-import json
-import urllib2
-import requests
-
 
 helper = Helper()
 camundaClient = CamundaClient()
@@ -104,6 +100,9 @@ def KYCTasksGroupByDate(request,dateFrom,dateTo):
     processInstancesArr = []
     kycTaskDict 	= {}
     kycTaskData	= []
+    taskProVarList = []
+    taskProVarList1 = []
+
 
     bodyData = {"createdAfter" : dateFrom, "createdBefore"  : dateTo, "unassigned" : "true", "candidateGroup" : "DataSupportTeam"}
 
@@ -113,14 +112,26 @@ def KYCTasksGroupByDate(request,dateFrom,dateTo):
         processInstancesArr.append(data["processInstanceId"])
         kycTaskDict[data["processInstanceId"]] = data
 
-    bodyData = { "processInstanceIdIn": processInstancesArr }
-    taskProVarList	 = camundaClient._urllib2_request('variable-instance?deserializeValues=false', bodyData, requestType='POST')
+    bodyData = { "processInstanceIdIn": processInstancesArr, "variableName" : "groupstatus"}
+    groupStatusList = camundaClient._urllib2_request('variable-instance', bodyData, requestType='POST')
+    for data in groupStatusList:
+        if data["value"] == "":
+            taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false', {"processInstanceIdIn":[data["processInstanceId"]]},
+                                                            requestType='POST')
+            taskProVarList.append(taskProVarList1)
+        else:
+            taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=true',  {"processInstanceIdIn":[data["processInstanceId"]]},
+                                                            requestType='POST')
+            taskProVarList.append(taskProVarList1)
 
-    for data in taskProVarList:
-        if data["processInstanceId"] in kycTaskDict:
-            kycTaskDict[data["processInstanceId"]][data["name"] ] = data["value"]
-        if data["value"] == "resolved":
-            processInstancesQRArr.append(data["processInstanceId"])
+    print "taskProVarList---------------------------------------------------------------------"
+    print taskProVarList
+    for key in range(len(taskProVarList)):
+        for data in taskProVarList[key]:
+            if data["processInstanceId"] in kycTaskDict:
+                kycTaskDict[data["processInstanceId"]][data["name"] ] = data["value"]
+            if data["value"] == "resolved":
+                processInstancesQRArr.append(data["processInstanceId"])
 
     #Group Task Assign:	
     for key in kycTaskDict:
@@ -287,7 +298,7 @@ def KYCCheck(request,dateFrom,dateTo):
     print "grp:"
     print groups[0]
     print "Exiting KYCCheck(request,dateFrom,dateTo): view"
-    return render_to_response( 'ds-tasklist.html', {"dateFrom": dateFrom,"dateTo":dateTo,"group" :groups[0],"user":username})
+    return render_to_response( 'ds-tasklist.html', {"dateFrom": dateFrom,"dateTo":dateTo,"group" :groups[0],"user":username,"taskName":"KYC Check"})
 
 def queryRespTaskList(request):
     print "Entering queryRespTaskList(request): view"
@@ -324,7 +335,7 @@ def queryRespTaskList(request):
     print "QRTaskData"
     print QRTaskData
 
-    return render_to_response('ds-tasklist.html', {"taskList" :json.dumps(QRTaskData),"group" :groups[0],"user":username})
+    return render_to_response('ds-tasklist.html', {"taskList" :json.dumps(QRTaskData),"group" :groups[0],"user":username,"taskName":"Query Response"})
 
 
 @csrf_exempt

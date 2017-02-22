@@ -13,13 +13,8 @@ class CamundaClient(object):
     def _urllib2_request(self, endpoint, params, requestType='GET'):
         try:
             response= None
-            print 'CamundaClient _urllib2_request endpoint: ', endpoint
-            print 'CamundaClient _urllib2_request params: ', params
-            print 'CamundaClient _urllib2_request endpoint: ', endpoint
-            print 'CamundaClient _urllib2_request requestType: ', requestType
             if self.host is not None:
                 url = u'{0}{1}'.format(self.host, endpoint)
-                print 'CamundaClient _urllib2_request url: ', url
                 if requestType == 'POST':
                     print 'CamundaClient _urllib2_request POST: ', url
                     request = urllib2.Request( url, json.dumps(params), headers = { 'Content-Type' : 'application/json' } )
@@ -37,8 +32,6 @@ class CamundaClient(object):
             raise ShgInvalidRequest('CamundaClient _urllib2_request Exception e: ', e)    
 
     def _urllib2_parse_response(self, response):
-        print '_urllib2_parse_response'
-        print '_urllib2_parse_response getcode', response.getcode()
         if response.getcode() == 200:
             print '_urllib2_parse_response getcode 200: ', response.getcode()
             try:
@@ -76,7 +69,6 @@ class CamundaClient(object):
             raise ShgInvalidRequest('CamundaClient _request Exception e: ', e)
 
     def _parse_response(self, response):
-        print '_parse_response'
         print '_parse_response status_code', response.status_code
         if response.status_code == 200:
             print '_parse_response status_code 200', response.status_code

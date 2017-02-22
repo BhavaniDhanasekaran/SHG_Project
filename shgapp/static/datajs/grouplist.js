@@ -133,29 +133,33 @@ function getMemberDetails(memberId,groupId,loanId){
                     }
                 }
                 if (memberData["data"]["memberDocumentDetails"]) {
+                    console.log(memberData["data"]["memberDocumentDetails"]);
                     if (memberData["data"]["memberDocumentDetails"][0]) {
                         var memberDocumentsArray = memberData["data"]["memberDocumentDetails"];
                         for (var key in memberDocumentsArray) {
                             if ($.inArray(memberDocumentsArray[key]["documentType"], imgFiles) != -1) {
                                 //Need to change with proper URL - Coded just for images display
-                                if (document.getElementById(memberDocumentsArray[key]["documentType"] + "_docPath")) {
-                                    if(memberDocumentsArray[key]["documentType"] == "OVERLAPREPORT"){
-                                       $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr('onClick', 'window.open(' + "'" + memberDocumentsArray[key]["documentPath"] + "'" + ').focus();');
+                                if (memberDocumentsArray[key]["documentType"]) {
+                                    if (memberDocumentsArray[key]["documentType"] == "OVERLAPREPORT") {
+                                        $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr('onClick', 'window.open(' + "'" + memberDocumentsArray[key]["documentPath"] + "'" + ').focus();');
                                     }
-                                    if((memberDocumentsArray[key]["documentPath"]).indexOf("Not Uploaded")){
-                                        if(memberDocumentsArray[key]["documentType"] + "_docPath" == "MEMBERPHOTO_docPath"){
-                                            $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", "/static/images/naveen.jpg");
+
+                                    if(memberDocumentsArray[key]["documentPath"].indexOf("Not%20uploaded") != -1){
+                                        if(memberDocumentsArray[key]["documentType"] == "MEMBERPHOTO"){
+                                            console.log(memberDocumentsArray[key]["documentType"]+"_docPath");
+                                            $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src","/static/images/naveen.jpg");
+                                        }else{
+                                            $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").css("display", "none");
+                                        }
+
                                         }
                                         else{
-                                            $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", "/static/images/image.jpg");
-                                        }
-                                    }
-                                    else{
-                                         $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", memberDocumentsArray[key]["documentPath"]);
-                                        //$("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("alt", "NO Image");
-                                        $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("data-url", memberDocumentsArray[key]["documentPath"]);
-                                    }
-                                }
+                                    $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").css("display", "inline-block");
+                                    $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").addClass("img img-test");
+                                    $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", memberDocumentsArray[key]["documentPath"]);
+                                    $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("data-url", memberDocumentsArray[key]["documentPath"]);
+                                    $("#idProof").imageBox();
+                                }}
                             }
                         }
                     }
@@ -597,7 +601,6 @@ function checkForTaskCompletion(){
 
 }
 function taskUpdate(status){
-    var taskUpdateURL = '';
     var comment = '';
     if(group == "DataSupportTeam"){
             var processupdate = {
@@ -626,6 +629,8 @@ function taskUpdate(status){
         comment = document.getElementById("comment").value;
         dataObj["message"] = comment;
     }
+    console.log(dataObj);
+    //return false;
     $.ajax({
         url: '/updateTask/',
         dataType: 'json',
@@ -816,6 +821,10 @@ function updateGroupValStatus(status){
     }
     if(group == "RM" || group == "rm"){
         validationType = "POST";
+        if(!document.getElementById("Animator").value || !document.getElementById("repm1").value || !document.getElementById("repm2").value){
+            $.alert("Please update group roles before task completion!");
+            return false;
+        }
     }
     var groupValData = {
         "groupId": groupId,
@@ -968,6 +977,18 @@ function documentView(groupId) {
 
 function updateGroupMemberStatus() {
     //alert("updateGroupMemeberStatus");
+    if(!document.getElementById("Animator").value){
+        $.alert("Please select Group Animator");
+        return false;
+    }
+    if(!document.getElementById("repm1").value){
+        $.alert("Please select Group Rep1");
+        return false;
+    }
+    if(!document.getElementById("repm2").value){
+        $.alert("Please select Group Rep2");
+        return false;
+    }
     var nAnimator = document.getElementById("Animator").value;
     var nrepm1 = document.getElementById("repm1").value;
     var nrepm2 = document.getElementById("repm2").value;

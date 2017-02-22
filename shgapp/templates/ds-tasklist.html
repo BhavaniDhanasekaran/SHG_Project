@@ -19,13 +19,8 @@
             if(dateFrom && dateTo){
                 KYCTasksGroupByDate(dateFrom,dateTo);
             }
-            if(taskName){
-               // if(group == "CLM_BM" || group == "CLM"){
+            if(taskName != "Query Response" && taskName != "KYC Check"){
                     getTasksByTaskName(taskName);
-                //}
-                //if(group == "RM") {
-                  //  getTasksByTaskName(taskName);
-                //}
             }
             taskCount();
             loadUnassignedTaskList(taskList);

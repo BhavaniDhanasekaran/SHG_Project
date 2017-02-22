@@ -10,6 +10,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import password_reset, password_reset_confirm
 from shgapp.forms import SignUpForm
 from django.template import RequestContext
+from datetime import datetime
 
 def signup(request):
     if request.method == 'POST':
@@ -41,9 +42,10 @@ def signin(request):
             username = request.POST['username']
             password = request.POST['password']
             user = authenticate(username=username, password=password)
-            
+
             if user is not None:
                 if user.is_active:
+                    request.session.set_expiry(request.session.get_expiry_age())
                     login(request, user)
                     if 'next' in request.GET:
                         return HttpResponseRedirect(request.GET['next'])
@@ -51,10 +53,10 @@ def signin(request):
                         return HttpResponseRedirect('/')
                 else:
                     messages.add_message(request, messages.ERROR, 'Your account is desactivated.')
-                    return render(request, 'auth/signin.html')
+                    return render(request, 'auth/signin.html', {"Message" : "Not an Active User"})
             else:
                 messages.add_message(request, messages.ERROR, 'Username or password invalid.')
-                return render(request, 'auth/signin.html')
+                return render(request, 'auth/signin.html', {"Message" : "Invalid Username or Password. Try again."})
         else:
             return render(request, 'auth/signin.html')
 
