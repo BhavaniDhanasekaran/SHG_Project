@@ -1,513 +1,362 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block javascript %}
-
 <script src="{% static 'datajs/grouplist.js' %}"></script>
+<script src="{% static 'datajs/loadTaskList.js' %}"></script>
 <script src="{% static 'datajs/masterData.js' %}"></script>
 
 
-{% endblock %}
 
+{% endblock %}
 <!-- PAGE CONTENT BEGINS -->
 {% block content %}
-
-
-<div class="row">  <!--2row Start-->
-             <div class="col-xs-3 " > <!--second col-xs3 strat-->
-                                
+<div class="row">
+<!--2row Start-->
+<div class="col-xs-3 " >
+    <!--second col-xs3 strat-->
     <div class="panel panel-default">
-      <div class="panel-heading">PLL </div>
-      <div class="panel-body">
-    
-    
-    
-    <div class="profile-user-info profile-user-info-striped">
-                        <div class="profile-info-row">
-                          <div class="profile-info-name2"> SHG Name </div>
-
-                          <div class="profile-info-value">
-                            <span class="editable" id="username">BAGAVATHI</span>
-                          </div>
-                        </div>
-                        
-                        
-                        
-                          <div class="profile-info-row">
-                          <div class="profile-info-name2"> SHG ID </div>
-
-                          <div class="profile-info-value">
-                            <span class="editable" id="username">649834</span>
-                          </div>
-                        </div>
-                        
-                        
-                          <div class="profile-info-row">
-                          <div class="profile-info-name2"> No Of Members </div>
-
-                          <div class="profile-info-value">
-                            <span class="editable" id="username">11</span>
-                          </div>
-                        </div>
-                        
-                        
-                        <div class="profile-info-row">
-                          <div class="profile-info-name2"> Installments</div>
-
-                          <div class="profile-info-value">
-                            <span class="editable" id="username">24</span>
-                          </div>
-                        </div>
-                        
-                        
-                         <br>
-                         
-                         
-                         <div class="profile-info-row">
-                          <div class="profile-info-name2"> Loan Amount (INR):</div>
-
-                          <div class="profile-info-value">
-                            <span class="editable" id="username" style="float:right">330000.00</span>
-                          </div>
-                        </div>
-                        
-                         <div class="profile-info-row">
-                          <div class="profile-info-name2"> Processing Fee  (INR):</div>
-
-                          <div class="profile-info-value">
-                            <span class="editable" id="username" style="float:right">4200.00</span>
-                          </div>
-                        </div>
-                        
-                        
-                         <div class="profile-info-row">
-                          <div class="profile-info-name2"> Service Tax (INR):</div>
-
-                          <div class="profile-info-value">
-                            <span class="editable" id="username" style="float:right">300.00</span>
-                          </div>
-                        </div>
-                        
-                        
-                         <div class="profile-info-row">
-                          <div class="profile-info-name2"> Education Cess (INR):</div>
-
-                          <div class="profile-info-value">
-                            <span class="editable" id="username" style="float:right">0.00</span>
-                          </div>
-                        </div>
-                        
-                        
-                        
-                         <div class="profile-info-row">
-                          <div class="profile-info-name2"> AWB (INR):</div>
-
-                          <div class="profile-info-value">
-                            <span class="editable" id="username" style="float:right">0.00</span>
-                          </div>
-                        </div>
-                        
-                         <div class="profile-info-row">
-                          <div class="profile-info-name2"> AWB (INR):</div>
-
-                          <div class="profile-info-value">
-                            <span class="editable" id="username" style="float:right">0.00</span>
-                          </div>
-                        </div>
-                        
-                        
-                         <div class="profile-info-row">
-                          <div class="profile-info-name2"> Sundry Debt(ATL) (INR)):</div>
-
-                          <div class="profile-info-value">
-                            <span class="editable" id="username" style="float:right">0.00</span>
-                          </div>
-                        </div>
-                        
-                        
-                         <div class="profile-info-row">
-                          <div class="profile-info-name2"> Insurance (INR):</div>
-
-                          <div class="profile-info-value">
-                            <span class="editable" id="username" style="float:right">2948</span>
-                          </div>
-                        </div>
-                        
-                        
-                         <div class="profile-info-row">
-                          <div class="profile-info-name2"> Net Loan Amount (INR):</div>
-
-                          <div class="profile-info-value">
-                            <span class="editable" id="username" style="float:right">322222</span>
-                          </div>
-                        </div>
-                         
-                         
-                      </div>
-                  
-      </div>  <!--panel body endend-->
-
-    </div><!--second col-xs3 end-->
-                                 </div> <!--second row end-->
-
-
-
-
-
-                                
-                              
-                              
-            
-     <div class="col-xs-9" >    <!--2row Start col-10 start-->
-            <div class="panel panel-default">                                         
-                 <div class="panel-heading">Rose Group (3242423 ) </div>      
-                        <div class="panel-body-danger">    <!--2row panel body start-->
-                        
-                        
-                              <div class="tabbable">
-                                            <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
-                                            
-                                             <li class="active"><a data-toggle="tab" href="#upload">payment</a></li>
-                          
-                                             <li><a data-toggle="tab" href="#dropdown14">Documents</a></li>
-                                               
-                                            </ul>
-                        
-                        
-                            
-                                            <div class="tab-content">
-                                                <div id="upload" class="tab-pane in active">
-                                                <!-- form start-->
-                                        <section>
-
-
-
-
-                                        <!---upload doc startion-->
-
-
-<div id="payment" class="tab-pane in active">
-  <section >
-    <div class="page-content">
-      <div class="row">
-        <div class="col-xs-12">
-          <!-- PAGE CONTENT BEGINS -->
-          <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
-            <div class="widget-box widget-color-blue" id="widget-box-2">
-              <div class="widget-header">
-                <h5 class="widget-title bigger lighter"> Credit Enquiry </h5>
-                <div class="widget-toolbar widget-toolbar-light no-border">
-                  <select id="simple-colorpicker-1" class="hide">
-                    <option selected="" data-class="blue" value="#981b1b">#307ECC</option>
-                    <option data-class="blue2" value="#981b1b">#5090C1</option>
-                  </select>
-                </div>
-              </div>
-              <div class="widget-body" style="height:500px;overflow:scroll;overflow-y:scroll;overflow-x:scroll;">
-                <div class="widget-main no-padding">
-                  <table class="table table-striped table-bordered table-hover" >
-                    <thead class="thin-border-bottom">
-                      <tr>
-                        <th> S.NO</th>
-                        <th> App Memeber id</th>
-                        <th>New Memeber</th>
-                        <th>Name</th>
-                        <th>SB A/C Number</th>
-                        <th>Bank Name</th>
-                        <th>Loan Amount</th>
-                        <th>AWB</th>
-                        <th>Previous loan Amount</th>
-                        <th>Solar Light</th>
-                        <th>ATL/ELL SUndry Debt</th>
-                        <th>Processing Fee</th>
-                        <th>Service Tax</th>
-                        <th>Education Cess</th>
-                        <th>Insurance</th>
-                        <th>Net Amount</th>
-                        <th>staus</th>
-                        <th>Pupose</th>
-                        <th>Drop Member</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td class="">1</td>
-                        <td class="">64983189</td>
-                        <td class="">No</td>
-                        <td class="">MARIAMMAL S</td>
-                        <td class="">071100050306170</td>
-                        <td class="">TAMILNADU MERCHANTILE BANK</td>
-                        <td class="">14000</td>
-                        <td class=""><input type="text" value="3000" style="width:50px"></td>
-                        <td class=""><input type="text" value="0" style="width:50px"></td>
-                        <td class=""><input type="text" value="0" style="width:50px"></td>
-                        <td class=""><input type="text" value="0" style="width:50px"></td>
-                        <td class="">300.00</td>
-                        <td class="">45</td>
-                        <td class="">0.00</td>
-                        <td class=""><input type="text" value="268" style="width:50px"></td>
-                        <td class="">29387</td>
-                        <td class="">A</td>
-                        <td class=""><select>
-                            <option value="1">AESTHIC BUSINESS</option>
-                            <option value="2">AGRICULTURE BUSINESS</option>
-                            <option value="3" selected="">ANIMAL CARE</option>
-                            <option value="4">ANIMAL HUSBANDRY</option>
-                            <option value="159">APPALAM BUSINESS</option>
-                          </select>
-                        </td>
-                        <td class=""><input type="checkbox"></td>
-                      </tr>
-                      <tr>
-                        <td class="">2</td>
-                        <td class="">64983189</td>
-                        <td class="">No</td>
-                        <td class="">MARIAMMAL S</td>
-                        <td class="">071100050306170</td>
-                        <td class="">TAMILNADU MERCHANTILE BANK</td>
-                        <td class="">14000</td>
-                        <td class=""><input type="text" value="3000" style="width:50px"></td>
-                        <td class=""><input type="text" value="0" style="width:50px"></td>
-                        <td class=""><input type="text" value="0" style="width:50px"></td>
-                        <td class=""><input type="text" value="0" style="width:50px"></td>
-                        <td class="">300.00</td>
-                        <td class="">45</td>
-                        <td class="">0.00</td>
-                        <td class=""><input type="text" value="268" style="width:50px"></td>
-                        <td class="">29387</td>
-                        <td class="">A</td>
-                        <td class=""><select>
-                            <option value="1">AESTHIC BUSINESS</option>
-                            <option value="2">AGRICULTURE BUSINESS</option>
-                            <option value="3" selected="">ANIMAL CARE</option>
-                            <option value="4">ANIMAL HUSBANDRY</option>
-                            <option value="159">APPALAM BUSINESS</option>
-                          </select>
-                        </td>
-                        <td class=""><input type="checkbox"></td>
-                      </tr>
-                      <tr>
-                        <td class="">1</td>
-                        <td class="">64983189</td>
-                        <td class="">No</td>
-                        <td class="">MARIAMMAL S</td>
-                        <td class="">071100050306170</td>
-                        <td class="">TAMILNADU MERCHANTILE BANK</td>
-                        <td class="">14000</td>
-                        <td class=""><input type="text" value="3000" style="width:50px"></td>
-                        <td class=""><input type="text" value="0" style="width:50px"></td>
-                        <td class=""><input type="text" value="0" style="width:50px"></td>
-                        <td class=""><input type="text" value="0" style="width:50px"></td>
-                        <td class="">300.00</td>
-                        <td class="">45</td>
-                        <td >0.00</td>
-                        <td class=""><input type="text" value="268" style="width:50px"></td>
-                        <td class="">29387</td>
-                        <td class="">A</td>
-                        <td class=""><select>
-                            <option value="1">AESTHIC BUSINESS</option>
-                            <option value="2">AGRICULTURE BUSINESS</option>
-                            <option value="3" selected="">ANIMAL CARE</option>
-                            <option value="4">ANIMAL HUSBANDRY</option>
-                            <option value="159">APPALAM BUSINESS</option>
-                          </select>
-                        </td>
-                        <td class=""><input type="checkbox"></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- /.span -->
-        </div>
-        <!-- /.row -->
-        <!-- PAGE CONTENT ENDS -->
-      </div>
-      <!-- /.col -->
-    </div>
-  </section>
-</div>
-<!-- payment tab start  -->
-
-
-
-                                     
-
-
-
-
-
-
-
-
-
-
-
-                                        <!--upload doc end-->
-   
-                                                             
-                                                         
-                                
-                                        </section> <!-- SECTION END -->
-                                
-                        </div>                              <!--form End-->
-                        
-
-
-
-
-
-    <!-- Document tab start  -->
-  <div id="dropdown14" class="tab-pane">
-  
-  
-  
-  
-  <div class="page-content">
-            <div class="row">
-              <div class="col-xs-12">
-                <!-- PAGE CONTENT BEGINS -->
-
-                      <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
-                      <div class="widget-box widget-color-blue" id="widget-box-2">
-                        <div class="widget-header">
-                          <h5 class="widget-title bigger lighter">
-                            
-                            Credit Enquiry                          </h5>
-
-                          <div class="widget-toolbar widget-toolbar-light no-border">
-                            <select id="simple-colorpicker-1" class="hide">
-                              <option selected="" data-class="blue" value="#981b1b">#307ECC</option>
-                              <option data-class="blue2" value="#981b1b">#5090C1</option>
-                           
-                            </select>
-                          </div>
-                        </div>
-
-                        <div class="widget-body">
-                          <div class="widget-main no-padding">
-                            <table class="table table-striped table-bordered table-hover">
-                              <thead class="thin-border-bottom">
-                                <tr>
-                                  <th><i class="ace-icon fa fa-user"></i>S.No</th>
-                 <th><i class="ace-icon fa fa-user"></i>Document List</th>
-                  <th><i class="ace-icon fa fa-user"></i>Action</th>
-                  
-                  
-                
-                                </tr>
-                              </thead>
-
-                              <tbody>
-                                <tr>
-                                  <td class="">1</td>
-                   <td class="">Document 1</td>
-                   <td class="">View</td>
-                 
-                                </tr>
-                
-                
-                   <tr>
-                                  <td class="">2</td>
-                   <td class="">Document 2</td>
-                   <td class="">View</td>
-                 
-                                </tr>
-                
-                
-                
-                   <tr>
-                                  <td class="">3</td>
-                   <td class="">Document 3</td>
-                   <td class="">View</td>
-                 
-                                </tr>
-
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      </div>
-                    </div><!-- /.span -->
-                  </div><!-- /.row -->
-                <!-- PAGE CONTENT ENDS -->
-              </div>
-              <!-- /.col -->
-            </div>
-  
-  
-      
-  
-  
-  
-                        
-                          
-    </div>
-    <!-- Document tab ens  -->
-
-    
-                        
-                        
-                        
-                           
-
-                    </div>            <!-- TAB END-->
-                        
-
-
-            
-            
-            
-            
-                        
-                         </div> <!--2row panel body end-->
-                        
-                
-            </div>
-    </div>   <!--2row Start col-10 End-->
-    
-       
-     </div>    <!--2row End-->
-
-
-
-        <div class="row">
-        
-         
-          <div class="col-md-offset-3 col-xs-9">
-         <div class="clearfix form-actions">
-                    <div class="col-md-offset-3 col-md-9">
-                      <button class="btn btn-info" type="button">
-                        <i class="ace-icon fa fa-check bigger-110"></i>
-                        Approve
-                      </button>
-
-                      &nbsp; &nbsp; &nbsp;
-                      <button class="btn" type="reset">
-                        <i class="ace-icon fa fa-undo bigger-110"></i>
-                        Reject
-                      </button>
+        <div class="panel-heading">PLL </div>
+        <div class="panel-body">
+            <div class="profile-user-info profile-user-info-striped">
+                <div class="profile-info-row">
+                    <div class="profile-info-name2"> SHG Name </div>
+                    <div class="profile-info-value">
+                        <span class="editable" id="username">BAGAVATHI</span>
                     </div>
-                  </div>
-         </div>
-        
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name2"> SHG ID </div>
+                    <div class="profile-info-value">
+                        <span class="editable" id="username">649834</span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name2"> No Of Members </div>
+                    <div class="profile-info-value">
+                        <span class="editable" id="username">11</span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name2"> Installments</div>
+                    <div class="profile-info-value">
+                        <span class="editable" id="username">24</span>
+                    </div>
+                </div>
+                <br>
+                <div class="profile-info-row">
+                    <div class="profile-info-name2"> Loan Amount (INR):</div>
+                    <div class="profile-info-value">
+                        <span class="editable" id="username" style="float:right">330000.00</span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name2"> Processing Fee  (INR):</div>
+                    <div class="profile-info-value">
+                        <span class="editable" id="username" style="float:right">4200.00</span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name2"> Service Tax (INR):</div>
+                    <div class="profile-info-value">
+                        <span class="editable" id="username" style="float:right">300.00</span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name2"> Education Cess (INR):</div>
+                    <div class="profile-info-value">
+                        <span class="editable" id="username" style="float:right">0.00</span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name2"> AWB (INR):</div>
+                    <div class="profile-info-value">
+                        <span class="editable" id="username" style="float:right">0.00</span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name2"> AWB (INR):</div>
+                    <div class="profile-info-value">
+                        <span class="editable" id="username" style="float:right">0.00</span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name2"> Sundry Debt(ATL) (INR)):</div>
+                    <div class="profile-info-value">
+                        <span class="editable" id="username" style="float:right">0.00</span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name2"> Insurance (INR):</div>
+                    <div class="profile-info-value">
+                        <span class="editable" id="username" style="float:right">2948</span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name2"> Net Loan Amount (INR):</div>
+                    <div class="profile-info-value">
+                        <span class="editable" id="username" style="float:right">322222</span>
+                    </div>
+                </div>
+            </div>
         </div>
-            
-                      
-
-
-  {% include 'query.html' %}
-
-
-
+        <!--panel body endend-->
+    </div>
+    <!--second col-xs3 end-->
+</div>
+<!--second row end-->
+<div class="col-xs-9" >
+    <!--2row Start col-10 start-->
+    <div class="panel panel-default">
+        <div class="panel-heading">Rose Group (3242423 ) </div>
+        <div class="panel-body-danger">
+            <!--2row panel body start-->
+            <div class="tabbable">
+                <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
+                    <li class="active"><a data-toggle="tab" href="#upload">payment</a></li>
+                    <li><a data-toggle="tab" href="#dropdown14">Documents</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="upload" class="tab-pane in active">
+                        <!-- form start-->
+                        <section>
+                            <!---upload doc startion-->
+                            <div id="payment" class="tab-pane in active">
+                                <section >
+                                    <div class="page-content">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <!-- PAGE CONTENT BEGINS -->
+                                                <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
+                                                    <div class="widget-box widget-color-blue" id="widget-box-2">
+                                                        <div class="widget-header">
+                                                            <h5 class="widget-title bigger lighter"> Credit Enquiry </h5>
+                                                            <div class="widget-toolbar widget-toolbar-light no-border">
+                                                                <select id="simple-colorpicker-1" class="hide">
+                                                                    <option selected="" data-class="blue" value="#981b1b">#307ECC</option>
+                                                                    <option data-class="blue2" value="#981b1b">#5090C1</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="widget-body" style="height:500px;overflow:scroll;overflow-y:scroll;overflow-x:scroll;">
+                                                            <div class="widget-main no-padding">
+                                                                <table class="table table-striped table-bordered table-hover" >
+                                                                    <thead class="thin-border-bottom">
+                                                                        <tr>
+                                                                            <th> S.NO</th>
+                                                                            <th> App Memeber id</th>
+                                                                            <th>New Memeber</th>
+                                                                            <th>Name</th>
+                                                                            <th>SB A/C Number</th>
+                                                                            <th>Bank Name</th>
+                                                                            <th>Loan Amount</th>
+                                                                            <th>AWB</th>
+                                                                            <th>Previous loan Amount</th>
+                                                                            <th>Solar Light</th>
+                                                                            <th>ATL/ELL SUndry Debt</th>
+                                                                            <th>Processing Fee</th>
+                                                                            <th>Service Tax</th>
+                                                                            <th>Education Cess</th>
+                                                                            <th>Insurance</th>
+                                                                            <th>Net Amount</th>
+                                                                            <th>staus</th>
+                                                                            <th>Pupose</th>
+                                                                            <th>Drop Member</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td class="">1</td>
+                                                                            <td class="">64983189</td>
+                                                                            <td class="">No</td>
+                                                                            <td class="">MARIAMMAL S</td>
+                                                                            <td class="">071100050306170</td>
+                                                                            <td class="">TAMILNADU MERCHANTILE BANK</td>
+                                                                            <td class="">14000</td>
+                                                                            <td class=""><input type="text" value="3000" style="width:50px"></td>
+                                                                            <td class=""><input type="text" value="0" style="width:50px"></td>
+                                                                            <td class=""><input type="text" value="0" style="width:50px"></td>
+                                                                            <td class=""><input type="text" value="0" style="width:50px"></td>
+                                                                            <td class="">300.00</td>
+                                                                            <td class="">45</td>
+                                                                            <td class="">0.00</td>
+                                                                            <td class=""><input type="text" value="268" style="width:50px"></td>
+                                                                            <td class="">29387</td>
+                                                                            <td class="">A</td>
+                                                                            <td class="">
+                                                                                <select>
+                                                                                    <option value="1">AESTHIC BUSINESS</option>
+                                                                                    <option value="2">AGRICULTURE BUSINESS</option>
+                                                                                    <option value="3" selected="">ANIMAL CARE</option>
+                                                                                    <option value="4">ANIMAL HUSBANDRY</option>
+                                                                                    <option value="159">APPALAM BUSINESS</option>
+                                                                                </select>
+                                                                            </td>
+                                                                            <td class=""><input type="checkbox"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="">2</td>
+                                                                            <td class="">64983189</td>
+                                                                            <td class="">No</td>
+                                                                            <td class="">MARIAMMAL S</td>
+                                                                            <td class="">071100050306170</td>
+                                                                            <td class="">TAMILNADU MERCHANTILE BANK</td>
+                                                                            <td class="">14000</td>
+                                                                            <td class=""><input type="text" value="3000" style="width:50px"></td>
+                                                                            <td class=""><input type="text" value="0" style="width:50px"></td>
+                                                                            <td class=""><input type="text" value="0" style="width:50px"></td>
+                                                                            <td class=""><input type="text" value="0" style="width:50px"></td>
+                                                                            <td class="">300.00</td>
+                                                                            <td class="">45</td>
+                                                                            <td class="">0.00</td>
+                                                                            <td class=""><input type="text" value="268" style="width:50px"></td>
+                                                                            <td class="">29387</td>
+                                                                            <td class="">A</td>
+                                                                            <td class="">
+                                                                                <select>
+                                                                                    <option value="1">AESTHIC BUSINESS</option>
+                                                                                    <option value="2">AGRICULTURE BUSINESS</option>
+                                                                                    <option value="3" selected="">ANIMAL CARE</option>
+                                                                                    <option value="4">ANIMAL HUSBANDRY</option>
+                                                                                    <option value="159">APPALAM BUSINESS</option>
+                                                                                </select>
+                                                                            </td>
+                                                                            <td class=""><input type="checkbox"></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="">1</td>
+                                                                            <td class="">64983189</td>
+                                                                            <td class="">No</td>
+                                                                            <td class="">MARIAMMAL S</td>
+                                                                            <td class="">071100050306170</td>
+                                                                            <td class="">TAMILNADU MERCHANTILE BANK</td>
+                                                                            <td class="">14000</td>
+                                                                            <td class=""><input type="text" value="3000" style="width:50px"></td>
+                                                                            <td class=""><input type="text" value="0" style="width:50px"></td>
+                                                                            <td class=""><input type="text" value="0" style="width:50px"></td>
+                                                                            <td class=""><input type="text" value="0" style="width:50px"></td>
+                                                                            <td class="">300.00</td>
+                                                                            <td class="">45</td>
+                                                                            <td >0.00</td>
+                                                                            <td class=""><input type="text" value="268" style="width:50px"></td>
+                                                                            <td class="">29387</td>
+                                                                            <td class="">A</td>
+                                                                            <td class="">
+                                                                                <select>
+                                                                                    <option value="1">AESTHIC BUSINESS</option>
+                                                                                    <option value="2">AGRICULTURE BUSINESS</option>
+                                                                                    <option value="3" selected="">ANIMAL CARE</option>
+                                                                                    <option value="4">ANIMAL HUSBANDRY</option>
+                                                                                    <option value="159">APPALAM BUSINESS</option>
+                                                                                </select>
+                                                                            </td>
+                                                                            <td class=""><input type="checkbox"></td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- /.span -->
+                                            </div>
+                                            <!-- /.row -->
+                                            <!-- PAGE CONTENT ENDS -->
+                                        </div>
+                                        <!-- /.col -->
+                                    </div>
+                                </section>
+                            </div>
+                            <!-- payment tab start  -->
+                            <!--upload doc end-->
+                        </section>
+                        <!-- SECTION END -->
+                    </div>
+                    <!--form End-->
+                    <!-- Document tab start  -->
+                    <div id="dropdown14" class="tab-pane">
+                        <div class="page-content">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <!-- PAGE CONTENT BEGINS -->
+                                    <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
+                                        <div class="widget-box widget-color-blue" id="widget-box-2">
+                                            <div class="widget-header">
+                                                <h5 class="widget-title bigger lighter">
+                                                    Credit Enquiry
+                                                </h5>
+                                                <div class="widget-toolbar widget-toolbar-light no-border">
+                                                    <select id="simple-colorpicker-1" class="hide">
+                                                        <option selected="" data-class="blue" value="#981b1b">#307ECC</option>
+                                                        <option data-class="blue2" value="#981b1b">#5090C1</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="widget-body">
+                                                <div class="widget-main no-padding">
+                                                    <table class="table table-striped table-bordered table-hover">
+                                                        <thead class="thin-border-bottom">
+                                                            <tr>
+                                                                <th><i class="ace-icon fa fa-user"></i>S.No</th>
+                                                                <th><i class="ace-icon fa fa-user"></i>Document List</th>
+                                                                <th><i class="ace-icon fa fa-user"></i>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="">1</td>
+                                                                <td class="">Document 1</td>
+                                                                <td class="">View</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="">2</td>
+                                                                <td class="">Document 2</td>
+                                                                <td class="">View</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="">3</td>
+                                                                <td class="">Document 3</td>
+                                                                <td class="">View</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.span -->
+                                </div>
+                                <!-- /.row -->
+                                <!-- PAGE CONTENT ENDS -->
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                    </div>
+                    <!-- Document tab ens  -->
+                </div>
+                <!-- TAB END-->
+            </div>
+            <!--2row panel body end-->
+        </div>
+    </div>
+    <!--2row Start col-10 End-->
+</div>
+<!--2row End-->
+<div class="row">
+    <div class="col-md-offset-3 col-xs-9">
+        <div class="clearfix form-actions">
+            <div class="col-md-offset-3 col-md-9">
+                <button class="btn btn-info" type="button">
+                <i class="ace-icon fa fa-check bigger-110"></i>
+                Approve
+                </button>
+                &nbsp; &nbsp; &nbsp;
+                <button class="btn" type="reset">
+                <i class="ace-icon fa fa-undo bigger-110"></i>
+                Reject
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'query.html' %}
 {% endblock content %}
-
-
-
-
-
-
-
-
-
