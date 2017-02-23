@@ -132,7 +132,13 @@ function loadAssignedTaskList(){
 			obj["processInstanceId"] = myTaskdata[key]["processInstanceId"]
 		}
 		if(myTaskdata[key]["customerData"]){
-			var customerData = JSON.parse(myTaskdata[key]["customerData"]);
+			var customerData;
+			if(typeof(myTaskdata[key]["customerData"]) == "string") {
+				customerData = JSON.parse(myTaskdata[key]["customerData"]);
+            }
+            if(typeof(myTaskdata[key]["customerData"]) == "object"){
+				customerData = JSON.parse(myTaskdata[key]["customerData"]["value"]);
+			}
 			var memberCount = customerData["memberDetails"].length;
 			for(var data in customerData){
 				if(obj["taskName"] == "Query Response"){

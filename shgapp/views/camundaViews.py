@@ -124,8 +124,6 @@ def KYCTasksGroupByDate(request,dateFrom,dateTo):
                                                             requestType='POST')
             taskProVarList.append(taskProVarList1)
 
-    print "taskProVarList---------------------------------------------------------------------"
-    print taskProVarList
     for key in range(len(taskProVarList)):
         for data in taskProVarList[key]:
             if data["processInstanceId"] in kycTaskDict:
@@ -152,6 +150,8 @@ def assignedTaskList(request):
     print groups[0]
     groupName = groups[0]
     processInstancesArr = []
+    taskProVarList =[]
+    taskProVarList1 = []
     myTaskDict 	= {}
     myTaskData	= []
     myTaskList		= camundaClient._urllib2_request('task?&assignee='+str(username), {}, requestType='GET')
@@ -166,19 +166,33 @@ def assignedTaskList(request):
             processInstancesArr.append(data["processInstanceId"])
             myTaskDict[data["processInstanceId"]] = data
 
-
-    bodyData = { "processInstanceIdIn": processInstancesArr }
-    taskProVarList	 = camundaClient._urllib2_request('variable-instance?deserializeValues=false', bodyData, requestType='POST')
-    #Process Variable Instance:
-    for data in taskProVarList:
-        if groupName == "CLM_BM" or groupName == "CLM":
-            for key in myTaskDict:
-                if key.find(data["processInstanceId"]) != -1:
-                    myTaskDict[key][data["name"] ] = data["value"]
+    bodyData = { "processInstanceIdIn": processInstancesArr, "variableName" :"groupstatus" }
+    groupStatusList = camundaClient._urllib2_request('variable-instance', bodyData, requestType='POST')
+    for data in groupStatusList:
+        if data["value"] == "false":
+            taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false',
+                                                             {"processInstanceIdIn": [data["processInstanceId"]]},
+                                                             requestType='POST')
+            taskProVarList.append(taskProVarList1)
         else:
-            if data["processInstanceId"] in myTaskDict:
-                myTaskDict[data["processInstanceId"]][data["name"] ] = data["value"]
+            taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=true',
+                                                             {"processInstanceIdIn": [data["processInstanceId"]]},
+                                                             requestType='POST')
+            taskProVarList.append(taskProVarList1)
+    #taskProVarList	 = camundaClient._urllib2_request('variable-instance?deserializeValues=false', bodyData, requestType='POST')
+    #Process Variable Instance:
+    for key in range(len(taskProVarList)):
+        for data in taskProVarList[key]:
+            if groupName == "CLM_BM" or groupName == "CLM":
+                for key1 in myTaskDict:
+                    if key1.find(data["processInstanceId"]) != -1:
+                        myTaskDict[key1][data["name"] ] = data["value"]
+            else:
+                if data["processInstanceId"] in myTaskDict:
+                    myTaskDict[data["processInstanceId"]][data["name"] ] = data["value"]
 
+    print "myTaskDict"
+    print myTaskDict
     #Group Task Assign:	
     for key in myTaskDict:
         if groupName == "DataSupportTeam":
@@ -191,7 +205,8 @@ def assignedTaskList(request):
             myTaskData.append(myTaskDict[key])
         if groupName == "CreditTeam":
             myTaskData.append(myTaskDict[key])
-
+    print "myTaskData"
+    print myTaskData
     print "Exiting assignedTaskList(request): view"
     return render(request, 'ds-mytask.html',{"myTaskList" :json.dumps(myTaskData), "group" :groups[0],"user":username})
 
@@ -232,10 +247,6 @@ def tasksCount( request ):
         incrementTaskCount = 0
         mytaskURL = camundaClient._urllib2_request('task', {"assignee" : str(username)}, requestType='POST')
         urlTask = camundaClient._urllib2_request('task', {"candidateGroup" : str(groupName)}, requestType='POST')
-        print ":mytaskURL"
-        print mytaskURL
-        print "urlTask"
-        print urlTask
         for data in mytaskURL:
             if data["name"]:
                 incrementTaskCount += 1
@@ -278,8 +289,6 @@ def tasksCount( request ):
 
         taskData = {  'Task' : taskCount   }
         taskData = json.dumps(taskData)
-        print "taskData"
-        print taskData
 
         response = HttpResponse(taskData, content_type='text/plain')
         response['Content-Length'] = len( taskData )
@@ -307,6 +316,8 @@ def queryRespTaskList(request):
     groups = request.user.groups.values_list('name',flat=True)
     print "grp:"
     print groups[0]
+    taskProVarList1 = []
+    taskProVarList = []
     processInstancesArr = []
     QRTaskDict 	= {}
     QRTaskData	= []
@@ -318,22 +329,31 @@ def queryRespTaskList(request):
         processInstancesArr.append(data["processInstanceId"])
         QRTaskDict[data["processInstanceId"]] = data
 
-    bodyData = { "processInstanceIdIn": processInstancesArr }
-    taskProVarList	 = camundaClient._urllib2_request('variable-instance?deserializeValues=false', bodyData, requestType='POST')
+    bodyData = {"processInstanceIdIn": processInstancesArr, "variableName": "groupstatus"}
+    groupStatusList = camundaClient._urllib2_request('variable-instance', bodyData, requestType='POST')
+    for data in groupStatusList:
+        if data["value"] == "false":
+            taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false',
+                                                             {"processInstanceIdIn": [data["processInstanceId"]]},
+                                                             requestType='POST')
+            taskProVarList.append(taskProVarList1)
+        else:
+            taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=true',
+                                                             {"processInstanceIdIn": [data["processInstanceId"]]},
+                                                             requestType='POST')
+            taskProVarList.append(taskProVarList1)
 
-    #Process Variable Instance:
-    for data in taskProVarList:
-        if data["processInstanceId"] in QRTaskDict:
-            QRTaskDict[data["processInstanceId"]][data["name"] ] = data["value"]
+    # Process Variable Instance:
+    for key in range(len(taskProVarList)):
+        for data in taskProVarList[key]:
+            if data["processInstanceId"] in QRTaskDict:
+                QRTaskDict[data["processInstanceId"]][data["name"] ] = data["value"]
 
     #Group Task Assign:	
     for key in QRTaskDict:
-        print QRTaskDict[key]
         if  QRTaskDict[key]["name"] == "KYC Check":
             QRTaskDict[key]["name"] = "Query Response"
         QRTaskData.append(QRTaskDict[key])
-    print "QRTaskData"
-    print QRTaskData
 
     return render_to_response('ds-tasklist.html', {"taskList" :json.dumps(QRTaskData),"group" :groups[0],"user":username,"taskName":"Query Response"})
 
@@ -343,18 +363,13 @@ def updateTask(request):
     try:
         print "Entering updateTask(request) : "
         if request.method == "POST":
-            print request.body
             formData = json.loads(request.body)
             if formData.has_key("processUpdate"):
                 bodyData = formData["processUpdate"]
             else:
                 bodyData = {}
             taskId = formData["taskId"]
-            print "bodyData"
-            print bodyData
             taskUpdateResponse =  camundaClient._urllib2_request('task/'+taskId+'/complete',bodyData,requestType='POST')
-            print "taskUpdateResponse"
-            print taskUpdateResponse
             return HttpResponse(json.dumps(taskUpdateResponse), content_type='text/plain')
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred.')

@@ -542,8 +542,14 @@ function checkForTaskCompletion(){
             taskUpdate(processStatus);
         }
         if(totalCount == membersCount && reworkCount == 0 && pendingCount == 0){
-            processStatus = "approved";
-            taskUpdate(processStatus);
+            if(group == "CreditTeam"){
+                processStatus = "CBApproved";
+                taskUpdate(processStatus);
+            }
+            if(group == "DataSupportTeam"){
+                 processStatus = "approved";
+                 taskUpdate(processStatus);
+            }
         }
     }
 
@@ -711,11 +717,6 @@ function creditHistory(loanId) {
 
     });
 }
-
-
-
-
-
 
 function disableActiveTab(){
     if(document.getElementsByClassName("active")){

@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import password_reset, password_reset_confirm
 from shgapp.forms import SignUpForm
+from django.views.decorators.csrf  import csrf_exempt
 from django.template import RequestContext
 from datetime import datetime
 
@@ -31,6 +32,7 @@ def signup(request):
     else:
         return render(request, 'auth/signup.html', { 'form': SignUpForm() })
 
+@csrf_exempt
 def signin(request):
     print 'signin'
     if request.user.is_authenticated():
@@ -62,7 +64,7 @@ def signin(request):
 
 def signout(request):
     logout(request)
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/signin/')
 
 
 def reset(request):

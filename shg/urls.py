@@ -37,7 +37,6 @@ task_urlpatterns = [
     url(r'^CTtasklist/', task.CTtasklist, name = 'CTtasklist'),
     url(r'^CTLoanApproval/', task.CTLoanApproval, name = 'CTLoanApproval'),
     url(r'^SHGForm/(?P<groupId>[^/]+)/(?P<loanId>[^/]+)/(?P<taskId>[^/]+)/(?P<processId>[^/]+)/(?P<taskName>[^/]+)/(?P<loanType>[^/]+)', task.SHGForm, name = 'SHGForm'),
-    
 ]
 urlpatterns += task_urlpatterns
 
@@ -57,13 +56,8 @@ kyc_urlpatterns = [
     url(r'^updateUrl/',kyc.updateUrl, name = 'updateUrl'),  
     url(r'^loanDocument/(?P<loanTypeId>[^/]+)',kyc.loanDocument, name = 'loanDocument'),
     url(r'^editUrl/',kyc.editUrl, name = 'editUrl'),
-
-    
-    
 ]
-
 urlpatterns += kyc_urlpatterns
-
 
 masterData_urlpatterns = [
     url(r'^masterDataBank/',masterData.masterDataBank, name = 'masterDataBank'),
@@ -86,7 +80,6 @@ camundaViews_urlpatterns = [
     url(r'^updateTask/',camundaViews.updateTask, name = 'updateTask'),
     url(r'^taskComplete/(?P<taskId>[^/]+)',camundaViews.taskComplete, name = 'taskComplete'),
     url(r'^getHistoryComments/(?P<processId>[^/]+)',camundaViews.getHistoryComments, name = 'getHistoryComments'),
-
 ]
 urlpatterns += camundaViews_urlpatterns
 
@@ -95,18 +88,16 @@ BMOperations_urlpatterns = [
     url(r'^groupRoleDetails/',BMOperations.groupRoleDetails, name = 'groupRoleDetails'),
     url(r'^updateGrpValidationStatus/',BMOperations.updateGrpValidationStatus, name = 'updateGrpValidationStatus'),
     url(r'^updateGroupMemberStatus/',BMOperations.updateGroupMemberStatus, name = 'updateGrpValidationStatus'),
-
 ]
 urlpatterns += BMOperations_urlpatterns
 
 mfupload_urlpatterns = [    
-    
-    #url(r'^progressbarupload/$',mfupload.progress_bar_upload, name='progress_bar_upload'), 
     url(r'^ajax_progress_bar_upload/$',mfupload.ajax_progress_bar_upload, name='ajax_progress_bar_upload'),
-    
-        
 ]
-
 urlpatterns += mfupload_urlpatterns
+
+'''if django_settings.DEBUG:
+    urlpatterns += static(django_settings.STATIC_URL, document_root=django_settings.STATIC_ROOT)
+    urlpatterns += static(django_settings.MEDIA_URL, document_root=django_settings.MEDIA_ROOT)'''
 
 
