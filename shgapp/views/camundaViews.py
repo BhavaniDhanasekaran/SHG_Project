@@ -370,9 +370,11 @@ def queryRespTaskList(request):
     grp_body_cont ={}
     if groups[0] == "DataSupportTeam":
         grp_body_cont 	   = { "unassigned" : "true" , "candidateGroup" : "DataSupportTeam",	"processVariables":[{	"name" : "kyc",	"operator" :"eq","value" :"resolved"}] }
+        taskName = "Query Response"
     if groups[0] == "CreditTeam":
         grp_body_cont = {"unassigned": "true", "candidateGroup": "CreditTeam",
                          "processVariables": [{"name": "chekcbrespdate", "operator": "eq", "value": "resolved"}]}
+        taskName = "BM Reply"
     QRTaskList	  = camundaClient._request('task', grp_body_cont, requestType='POST')
 
     for data in QRTaskList:
@@ -405,12 +407,12 @@ def queryRespTaskList(request):
             if  QRTaskDict[key]["name"] == "KYC Check":
                 QRTaskDict[key]["name"] = "Query Response"
             QRTaskData.append(QRTaskDict[key])
-            taskName = "Query Response"
+
         if groups[0] == "CreditTeam":
             if  QRTaskDict[key]["name"] == "Proposal scrutiny":
                 QRTaskDict[key]["name"] = "BM Reply"
             QRTaskData.append(QRTaskDict[key])
-            taskName = "BM Reply"
+
 
     return render_to_response('ds-tasklist.html', {"taskList" :json.dumps(QRTaskData),"group" :groups[0],"user":username,"taskName":taskName})
 
