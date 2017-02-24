@@ -244,9 +244,12 @@ def tasksCount( request ):
         groupName = groups[0]
         taskCount = {}
         queryCount = 0
+        BMReplyCount =0
         incrementTaskCount = 0
         mytaskURL = camundaClient._urllib2_request('task', {"assignee" : str(username)}, requestType='POST')
         urlTask = camundaClient._urllib2_request('task', {"candidateGroup" : str(groupName)}, requestType='POST')
+        print "urlTask:"
+        print urlTask
         for data in mytaskURL:
             if data["name"]:
                 incrementTaskCount += 1
@@ -280,16 +283,59 @@ def tasksCount( request ):
                 taskCount ["KYC Check"] = 0
                 taskCount["Query Response"] = 0
 
-        if groupName == "CLM_BM" or groupName == "CLM" or groupName == "RM" or groupName == "rm" or groupName == "CreditTeam":
+        if groupName == "CLM_BM" or groupName == "CLM" or groupName == "RM" or groupName == "rm":
             for data in urlTask:
                 if data["name"] in taskCount:
                     taskCount [data["name"]] = taskCount[data["name"]] + 1
                 else:
                     taskCount [data["name"]] = 1
 
+        if groupName == "CreditTeam":
+            for data in urlTask:
+                if data["name"] in taskCount:
+                    if data["name"] == "Proposal scrutiny":
+                        taskCount [data["name"]] = taskCount[data["name"]] + 1
+                        grp_body_cont   = { "processVariables": [{"name"  : "chekcbrespdate","operator" :"eq","value" : "resolved"	}],"unassigned" : "true","candidateGroup" :"CreditTeam"}
+                        groupTaskList	= camundaClient._urllib2_request('task?firstResult=0', grp_body_cont, requestType='POST')
+                        if groupTaskList:
+                            if groupTaskList[0]:
+                                taskCount["BM Reply"] = len(groupTaskList)
+                                BMReplyCount = len(groupTaskList)
+                            else:
+                                taskCount["BM Reply"] = 0
+                        else:
+                            taskCount["BM Reply"] = 0
+                    else:
+                        taskCount [data["name"]] = taskCount[data["name"]] + 1
+                else:
+                    if data["name"] != "Proposal scrutiny":
+                        taskCount [data["name"]] = 1
+                    else:
+                        taskCount[data["name"]] =  1
+                        grp_body_cont = {
+                            "processVariables": [{"name": "chekcbrespdate", "operator": "eq", "value": "resolved"}],
+                            "unassigned": "true", "candidateGroup": "CreditTeam"}
+                        groupTaskList = camundaClient._urllib2_request('task?firstResult=0', grp_body_cont,
+                                                                       requestType='POST')
+                        if groupTaskList:
+                            if groupTaskList[0]:
+                                taskCount["BM Reply"] = len(groupTaskList)
+                                BMReplyCount = len(groupTaskList)
+                            else:
+                                taskCount["BM Reply"] = 0
+                        else:
+                            taskCount["BM Reply"] = 0
+            if taskCount.has_key('Proposal scrutiny'):
+                taskCount ["Proposal scrutiny"]  = taskCount["Proposal scrutiny"] - BMReplyCount
+            else:
+                taskCount ["Proposal scrutiny"] = 0
+                taskCount["BM Reply"] = 0
+
+
         taskData = {  'Task' : taskCount   }
         taskData = json.dumps(taskData)
-
+        print "taskData"
+        print taskData
         response = HttpResponse(taskData, content_type='text/plain')
         response['Content-Length'] = len( taskData )
         print "Exiting tasksCount( request ): view"
@@ -297,7 +343,6 @@ def tasksCount( request ):
 
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred.')
-
 
 def KYCCheck(request,dateFrom,dateTo):
     print "Entering KYCCheck(request,dateFrom,dateTo): view"
@@ -316,13 +361,18 @@ def queryRespTaskList(request):
     groups = request.user.groups.values_list('name',flat=True)
     print "grp:"
     print groups[0]
+    taskName = ''
     taskProVarList1 = []
     taskProVarList = []
     processInstancesArr = []
     QRTaskDict 	= {}
     QRTaskData	= []
-
-    grp_body_cont 	   = { "unassigned" : "true" , "candidateGroup" : "DataSupportTeam",	"processVariables":[{	"name" : "kyc",	"operator" :"eq","value" :"resolved"}] }
+    grp_body_cont ={}
+    if groups[0] == "DataSupportTeam":
+        grp_body_cont 	   = { "unassigned" : "true" , "candidateGroup" : "DataSupportTeam",	"processVariables":[{	"name" : "kyc",	"operator" :"eq","value" :"resolved"}] }
+    if groups[0] == "CreditTeam":
+        grp_body_cont = {"unassigned": "true", "candidateGroup": "CreditTeam",
+                         "processVariables": [{"name": "chekcbrespdate", "operator": "eq", "value": "resolved"}]}
     QRTaskList	  = camundaClient._request('task', grp_body_cont, requestType='POST')
 
     for data in QRTaskList:
@@ -351,11 +401,18 @@ def queryRespTaskList(request):
 
     #Group Task Assign:	
     for key in QRTaskDict:
-        if  QRTaskDict[key]["name"] == "KYC Check":
-            QRTaskDict[key]["name"] = "Query Response"
-        QRTaskData.append(QRTaskDict[key])
+        if groups[0] == "DataSupportTeam":
+            if  QRTaskDict[key]["name"] == "KYC Check":
+                QRTaskDict[key]["name"] = "Query Response"
+            QRTaskData.append(QRTaskDict[key])
+            taskName = "Query Response"
+        if groups[0] == "CreditTeam":
+            if  QRTaskDict[key]["name"] == "Proposal scrutiny":
+                QRTaskDict[key]["name"] = "BM Reply"
+            QRTaskData.append(QRTaskDict[key])
+            taskName = "BM Reply"
 
-    return render_to_response('ds-tasklist.html', {"taskList" :json.dumps(QRTaskData),"group" :groups[0],"user":username,"taskName":"Query Response"})
+    return render_to_response('ds-tasklist.html', {"taskList" :json.dumps(QRTaskData),"group" :groups[0],"user":username,"taskName":taskName})
 
 
 @csrf_exempt
@@ -373,7 +430,6 @@ def updateTask(request):
             return HttpResponse(json.dumps(taskUpdateResponse), content_type='text/plain')
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred.')
-
 
 def taskComplete(processUpdate,taskId):
     try:
@@ -408,3 +464,52 @@ def getHistoryComments(request,processId):
         return helper.bad_request('Unexpected error occurred.')  
 
 
+
+def proposalScrutinyTaskList(request):
+    print "Entering proposalScrutinyTaskList(request): view "
+    Grp = request.user.groups.all()
+    groups = request.user.groups.values_list('name',flat=True)
+    username = request.user
+    print "grp:"
+    print groups[0]
+    processInstancesQRArr = []
+    processInstancesArr = []
+    proposalScrutinyDict 	= {}
+    proposalScrutinyData	= []
+    taskProVarList = []
+    taskProVarList1 = []
+
+    bodyData = { "unassigned" : "true", "candidateGroup" : "CreditTeam", "name" : "Proposal scrutiny"}
+
+    proposalScrutinyList		= camundaClient._urllib2_request('task', bodyData, requestType='POST')
+
+    for data in proposalScrutinyList:
+        processInstancesArr.append(data["processInstanceId"])
+        proposalScrutinyDict[data["processInstanceId"]] = data
+
+    bodyData = { "processInstanceIdIn": processInstancesArr, "variableName" : "groupstatus"}
+    groupStatusList = camundaClient._urllib2_request('variable-instance', bodyData, requestType='POST')
+    for data in groupStatusList:
+        if data["value"] == "":
+            taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false', {"processInstanceIdIn":[data["processInstanceId"]]},
+                                                            requestType='POST')
+            taskProVarList.append(taskProVarList1)
+        else:
+            taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=true',  {"processInstanceIdIn":[data["processInstanceId"]]},
+                                                            requestType='POST')
+            taskProVarList.append(taskProVarList1)
+
+    for key in range(len(taskProVarList)):
+        for data in taskProVarList[key]:
+            if data["processInstanceId"] in proposalScrutinyDict:
+                proposalScrutinyDict[data["processInstanceId"]][data["name"] ] = data["value"]
+            if data["value"] == "resolved":
+                processInstancesQRArr.append(data["processInstanceId"])
+
+    #Group Task Assign:
+    for key in proposalScrutinyDict:
+        if key not in processInstancesQRArr:
+            proposalScrutinyData.append(proposalScrutinyDict[key])
+
+    print "Exiting proposalScrutiny(request): view "
+    return render_to_response('ds-tasklist.html', {"taskList" : json.dumps(proposalScrutinyData),"taskName": "Proposal scrutiny","group" :groups[0],"user":username})

@@ -11,7 +11,7 @@ function loadUnassignedTaskList(data){
 		var obj={};
 		if(groupTaskdata[key]["name"]  && groupTaskdata[key]["created"]){
 			obj["slNo"] = parseInt(key)+1;
-			if(groupTaskdata[key]["chekcbrespdate"]){
+			/*if(groupTaskdata[key]["chekcbrespdate"]){
 				if(groupTaskdata[key]["chekcbrespdate"] == "resolved"){
 					obj["taskName"] = groupTaskdata[key]["name"]+' (BM Reply) ';
 				}
@@ -19,9 +19,9 @@ function loadUnassignedTaskList(data){
 				    obj["taskName"] = groupTaskdata[key]["name"];
                 }
 			}
-			else{
+			else{*/
 				obj["taskName"] = groupTaskdata[key]["name"];
-			}
+			//}
 			var createdDateTime = groupTaskdata[key]["created"].split("T");
 			var createdDate = createdDateTime[0].split("-");
 			createdDate = createdDate[2]+"-"+createdDate[1]+"-"+createdDate[0]
@@ -96,7 +96,7 @@ function loadUnassignedTaskList(data){
         table = $('#taskListTable').DataTable( {
             "pageLength": 50
         } );
-        if(taskName == "Query Response"){
+        if(taskName == "Query Response" || taskName == "Proposal scrutiny" || taskName == "BM Reply"){
         	 triggerLoadFunc();
 		}
  }
@@ -112,8 +112,8 @@ function loadAssignedTaskList(){
 			obj["slNo"] = parseInt(key)+1;
 			if(myTaskdata[key]["chekcbrespdate"]){
 				if(myTaskdata[key]["chekcbrespdate"] == "resolved"){
-					obj["taskName"] = '<a class="tdViewData">'+myTaskdata[key]["name"]+' (BM Reply) '+'</a>';
-					myTaskdata[key]["name"] = myTaskdata[key]["name"]+' (BM Reply)';
+					obj["taskName"] = '<a class="tdViewData">'+'BM Reply'+'</a>';
+					myTaskdata[key]["name"] = 'BM Reply';
 				}
 				else{
 				    obj["taskName"] = '<a class="tdViewData">'+myTaskdata[key]["name"]+'</a>';
@@ -240,7 +240,12 @@ $(document).ready(function (){
 		var rows = $('#taskListTable >tbody >tr').length;
 		if(rows == 1){
 			if($('td').hasClass('dataTables_empty')) {
-				if(taskName != "Query Response"){
+				if(taskName){
+					if(taskName != "Query Response"){
+						window.location.reload();
+					}
+				}
+				else{
 					window.location.reload();
 				}
 			}
@@ -269,7 +274,12 @@ function triggerLoadFunc(){
 		var rows = $('#taskListTable >tbody >tr').length;
 		if(rows == 1){
 			if($('td').hasClass('dataTables_empty')) {
-				if(taskName != "Query Response"){
+				if(taskName){
+					if(taskName != "Query Response"){
+						window.location.reload();
+					}
+				}
+				else{
 					window.location.reload();
 				}
 			}

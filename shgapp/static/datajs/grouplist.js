@@ -790,7 +790,7 @@ function loadGroupRoles(groupId,loanId,taskName){
             for(var key in groupDetails){
                 if(document.getElementById(key)){
                     document.getElementById(key).innerHTML = groupDetails[key];
-                    document.getElementById("loanInstallments").value =  groupDetails["loanInstallments"]
+                    //document.getElementById("loanInstallments").value =  groupDetails["loanInstallments"]
                     if(document.getElementById(key+"1")){
                         document.getElementById(key+"1").innerHTML = groupDetails[key];
                     }
@@ -800,11 +800,6 @@ function loadGroupRoles(groupId,loanId,taskName){
         data: JSON.stringify(dataObj)
     });
 }
-
-
-
-
-
 
 function updateGroupValStatus(status){
     var validationType = '';
@@ -863,7 +858,6 @@ function updateGroupValStatus(status){
         },
         data : JSON.stringify(dataObj)
     });
-
 }
 
 
@@ -1080,7 +1074,7 @@ function getLoanDetails(groupId, loanId) {
 
                         +
                         ' <input type="text" name="m2street_' + i + '" value=' + creditObj["atlDebt"] + '></td><td style="display:none">' +
-                        ' <input type="text" name="m2street_' + i + '" value=' + c reditObj["interest"] + '></td><td style="display:none">'
+                        ' <input type="text" name="m2street_' + i + '" value=' + creditObj["interest"] + '></td><td style="display:none">'
 
                         +
                         ' <input type="text" name="m2street_' + i + '" value=' + creditObj["prevMonthGroupBalance"] + '></td><td style="display:none">' +

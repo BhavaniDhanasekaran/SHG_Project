@@ -83,6 +83,7 @@ camundaViews_urlpatterns = [
     url(r'^updateTask/',camundaViews.updateTask, name = 'updateTask'),
     url(r'^taskComplete/(?P<taskId>[^/]+)',camundaViews.taskComplete, name = 'taskComplete'),
     url(r'^getHistoryComments/(?P<processId>[^/]+)',camundaViews.getHistoryComments, name = 'getHistoryComments'),
+    url(r'^proposalScrutinyTaskList/',camundaViews.proposalScrutinyTaskList, name = 'proposalScrutinyTaskList'),
 ]
 urlpatterns += camundaViews_urlpatterns
 
