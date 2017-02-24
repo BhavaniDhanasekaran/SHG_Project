@@ -236,13 +236,49 @@ def editUrl(request):
             serialized_data = sscoreClient._urllib2_request('UploadDocument/update', bodyData,requestType='POST')
             return HttpResponse(json.dumps(serialized_data),content_type="application/json")
     except ShgInvalidRequest, e:
-        return helper.bad_request('An expected error occurred while Editing Url details.')      
-	
+        return helper.bad_request('An expected error occurred while Editing Url details.')
 
 
+@csrf_exempt
+def getLoanDetails(request, groupId, loanId):
+    print 'Inside getLoanDetails(request,groupId,loanId):'
+    try:
+        bodyData = {"groupId": str(groupId), "loanId": str(loanId), "entityType": "LOAN", "validationType": "POST"}
+        serialized_data = sscoreClient._urllib2_request('workflowDetailView/workflowLoanDetail', bodyData,
+                                                        requestType='POST')
+        print "serialized_data"
+        print serialized_data
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while getting getLoanDetails')
 
+@csrf_exempt
+def dropMemberDetail(request):
+    print "Inside dropMemberDetail(request):"
+    try:
+        if request.method == "POST":
+            formData = json.loads(request.body)
+            bodyData = formData["uploadData"]
+            print  bodyData
+            serialized_data = sscoreClient._urllib2_request('workflowEdit/dropMember', bodyData, requestType='POST')
+            print "serialized_data editurl"
+            print serialized_data
+            return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('An expected error occurred while  dropMemberDetail.')
 
-
-
-
-
+@csrf_exempt
+def updateloanDetail(request):
+    print "Inside updateloanDetail(request):"
+    try:
+        if request.method == "POST":
+            formData = json.loads(request.body)
+            bodyData = formData["uploadData"]
+            print  bodyData
+            serialized_data = sscoreClient._urllib2_request('workflowEdit/updateMemberLoan', bodyData,
+                                                            requestType='POST')
+            print "serialized_data editurl"
+            print serialized_data
+            return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('An expected error occurred while updateloanDetail.')

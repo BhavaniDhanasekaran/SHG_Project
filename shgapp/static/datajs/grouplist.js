@@ -789,10 +789,11 @@ function loadGroupRoles(groupId,loanId,taskName){
             var groupDetails = data["data"]["groupDetails"];
             for(var key in groupDetails){
                 if(document.getElementById(key)){
-                        document.getElementById(key).innerHTML = groupDetails[key];
-                        if(document.getElementById(key+"1")){
-                            document.getElementById(key+"1").innerHTML = groupDetails[key];
-                        }
+                    document.getElementById(key).innerHTML = groupDetails[key];
+                    document.getElementById("loanInstallments").value =  groupDetails["loanInstallments"]
+                    if(document.getElementById(key+"1")){
+                        document.getElementById(key+"1").innerHTML = groupDetails[key];
+                    }
                 }
             }
         },
@@ -1027,5 +1028,144 @@ function updateGroupMemberStatus() {
             }
         },
         data: JSON.stringify(dataObj)
+    });
+}
+
+
+function getLoanDetails(groupId, loanId) {
+    console.log(groupId);
+    console.log(loanId);
+    $.ajax({
+        url: '/getLoanDetails/' + groupId + '/' + loanId,
+        dataType: 'json',
+        success: function(data) {
+            var htmlContent = '';
+            var creditData = data;
+            var loanDetails = data["data"]["loanDetails"];
+            var loanMemberDetails = data["data"]["loanMemberDetails"];
+            if (creditData.data) {
+                //   console.log(creditData.data);
+                for (var i = 0; i < creditData.data.loanMemberDetails.length; i++) {
+                    var creditObj = creditData["data"]["loanMemberDetails"][i];
+                    //  console.log(creditObj);
+                    htmlContent += '<tr>'
+                        +
+                        '<td>' + creditObj["sequenceNumber"] + '</td><td>' +
+                        creditObj["appMemId"] + '</td><td>' +
+                        creditObj["newMember"] + '</td><td>' +
+                        creditObj["memberName"] + '</td><td>' +
+                        creditObj["sbAccountNo"] + '</td><td>' +
+                        creditObj["bankName"] + '</td><td>' +
+                        creditObj["previousLoanAmount"] + '</td><td>'
+
+                        +
+                        ' <input type="text" name="m2street_' + i + '" value=' + creditObj["loanAmount"] + '></td><td>' +
+                        ' <input type="text" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["awb"] + '></td><td>' +
+                        ' <input type="text" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["sellingPrice"] + '></td><td>' +
+                        ' <input type="text" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["sundryDebt"] + '></td><td>'
+
+                        +
+                        ' <input type="text" name="m2street_' + i + '" value=' + creditObj["processingFee"] + '></td><td>' +
+                        ' <input type="text" name="m2street_' + i + '" value=' + creditObj["serviceTax"] + '></td><td>' +
+                        ' <input type="text" name="m2street_' + i + '" value=' + creditObj["educationCess"] + '></td><td>'
+
+                        +
+                        ' <input type="text" name="m2street_' + i + '" value=' + creditObj["insuranceAmount"] + '></td><td>' +
+                        creditObj["memNetLoanAmount"] + '</td><td>' +
+                        creditObj["status"] + '</td><td>' +
+                        ' <input type="text"   name="m2street_' + i + '" value="1"></td><td>'
+
+                        +
+                        ' <input type="checkbox" name="drop" id=' + creditObj["memberId"] + ' value=' + creditObj["memberId"] + ' ></td><td style="display:none">'
+
+                        +
+                        ' <input type="text" name="m2street_' + i + '" value=' + creditObj["atlDebt"] + '></td><td style="display:none">' +
+                        ' <input type="text" name="m2street_' + i + '" value=' + c reditObj["interest"] + '></td><td style="display:none">'
+
+                        +
+                        ' <input type="text" name="m2street_' + i + '" value=' + creditObj["prevMonthGroupBalance"] + '></td><td style="display:none">' +
+                        ' <input type="text" name="m2street_' + i + '" value=' + creditObj["currentMonthCollection"] + '></td><td style="display:none"> '
+
+                        +
+                        ' <input type="text" name="m2street_' + i + '" value=' + creditObj["currentMonthOutstanding"] + '></td><td style="display:none"> ' +
+                        ' <input type="text" name="m2street_' + i + '" value=' + creditObj["prevLoanGroupAmount"] + '></td><td style="display:none">'
+
+                        +
+                        ' <input type="text" name="m2street_' + i + '" value=' + creditObj["sumOldActiveMembersAmount"] + '></td><td style="display:none">' +
+                        ' <input type="text" name="m2street_' + i + '" value=' + creditObj["memberLoanAmount"] + '></td><td style="display:none">'
+
+                        +
+                        ' <input type="text" name="m2street_' + i + '" value=' + creditObj["groupId"] + '></td><td style="display:none">' +
+                        ' <input type="text" name="m2street_' + i + '" value=' + creditObj["loanTypeId"] + '></td><td style="display:none">'
+
+                        +
+                        ' <input type="text" name="m2street_' + i + '" value=' + creditObj["atLloanId"] + '></td><td style="display:none">' +
+                        ' <input type="text" name="m2street_' + i + '" value=' + creditObj["atlLoanAccountNumber"] + '></td>'
+                        +
+                        '</tr>';
+                }
+            }
+            document.getElementById("loandata").innerHTML = htmlContent;
+            //console.log(JSON.stringify(data));
+            for (var key in loanDetails) {
+                if (document.getElementById(key)) {
+                    document.getElementById(key).innerHTML = loanDetails[key];
+                    if (document.getElementById(key + "1")) {
+                        document.getElementById(key + "1").innerHTML = loanDetails[key];
+                    }
+                }
+            }
+        }
+    });
+}
+
+function dropMemberDetail(loanId, dropMember, groupId) {
+    console.log(loanId);
+    var dataObj2 = {};
+    var uploadData = {
+        "loanId": String(loanId),
+        "memberIds": dropMember,
+        "userId": "1996"
+
+    }
+    console.log(uploadData);
+    dataObj2["uploadData"] = uploadData;
+    $.ajax({
+        url: '/dropMemberDetail/',
+        dataType: 'json',
+        type: "POST",
+        success: function(data) {
+            if (data.code == "2025") {
+                $.alert("Member dropped successfully.");
+            } else {
+                $.alert("Error on Member Dropped");
+            }
+        },
+        data: JSON.stringify(dataObj2)
+    });
+}
+
+function updateloanDatail(updateloanData) {
+    console.log(typeof updateloanData);
+    var dataObj3 = {};
+    var uploadData2 = {
+        "loanId": String(loanId),
+        "memberLoanDetails": eval(updateloanData),
+        "userId": "1996"
+    }
+    console.log(uploadData2);
+    dataObj3["uploadData"] = uploadData2;
+    $.ajax({
+        url: '/updateloanDetail/',
+        dataType: 'json',
+        type: "POST",
+        success: function(data) {
+            if (data.code == "2024") {
+                $.alert("Member Loan Group updated successfully.");
+            } else {
+                $.alert("Error on Member updated");
+            }
+        },
+        data: JSON.stringify(dataObj3)
     });
 }
