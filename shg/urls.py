@@ -3,7 +3,11 @@ from django.conf.urls.static import static
 from django.conf.urls import include, url, handler400, handler403, handler404, handler500
 from django.contrib import admin
 from django.views.generic import TemplateView
-from shgapp.views import index, task, kyc, auth,masterData, camundaViews, BMOperations, mfupload
+from shgapp.views import index, task, kyc, auth,masterData, camundaViews, BMOperations, mfupload, customError
+handler400 = customError.bad_request
+handler403 = customError.permission_denied
+handler404 = customError.page_not_found
+handler500 = customError.server_error
 
 index_urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -59,6 +63,7 @@ kyc_urlpatterns = [
     url(r'^getLoanDetails/(?P<groupId>[^/]+)/(?P<loanId>[^/]+)', kyc.getLoanDetails, name='getLoanDetails'),
     url(r'^dropMemberDetail/', kyc.dropMemberDetail, name='dropMemberDetail'),
     url(r'^updateloanDetail/', kyc.updateloanDetail, name='updateloanDetail'),
+    url(r'^updateLoanInstallments/', kyc.updateLoanInstallments, name='updateLoanInstallments'),
 ]
 urlpatterns += kyc_urlpatterns
 
@@ -100,8 +105,6 @@ mfupload_urlpatterns = [
 ]
 urlpatterns += mfupload_urlpatterns
 
-'''if django_settings.DEBUG:
+if django_settings.DEBUG:
     urlpatterns += static(django_settings.STATIC_URL, document_root=django_settings.STATIC_ROOT)
-    urlpatterns += static(django_settings.MEDIA_URL, document_root=django_settings.MEDIA_ROOT)'''
-
-
+    urlpatterns += static(django_settings.MEDIA_URL, document_root=django_settings.MEDIA_ROOT)

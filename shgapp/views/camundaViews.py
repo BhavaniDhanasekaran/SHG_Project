@@ -446,7 +446,6 @@ def taskComplete(processUpdate,taskId):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred.')
 
-
 def getHistoryComments(request,processId):
     try:
         histCommentsDict = {}
@@ -464,8 +463,6 @@ def getHistoryComments(request,processId):
             return HttpResponse(json.dumps({"Message":"No data"}), content_type='text/plain')
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred.')  
-
-
 
 def proposalScrutinyTaskList(request):
     print "Entering proposalScrutinyTaskList(request): view "

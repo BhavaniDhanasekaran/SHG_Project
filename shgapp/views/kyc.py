@@ -282,3 +282,20 @@ def updateloanDetail(request):
             return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('An expected error occurred while updateloanDetail.')
+
+
+@csrf_exempt
+def updateLoanInstallments(request):
+    print "Inside updateLoanInstallments(request):"
+    try:
+        if request.method == "POST":
+            formData = json.loads(request.body)
+            bodyData = formData["loanData"]
+            print  bodyData
+            serialized_data = sscoreClient._urllib2_request('workflowEdit/updateMemberGroupLoan', bodyData,
+                                                            requestType='POST')
+            print "serialized_data"
+            print serialized_data
+            return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('An expected error occurred while updating installment.')
