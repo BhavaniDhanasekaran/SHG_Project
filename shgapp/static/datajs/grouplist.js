@@ -1193,18 +1193,17 @@ function updateloanDatail(updateloanData) {
     var installment;
     if(document.getElementById("loanInstallments")){
         if(document.getElementById("loanInstallments").value){
-            installment = document.getElementById("loanInstallments").value
+            installment = document.getElementById("loanInstallments").value;
             if(installment == 0 || installment == "undefined"){
-                $("#loanInstallments").css("background-color","yellow");
+                $("#loanInstallments").css("background-color","#FEEFB3");
                 $.alert("Invalid loan installments");
                 return false;
             }
         }
         else{
-            $("#loanInstallments").css("background-color","yellow");
-             $.alert("Please input loan installments");
-
-                return false;
+            $("#loanInstallments").css("background-color","#FEEFB3");
+            $.alert("Please input loan installments");
+            return false;
         }
     }
     var dataObj3 = {};

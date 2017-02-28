@@ -105,6 +105,6 @@ mfupload_urlpatterns = [
 ]
 urlpatterns += mfupload_urlpatterns
 
-if django_settings.DEBUG:
+'''if django_settings.DEBUG:
     urlpatterns += static(django_settings.STATIC_URL, document_root=django_settings.STATIC_ROOT)
-    urlpatterns += static(django_settings.MEDIA_URL, document_root=django_settings.MEDIA_ROOT)
+    urlpatterns += static(django_settings.MEDIA_URL, document_root=django_settings.MEDIA_ROOT)'''
