@@ -741,25 +741,21 @@ function rmGroupMaster(groupId) {
         },
         success: function(data) {
             var groupViewData2 = data;
-            console.log("!!!!!!",groupViewData2);
-            if(groupViewData2["data"]["groupMemDetail"]){
-                var found_names = $.grep(groupViewData2.data.groupMemDetail, function(v) {
-                    return v.memberStatus != "Rejected";
-                });
-                $.each(found_names, function(key, value) {
-                    $('#Animator').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
-                    $('#repm1').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
-                    $('#repm2').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
-                });
-
-                var animatorvalue = $("#animatorId").text();
-                var rep1value = $("#rep1Id").text();
-                var rep2value = $("#rep2Id").text();
-                //alert(rep2value);
-                $("#Animator").val(animatorvalue);
-                $("#repm1").val(rep1value);
-                $("#repm2").val(rep2value);
-            }
+            var found_names = $.grep(groupViewData2.data.groupMemDetail, function(v) {
+                return v.memberStatus != "Rejected";
+            });
+            $.each(found_names, function(key, value) {
+                $('#Animator').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
+                $('#repm1').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
+                $('#repm2').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
+            });
+            var animatorvalue = $("#animatorId").text();
+            var rep1value = $("#rep1Id").text();
+            var rep2value = $("#rep2Id").text();
+            //alert(rep2value);
+            $("#Animator").val(animatorvalue);
+            $("#repm1").val(rep1value);
+            $("#repm2").val(rep2value);
         }
     });
 }
@@ -1034,6 +1030,12 @@ function updateGroupMemberStatus() {
 
 
 function getLoanDetails(groupId, loanId) {
+    //alert("getLoanDetails");
+    //alert(groupId);
+    //alert(loanId);
+    //console.log(groupId);
+    //console.log(loanId);
+
     $.ajax({
         url: '/getLoanDetails/' + groupId + '/' + loanId,
         dataType: 'json',
@@ -1049,8 +1051,6 @@ function getLoanDetails(groupId, loanId) {
                 document.getElementById("loanInstallments").value = loanDetails["loanInstallments"];
             }
             var loanMemberDetails = data["data"]["loanMemberDetails"];
-
-
             $.ajax({
                 url: '/masterLoanPurpose/',
                 type: 'post',
@@ -1058,7 +1058,6 @@ function getLoanDetails(groupId, loanId) {
                 success: function(loanPurposeData) {
                     $.each(loanPurposeData.data, function(key, value) {
                         // console.log(value.name);
-                        //$(".purpose2").css("width","100%");
                         $('.purpose2').append('<option value="' + value.id + '">' + value.name + '</option>');
                     });
                 }
@@ -1067,21 +1066,12 @@ function getLoanDetails(groupId, loanId) {
                 //   console.log(creditData.data);
                 for (var i = 0; i < creditData.data.loanMemberDetails.length; i++) {
                     var creditObj = creditData["data"]["loanMemberDetails"][i];
-                    var newMem = "";
                     //  console.log(creditObj);
-                    if(creditObj["newMember"] == true){
-                        newMem = "Yes";
-                    }
-                    if(creditObj["newMember"] == false){
-                        newMem = "No";
-                    }
                     htmlContent += '<tr>'
-                            +
-                        '<td> <input type="checkbox" name="drop"  value=' + creditObj["memberId"] + ' ></td>'
                         +
                         '<td>' + creditObj["sequenceNumber"] + '</td><td>' +
                         creditObj["appMemId"] + '</td><td>' +
-                        newMem+ '</td><td>' +
+                        creditObj["newMember"] + '</td><td>' +
                         creditObj["memberName"] + '</td><td>' +
                         creditObj["sbAccountNo"] + '</td><td>' +
                         creditObj["bankName"] + '</td><td>' +
@@ -1101,10 +1091,14 @@ function getLoanDetails(groupId, loanId) {
                         +
                         ' <input type="text" name="m2street_' + i + '" value=' + creditObj["insuranceAmount"] + '></td><td>' +
                         creditObj["memNetLoanAmount"] + '</td><td>' +
-                        '<select class="purpose2" style="width:150px" id="purpose_' + creditObj["memberId"] + '   name="purpose" ><option value=' + creditObj["purposeId"] + '>' + creditObj["purpose"] + '</option></select></td>'
+                        creditObj["status"] + '</td><td>' +
+                        '<select class="purpose2"  id="purpose_' + creditObj["memberId"] + '   name="purpose"><option value=' + creditObj["purposeId"] + '>' + creditObj["purpose"] + '</option></select></td><td>'
 
                         +
-                        ' <td style="display:none"><input type="text" name="atlDebt_' + i + '" value=' + creditObj["atlDebt"] + '></td><td style="display:none">' +
+                        ' <input type="checkbox" name="drop"  value=' + creditObj["memberId"] + ' ></td><td style="display:none">'
+
+                        +
+                        ' <input type="text" name="atlDebt_' + i + '" value=' + creditObj["atlDebt"] + '></td><td style="display:none">' +
                         ' <input type="text" name="interest_' + i + '" value=' + creditObj["interest"] + '></td><td style="display:none">'
 
                         +
@@ -1140,26 +1134,8 @@ function getLoanDetails(groupId, loanId) {
                     }
                 }
             }
-            loadDataTable();
         }
     });
-}
-
-
-function loadDataTable(){
-    var table = $('#paymentTable').DataTable(
-        {
-            "sDom": '<"top">rt<"bottom"flp><"clear">',
-            "paging"   : false,
-            "bInfo": false,
-            "bLengthChange": false,
-            "bPaginate": false,
-            "searching" :false
-        }
-    );
-
-    var data = table.$('input, select').serialize();
-    return false;
 }
 
 function dropMemberDetail(loanId, dropMember, groupId) {
@@ -1189,28 +1165,10 @@ function dropMemberDetail(loanId, dropMember, groupId) {
 }
 
 function updateloanDatail(updateloanData) {
-    console.log(updateloanData);
-    var installment;
-    if(document.getElementById("loanInstallments")){
-        if(document.getElementById("loanInstallments").value){
-            installment = document.getElementById("loanInstallments").value
-            if(installment == 0 || installment == "undefined"){
-                $("#loanInstallments").css("background-color","yellow");
-                $.alert("Invalid loan installments");
-                return false;
-            }
-        }
-        else{
-            $("#loanInstallments").css("background-color","yellow");
-             $.alert("Please input loan installments");
-
-                return false;
-        }
-    }
+    console.log(typeof updateloanData);
     var dataObj3 = {};
     var uploadData2 = {
         "loanId": String(loanId),
-        "installments" : installment,
         "memberLoanDetails": eval(updateloanData),
         "userId": "1996"
     }
@@ -1240,20 +1198,33 @@ function updateloanDatail(updateloanData) {
 }
 
 
-function approveLoan(){
-    var dataObj = {};
+
+function updateLoanInstallments(){
+    var installment;
+    var dataObj ={};
+    if(document.getElementById("loanInstallments")){
+        if(document.getElementById("loanInstallments").value){
+            installment = document.getElementById("loanInstallments").value
+            if(installment == 0 || installment == "undefined"){
+                $.alert("Invalid loan installments");
+                return false;
+            }
+        }
+        else{
+             $.alert("Please input loan installments");
+                return false;
+        }
+    }
     var loanData = {
-                        "groupId": groupId,
-                        "loanId": loanId,
-                        "entityType": "LOAN",
-                        "validationType": "POST",
-                        "userId":101,
-                        "subStatus":"POST_KYC_VALIDATED"
-                    };
-    dataObj["loanData"] = loanData;
-    dataObj["taskId"] = taskId;
+                    "installments": installment,
+                    "loanId": loanId,
+                    "entityType": "LOAN",
+                    "validationType":"POST"
+                };
+    dataObj["loanData"] =loanData;
+    console.log(dataObj);
     $.ajax({
-        url: '/approveLoan/',
+        url : "/updateLoanInstallments/",
         dataType: 'json',
         type: "POST",
         beforeSend: function() {
@@ -1265,18 +1236,10 @@ function approveLoan(){
             enableActiveTab();
         },
         success: function(data) {
-           if(data.code == "2032"){
-               $.alert("Loan has been approved");
-               window.location.href = "/assignedTaskList/";
-           }
-           else{
-               $.alert("Failed to approve loan.. Try again.");
-           }
+            if(data.code == "2024"){
+                $.alert("Updated successfully");
+            }
         },
         data: JSON.stringify(dataObj)
     });
-
-
-
 }
-

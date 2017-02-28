@@ -49,27 +49,27 @@
             $('table tr').not('thead tr').each(function(i, n){
                 var $row = $(n);
                 rows.push({
-                    "memberId":   $row.find("td:eq(0) input[type='checkbox']").val(),
-                    "loanAmount": $row.find("td:eq(8) input[type='text']").val(),
-                    "awb":  $row.find("td:eq(9) input[type='text']").val(),
-                    "insuranceAmount":  $row.find("td:eq(15) input[type='text']").val(),
-                    "solarLight":  $row.find("td:eq(10) input[type='text']").val(),
+                    "memberId":   $row.find("td:eq(18) input[type='checkbox']").val(),
+                    "loanAmount": $row.find("td:eq(7) input[type='text']").val(),
+                    "awb":  $row.find("td:eq(8) input[type='text']").val(),
+                    "insuranceAmount":  $row.find("td:eq(14) input[type='text']").val(),
+                    "solarLight":  $row.find("td:eq(9) input[type='text']").val(),
 
                     "purpose":  $row.find("td:eq(17) :selected").val(),
 
-                    "atldebt": $row.find("td:eq(18) input[type='text']").val(),
-                    "interest": $row.find("td:eq(19) input[type='text']").val(),
+                    "atldebt": $row.find("td:eq(19) input[type='text']").val(),
+                    "interest": $row.find("td:eq(20) input[type='text']").val(),
 
-                    "prevMonthGroupBalance":  $row.find("td:eq(20) input[type='text']").val(),
-                    "currentMonthCollection": $row.find("td:eq(21) input[type='text']").val(),
-                    "currentMonthOutstanding":  $row.find("td:eq(22) input[type='text']").val(),
-                    "prevLoanGroupAmount": $row.find("td:eq(23) input[type='text']").val(),
-                    "sumOldActiveMembersAmount": $row.find("td:eq(24) input[type='text']").val(),
-                    "memberLoanAmount":  $row.find("td:eq(25) input[type='text']").val(),
-                    "groupId":$row.find("td:eq(26) input[type='text']").val(),
-                    "loanTypeId": $row.find("td:eq(27) input[type='text']").val(),
-                    "ATLloanId": $row.find("td:eq(28) input[type='text']").val(),
-                    "ATLaccNo": $row.find("td:eq(29) input[type='text']").val()
+                    "prevMonthGroupBalance":  $row.find("td:eq(21) input[type='text']").val(),
+                    "currentMonthCollection": $row.find("td:eq(22) input[type='text']").val(),
+                    "currentMonthOutstanding":  $row.find("td:eq(23) input[type='text']").val(),
+                    "prevLoanGroupAmount": $row.find("td:eq(24) input[type='text']").val(),
+                    "sumOldActiveMembersAmount": $row.find("td:eq(25) input[type='text']").val(),
+                    "memberLoanAmount":  $row.find("td:eq(26) input[type='text']").val(),
+                    "groupId":$row.find("td:eq(27) input[type='text']").val(),
+                    "loanTypeId": $row.find("td:eq(28) input[type='text']").val(),
+                    "ATLloanId": $row.find("td:eq(29) input[type='text']").val(),
+                    "ATLaccNo": $row.find("td:eq(30) input[type='text']").val()
                 });
             });
             return JSON.stringify(rows);
@@ -189,11 +189,10 @@
             <!--2row panel body start-->
             <div class="tabbable">
                 <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
-                    <li class="active"><a data-toggle="tab" href="#upload">Member</a></li>
-                    <li><a data-toggle="tab" href="#profile4">SHG Credit Enquiry</a></li>
+                    <li class="active"><a data-toggle="tab" href="#upload">Payment</a></li>
+                    <li><a data-toggle="tab" href="#profile4">Credit Enquiry</a></li>
                     <li><a data-toggle="tab" href="#dropdown14">Documents</a></li>
-                    <li><a data-toggle="tab" href="#paymentHistory">Payment History</a></li>
-                    <li><a data-toggle="tab" href="#groupHistory">Group History</a></li>
+
                 </ul>
                 <div class="tab-content">
                     <div id="upload" class="tab-pane in active">
@@ -202,26 +201,34 @@
                             <!---upload doc startion-->
                             <div id="payment" class="tab-pane in active">
                                 <section >
-                                    <div class="page-content1">
+                                    <div class="page-content">
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <!-- PAGE CONTENT BEGINS -->
                                                 <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
                                                     <div class="widget-box widget-color-blue" id="widget-box-2">
-                                                        <div class="widget-body" style="overflow-x:scroll;">
+                                                        <div class="widget-header">
+                                                            <h5 class="widget-title bigger lighter"> Payment </h5>
+                                                            <div class="widget-toolbar widget-toolbar-light no-border">
+                                                                <select id="simple-colorpicker-1" class="hide">
+                                                                    <option selected="" data-class="blue" value="#981b1b">#307ECC</option>
+                                                                    <option data-class="blue2" value="#981b1b">#5090C1</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="widget-body" style="height:500px;overflow:scroll;overflow-y:scroll;overflow-x:scroll;">
                                                             <div class="widget-main no-padding">
-                                                                <table class="table table-striped table-bordered table-hover" id="paymentTable" >
+                                                                <table class="table table-striped table-bordered table-hover" >
                                                                     <thead class="thin-border-bottom">
                                                                         <tr>
-                                                                            <th>Drop Mem</th>
-                                                                            <th> S.No</th>
-                                                                            <th>App Mem Id</th>
-                                                                            <th>New Mem</th>
+                                                                            <th> S.NO</th>
+                                                                            <th>App Member id</th>
+                                                                            <th>New Member</th>
                                                                             <th>Name</th>
                                                                             <th>SB A/C Number</th>
                                                                             <th>Bank Name</th>
-                                                                            <th>Prev loan Amnt</th>
-                                                                            <th>Loan Amnt</th>
+                                                                            <th>Previous loan Amount</th>
+                                                                            <th>Loan Amount</th>
                                                                             <th>AWB</th>
                                                                             <th>Solar Light</th>
                                                                             <th>ATL/ELL Sundry Debt</th>
@@ -230,7 +237,9 @@
                                                                             <th>Education Cess</th>
                                                                             <th>Insurance</th>
                                                                             <th>Net Amount</th>
+                                                                            <th>staus</th>
                                                                             <th>Purpose</th>
+                                                                            <th>Drop Member</th>
                                                                             <th style="display:none">19atldebt</th>
                                                                             <th style="display:none"> 20 interest</th>
                                                                             <th style="display:none">21prevMonthGroupBalance</th>
@@ -259,13 +268,11 @@
                                         </div>
                                         <!-- /.col -->
                                     </div>
-                                </section><br/>
+                                </section>
                                 <div class="col-md-offset-4">
-                                    <button type="button" class="btn btn-danger" id="drop" >Drop Members</button>
-                                    <button type="button" class="btn btn-danger" onclick="updateLoanMembers();">Update Members</button>
-                                    <button type="button" class="btn btn-danger" onclick="approveLoan();">Approve Loan</button>
+                                    <button type="button" class="btn btn-info" id="drop">Drop Members</button>
+                                    <button type="button" class="btn btn-info" onclick="updateLoanMembers();">Update Members</button>
                                 </div>
-                                <br>
                             </div>
                             <!-- payment tab start  -->
                             <!--upload doc end-->
@@ -275,13 +282,23 @@
                     <!--form End-->
                     <!-- Document tab start  -->
                     <div id="dropdown14" class="tab-pane">
-                        <div class="page-content1">
+                        <div class="page-content">
                             <div class="row">
                                 <div class="col-xs-12">
                                     <!-- PAGE CONTENT BEGINS -->
                                     <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
                                         <div class="widget-box widget-color-blue" id="widget-box-2">
-
+                                            <div class="widget-header">
+                                                <h5 class="widget-title bigger lighter">
+                                                    Documents
+                                                </h5>
+                                                <div class="widget-toolbar widget-toolbar-light no-border">
+                                                    <select id="simple-colorpicker-1" class="hide">
+                                                        <option selected="" data-class="blue" value="#981b1b">#307ECC</option>
+                                                        <option data-class="blue2" value="#981b1b">#5090C1</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                             <div class="widget-body">
                                                 <div class="widget-main no-padding">
                                                     <table class="table table-striped table-bordered table-hover" id="docments_table">
@@ -308,129 +325,92 @@
                             <!-- /.col -->
                         </div>
                     </div>
-                    <div id="paymentHistory" class="tab-pane">
-                        <div class="page-content1">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <!-- PAGE CONTENT BEGINS -->
-                                    <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
-                                        <div class="widget-box widget-color-blue" id="widget-box-2">
-
-                                            <div class="widget-body">
-                                                <div class="widget-main no-padding">
-
-                                                    <br>
-                                                Data not available.<br><br>
-
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- /.span -->
-                                </div>
-                                <!-- /.row -->
-                                <!-- PAGE CONTENT ENDS -->
-                            </div>
-                            <!-- /.col -->
-                        </div>
-                    </div>
-                    <div id="groupHistory" class="tab-pane">
-                        <div class="page-content1">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <!-- PAGE CONTENT BEGINS -->
-                                    <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
-                                        <div class="widget-box widget-color-blue" id="widget-box-2">
-
-                                            <div class="widget-body">
-                                                <div class="widget-main no-padding">
-
-                                                    <br>
-                                                Data not available.
-                                                    <br><br>
-
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- /.span -->
-                                </div>
-                                <!-- /.row -->
-                                <!-- PAGE CONTENT ENDS -->
-                            </div>
-                            <!-- /.col -->
-                        </div>
-                    </div>
                     <div id="profile4" class="tab-pane">
-                        <!--TAB MENU2 CONTENT START-->
-                        <div class="page-content1">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <!-- PAGE CONTENT BEGINS -->
-                                    <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
-                                        <div class="widget-box widget-color-blue" id="widget-box-2">
-                                            <div class="scrollable-horizontal" data-size="800">
-                                                <div class="widget-body"   style="overflow-x:scroll;">
-                                                    <div class="widget-main no-padding">
-                                                        <table id="creditTableID" class="table table-striped table-bordered table-hover">
-                                                            <thead class="thin-border-bottom">
-                                                                <tr>
-                                                                    <th>OverLap Report</th>
-                                                                    <th>Member ID</th>
-                                                                    <th>Member Name</th>
-                                                                    <th>Product</th>
-                                                                    <th>Status</th>
-                                                                    <th>Remarks</th>
-                                                                    <th>HM Response Date</th>
-                                                                    <th>Existing Loan Limit</th>
-                                                                    <th>Loan Amount Eligible</th>
-                                                                    <th>MFI Eligible</th>
-                                                                    <th>MFI 1 Name</th>
-                                                                    <th>Overdue_1</th>
-                                                                    <th>Loan Amount_1</th>
-                                                                    <th>Balance_1</th>
-                                                                    <th>MFI 2 Name</th>
-                                                                    <th>Overdue_2</th>
-                                                                    <th>Loan Amount_2</th>
-                                                                    <th>Balance_2</th>
-                                                                    <th>MFI 3 Name</th>
-                                                                    <th>Overdue_3</th>
-                                                                    <th>Loan Amount_3</th>
-                                                                    <th>Balance_3</th>
-                                                                    <th>MFI 4 Name</th>
-                                                                    <th>Overdue_4</th>
-                                                                    <th>Loan Amount_4</th>
-                                                                    <th>Balance_4</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="creditData"></tbody>
-                                                        </table>
+                                    <!--TAB MENU2 CONTENT START-->
+                                    <div class="page-content">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <!-- PAGE CONTENT BEGINS -->
+                                                <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
+                                                    <div class="widget-box widget-color-blue" id="widget-box-2">
+                                                        <div class="widget-header">
+                                                            <h5 class="widget-title bigger lighter">
+                                                             SHG Credit Enquiry
+                                                        </h5>
+                                                            <div class="widget-toolbar widget-toolbar-light no-border">
+                                                                <select id="simple-colorpicker-1" class="hide"></select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="scrollable-horizontal" data-size="800">
+                                                            <div class="widget-body">
+                                                                <div class="widget-main no-padding" style="height: 400px; overflow: auto;">
+                                                                    <table id="creditTableID" class="table table-striped table-bordered table-hover">
+                                                                        <thead class="thin-border-bottom">
+                                                                            <tr>
+                                                                                <th>OverLap Report</th>
+                                                                                <th>Member ID</th>
+                                                                                <th>Member Name</th>
+                                                                                <th>Product</th>
+                                                                                <th>Status</th>
+                                                                                <th>Remarks</th>
+                                                                                <th>HM Response Date</th>
+                                                                                <th>Existing Loan Limit</th>
+                                                                                <th>Loan Amount Eligible</th>
+                                                                                <th>MFI Eligible</th>
+                                                                                <th>MFI 1 Name</th>
+                                                                                <th>Overdue_1</th>
+                                                                                <th>Loan Amount_1</th>
+                                                                                <th>Balance_1</th>
+                                                                                <th>MFI 2 Name</th>
+                                                                                <th>Overdue_2</th>
+                                                                                <th>Loan Amount_2</th>
+                                                                                <th>Balance_2</th>
+                                                                                <th>MFI 3 Name</th>
+                                                                                <th>Overdue_3</th>
+                                                                                <th>Loan Amount_3</th>
+                                                                                <th>Balance_3</th>
+                                                                                <th>MFI 4 Name</th>
+                                                                                <th>Overdue_4</th>
+                                                                                <th>Loan Amount_4</th>
+                                                                                <th>Balance_4</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="creditData"></tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
+                                                    <!-- /.span -->
                                                 </div>
+                                                <!-- /.row -->
+                                                <!-- PAGE CONTENT ENDS -->
                                             </div>
                                         </div>
-                                        <!-- /.span -->
+                                        <!-- /.col -->
                                     </div>
-                                    <!-- /.row -->
-                                    <!-- PAGE CONTENT ENDS -->
                                 </div>
-                            </div>
-                            <!-- /.col -->
-                        </div>
-                    </div>
                     <!-- Document tab ens  -->
                 </div>
                 <!-- TAB END-->
-
             </div>
             <!--2row panel body end-->
         </div>
-    </div><br><br><br>
+    </div>
     <!--2row Start col-10 End-->
 </div>
 <!--2row End-->
-
+<div class="row">
+    <div class="col-md-offset-3 col-xs-9">
+        <div class="clearfix form-actions">
+            <div class="col-md-offset-3 col-md-9">
+                <button class="btn btn-danger" type="button">
+                <i class="ace-icon fa fa-check bigger-110"></i>
+                Approve
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 {% include 'query.html' %}
 {% endblock content %}
