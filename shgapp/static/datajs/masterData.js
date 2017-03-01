@@ -2,12 +2,12 @@ var validationFields = ["memberName","age","husbandName","fatherName","address",
 			"permanentAddress","pincode","villages","mobileNo","idProofTypeId","addressProofTypeId","loanAmount","loanTypeValue"];
 
 var loanTypeDict = {
-   "PLL" : "1",
-   "ATL" : "2",
-   "VVL" : "532",
-   "VV2" : "534",
-   "RVL" : "537",
-   "BDL" : "538"
+    "PLL": "1",
+    "ATL": "2",
+    "VVL": "532",
+    "VV2": "534",
+    "RVL": "537",
+    "BDL": "538"
 };
 
 
@@ -137,12 +137,12 @@ function setSelectOptionInForm(){
 				$('#loanTypeValue').append('<option value="'+keyValueloanPurposeArray[i].id+'">'+keyValueloanPurposeArray[i].name+'</option>');
 			}	
 
-			$.each($('#loanPurpose option'), function(key, optionElement) {
+			$.each($('#loanTypeValue option'), function(key, optionElement) {
 	   			 var curText = $(optionElement).text();
 		 		 $(this).attr('title', curText);
 				 var lengthToShortenTo = Math.round(parseInt('350px', 10) / 9.4);
 		    		 if (curText.length > lengthToShortenTo) {
-					$(this).text(curText.substring(0,lengthToShortenTo)+'...');
+						 $(this).text(curText.substring(0,lengthToShortenTo)+'...');
 	    			 }
 			});
 			// Show full name in tooltip after choosing an option

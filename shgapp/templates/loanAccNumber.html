@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block javascript %}
+<script src="{% static 'datajs/grouplist.js' %}"></script>
+<script src="{% static 'datajs/loadTaskList.js' %}"></script>
+<script src="{% static 'datajs/masterData.js' %}"></script>
+<script src="{% static 'datajs/mysidenav.js' %}"></script>
+<script>
+    var groupId = '{{ groupId | escapejs }}';
+    var group= '{{ group | escapejs }}';
+    var loanId = '{{ loanId | escapejs }}';
+    var taskName = '{{ taskName | escapejs }}';
+    var taskId = '{{ taskId | escapejs }}';
+
+    var processInstanceId = '{{ processInstanceId | escapejs }}';
+
+</script>
+{% endblock %}
+<!-- PAGE CONTENT BEGINS -->
+{% block content %}
+<div class="row">
+<!--2row Start-->
+<div class="col-xs-12" >
+<!--second col-xs3 strat-->
+<div class="panel panel-default">
+    <div class="panel-heading"><span id="loanTypeName">{{ loanTypeName }}</span> -
+        <span id="groupName">{{ groupName }}</span>  &nbsp&nbsp&nbsp( <span
+            id="appGroupId">{{ appGroupId }}</span> )<span id="groupId"
+            style="visibility:hidden;"></span>
+    </div>
+    <div class="panel-body">
+        <div class="col-md-offset-5 col-md-9">
+            <div class="profile-info-row">
+                <div class="profile-info-name2">
+                    <h4 id="loanAccNo">{{ loanAccNo }}</h4>
+                </div>
+                <div class="profile-info-value">
+                    <span class="editable" id="shgId"></span>
+                </div>
+            </div>
+            <br><br><br>
+            <button class="btn btn-danger" type="button" onclick='window.location="/assignedTaskList/"'>
+            <i class="ace-icon fa fa-check bigger-110"></i>
+            Close
+            </button>
+        </div>
+        <!--panel body endend-->
+    </div>
+    <!--second col-xs3 end-->
+</div>
+<!--second row end-->
+{% include 'query.html' %}
+{% endblock content %}

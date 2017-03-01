@@ -115,7 +115,7 @@ def KYCTasksGroupByDate(request,dateFrom,dateTo):
     bodyData = { "processInstanceIdIn": processInstancesArr, "variableName" : "groupstatus"}
     groupStatusList = camundaClient._urllib2_request('variable-instance', bodyData, requestType='POST')
     for data in groupStatusList:
-        if data["value"] == "":
+        if data["value"] == "false":
             taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false', {"processInstanceIdIn":[data["processInstanceId"]]},
                                                             requestType='POST')
             taskProVarList.append(taskProVarList1)

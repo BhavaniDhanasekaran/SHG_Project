@@ -964,7 +964,7 @@ function documentView(groupId) {
                 $.each(groupDocData.data, function(key, value) {
                     var tr = $('<tr></tr>');
                     current++;
-                    $('<td>' + current + '</td><td>' + value.documentName + '</td><td> <button type="button" class="btn btn-danger" id = "' + value.docId + '" onclick="window.open(' + "'" + value.documentPath + "'" + ').focus();"><span class="glyphicon glyphicon-cloud-upload"></span> View  </button></td> ').appendTo(tr);
+                    $('<td>' + current + '</td><td>' + value.documentName + '</td><td> <button type="button" class="btn btn-danger" id = "' + value.docId + '" onclick="window.open(' + "'" + value.documentPath + "'" +","+ value.docId+"," +"width=200,height=100"+');><span class="glyphicon glyphicon-cloud-upload"></span> View  </button></td> ').appendTo(tr);
                     tr.appendTo('#docments_table');
                 });
             } else {
@@ -1060,6 +1060,18 @@ function getLoanDetails(groupId, loanId) {
                         // console.log(value.name);
                         //$(".purpose2").css("width","100%");
                         $('.purpose2').append('<option value="' + value.id + '">' + value.name + '</option>');
+                    });
+                    $.each($('.purpose2 option'), function(key, optionElement) {
+                         var curText = $(optionElement).text();
+                         $(this).attr('title', curText);
+                         var lengthToShortenTo = Math.round(parseInt('350px', 10) / 9.4);
+                             if (curText.length > lengthToShortenTo) {
+                                 $(this).text(curText.substring(0,lengthToShortenTo)+'...');
+                             }
+                    });
+                    // Show full name in tooltip after choosing an option
+                    $('.purpose2').change(function() {
+                        $(this).attr('title', ($(this).find('option:eq('+$(this).get(0).selectedIndex +')').attr('title')));
                     });
                 }
             });
@@ -1189,7 +1201,6 @@ function dropMemberDetail(loanId, dropMember, groupId) {
 }
 
 function updateloanDatail(updateloanData) {
-    console.log(updateloanData);
     var installment;
     if(document.getElementById("loanInstallments")){
         if(document.getElementById("loanInstallments").value){
@@ -1213,7 +1224,6 @@ function updateloanDatail(updateloanData) {
         "memberLoanDetails": eval(updateloanData),
         "userId": "1996"
     }
-    console.log(uploadData2);
     dataObj3["uploadData"] = uploadData2;
     $.ajax({
         url: '/updateloanDetail/',
@@ -1229,7 +1239,7 @@ function updateloanDatail(updateloanData) {
         },
         success: function(data) {
             if (data.code == "2024") {
-                $.alert("Member Loan Group updated successfully.");
+                $.alert("Members' Loan info has been updated.");
             } else {
                 $.alert("Error on updating members");
             }
@@ -1241,6 +1251,10 @@ function updateloanDatail(updateloanData) {
 
 function approveLoan(){
     var dataObj = {};
+    var groupName = document.getElementById("groupName1").innerHTML;
+    var appGroupId = document.getElementById("appGroupId").innerHTML;
+    var loanTypeName = document.getElementById("loanTypeName").innerHTML;
+    console.log(groupName,appGroupId,loanTypeName);
     var loanData = {
                         "groupId": groupId,
                         "loanId": loanId,
@@ -1251,6 +1265,7 @@ function approveLoan(){
                     };
     dataObj["loanData"] = loanData;
     dataObj["taskId"] = taskId;
+   // return false;
     $.ajax({
         url: '/approveLoan/',
         dataType: 'json',
@@ -1266,16 +1281,14 @@ function approveLoan(){
         success: function(data) {
            if(data.code == "2032"){
                $.alert("Loan has been approved");
-               window.location.href = "/assignedTaskList/";
+               var loanAccNo = data["data"]["loanAccountNumber"];
+               window.location.href = "/loanAccNo/"+groupName+'/'+appGroupId+'/'+loanTypeName+'/'+loanAccNo;
            }
-           else{
+           if(data.code == "2034"){
                $.alert("Failed to approve loan.. Try again.");
            }
         },
         data: JSON.stringify(dataObj)
     });
-
-
-
 }
 

@@ -301,3 +301,8 @@ def approveLoan(request):
             return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('An expected error occurred while approving loan.')
+
+
+def loanAccNo(request,groupName,appGroupId,loanTypeName,loanAccNo):
+    groups = request.user.groups.values_list('name', flat=True)
+    return render_to_response("loanAccNumber.html",{"group":groups[0],"groupName": groupName,"appGroupId" :appGroupId,"loanTypeName":loanTypeName,"loanAccNo":loanAccNo})
