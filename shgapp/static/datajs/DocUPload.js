@@ -1,7 +1,7 @@
 var groupId = groupId;
-
+var loanTypeId;
 function loanDocument(loanTypeId) {
-    var loanTypeId = loanTypeId;
+    loanTypeId = loanTypeId;
     var docURLDict = {};
     var documentData;
     var docUploadedDict = {};
@@ -165,6 +165,7 @@ function UpdateUrl(loanId,groupId, oldfileName, s3url, fileid) {
             if (data.code == '8000') {
                 //$("#loading").hide();
                 $.alert("Document Uploaded Successfully.");
+                loanDocument(loanTypeId);
                 $("#" + fileid + "_1").css("display", "none");
                 $("#" + fileid + "_3").css("display", "inline-block");
                 $("#" + fileid + "_2").css("display", "inline-block");
@@ -243,6 +244,7 @@ function EditUrl(loanId,groupId, UniqueId, s3url, newdoceditId,loanId) {
             if (data.code == "8001") {
                 //$("#loading").hide();
                 $.alert("Document Updated Successfully.");
+                loanDocument(loanTypeId);
                 $("#" + newdoceditId + "_2").attr('onClick', 'window.open(' + "'" + s3url + "'" + ').focus();');
                 //$("#" + newdoceditId + "_3").attr('name',data.data);
                 //$("#"+fileid+"_2").attr('onClick', 'window.open ('+"'"+s3url+"'"+',"mywindow","menubar=1,resizable=1,width=350,height=250");');

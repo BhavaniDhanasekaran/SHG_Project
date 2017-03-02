@@ -108,6 +108,7 @@ function getMemberDetails(memberId, groupId, loanId) {
         success: function(data) {
             enableActiveTab();
             var memberData = data;
+            console.log("memberData",memberData);
             //var arrayKeys = ["occupations","villages""conflictList","highMarksList","memberFamilyDetails","memberDocumentDetails"];
             var imgFiles = ["MEMBERPHOTO", "IDPROOF", "IDPROOF_2", "ADDRESSPROOF", "ADDRESSPROOF_2", "SBACCOUNTPASSBOOK", "OVERLAPREPORT"];
             if (memberData["data"]["memberDetails"]) {
@@ -824,7 +825,11 @@ function updateGroupValStatus(status) {
             $.alert("Please update group roles before task completion!");
             return false;
         }
+        else{
+            updateGroupMemberStatus();
+        }
     }
+
     var groupValData = {
         "groupId": groupId,
         "subStatus": status,
@@ -854,7 +859,7 @@ function updateGroupValStatus(status) {
         },
         success: function(data) {
             if (data == "Successful") {
-                $.alert("Group Validation completed Successfully");
+                //$.alert("Group Validation completed Successfully");
                 window.location = '/assignedTaskList/';
             }
         },
@@ -964,7 +969,7 @@ function documentView(groupId) {
                 $.each(groupDocData.data, function(key, value) {
                     var tr = $('<tr></tr>');
                     current++;
-                    $('<td>' + current + '</td><td>' + value.documentName + '</td><td> <button type="button" class="btn btn-danger" id = "' + value.docId + '" onclick="window.open(' + "'" + value.documentPath + "'" +","+ value.docId+"," +"width=200,height=100"+');><span class="glyphicon glyphicon-cloud-upload"></span> View  </button></td> ').appendTo(tr);
+                    $('<td>' + current + '</td><td>' + value.documentName + '</td><td> <button type="button" class="btn btn-danger" id = "' + value.docId + '" onclick="window.open(' + "'" + value.documentPath + "'" +","+ value.docId+"," +"width=200,height=100"+');"><span class="glyphicon glyphicon-cloud-upload"></span> View  </button></td> ').appendTo(tr);
                     tr.appendTo('#docments_table');
                 });
             } else {
@@ -1064,7 +1069,7 @@ function getLoanDetails(groupId, loanId) {
                     $.each($('.purpose2 option'), function(key, optionElement) {
                          var curText = $(optionElement).text();
                          $(this).attr('title', curText);
-                         var lengthToShortenTo = Math.round(parseInt('350px', 10) / 9.4);
+                         var lengthToShortenTo = Math.round(parseInt('200px', 10) / 9.4);
                              if (curText.length > lengthToShortenTo) {
                                  $(this).text(curText.substring(0,lengthToShortenTo)+'...');
                              }
@@ -1242,6 +1247,7 @@ function updateloanDatail(updateloanData) {
         success: function(data) {
             if (data.code == "2024") {
                 $.alert("Members' Loan info has been updated.");
+                getLoanDetails(groupId, loanId);
             } else {
                 $.alert("Error on updating members");
             }
