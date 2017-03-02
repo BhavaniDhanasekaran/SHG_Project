@@ -27,7 +27,6 @@ def unassignedTaskList(request):
         groupTaskDict 	= {}
         groupTaskData	= []
 
-        #grp_body_cont 	   = { "unassigned" : "true" , "candidateGroup" : str(groupName) }
         grp_body_cont 	   = { "unassigned" : "true" , "candidateGroup" : "DataSupportTeam" }
         groupTaskList	  = camundaClient._urllib2_request('task?firstResult=0', grp_body_cont, requestType='POST')
 
@@ -48,7 +47,7 @@ def unassignedTaskList(request):
             groupTaskData.append(groupTaskDict[key])
 
         print "Exiting unassignedTaskList(request): view"
-        return render_to_response('ds-tasklist.html', {"groupTaskList" : json.dumps(groupTaskData),"group" :groups[0],"user":username})
+        return render_to_response('ds-tasklist.html', {"groupTaskList" : json.dumps(groupTaskData),"group" :groupName,"user":username})
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting task details.')
 
@@ -57,7 +56,6 @@ def KYCTaskList(request):
     try:
         print "Entering KYCTaskList(request): view "
         username = request.user
-        Grp = request.user.groups.all()
         groups = request.user.groups.values_list('name',flat=True)
         print "grp:"
         print groups[0]
@@ -101,8 +99,6 @@ def KYCTasksGroupByDate(request,dateFrom,dateTo):
     kycTaskDict 	= {}
     kycTaskData	= []
     taskProVarList = []
-    taskProVarList1 = []
-
 
     bodyData = {"createdAfter" : dateFrom, "createdBefore"  : dateTo, "unassigned" : "true", "candidateGroup" : "DataSupportTeam"}
 
@@ -179,7 +175,6 @@ def assignedTaskList(request):
                                                              {"processInstanceIdIn": [data["processInstanceId"]]},
                                                              requestType='POST')
             taskProVarList.append(taskProVarList1)
-    #taskProVarList	 = camundaClient._urllib2_request('variable-instance?deserializeValues=false', bodyData, requestType='POST')
     #Process Variable Instance:
     for key in range(len(taskProVarList)):
         for data in taskProVarList[key]:
@@ -413,9 +408,7 @@ def queryRespTaskList(request):
                 QRTaskDict[key]["name"] = "BM Reply"
             QRTaskData.append(QRTaskDict[key])
 
-
     return render_to_response('ds-tasklist.html', {"taskList" :json.dumps(QRTaskData),"group" :groups[0],"user":username,"taskName":taskName})
-
 
 @csrf_exempt
 def updateTask(request):
@@ -433,11 +426,12 @@ def updateTask(request):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred.')
 
-def taskComplete(processUpdate,taskId):
+def taskComplete(request,processUpdate,taskId):
     try:
         print "Entering taskComplete(processUpdate,taskId) : "
         if processUpdate:
-            bodyData = json.dumps(processUpdate)
+            bodyData = json.loads(processUpdate)
+            print type(bodyData)
         else:
             bodyData = {}
         taskId 	= taskId
@@ -489,7 +483,7 @@ def proposalScrutinyTaskList(request):
     bodyData = { "processInstanceIdIn": processInstancesArr, "variableName" : "groupstatus"}
     groupStatusList = camundaClient._urllib2_request('variable-instance', bodyData, requestType='POST')
     for data in groupStatusList:
-        if data["value"] == "":
+        if data["value"] == "false":
             taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false', {"processInstanceIdIn":[data["processInstanceId"]]},
                                                             requestType='POST')
             taskProVarList.append(taskProVarList1)

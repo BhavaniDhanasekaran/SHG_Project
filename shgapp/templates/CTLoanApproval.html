@@ -43,33 +43,31 @@
 </script>
 
 <script type="text/javascript">
+
     function convertTableToJson()
         {
             var rows = [];
             $('table tr').not('thead tr').each(function(i, n){
                 var $row = $(n);
                 rows.push({
-                    "memberId":   $row.find("td:eq(0) input[type='checkbox']").val(),
-                    "loanAmount": $row.find("td:eq(8) input[type='text']").val(),
-                    "awb":  $row.find("td:eq(9) input[type='text']").val(),
-                    "insuranceAmount":  $row.find("td:eq(15) input[type='text']").val(),
-                    "solarLight":  $row.find("td:eq(10) input[type='text']").val(),
-
-                    "purpose":  $row.find("td:eq(17) :selected").val(),
-
-                    "atldebt": $row.find("td:eq(18) input[type='text']").val(),
-                    "interest": $row.find("td:eq(19) input[type='text']").val(),
-
-                    "prevMonthGroupBalance":  $row.find("td:eq(20) input[type='text']").val(),
-                    "currentMonthCollection": $row.find("td:eq(21) input[type='text']").val(),
-                    "currentMonthOutstanding":  $row.find("td:eq(22) input[type='text']").val(),
-                    "prevLoanGroupAmount": $row.find("td:eq(23) input[type='text']").val(),
-                    "sumOldActiveMembersAmount": $row.find("td:eq(24) input[type='text']").val(),
-                    "memberLoanAmount":  $row.find("td:eq(25) input[type='text']").val(),
-                    "groupId":$row.find("td:eq(26) input[type='text']").val(),
-                    "loanTypeId": $row.find("td:eq(27) input[type='text']").val(),
-                    "ATLloanId": $row.find("td:eq(28) input[type='text']").val(),
-                    "ATLaccNo": $row.find("td:eq(29) input[type='text']").val()
+                      "memberId":   $row.find("td:eq(17) input[type='checkbox']").val(),
+                      "loanAmount": $row.find("td:eq(7) input[type='text']").val(),
+                      "awb":  $row.find("td:eq(8) input[type='text']").val(),
+                      "insuranceAmount":  $row.find("td:eq(14) input[type='text']").val(),
+                      "solarLight":  $row.find("td:eq(9) input[type='text']").val(),
+                      "purpose":  $row.find("td:eq(16) :selected").val(),
+                      "atldebt": $row.find("td:eq(18) input[type='text']").val(),
+                      "interest": $row.find("td:eq(19) input[type='text']").val(),
+                      "prevMonthGroupBalance":  $row.find("td:eq(20) input[type='text']").val(),
+                      "currentMonthCollection": $row.find("td:eq(21) input[type='text']").val(),
+                      "currentMonthOutstanding":  $row.find("td:eq(22) input[type='text']").val(),
+                      "prevLoanGroupAmount": $row.find("td:eq(23) input[type='text']").val(),
+                      "sumOldActiveMembersAmount": $row.find("td:eq(24) input[type='text']").val(),
+                      "memberLoanAmount":  $row.find("td:eq(25) input[type='text']").val(),
+                      "groupId":$row.find("td:eq(26) input[type='text']").val(),
+                      "loanTypeId": $row.find("td:eq(27) input[type='text']").val(),
+                      "ATLloanId": $row.find("td:eq(28) input[type='text']").val(),
+                      "ATLaccNo": $row.find("td:eq(29) input[type='text']").val()
                 });
             });
             return JSON.stringify(rows);
@@ -78,7 +76,12 @@
     function updateLoanMembers()
     {
         var updateloanData=convertTableToJson();
+        console.log("updateloanData",updateloanData);
         updateloanDatail(updateloanData);
+    }
+    function updateAndApproveLoan(){
+        var updateloanData=convertTableToJson();
+        approveLoan(updateloanData);
     }
 </script>
 <style>
@@ -176,7 +179,6 @@
                     </div>
                 </div>
             </div>
-
         <!--panel body endend-->
     </div>
     <!--second col-xs3 end-->
@@ -213,7 +215,7 @@
                                                                 <table class="table table-striped table-bordered table-hover" id="paymentTable" >
                                                                     <thead class="thin-border-bottom">
                                                                         <tr>
-                                                                            <th>Drop Mem</th>
+
                                                                             <th> S.No</th>
                                                                             <th>App Mem Id</th>
                                                                             <th>New Mem</th>
@@ -231,6 +233,7 @@
                                                                             <th>Insurance</th>
                                                                             <th>Net Amount</th>
                                                                             <th>Purpose</th>
+                                                                            <th>Drop Mem</th>
                                                                             <th style="display:none">19atldebt</th>
                                                                             <th style="display:none"> 20 interest</th>
                                                                             <th style="display:none">21prevMonthGroupBalance</th>
@@ -263,7 +266,7 @@
                                 <div class="col-md-offset-4">
                                     <button type="button" class="btn btn-danger" id="drop" >Drop Members</button>
                                     <button type="button" class="btn btn-danger" onclick="updateLoanMembers();">Update Members</button>
-                                    <button type="button" class="btn btn-danger" onclick="approveLoan();">Approve Loan</button>
+                                    <button type="button" class="btn btn-danger" onclick="updateAndApproveLoan();">Approve Loan</button>
                                 </div>
                                 <br>
                             </div>
@@ -322,7 +325,6 @@
                                                     <br>
                                                 Data not available.<br><br>
 
-
                                                 </div>
                                             </div>
                                         </div>
@@ -349,7 +351,6 @@
                                                     <br>
                                                 Data not available.
                                                     <br><br>
-
 
                                                 </div>
                                             </div>
@@ -431,6 +432,5 @@
     <!--2row Start col-10 End-->
 </div>
 <!--2row End-->
-
 {% include 'query.html' %}
 {% endblock content %}

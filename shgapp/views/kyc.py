@@ -7,6 +7,7 @@ from shgapp.utils.sscoreclient import SSCoreClient
 from shgapp.utils.camundaclient import CamundaClient
 from shgapp.utils.helper import Helper
 from shgapp.utils.shgexceptions import *
+from shgapp.views.camundaViews import taskComplete
 import json
 import urllib2
 import requests
@@ -296,13 +297,21 @@ def approveLoan(request):
                                                             requestType='POST')
             print "serialized_data"
             print serialized_data
-            if serialized_data["code"] == "2032" :
-                taskComplete({},taskId)
+            #if serialized_data["code"] == 2032 :
+            #    processUpdate = { 'variables': { 'dispatchType': { 'value': "Cheque" } } }
+            #    taskComplete(request,processUpdate,taskId)
+            processUpdate = {'variables': {'dispatchType': {'value': "Cheque"}}}
+            print "processUpdate"
+            print "processUpdate"
+            print json.dumps(processUpdate)
+            taskComplete(request, json.dumps(processUpdate), taskId)
             return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('An expected error occurred while approving loan.')
 
 
-def loanAccNo(request,groupName,appGroupId,loanTypeName,loanAccNo):
+def loanAccNo(request,loanAccNumber,appGroupId,loanTypeName,groupName):
+    print loanAccNumber
+    print loanTypeName,appGroupId,groupName
     groups = request.user.groups.values_list('name', flat=True)
-    return render_to_response("loanAccNumber.html",{"group":groups[0],"groupName": groupName,"appGroupId" :appGroupId,"loanTypeName":loanTypeName,"loanAccNo":loanAccNo})
+    return render_to_response("loanAccNumber.html",{"group":groups[0],"groupName": groupName,"appGroupId" :appGroupId,"loanTypeName":loanTypeName,"loanAccNo":loanAccNumber})

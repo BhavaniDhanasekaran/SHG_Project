@@ -1088,12 +1088,11 @@ function getLoanDetails(groupId, loanId) {
                         newMem = "No";
                     }
                     htmlContent += '<tr>'
-                            +
-                        '<td> <input type="checkbox" name="drop"  value=' + creditObj["memberId"] + ' ></td>'
+
                         +
                         '<td>' + creditObj["sequenceNumber"] + '</td><td>' +
                         creditObj["appMemId"] + '</td><td>' +
-                        newMem+ '</td><td>' +
+                        newMem + '</td><td>' +
                         creditObj["memberName"] + '</td><td>' +
                         creditObj["sbAccountNo"] + '</td><td>' +
                         creditObj["bankName"] + '</td><td>' +
@@ -1113,10 +1112,12 @@ function getLoanDetails(groupId, loanId) {
                         +
                         ' <input type="text" name="m2street_' + i + '" value=' + creditObj["insuranceAmount"] + '></td><td>' +
                         creditObj["memNetLoanAmount"] + '</td><td>' +
-                        '<select class="purpose2" style="width:150px" id="purpose_' + creditObj["memberId"] + '   name="purpose" ><option value=' + creditObj["purposeId"] + '>' + creditObj["purpose"] + '</option></select></td>'
+                        '<select class="purpose2"  id="purpose_' + creditObj["memberId"] + '   name="purpose"><option value='+creditObj["purposeId"]+'>'+creditObj["purpose"]+'</option></select></td><td>'
 
                         +
-                        ' <td style="display:none"><input type="text" name="atlDebt_' + i + '" value=' + creditObj["atlDebt"] + '></td><td style="display:none">' +
+                        ' <input type="checkbox" name="drop" id="m2street + creditObj["memberId"] '+ ' value=' + creditObj["memberId"] + ' ></td><td style="display:none;">'
+                        +
+                        ' <input type="text" name="atlDebt_' + i + '" value=' + creditObj["atlDebt"] + '></td><td style="display:none">' +
                         ' <input type="text" name="interest_' + i + '" value=' + creditObj["interest"] + '></td><td style="display:none">'
 
                         +
@@ -1138,6 +1139,7 @@ function getLoanDetails(groupId, loanId) {
                         +
                         ' <input type="text" name="atLlonaid' + i + '" value=' + creditObj["atLloanId"] + '></td><td style="display:none">' +
                         ' <input type="text" name="atlAcc' + i + '" value=' + creditObj["atlLoanAccountNumber"] + '></td>'
+
                         +
                         '</tr>';
                 }
@@ -1249,11 +1251,27 @@ function updateloanDatail(updateloanData) {
 }
 
 
-function approveLoan(){
+function approveLoan(updateloanData){
     var dataObj = {};
     var groupName = document.getElementById("groupName1").innerHTML;
     var appGroupId = document.getElementById("appGroupId").innerHTML;
     var loanTypeName = document.getElementById("loanTypeName").innerHTML;
+    var installment;
+    if(document.getElementById("loanInstallments")){
+        if(document.getElementById("loanInstallments").value){
+            installment = document.getElementById("loanInstallments").value;
+            if(installment == 0 || installment == "undefined"){
+                $("#loanInstallments").css("background-color","#FEEFB3");
+                $.alert("Invalid loan installments");
+                return false;
+            }
+        }
+        else{
+            $("#loanInstallments").css("background-color","#FEEFB3");
+            $.alert("Please input loan installments");
+            return false;
+        }
+    }
     console.log(groupName,appGroupId,loanTypeName);
     var loanData = {
                         "groupId": groupId,
@@ -1261,11 +1279,14 @@ function approveLoan(){
                         "entityType": "LOAN",
                         "validationType": "POST",
                         "userId":101,
-                        "subStatus":"POST_KYC_VALIDATED"
+                        "subStatus":"POST_KYC_VALIDATED",
+                        "installments" : installment,
+                        "memberLoanDetails": eval(updateloanData),
                     };
     dataObj["loanData"] = loanData;
     dataObj["taskId"] = taskId;
-   // return false;
+    //window.location.href = "/loanAccNo/"+'TN481691042573'+'/'+appGroupId+'/'+loanTypeName+'/'+groupName;
+    //return false;
     $.ajax({
         url: '/approveLoan/',
         dataType: 'json',
@@ -1281,11 +1302,12 @@ function approveLoan(){
         success: function(data) {
            if(data.code == "2032"){
                $.alert("Loan has been approved");
-               var loanAccNo = data["data"]["loanAccountNumber"];
-               window.location.href = "/loanAccNo/"+groupName+'/'+appGroupId+'/'+loanTypeName+'/'+loanAccNo;
+               var loanAccNumber = data["data"]["loanAccountNumber"];
+               console.log(groupName,appGroupId,loanTypeName,loanAccNumber);
+               window.location.href = "/loanAccNo/"+loanAccNumber+'/'+appGroupId+'/'+loanTypeName+'/'+groupName;
            }
            if(data.code == "2034"){
-               $.alert("Failed to approve loan.. Try again.");
+               $.alert(data["message"]);
            }
         },
         data: JSON.stringify(dataObj)

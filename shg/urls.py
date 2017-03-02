@@ -64,7 +64,7 @@ kyc_urlpatterns = [
     url(r'^dropMemberDetail/', kyc.dropMemberDetail, name='dropMemberDetail'),
     url(r'^updateloanDetail/', kyc.updateloanDetail, name='updateloanDetail'),
     url(r'^approveLoan/', kyc.approveLoan, name='approveLoan'),
-    url(r'^loanAccNo/(?P<groupName>[^/]+)/(?P<appGroupId>[^/]+)/(?P<loanTypeName>[^/]+)/(?P<loanAccNo>[^/]+)', kyc.loanAccNo, name='loanAccNo'),
+    url(r'^loanAccNo/(?P<loanAccNumber>[^/]+)/(?P<appGroupId>[^/]+)/(?P<loanTypeName>[^/]+)/(?P<groupName>[^/]+)', kyc.loanAccNo, name='loanAccNo'),
 
 ]
 urlpatterns += kyc_urlpatterns
