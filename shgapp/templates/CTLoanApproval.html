@@ -92,7 +92,7 @@
 {% endblock %}
 <!-- PAGE CONTENT BEGINS -->
 {% block content %}
-<div class="row">
+<div class="row" id="main">
 <!--2row Start-->
 <div class="col-xs-12" >
     <!--second col-xs3 strat-->
@@ -100,6 +100,13 @@
         <div class="panel-heading"><span id="loanTypeName"></span> - <span id="groupName1"></span>  &nbsp&nbsp&nbsp( <span id="appGroupId"></span> )<span id="groupId" style="visibility:hidden;"></span>
         <span id="loanTypeId1" style="visibility:hidden;"></span> </div>
         <div class="panel-body">
+        <div align="right" title="Comments">
+                <span style="font-size:20px;cursor:pointer" onclick="toggleNav();" onclick="myFunction(this)">
+                    <button id="commentsBtn" style="float:right;margin-top:-54px;margin-right:-15px" class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn" data-target="#right-menu" data-toggle="modal"  type="button">
+                        Comments
+                    </button>
+                </span>
+            </div>
             <div class="col-md-5">
                 <div class="profile-user-info profile-user-info-striped">
                     <div class="profile-info-row">
