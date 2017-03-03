@@ -76,6 +76,8 @@ def groupRoleDetails(request):
             formData  = json.loads(request.body)
             bodyData =  formData["roleObj"]
             roleResponse = sscoreClient._urllib2_request('workflowDetailView/workflowGroupDetail',bodyData,requestType='POST')
+            print "roleResponse"
+            print roleResponse
             return HttpResponse(json.dumps(roleResponse), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting Credit History.')

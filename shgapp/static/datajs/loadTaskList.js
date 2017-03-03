@@ -320,7 +320,6 @@ function taskCount(){
 	});
 }
 
-
 function claim(d){
 	$.ajax({
 	    url: '/task/'+d+'/claim/user',

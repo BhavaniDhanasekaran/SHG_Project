@@ -58,13 +58,14 @@ function getGroupData(groupID, loanId) {
                         if (document.getElementById("appGroupId") && groupData["data"]["appGroupId"]) {
                             document.getElementById("appGroupId").innerHTML = groupData["data"]["appGroupId"];
                         }
+                        if (document.getElementById("loanTypeId1") && groupData["data"]["loanTypeId"]) {
+                            document.getElementById("loanTypeId1").innerHTML = groupData["data"]["loanTypeId"];
+                        }
                         if (document.getElementById("groupId") && groupData["data"]["groupId"]) {
                             document.getElementById("groupId").innerHTML = groupData["data"]["groupId"];
                         }
                     }
                     getMemberDetails(memId, groupID, loanId);
-
-
                 }
             } else {
                 $.alert(groupData["message"]);
@@ -156,7 +157,9 @@ function getMemberDetails(memberId, groupId, loanId) {
 
                                     } else {
                                         $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").css("display", "inline-block");
-                                        $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").addClass("img img-test");
+                                        if(memberDocumentsArray[key]["documentType"] != "OVERLAPREPORT"){
+                                            $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").addClass("img img-test");
+                                        }
                                         $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", memberDocumentsArray[key]["documentPath"]);
                                         $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("data-url", memberDocumentsArray[key]["documentPath"]);
                                         $("#idProof").imageBox();
@@ -237,6 +240,7 @@ function updateMemValidationStatus(status) {
     var loanId = document.getElementById("loanId").innerHTML;
     var comment = document.getElementById("comment").value;
     var memStatus = document.getElementById("memberValStatus").innerHTML;
+    var loanTypeId = document.getElementById("loanTypeId1").innerHTML;
     var commentCamunda = "";
     var dataObj = {};
     if (memStatus != "" && memStatus != "PEN") {
@@ -254,7 +258,7 @@ function updateMemValidationStatus(status) {
     }
     if (group == "CLM_BM" || group == "CLM") {
         if (taskName == "Resolve Data Support Team Query") {
-            validationType = "POSTKYC";
+            validationType = "PRE";
             if (comment == "") {
                 $.alert("Please input comment");
                 return false;
@@ -264,10 +268,10 @@ function updateMemValidationStatus(status) {
             }
         }
         if (taskName == "Conduct BAT- Member approval in CRM") {
-            validationType = "CLMAPPROVAL";
+            validationType = "CLM";
         }
         if (taskName == "Resolve Credit Team Query") {
-            validationType = "CLMAPPROVAL";
+            validationType = "CLM";
             if (comment == "") {
                 $.alert("Please input comment");
                 return false;
@@ -279,7 +283,7 @@ function updateMemValidationStatus(status) {
         }
     }
     if (group == "DataSupportTeam") {
-        validationType = "POST";
+        validationType = "POSTKYC";
     }
     if (status == "Rejected" || status == "Rework") {
         if (comment == "") {
@@ -294,6 +298,7 @@ function updateMemValidationStatus(status) {
     var memValData = {
         "memberId": memberId,
         "groupId": groupId,
+        "loanTypeId" :loanTypeId,
         "loanId": loanId,
         "subStatus": status,
         "userId": "1996",
@@ -305,6 +310,8 @@ function updateMemValidationStatus(status) {
 
     dataObj["memValData"] = memValData;
     dataObj["taskId"] = taskId;
+    console.log(dataObj);
+    //return false;
 
     var updateStatus = '';
     if (status == "Approved") {
@@ -403,7 +410,8 @@ function submitKYCForm(status) {
     var comment = document.getElementById("comment").value;
     var memStatus = document.getElementById("memberValStatus").innerHTML;
     var appMemberId = document.getElementById("appMemberId").innerHTML;
-    appMemberId
+    var loanTypeId = document.getElementById("loanTypeId1").innerHTML;
+
     var commentCamunda = "";
     if (validation == 1) {
         //$("#warningId").css("display","block");
@@ -421,17 +429,18 @@ function submitKYCForm(status) {
         "memberId": memberId,
         "groupId": groupId,
         "loanId": loanId,
+        "loanTypeId" :loanTypeId,
         "subStatus": status,
         "userId": "1996",
         "comment": comment,
         "checkList": "",
-        "validationType": "POST",
+        "validationType": "POSTKYC",
         "entityType": "MEMBER"
     };
 
     var dataDict = {
         "entityType": "MEMBER",
-        "validationType": "KYC",
+        "validationType": "POSTKYC",
         "memberId": memberId,
         "groupId": groupId,
         "loanId": loanId,
@@ -769,15 +778,21 @@ function loadGroupRoles(groupId, loanId, taskName) {
     var dataObj = {};
     var validationType = '';
     if (group == "CLM_BM" || group == "CLM") {
-        validationType = "PEN"
+        if(taskName == "Print Loan Documents & FSR"){
+            validationType = "PEN"
+        }
+        if(taskName == "Upload loan documents in Web application"){
+            validationType = "PRE"
+        }
     }
     if (group == "RM" || group == "rm") {
-        validationType = "CLM"
+        validationType = "CLMAPPROVAL"
     }
     var roleObj = {
         "groupId": groupId,
         "entityType": "GROUP",
-        "validationType": validationType
+        "validationType": validationType,
+        "loanId": loanId
     };
     dataObj["roleObj"] = roleObj;
     $.ajax({
@@ -786,6 +801,7 @@ function loadGroupRoles(groupId, loanId, taskName) {
         type: "post",
 
         success: function(data) {
+            document.getElementById("loanTypeId1").innerHTML = data["data"]["loanTypeId"];
             var groupDetails = data["data"]["groupDetails"];
             console.log(groupDetails);
             for (var key in groupDetails) {
@@ -806,9 +822,11 @@ function loadGroupRoles(groupId, loanId, taskName) {
 
 function updateGroupValStatus(status) {
     var validationType = '';
+    var comment;
     if (document.getElementById("comment")) {
         comment = document.getElementById("comment").value;
     }
+    var loanTypeId = document.getElementById("loanTypeId1").innerHTML;
     if (status == "Rejected") {
         if (comment == "") {
             $.alert("Please input comment");
@@ -817,7 +835,12 @@ function updateGroupValStatus(status) {
     }
 
     if (group == "CLM_BM" || group == "CLM") {
-        validationType = "PRE";
+        if(taskName == "Upload loan documents in Web application"){
+            validationType = "CLMAPPROVAL";
+        }
+        if(taskName == "Print Loan Documents & FSR"){
+            validationType = "PRE";
+        }
     }
     if (group == "RM" || group == "rm") {
         validationType = "POST";
@@ -832,6 +855,7 @@ function updateGroupValStatus(status) {
 
     var groupValData = {
         "groupId": groupId,
+        "loanTypeId" :loanTypeId,
         "subStatus": status,
         "userId": "1996",
         "comment": comment,
@@ -841,8 +865,9 @@ function updateGroupValStatus(status) {
     var dataObj = {};
     dataObj["groupValData"] = groupValData;
     dataObj["taskId"] = taskId;
-    dataObj["message"] = comment;
-
+    if(comment != ""){
+         dataObj["message"] = comment;
+    }
     $.ajax({
         url: '/updateGrpValidationStatus/',
         dataType: 'json',
@@ -1000,7 +1025,7 @@ function updateGroupMemberStatus() {
     var nrepm2 = document.getElementById("repm2").value;
     var groupValData = {
         "entityType": "GROUP",
-        "validationType": "CLMAPPROVAL",
+        "validationType": "POST",
         "groupId": groupId,
         "userId": "1669",
         "animator": nAnimator,
@@ -1055,7 +1080,6 @@ function getLoanDetails(groupId, loanId) {
             }
             var loanMemberDetails = data["data"]["loanMemberDetails"];
 
-
             $.ajax({
                 url: '/masterLoanPurpose/',
                 type: 'post',
@@ -1105,17 +1129,17 @@ function getLoanDetails(groupId, loanId) {
 
                         +
                         ' <input type="text" name="m2street_' + i + '" value=' + creditObj["loanAmount"] + '></td><td>' +
-                        ' <input type="text" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["awb"] + '></td><td>' +
-                        ' <input type="text" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["sellingPrice"] + '></td><td>' +
-                        ' <input type="text" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["sundryDebt"] + '></td><td>'
+                        ' <input type="text" style="width: 45px;" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["awb"] + '></td><td>' +
+                        ' <input type="text" style="width: 45px;" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["sellingPrice"] + '></td><td>' +
+                        ' <input type="text" style="width: 45px;" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["sundryDebt"] + '></td><td>'
 
                         +
-                        ' <input type="text" name="m2street_' + i + '" value=' + creditObj["processingFee"] + '></td><td>' +
-                        ' <input type="text" name="m2street_' + i + '" value=' + creditObj["serviceTax"] + '></td><td>' +
-                        ' <input type="text" name="m2street_' + i + '" value=' + creditObj["educationCess"] + '></td><td>'
+                        ' <input type="text" style="width: 50px;" name="m2street_' + i + '" value=' + creditObj["processingFee"] + '></td><td>' +
+                        ' <input type="text" style="width: 45px;" name="m2street_' + i + '" value=' + creditObj["serviceTax"] + '></td><td>' +
+                        ' <input type="text" style="width: 45px;" name="m2street_' + i + '" value=' + creditObj["educationCess"] + '></td><td>'
 
                         +
-                        ' <input type="text" name="m2street_' + i + '" value=' + creditObj["insuranceAmount"] + '></td><td>' +
+                        ' <input type="text" style="width: 50px;" name="m2street_' + i + '" value=' + creditObj["insuranceAmount"] + '></td><td>' +
                         creditObj["memNetLoanAmount"] + '</td><td>' +
                         '<select class="purpose2"  id="purpose_' + creditObj["memberId"] + '   name="purpose"><option value='+creditObj["purposeId"]+'>'+creditObj["purpose"]+'</option></select></td><td>'
 
@@ -1247,6 +1271,7 @@ function updateloanDatail(updateloanData) {
         success: function(data) {
             if (data.code == "2024") {
                 $.alert("Members' Loan info has been updated.");
+                $("#paymentTable").dataTable().fnDestroy();
                 getLoanDetails(groupId, loanId);
             } else {
                 $.alert("Error on updating members");
@@ -1262,6 +1287,7 @@ function approveLoan(updateloanData){
     var groupName = document.getElementById("groupName1").innerHTML;
     var appGroupId = document.getElementById("appGroupId").innerHTML;
     var loanTypeName = document.getElementById("loanTypeName").innerHTML;
+    var loanTypeId = document.getElementById("loanTypeId1").innerHTML;
     var installment;
     if(document.getElementById("loanInstallments")){
         if(document.getElementById("loanInstallments").value){
@@ -1282,6 +1308,7 @@ function approveLoan(updateloanData){
     var loanData = {
                         "groupId": groupId,
                         "loanId": loanId,
+                        "loanTypeId" :loanTypeId,
                         "entityType": "LOAN",
                         "validationType": "POST",
                         "userId":101,
@@ -1291,8 +1318,6 @@ function approveLoan(updateloanData){
                     };
     dataObj["loanData"] = loanData;
     dataObj["taskId"] = taskId;
-    //window.location.href = "/loanAccNo/"+'TN481691042573'+'/'+appGroupId+'/'+loanTypeName+'/'+groupName;
-    //return false;
     $.ajax({
         url: '/approveLoan/',
         dataType: 'json',

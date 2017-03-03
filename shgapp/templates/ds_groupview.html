@@ -41,7 +41,8 @@
         <div class="col-lg-10" >
             <!--2row Start col-10 start-->
             <div class="panel panel-default" style="overflow-x:auto;">
-                <div class="panel-heading"><span id="groupName"></span> &nbsp&nbsp&nbsp( <span id="appGroupId"></span> ) <span id="groupId" style="visibility:hidden;"></span> </div>
+                <div class="panel-heading"><span id="groupName"></span> &nbsp&nbsp&nbsp( <span id="appGroupId"></span> ) <span id="groupId" style="visibility:hidden;"></span>
+                <span id="loanTypeId1" style="visibility:hidden;"></span> </div>
                 <div class="panel-body-danger">
                     <!--2row panel body start-->
                     <div class="tabbable">
@@ -63,8 +64,7 @@
                                     <div class="row">
                                         <!-- tabrow start-->
                                         <div class="col-md-2">
-                                            <img id="MEMBERPHOTO_docPath" class="img img-test" data-url="{% static 'images/naveen.jpg' %}" src="{% static 'images/naveen.jpg' %}" height="135" width="134"  />
-                                            &nbsp;&nbsp;&nbsp;
+                                            <img id="MEMBERPHOTO_docPath" class="img img-test" data-url="{% static 'images/naveen.jpg' %}" src="{% static 'images/naveen.jpg' %}" height="135" width="134"  />                                            &nbsp;&nbsp;&nbsp;
                                             <br/>
                                             <br/><label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">Member ID   :&nbsp&nbsp&nbsp <span id="appMemberId"></span></label><br/>
                                             <label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">Loan ID    :&nbsp&nbsp&nbsp<span id="loanId"></span></label><br/>
@@ -312,17 +312,8 @@
                                             <!-- PAGE CONTENT BEGINS -->
                                             <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
                                                 <div class="widget-box widget-color-blue" id="widget-box-2">
-                                                    <div class="widget-header">
-                                                        <h5 class="widget-title bigger lighter">
-                                                            Credit Enquiry
-                                                        </h5>
-                                                        <div class="widget-toolbar widget-toolbar-light no-border">
-                                                            <select id="simple-colorpicker-1" class="hide">
-                                                            </select>
-                                                        </div>
-                                                    </div>
                                                     <div class="widget-body">
-                                                        <div class="widget-main no-padding" style="height: 200px; overflow: auto;">
+                                                        <div class="widget-main no-padding" style="overflow: auto;">
                                                             <table class="table table-striped table-bordered table-hover">
                                                                 <thead class="thin-border-bottom">
                                                                 <tr>

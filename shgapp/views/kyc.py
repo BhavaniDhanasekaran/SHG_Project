@@ -90,23 +90,22 @@ def getIndMemberData(request,memberId,groupId,loanId,taskName):
         groups = request.user.groups.values_list('name',flat=True)
         groupName = groups[0]
         if groupName == "DataSupportTeam":
-            validationType = "PEN"
+            validationType = "PRE"
             validationLevel = "KYC"
         if groupName == "CLM_BM" or groupName == "CLM":
-            validationType = "POST"
             if taskName == "Resolve Data Support Team Query":
                 validationLevel = "RWRK"
+                validationType = "POSTKYC"
             if taskName == "Conduct BAT- Member approval in CRM":
                 validationLevel = "BM"
+                validationType = "POSTKYC"
             if taskName == "Resolve Credit Team Query":
                 validationLevel = "RWRK"
-        if groupName == "CreditTeam":
-            if taskName == "Proposal scrutiny":
-                validationLevel = "CREDITTEAM"
-                validationType = "CLMAPPROVAL"
-            if taskName == "Proposal scrutiny (BM Reply)":
-                validationLevel = "CREDITTEAM"
                 validationType = "POST"
+        if groupName == "CreditTeam":
+            if taskName == "Proposal scrutiny" or taskName == "BM Reply":
+                validationLevel = "CREDITTEAM"
+                validationType = "CLM"
         bodyData = { "groupId": str(groupId), "memberId":str(memberId),  "loanId": str(loanId), "validationLevel" : validationLevel, "entityType": "MEMBER","validationType": validationType, "userId": "1996" }
         IndMemberData = sscoreClient._urllib2_request('workflowDetailView/workflowMemberDetail/', bodyData, requestType='POST')
         return HttpResponse(json.dumps(IndMemberData), content_type="application/json")
