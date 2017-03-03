@@ -162,6 +162,8 @@ function getMemberDetails(memberId, groupId, loanId) {
                                         }
                                         $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", memberDocumentsArray[key]["documentPath"]);
                                         $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("data-url", memberDocumentsArray[key]["documentPath"]);
+                                        $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr('onClick', 'window.open(' + "'" + memberDocumentsArray[key]["documentPath"] + "'" + ","+memberDocumentsArray[key]["docId"]+","+"width=100,height=100"+').focus();');
+
                                         $("#idProof").imageBox();
                                     }
                                 }
@@ -675,6 +677,7 @@ function creditHistory(loanId) {
             var creditData = data;
             var documentObj = [];
             var docPath = ''
+            var docId = ''
             if (creditData.data) {
                 for (var i = 0; i < creditData.data.length; i++) {
                     var creditObj = creditData["data"][i]["creditInquiry"];
@@ -683,9 +686,10 @@ function creditHistory(loanId) {
                     for (var j = 0; j < documentObj.length; j++) {
                         if (documentObj[j]["documentType"] == "OVERLAPREPORT") {
                             docPath = documentObj[j]["documentPath"];
+                             docId = documentObj[j]["docId"];
                         }
                     }
-                    htmlContent += '<tr><td> <button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + ');"+>View</button></td>' +
+                    htmlContent += '<tr><td> <button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + ","+docId+","+"width=200,height=100"+');"+>View</button></td>' +
                         '<td>' + creditObj["appMemberId"] + '</td><td>' +
                         creditObj["memberName"] + '</td>' +
                         '<td>' + creditObj["s_product_type"] + '</td>' +
