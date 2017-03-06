@@ -104,7 +104,8 @@ $(document).ready(function (){
 <div class="col-lg-9" >
     <!--2row Start col-10 start-->
     <div class="panel panel-default">
-        <div class="panel-heading"><span id="groupName1"></span>  &nbsp&nbsp&nbsp( <span id="appGroupId1"></span> )<span id="groupId" style="visibility:hidden;"></span> </div>
+        <div class="panel-heading"><span id="groupName1"></span>  &nbsp&nbsp&nbsp( <span id="appGroupId1"></span> )<span id="groupId" style="visibility:hidden;"></span>
+        <span id="loanTypeId1" style="visibility:hidden;"></span></div>
         <div class="panel-body-danger">
             <!--2row panel body start-->
             <div class="tabbable">
@@ -166,7 +167,7 @@ $(document).ready(function (){
     <div class="col-md-offset-3 col-xs-9">
         <div class="clearfix form-actions">
             <div class="col-md-offset-3 col-md-9">
-                <button onclick="updateTask('Approved');" class="btn btn-danger" type="button">
+                <button onclick="updateGroupValStatus('Approved');" class="btn btn-danger" type="button">
                 <i class="ace-icon fa fa-check bigger-110"></i>
                 Approve
                 </button>

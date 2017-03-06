@@ -1,0 +1,46 @@
+{% extends 'base_errorpage.html' %}
+{% load staticfiles %}
+{% block javascript %}
+    <script src="{% static 'datajs/grouplist.js' %}"></script>
+    <script src="{% static 'datajs/loadTaskList.js' %}"></script>
+    <script src="{% static 'datajs/masterData.js' %}"></script>
+    <script src="{% static 'datajs/mysidenav.js' %}"></script>
+    <script>
+        var groupId = '{{ groupId | escapejs }}';
+        var group= '{{ group | escapejs }}';
+        var loanId = '{{ loanId | escapejs }}';
+        var taskName = '{{ taskName | escapejs }}';
+        var taskId = '{{ taskId | escapejs }}';
+
+
+        var processInstanceId = '{{ processInstanceId | escapejs }}';
+
+    </script>
+
+{% endblock %}
+{% block content %}
+<div class="row">
+    <!-- PAGE CONTENT BEGINS -->
+    <div class="error-container">
+        <div class="well">
+
+            <h2 class="grey lighter smaller">
+                <span class="blue bigger-125"> Loan Account Number : {{ loanAccNo }}</span></h2>
+            <hr />
+            <h3 class="lighter smaller">Group Id : {{ appGroupId }} </h3>
+            <h3 class="lighter smaller">Group Name : {{ groupName }}</h3>
+            <h3 class="lighter smaller">Loan Type : {{ loanTypeName }}</h3>
+            <div class="space"></div>
+            <div class="space"></div>
+            <div class="space"></div>
+
+            <div class="center">  <a href="/assignedTaskList/" class="btn btn-primary">
+                Close </a>
+            </div>
+        </div>
+    </div>
+    <!-- PAGE CONTENT ENDS -->
+</div>
+
+{% include 'query.html' %}
+{% endblock content %}

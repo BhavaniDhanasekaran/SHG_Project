@@ -130,7 +130,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -145,6 +145,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 LOGIN_URL = '/signin/'
+LOGIN_REDIRECT_URL = '/signin/'
 LOGOUT_URL = '/signout/'
 
 STATIC_ROOT = 'staticfiles'
@@ -158,8 +159,8 @@ STATICFILES_DIRS = [
 CAMUNDA_BASE_URL = 'http://192.168.10.88:8086/engine-rest/'
 SSCORE_BASE_URL = 'http://192.168.10.71:8085/sangamam-core/'
 
-AWS_ACCESS_KEY_ID='AKIAI5V5HCE63MCHXEUA'
-AWS_SECRET_ACCESS_KEY='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'
+AWS_ACCESS_KEY_ID='AKIAJKJDLQNPXRK4NJPQ'
+AWS_SECRET_ACCESS_KEY='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'
 #AWS_REGION_NAME='ap-southeast-1'
 #AWS_BUCKET_NAME = 'testingdocuments.mmfl.in'
 #AWS_BUCKET_FOLDER_PATH = 'shgbpm/legaldocuments/'

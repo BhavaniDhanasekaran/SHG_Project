@@ -3,7 +3,11 @@ from django.conf.urls.static import static
 from django.conf.urls import include, url, handler400, handler403, handler404, handler500
 from django.contrib import admin
 from django.views.generic import TemplateView
-from shgapp.views import index, task, kyc, auth,masterData, camundaViews, BMOperations, mfupload
+from shgapp.views import index, task, kyc, auth,masterData, camundaViews, BMOperations, mfupload, customError
+handler400 = customError.bad_request
+handler403 = customError.permission_denied
+handler404 = customError.page_not_found
+handler500 = customError.server_error
 
 index_urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -37,7 +41,6 @@ task_urlpatterns = [
     url(r'^CTtasklist/', task.CTtasklist, name = 'CTtasklist'),
     url(r'^CTLoanApproval/', task.CTLoanApproval, name = 'CTLoanApproval'),
     url(r'^SHGForm/(?P<groupId>[^/]+)/(?P<loanId>[^/]+)/(?P<taskId>[^/]+)/(?P<processId>[^/]+)/(?P<taskName>[^/]+)/(?P<loanType>[^/]+)', task.SHGForm, name = 'SHGForm'),
-    
 ]
 urlpatterns += task_urlpatterns
 
@@ -57,13 +60,14 @@ kyc_urlpatterns = [
     url(r'^updateUrl/',kyc.updateUrl, name = 'updateUrl'),  
     url(r'^loanDocument/(?P<loanTypeId>[^/]+)',kyc.loanDocument, name = 'loanDocument'),
     url(r'^editUrl/',kyc.editUrl, name = 'editUrl'),
+    url(r'^getLoanDetails/(?P<groupId>[^/]+)/(?P<loanId>[^/]+)', kyc.getLoanDetails, name='getLoanDetails'),
+    url(r'^dropMemberDetail/', kyc.dropMemberDetail, name='dropMemberDetail'),
+    url(r'^updateloanDetail/', kyc.updateloanDetail, name='updateloanDetail'),
+    url(r'^approveLoan/', kyc.approveLoan, name='approveLoan'),
+    url(r'^loanAccNo/(?P<loanAccNumber>[^/]+)/(?P<appGroupId>[^/]+)/(?P<loanTypeName>[^/]+)/(?P<groupName>[^/]+)', kyc.loanAccNo, name='loanAccNo'),
 
-    
-    
 ]
-
 urlpatterns += kyc_urlpatterns
-
 
 masterData_urlpatterns = [
     url(r'^masterDataBank/',masterData.masterDataBank, name = 'masterDataBank'),
@@ -86,7 +90,7 @@ camundaViews_urlpatterns = [
     url(r'^updateTask/',camundaViews.updateTask, name = 'updateTask'),
     url(r'^taskComplete/(?P<taskId>[^/]+)',camundaViews.taskComplete, name = 'taskComplete'),
     url(r'^getHistoryComments/(?P<processId>[^/]+)',camundaViews.getHistoryComments, name = 'getHistoryComments'),
-
+    url(r'^proposalScrutinyTaskList/',camundaViews.proposalScrutinyTaskList, name = 'proposalScrutinyTaskList'),
 ]
 urlpatterns += camundaViews_urlpatterns
 
@@ -95,18 +99,14 @@ BMOperations_urlpatterns = [
     url(r'^groupRoleDetails/',BMOperations.groupRoleDetails, name = 'groupRoleDetails'),
     url(r'^updateGrpValidationStatus/',BMOperations.updateGrpValidationStatus, name = 'updateGrpValidationStatus'),
     url(r'^updateGroupMemberStatus/',BMOperations.updateGroupMemberStatus, name = 'updateGrpValidationStatus'),
-
 ]
 urlpatterns += BMOperations_urlpatterns
 
 mfupload_urlpatterns = [    
-    
-    #url(r'^progressbarupload/$',mfupload.progress_bar_upload, name='progress_bar_upload'), 
     url(r'^ajax_progress_bar_upload/$',mfupload.ajax_progress_bar_upload, name='ajax_progress_bar_upload'),
-    
-        
 ]
-
 urlpatterns += mfupload_urlpatterns
 
-
+'''if django_settings.DEBUG:
+    urlpatterns += static(django_settings.STATIC_URL, document_root=django_settings.STATIC_ROOT)
+    urlpatterns += static(django_settings.MEDIA_URL, document_root=django_settings.MEDIA_ROOT)'''

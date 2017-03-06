@@ -51,14 +51,14 @@ def ajax_progress_bar_upload(request):
             print 'content type: ', mimetypes.guess_type(uploadtofilename)
             s3Resource.Bucket(settings.AWS_BUCKET_NAME).put_object(
                 Key=settings.AWS_BUCKET_FOLDER_PATH + uploadtofilename,
-                Body=file,ContentType='ctype')
+                Body=file,ContentType=ctype[0])
             print  'ProgressBarUploadView done - upload_to_filename', uploadtofilename
             data = {'is_valid': True, 'name': uploadtofilename, 'url': settings.AWS_S3_BASE_URL + uploadtofilename}
     except Exception, e:
         print 'ajax_progress_bar_upload Exception e: ', e
         data = {'is_valid': False}
-        return helper.bad_request('An expected error occurred while uploading document.')
+        return helper.bad_request('Unexpected error occurred while uploading document.')
     print 'data: ', data
     return JsonResponse(data)
 
-    
+

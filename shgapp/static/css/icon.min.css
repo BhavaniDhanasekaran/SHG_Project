@@ -87,3 +87,23 @@
 .panel-teal > a:hover {
     color: #008080;
 }
+
+
+
+.panel-gray {
+    border-color: slategray;
+}
+
+.panel-gray > .panel-heading {
+    border-color: slategray;
+    color: #fff;
+    background-color: slategray;
+}
+
+.panel-gray > a {
+    color: slategray;
+}
+
+.panel-gray > a:hover {
+    color: slategray;
+}

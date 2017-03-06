@@ -45,6 +45,7 @@
     <div class="breadcrumbs ace-save-state" id="breadcrumbs">
         <ul class="breadcrumb">
             <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="{% url 'hello' %}">Home </a> </li>
+            <li> <i class="ace-icon"> </i> <span>{{ taskName }} </span> </li>
         </ul>
 
         <!-- /.breadcrumb -->
@@ -161,6 +162,7 @@
     <div class="breadcrumbs ace-save-state" id="breadcrumbs">
         <ul class="breadcrumb">
             <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="{% url 'hello' %}">Home </a> </li>
+            <li> <i class="ace-icon"> </i> <span>{{ taskName }} </span> </li>
         </ul>
 
         <!-- /.breadcrumb -->
@@ -206,6 +208,7 @@
     <div class="breadcrumbs ace-save-state" id="breadcrumbs">
         <ul class="breadcrumb">
             <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="{% url 'hello' %}">Home </a> </li>
+            <li> <i class="ace-icon"> </i> <span>{{ taskName }} </span> </li>
 
         </ul>
         <!-- /.breadcrumb -->
@@ -235,7 +238,7 @@
             <b class="arrow"></b>
         </li>
         <li class="">
-            <a href="#" onclick="redirectToTaskPage('Proposal scrutiny');">
+            <a href="/proposalScrutinyTaskList/">
                 <i class="menu-icon fa fa-support"></i>
                 <span class="menu-text"> Proposal Scrutiny
                     <span id="Proposal_scrutiny" class="badge badge-danger">0</span>
@@ -244,24 +247,24 @@
             <b class="arrow"></b>
         </li>
         <li class="">
-            <a href="#">
+            <a href="#" onclick="redirectToTaskPage('Approve Loan');">
                 <i class="menu-icon glyphicon glyphicon-share-alt"></i>
-                <span class="menu-text">L - Approval Task
-                    <span class="badge badge-danger">0</span>
+                <span class="menu-text"> Approve Loan
+                    <span  id="Approve_Loan" class="badge badge-danger">0</span>
                 </span>
             </a>
             <b class="arrow"></b>
         </li>
         <li class="">
-            <a href="#">
+            <a href="/queryRespTaskList/">
                 <i class="menu-icon glyphicon glyphicon-retweet"></i>
                 <span class="menu-text"> BM Reply
-                    <span class="badge badge-danger">0</span>
+                    <span id="BM_Reply" class="badge badge-danger">0</span>
                 </span>
             </a>
             <b class="arrow"></b>
         </li>
-        <li class="">
+        <!--li class="">
             <a href="#">
                 <i class="menu-icon glyphicon glyphicon-remove-sign"></i>
                 <span class="menu-text"> Raised Query
@@ -287,7 +290,7 @@
                 </span>
             </a>
             <b class="arrow"></b>
-        </li>
+        </li-->
     </ul>
     <!-- /.nav-list -->
     <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse"> <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"> </i> </div>
@@ -297,6 +300,7 @@
     <div class="breadcrumbs ace-save-state" id="breadcrumbs">
         <ul class="breadcrumb">
             <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="{% url 'hello' %}">Home </a> </li>
+            <li> <i class="ace-icon"> </i> <span>{{ taskName }} </span> </li>
 
         </ul>
         <!-- /.breadcrumb -->

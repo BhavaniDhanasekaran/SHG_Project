@@ -1,7 +1,7 @@
 var groupId = groupId;
-
+var loanTypeId;
 function loanDocument(loanTypeId) {
-    var loanTypeId = loanTypeId;
+    loanTypeId = loanTypeId;
     var docURLDict = {};
     var documentData;
     var docUploadedDict = {};
@@ -33,7 +33,7 @@ function loanDocument(loanTypeId) {
                                     '<td><input type = "file" name = "' + documentData[key]["documentName"] + '" id = "' + documentData[key]["documentId"] + '" style="display: none;" /></input>' +
                                     '<span><button type="button" style="display:none;" class="btn btn-primary js-upload-photos" id = "' + documentData[key]["documentId"] + '_1' + '" name="' + documentData[key]["documentName"] + '_' + documentData[key]["documentId"] + '"></span>' +
                                     '<span class="glyphicon glyphicon-cloud-upload"></span> Upload  </button>' +
-                                    '<span><button type="button"  onclick="window.open(' + "'" + docURLDict[key1].split("*")[0] + "'" + ').focus();" class="btn btn-danger" id = "' + documentData[key]["documentId"] + '_2' + '" name="' + documentData[key]["documentName"] + '_' + documentData[key]["documentId"] + '"></span>' +
+                                    '<span><button type="button"  onclick="window.open(' + "'" + docURLDict[key1].split("*")[0] + "'" +","+documentData[key]["documentId"]+","+"width=200,height=100" +').focus();" class="btn btn-danger" id = "' + documentData[key]["documentId"] + '_2' + '" name="' + documentData[key]["documentName"] + '_' + documentData[key]["documentId"] + '"></span>' +
                                     '<span class="glyphicon glyphicon-cloud-upload"></span> View  </button>' +
                                     '<input type = "file" id="' + documentData[key]["documentId"] + '_Edit' + '" style="display: none;" /></input>' +
                                     '<span>   <button type="button"  class="btn btn-success js-upload-photos2" id = "' + documentData[key]["documentId"] + '_1' + '" name="' + docURLDict[key1].split("*")[1] + '"></span>' +
@@ -165,6 +165,7 @@ function UpdateUrl(loanId,groupId, oldfileName, s3url, fileid) {
             if (data.code == '8000') {
                 //$("#loading").hide();
                 $.alert("Document Uploaded Successfully.");
+                loanDocument(loanTypeId);
                 $("#" + fileid + "_1").css("display", "none");
                 $("#" + fileid + "_3").css("display", "inline-block");
                 $("#" + fileid + "_2").css("display", "inline-block");
@@ -243,6 +244,7 @@ function EditUrl(loanId,groupId, UniqueId, s3url, newdoceditId,loanId) {
             if (data.code == "8001") {
                 //$("#loading").hide();
                 $.alert("Document Updated Successfully.");
+                loanDocument(loanTypeId);
                 $("#" + newdoceditId + "_2").attr('onClick', 'window.open(' + "'" + s3url + "'" + ').focus();');
                 //$("#" + newdoceditId + "_3").attr('name',data.data);
                 //$("#"+fileid+"_2").attr('onClick', 'window.open ('+"'"+s3url+"'"+',"mywindow","menubar=1,resizable=1,width=350,height=250");');

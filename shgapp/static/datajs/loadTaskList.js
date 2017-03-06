@@ -11,7 +11,7 @@ function loadUnassignedTaskList(data){
 		var obj={};
 		if(groupTaskdata[key]["name"]  && groupTaskdata[key]["created"]){
 			obj["slNo"] = parseInt(key)+1;
-			if(groupTaskdata[key]["chekcbrespdate"]){
+			/*if(groupTaskdata[key]["chekcbrespdate"]){
 				if(groupTaskdata[key]["chekcbrespdate"] == "resolved"){
 					obj["taskName"] = groupTaskdata[key]["name"]+' (BM Reply) ';
 				}
@@ -19,9 +19,9 @@ function loadUnassignedTaskList(data){
 				    obj["taskName"] = groupTaskdata[key]["name"];
                 }
 			}
-			else{
+			else{*/
 				obj["taskName"] = groupTaskdata[key]["name"];
-			}
+			//}
 			var createdDateTime = groupTaskdata[key]["created"].split("T");
 			var createdDate = createdDateTime[0].split("-");
 			createdDate = createdDate[2]+"-"+createdDate[1]+"-"+createdDate[0]
@@ -30,7 +30,13 @@ function loadUnassignedTaskList(data){
 
 		}
 		if(groupTaskdata[key]["customerData"]){
-			var customerData = JSON.parse(groupTaskdata[key]["customerData"]);
+			var customerData;
+			if(typeof(groupTaskdata[key]["customerData"]) == "string") {
+				customerData = JSON.parse(groupTaskdata[key]["customerData"]);
+            }
+            if(typeof(groupTaskdata[key]["customerData"]) == "object"){
+				customerData = JSON.parse(groupTaskdata[key]["customerData"]["value"]);
+			}
 			var memberCount = customerData["memberDetails"].length;
 			for(var data in customerData){
 				obj["groupId"] = customerData["groupId"];
@@ -90,7 +96,9 @@ function loadUnassignedTaskList(data){
         table = $('#taskListTable').DataTable( {
             "pageLength": 50
         } );
-       // triggerLoadFunc();
+        if(taskName == "Query Response" || taskName == "Proposal scrutiny" || taskName == "BM Reply"){
+        	 triggerLoadFunc();
+		}
  }
 
 function loadAssignedTaskList(){
@@ -104,8 +112,8 @@ function loadAssignedTaskList(){
 			obj["slNo"] = parseInt(key)+1;
 			if(myTaskdata[key]["chekcbrespdate"]){
 				if(myTaskdata[key]["chekcbrespdate"] == "resolved"){
-					obj["taskName"] = '<a class="tdViewData">'+myTaskdata[key]["name"]+' (BM Reply) '+'</a>';
-					myTaskdata[key]["name"] = myTaskdata[key]["name"]+' (BM Reply)';
+					obj["taskName"] = '<a class="tdViewData">'+'BM Reply'+'</a>';
+					myTaskdata[key]["name"] = 'BM Reply';
 				}
 				else{
 				    obj["taskName"] = '<a class="tdViewData">'+myTaskdata[key]["name"]+'</a>';
@@ -124,7 +132,13 @@ function loadAssignedTaskList(){
 			obj["processInstanceId"] = myTaskdata[key]["processInstanceId"]
 		}
 		if(myTaskdata[key]["customerData"]){
-			var customerData = JSON.parse(myTaskdata[key]["customerData"]);
+			var customerData;
+			if(typeof(myTaskdata[key]["customerData"]) == "string") {
+				customerData = JSON.parse(myTaskdata[key]["customerData"]);
+            }
+            if(typeof(myTaskdata[key]["customerData"]) == "object"){
+				customerData = JSON.parse(myTaskdata[key]["customerData"]["value"]);
+			}
 			var memberCount = customerData["memberDetails"].length;
 			for(var data in customerData){
 				if(obj["taskName"] == "Query Response"){
@@ -184,7 +198,6 @@ function loadAssignedTaskList(){
                 { "mData": "clusterName","sTitle": "Cluster Name"  , "sWidth": "12%", className:"column"},
                 { "mData": "centerName","sTitle": "Center Name"  , "sWidth": "12%", className:"column"},
                 { "mData": "unClaim","sTitle": "UnClaim"  , "sWidth": "10%", className:"column"},
-
             ],
         }).fnDestroy();
         table = $('#taskListTable').DataTable( {
@@ -195,8 +208,8 @@ function loadAssignedTaskList(){
 $(document).ready(function (){
 	taskCount();
 	$('.tdViewData').click(function() {
-	    	var trId = $(this).closest('tr').attr('id');
-	    	var groupLoanID = trId;
+		var trId = $(this).closest('tr').attr('id');
+		var groupLoanID = trId;
 		groupLoanIDSplit = groupLoanID.split("_");
 		groupID = groupLoanIDSplit[0];
 		loanID = groupLoanIDSplit[1];
@@ -220,14 +233,21 @@ $(document).ready(function (){
 		triggerLoadFunc();
 	});
 	$('.button').click(function() {
-	    	var nRow = $(this).parent().parent()[0];
-	    	var table=$("#taskListTable").dataTable();
+		var nRow = $(this).parent().parent()[0];
+		var table=$("#taskListTable").dataTable();
 		table.fnDeleteRow( nRow, null, true );
 		var rows = $('#taskListTable >tbody >tr').length;
-		if(rows == 1){
-			if($('td').hasClass('dataTables_empty')) {
-				window.location.reload();
-			}
+		if(rows == 1 && $('td').hasClass('dataTables_empty')){
+
+				if(taskName){
+					if(taskName != "Query Response"){
+						window.location.reload();
+					}
+				}
+				else{
+					window.location.reload();
+				}
+
 		}
 	});
 });
@@ -251,10 +271,15 @@ function triggerLoadFunc(){
 	    	var table=$("#taskListTable").dataTable();
 		table.fnDeleteRow( nRow, null, true );
 		var rows = $('#taskListTable >tbody >tr').length;
-		if(rows == 1){
-			if($('td').hasClass('dataTables_empty')) {
-				window.location.reload();
-			}
+		if(rows == 1 && $('td').hasClass('dataTables_empty')){
+				if(taskName){
+					if(taskName != "Query Response"){
+						window.location.reload();
+					}
+				}
+				else{
+					window.location.reload();
+				}
 		}
 	});
 
@@ -291,7 +316,6 @@ function taskCount(){
 	    }
 	});
 }
-
 
 function claim(d){
 	$.ajax({

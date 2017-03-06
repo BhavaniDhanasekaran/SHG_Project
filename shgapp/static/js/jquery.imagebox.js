@@ -153,7 +153,9 @@
 
 
   function rotateImage(options){
+        var  rotateDeg = 0;
     $('.rotate').click(function() {
+
       if(options.rotateDirection == 'right'){
         rotateDeg += 90;
         if(rotateDeg == 360){

@@ -42,6 +42,7 @@
                 <span id="groupName"></span> &nbsp&nbsp&nbsp(
                 <span id="appGroupId"></span> )
                 <span id="groupId" style="visibility:hidden;"></span>
+                <span id="loanTypeId1" style="visibility:hidden;"></span>
             </div>
             <div class="panel-body-danger">
                 <!-- tab start-->
@@ -176,8 +177,8 @@
                                                         &nbsp;&nbsp;
 
                                                     <div id="idProof" style="display:inline-block;margin-top: 4px">
-                                                        <img id="IDPROOF_docPath" class="img img-test" style="width:30px;height:21px;" data-url="" src="" ></img>
-                                                        <img id="IDPROOF_2_docPath" class="img img-test" style="width:30px;height:21px;" data-url="" src="" >
+                                                        <img id="IDPROOF_docPath" style="display:none;width:30px;height:21px;" data-url="" src="" ></img>
+                                                        <img id="IDPROOF_2_docPath" style="display:none;width:30px;height:21px;" data-url="" src="" >
                                                             <!--button type="button" class="btn btn-info btn-md btn-danger" id="myBtn2">view proof</button-->
                                                         </img>
                                                     </div>
@@ -190,8 +191,8 @@
                                                         &nbsp;&nbsp;
 
                                                     <div id="idProof" style="display:inline-block;margin-top: 4px">
-                                                        <img id="ADDRESSPROOF_docPath" class="img img-test" style="width:30px;height:21px;" data-url="" src="" ></img>
-                                                        <img id="ADDRESSPROOF_2_docPath" class="img img-test" style="width:30px;height:21px;" data-url="" src="" >
+                                                        <img id="ADDRESSPROOF_docPath" style="display:none;width:30px;height:21px;" data-url="" src="" ></img>
+                                                        <img id="ADDRESSPROOF_2_docPath" style="display:none;width:30px;height:21px;" data-url="" src="" >
                                                             <!--button type="button" class="btn btn-info btn-md btn-danger" id="myBtn2">view proof</button-->
                                                         </img>
                                                     </div>
@@ -202,7 +203,7 @@
                                                 <div class="profile-info-value">
                                                     <span class="editable" id="sbAccountNumber"></span>
                                                     <div style="display:inline-block;margin-top: 4px">
-                                                        <img id="SBACCOUNTPASSBOOK_docPath" class="img img-test" style="width:30px;height:21px;" data-url="" src="" ></img>
+                                                        <img id="SBACCOUNTPASSBOOK_docPath" style="display:none;width:30px;height:21px;" data-url="" src="" ></img>
                                                     </div>
                                                 </div>
                                             </div>
@@ -298,16 +299,8 @@
                                             <!-- PAGE CONTENT BEGINS -->
                                             <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
                                                 <div class="widget-box widget-color-blue" id="widget-box-2">
-                                                    <div class="widget-header">
-                                                        <h5 class="widget-title bigger lighter">
-                                                            Credit Enquiry
-                                                        </h5>
-                                                        <div class="widget-toolbar widget-toolbar-light no-border">
-                                                            <select id="simple-colorpicker-1" class="hide"></select>
-                                                        </div>
-                                                    </div>
                                                     <div class="widget-body">
-                                                        <div class="widget-main no-padding" style="height: 200px; overflow: auto;">
+                                                        <div class="widget-main no-padding" style="overflow: auto;">
                                                             <table class="table table-striped table-bordered table-hover">
                                                                 <thead class="thin-border-bottom">
                                                                     <tr>

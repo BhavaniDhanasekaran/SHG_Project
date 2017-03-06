@@ -127,7 +127,7 @@ def KYCTasksGroupByDate(request,dateFrom,dateTo):
             if data["value"] == "resolved":
                 processInstancesQRArr.append(data["processInstanceId"])
 
-    #Group Task Assign:	
+    #Group Task Assign:
     for key in kycTaskDict:
         if key not in processInstancesQRArr:
             kycTaskData.append(kycTaskDict[key])
@@ -188,7 +188,7 @@ def assignedTaskList(request):
 
     print "myTaskDict"
     print myTaskDict
-    #Group Task Assign:	
+    #Group Task Assign:
     for key in myTaskDict:
         if groupName == "DataSupportTeam":
             if myTaskDict[key].has_key("kyc"):
@@ -271,19 +271,22 @@ def tasksCount( request ):
                     else:
                         taskCount [data["name"]] = taskCount[data["name"]] + 1
                 else:
-                    taskCount[data["name"]] = 1
-                    grp_body_cont = {"processVariables": [{"name": "kyc", "operator": "eq", "value": "resolved"}],
-                                     "unassigned": "true", "candidateGroup": "DataSupportTeam"}
-                    groupTaskList = camundaClient._urllib2_request('task?firstResult=0', grp_body_cont,
-                                                                   requestType='POST')
-                    if groupTaskList:
-                        if groupTaskList[0]:
-                            taskCount["Query Response"] = len(groupTaskList)
-                            queryCount = len(groupTaskList)
+                    if data["name"] != "KYC Check":
+                        taskCount[data["name"]] = 1
+                    else:
+                        taskCount[data["name"]] = 1
+                        grp_body_cont = {"processVariables": [{"name": "kyc", "operator": "eq", "value": "resolved"}],
+                                         "unassigned": "true", "candidateGroup": "DataSupportTeam"}
+                        groupTaskList = camundaClient._urllib2_request('task?firstResult=0', grp_body_cont,
+                                                                       requestType='POST')
+                        if groupTaskList:
+                            if groupTaskList[0]:
+                                taskCount["Query Response"] = len(groupTaskList)
+                                BMReplyCount = len(groupTaskList)
+                            else:
+                                taskCount["Query Response"] = 0
                         else:
                             taskCount["Query Response"] = 0
-                    else:
-                        taskCount["Query Response"] = 0
             if taskCount.has_key('KYC Check'):
                 taskCount ["KYC Check"]  = taskCount["KYC Check"] - queryCount
             else:
@@ -337,7 +340,6 @@ def tasksCount( request ):
             else:
                 taskCount ["Proposal scrutiny"] = 0
                 taskCount["BM Reply"] = 0
-
 
 
         taskData = {  'Task' : taskCount   }
@@ -409,7 +411,7 @@ def queryRespTaskList(request):
             if data["processInstanceId"] in QRTaskDict:
                 QRTaskDict[data["processInstanceId"]][data["name"] ] = data["value"]
 
-    #Group Task Assign:	
+    #Group Task Assign:
     for key in QRTaskDict:
         if groups[0] == "DataSupportTeam":
             if  QRTaskDict[key]["name"] == "KYC Check":
@@ -469,7 +471,7 @@ def getHistoryComments(request,processId):
         else:
             return HttpResponse(json.dumps({"Message":"No data"}), content_type='text/plain')
     except ShgInvalidRequest, e:
-        return helper.bad_request('Unexpected error occurred.')  
+        return helper.bad_request('Unexpected error occurred.')
 
 def proposalScrutinyTaskList(request):
     print "Entering proposalScrutinyTaskList(request): view "
