@@ -198,7 +198,6 @@ function loadAssignedTaskList(){
                 { "mData": "clusterName","sTitle": "Cluster Name"  , "sWidth": "12%", className:"column"},
                 { "mData": "centerName","sTitle": "Center Name"  , "sWidth": "12%", className:"column"},
                 { "mData": "unClaim","sTitle": "UnClaim"  , "sWidth": "10%", className:"column"},
-
             ],
         }).fnDestroy();
         table = $('#taskListTable').DataTable( {
@@ -209,8 +208,8 @@ function loadAssignedTaskList(){
 $(document).ready(function (){
 	taskCount();
 	$('.tdViewData').click(function() {
-	    	var trId = $(this).closest('tr').attr('id');
-	    	var groupLoanID = trId;
+		var trId = $(this).closest('tr').attr('id');
+		var groupLoanID = trId;
 		groupLoanIDSplit = groupLoanID.split("_");
 		groupID = groupLoanIDSplit[0];
 		loanID = groupLoanIDSplit[1];
@@ -234,12 +233,12 @@ $(document).ready(function (){
 		triggerLoadFunc();
 	});
 	$('.button').click(function() {
-	    	var nRow = $(this).parent().parent()[0];
-	    	var table=$("#taskListTable").dataTable();
+		var nRow = $(this).parent().parent()[0];
+		var table=$("#taskListTable").dataTable();
 		table.fnDeleteRow( nRow, null, true );
 		var rows = $('#taskListTable >tbody >tr').length;
-		if(rows == 1){
-			if($('td').hasClass('dataTables_empty')) {
+		if(rows == 1 && $('td').hasClass('dataTables_empty')){
+
 				if(taskName){
 					if(taskName != "Query Response"){
 						window.location.reload();
@@ -248,7 +247,7 @@ $(document).ready(function (){
 				else{
 					window.location.reload();
 				}
-			}
+
 		}
 	});
 });
@@ -272,8 +271,7 @@ function triggerLoadFunc(){
 	    	var table=$("#taskListTable").dataTable();
 		table.fnDeleteRow( nRow, null, true );
 		var rows = $('#taskListTable >tbody >tr').length;
-		if(rows == 1){
-			if($('td').hasClass('dataTables_empty')) {
+		if(rows == 1 && $('td').hasClass('dataTables_empty')){
 				if(taskName){
 					if(taskName != "Query Response"){
 						window.location.reload();
@@ -282,7 +280,6 @@ function triggerLoadFunc(){
 				else{
 					window.location.reload();
 				}
-			}
 		}
 	});
 

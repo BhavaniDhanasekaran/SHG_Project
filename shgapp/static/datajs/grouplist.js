@@ -281,7 +281,6 @@ function updateMemValidationStatus(status) {
                 commentCamunda = comment + "*@*" + memberName + "*@*" + appMemberId;
                 dataObj['message'] = commentCamunda;
             }
-
         }
     }
     if (group == "DataSupportTeam") {
@@ -682,6 +681,7 @@ function creditHistory(loanId) {
                 for (var i = 0; i < creditData.data.length; i++) {
                     var creditObj = creditData["data"][i]["creditInquiry"];
                     documentObj = creditData["data"][i]["memberDocument"];
+                    console.log(documentObj);
                     var documentPath = '';
                     for (var j = 0; j < documentObj.length; j++) {
                         if (documentObj[j]["documentType"] == "OVERLAPREPORT") {
@@ -755,7 +755,6 @@ function rmGroupMaster(groupId) {
         },
         success: function(data) {
             var groupViewData2 = data;
-            console.log("!!!!!!",groupViewData2);
             if(groupViewData2["data"]["groupMemDetail"]){
                 var found_names = $.grep(groupViewData2.data.groupMemDetail, function(v) {
                     return v.memberStatus != "Rejected";
@@ -807,7 +806,6 @@ function loadGroupRoles(groupId, loanId, taskName) {
         success: function(data) {
             document.getElementById("loanTypeId1").innerHTML = data["data"]["loanTypeId"];
             var groupDetails = data["data"]["groupDetails"];
-            console.log(groupDetails);
             for (var key in groupDetails) {
                 if (document.getElementById(key)) {
                     document.getElementById(key).innerHTML = groupDetails[key];
@@ -930,7 +928,6 @@ function updateTask(status) {
 
 
 function getHistComments(processId) {
-    console.log(processId);
     var htmlContent = '';
     $.ajax({
         url: '/getHistoryComments/' + processId,
@@ -1055,7 +1052,6 @@ function updateGroupMemberStatus() {
             enableActiveTab();
         },
         success: function(data) {
-            console.log(data);
             if (data.code == '2024') {
                 $.alert("Member roles have been updated successfully");
             }
@@ -1074,7 +1070,6 @@ function getLoanDetails(groupId, loanId) {
         success: function(data) {
             var htmlContent = '';
             var creditData = data;
-            console.log("creditData",creditData);
             var loanDetails = data["data"]["loanDetails"];
             if(document.getElementById("loanTypeName")){
                 document.getElementById("loanTypeName").innerHTML = loanDetails["loanTypeName"];
@@ -1135,15 +1130,15 @@ function getLoanDetails(groupId, loanId) {
                         ' <input type="text" name="m2street_' + i + '" value=' + creditObj["loanAmount"] + '></td><td>' +
                         ' <input type="text" style="width: 45px;" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["awb"] + '></td><td>' +
                         ' <input type="text" style="width: 45px;" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["sellingPrice"] + '></td><td>' +
-                        ' <input type="text" style="width: 45px;" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["sundryDebt"] + '></td><td>'
+                        creditObj["sundryDebt"] + '</td><td>'
 
                         +
-                        ' <input type="text" style="width: 50px;" name="m2street_' + i + '" value=' + creditObj["processingFee"] + '></td><td>' +
-                        ' <input type="text" style="width: 45px;" name="m2street_' + i + '" value=' + creditObj["serviceTax"] + '></td><td>' +
-                        ' <input type="text" style="width: 45px;" name="m2street_' + i + '" value=' + creditObj["educationCess"] + '></td><td>'
+                        creditObj["processingFee"] + '</td><td>' +
+                        creditObj["serviceTax"] + '</td><td>' +
+                        creditObj["educationCess"] + '</td><td>'
 
                         +
-                        ' <input type="text" style="width: 50px;" name="m2street_' + i + '" value=' + creditObj["insuranceAmount"] + '></td><td>' +
+                        '<font readonly="readonly" style="width: 45px;" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["insuranceAmount"] + '>'+ creditObj["insuranceAmount"] +'</font></td><td>' +
                         creditObj["memNetLoanAmount"] + '</td><td>' +
                         '<select class="purpose2"  id="purpose_' + creditObj["memberId"] + '   name="purpose"><option value='+creditObj["purposeId"]+'>'+creditObj["purpose"]+'</option></select></td><td>'
 
@@ -1210,7 +1205,6 @@ function loadDataTable(){
 }
 
 function dropMemberDetail(loanId, dropMember, groupId) {
-    console.log(dropMember);
     var dataObj2 = {};
     var uploadData = {
         "loanId": String(loanId),
@@ -1218,7 +1212,6 @@ function dropMemberDetail(loanId, dropMember, groupId) {
         "userId": "1996"
 
     }
-    console.log(uploadData);
     dataObj2["uploadData"] = uploadData;
     $.ajax({
         url: '/dropMemberDetail/',
@@ -1227,6 +1220,8 @@ function dropMemberDetail(loanId, dropMember, groupId) {
         success: function(data) {
             if (data.code == "2025") {
                 $.alert("Members dropped successfully.");
+                $("#paymentTable").dataTable().fnDestroy();
+                getLoanDetails(groupId, loanId);
             } else {
                 $.alert("Error on dropping members");
             }
@@ -1308,7 +1303,6 @@ function approveLoan(updateloanData){
             return false;
         }
     }
-    console.log(groupName,appGroupId,loanTypeName);
     var loanData = {
                         "groupId": groupId,
                         "loanId": loanId,
@@ -1338,7 +1332,6 @@ function approveLoan(updateloanData){
            if(data.code == "2032"){
                $.alert("Loan has been approved");
                var loanAccNumber = data["data"]["loanAccountNumber"];
-               console.log(groupName,appGroupId,loanTypeName,loanAccNumber);
                window.location.href = "/loanAccNo/"+loanAccNumber+'/'+appGroupId+'/'+loanTypeName+'/'+groupName;
            }
            if(data.code == "2034"){
