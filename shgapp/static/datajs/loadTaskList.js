@@ -11,17 +11,7 @@ function loadUnassignedTaskList(data){
 		var obj={};
 		if(groupTaskdata[key]["name"]  && groupTaskdata[key]["created"]){
 			obj["slNo"] = parseInt(key)+1;
-			/*if(groupTaskdata[key]["chekcbrespdate"]){
-				if(groupTaskdata[key]["chekcbrespdate"] == "resolved"){
-					obj["taskName"] = groupTaskdata[key]["name"]+' (BM Reply) ';
-				}
-				else{
-				    obj["taskName"] = groupTaskdata[key]["name"];
-                }
-			}
-			else{*/
-				obj["taskName"] = groupTaskdata[key]["name"];
-			//}
+			obj["taskName"] = groupTaskdata[key]["name"];
 			var createdDateTime = groupTaskdata[key]["created"].split("T");
 			var createdDate = createdDateTime[0].split("-");
 			createdDate = createdDate[2]+"-"+createdDate[1]+"-"+createdDate[0]
@@ -203,6 +193,7 @@ function loadAssignedTaskList(){
         table = $('#taskListTable').DataTable( {
         	"pageLength": 50
         } );
+
 }
 
 $(document).ready(function (){
@@ -237,8 +228,9 @@ $(document).ready(function (){
 		var table=$("#taskListTable").dataTable();
 		table.fnDeleteRow( nRow, null, true );
 		var rows = $('#taskListTable >tbody >tr').length;
-		if(rows == 1 && $('td').hasClass('dataTables_empty')){
-
+		console.log("rows",rows);
+		if(rows == 1){
+			if($('td').hasClass('dataTables_empty')){
 				if(taskName){
 					if(taskName != "Query Response"){
 						window.location.reload();
@@ -247,7 +239,7 @@ $(document).ready(function (){
 				else{
 					window.location.reload();
 				}
-
+			}
 		}
 	});
 });
@@ -271,7 +263,9 @@ function triggerLoadFunc(){
 	    	var table=$("#taskListTable").dataTable();
 		table.fnDeleteRow( nRow, null, true );
 		var rows = $('#taskListTable >tbody >tr').length;
-		if(rows == 1 && $('td').hasClass('dataTables_empty')){
+		console.log("rows",rows);
+		if(rows == 1){
+			if($('td').hasClass('dataTables_empty')){
 				if(taskName){
 					if(taskName != "Query Response"){
 						window.location.reload();
@@ -280,16 +274,15 @@ function triggerLoadFunc(){
 				else{
 					window.location.reload();
 				}
+			}
 		}
 	});
-
-
 }
 
 
 function taskCount(){
 	$.ajax({
-	    url: '/tasksCount',
+	    url: '/tasksCount/',
 	    dataType: 'json',
 	    success: function (data) {
 		if(data["Task"]){

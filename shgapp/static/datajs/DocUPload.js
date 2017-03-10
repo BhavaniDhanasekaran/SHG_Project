@@ -153,7 +153,7 @@ function UpdateUrl(loanId,groupId, oldfileName, s3url, fileid) {
         "loanId" : String(loanId),
         "name": String(oldfileName),
         "docSize": "0",
-        "userId": "1996",
+        "userId": userId,
         "docPathServer": String(s3url)
     }
     dataObj["uploadData"] = uploadData;
@@ -232,7 +232,7 @@ function EditUrl(loanId,groupId, UniqueId, s3url, newdoceditId,loanId) {
         "loanId": String(loanId),
         "id": String(UniqueId),
         "docSize": "0",
-        "userId": "1996",
+        "userId": userId,
         "docPathServer": String(s3url)
     }
     dataObj2["uploadData"] = uploadData;

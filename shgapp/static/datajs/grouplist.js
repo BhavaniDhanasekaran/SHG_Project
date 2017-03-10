@@ -144,7 +144,7 @@ function getMemberDetails(memberId, groupId, loanId) {
                                 //Need to change with proper URL - Coded just for images display
                                 if (memberDocumentsArray[key]["documentType"]) {
                                     if (memberDocumentsArray[key]["documentType"] == "OVERLAPREPORT") {
-                                        $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr('onClick', 'window.open(' + "'" + memberDocumentsArray[key]["documentPath"] + "'" + ').focus();');
+                                        $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr('onClick', 'window.open(' + "'" + memberDocumentsArray[key]["documentPath"] + "'" + "," + memberDocumentsArray[key]["docId"] + "," + "width=100,height=100" + ').focus();');
                                     }
 
                                     if (memberDocumentsArray[key]["documentPath"].indexOf("Not%20uploaded") != -1) {
@@ -154,16 +154,13 @@ function getMemberDetails(memberId, groupId, loanId) {
                                         } else {
                                             $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").css("display", "none");
                                         }
-
                                     } else {
                                         $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").css("display", "inline-block");
-                                        if(memberDocumentsArray[key]["documentType"] != "OVERLAPREPORT"){
+                                        if (memberDocumentsArray[key]["documentType"] != "OVERLAPREPORT") {
                                             $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").addClass("img img-test");
                                         }
                                         $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", memberDocumentsArray[key]["documentPath"]);
                                         $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("data-url", memberDocumentsArray[key]["documentPath"]);
-                                        $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr('onClick', 'window.open(' + "'" + memberDocumentsArray[key]["documentPath"] + "'" + ","+memberDocumentsArray[key]["docId"]+","+"width=100,height=100"+').focus();');
-
                                         $("#idProof").imageBox();
                                     }
                                 }
@@ -235,7 +232,14 @@ function getMemberDetails(memberId, groupId, loanId) {
  */
 
 function updateMemValidationStatus(status) {
-    var memberName = document.getElementById("memberName").innerHTML;
+    var memberName = '';
+    var tagname = document.getElementById("memberName").tagName;
+    if(tagname == "SPAN"){
+         memberName = document.getElementById("memberName").innerHTML;
+    }
+    if(tagname == "INPUT"){
+         memberName = document.getElementById("memberName").value;
+    }
     var appMemberId = document.getElementById("appMemberId").innerHTML;
     var memberId = document.getElementById("memberId").innerHTML;
     var groupId = document.getElementById("groupId").innerHTML;
@@ -258,7 +262,7 @@ function updateMemValidationStatus(status) {
               validationType = "";
          }*/
     }
-    if (group == "CLM_BM" || group == "CLM") {
+    if (group == "CMR" || group == "CLM" || group == "BM") {
         if (taskName == "Resolve Data Support Team Query") {
             validationType = "PRE";
             if (comment == "") {
@@ -302,7 +306,7 @@ function updateMemValidationStatus(status) {
         "loanTypeId" :loanTypeId,
         "loanId": loanId,
         "subStatus": status,
-        "userId": "1996",
+        "userId": userId,
         "comment": comment,
         "checkList": "",
         "validationType": validationType,
@@ -432,7 +436,7 @@ function submitKYCForm(status) {
         "loanId": loanId,
         "loanTypeId" :loanTypeId,
         "subStatus": status,
-        "userId": "1996",
+        "userId": userId,
         "comment": comment,
         "checkList": "",
         "validationType": "POSTKYC",
@@ -445,7 +449,7 @@ function submitKYCForm(status) {
         "memberId": memberId,
         "groupId": groupId,
         "loanId": loanId,
-        "userId": "1669",
+        "userId": userId,
         "name": name,
         "age": age,
         "maritalStatus": maritalStatus,
@@ -558,7 +562,7 @@ function checkForTaskCompletion() {
         }
     }
 
-    if (group == "CLM_BM" || group == "CLM") {
+    if (group == "CMR" || group == "CLM" || group == "BM") {
         var dataObj = {};
         if (taskName == "Resolve Data Support Team Query") {
             validationType = "POSTKYC";
@@ -780,7 +784,7 @@ function rmGroupMaster(groupId) {
 function loadGroupRoles(groupId, loanId, taskName) {
     var dataObj = {};
     var validationType = '';
-    if (group == "CLM_BM" || group == "CLM") {
+    if (group == "CMR" || group == "CLM" || group == "BM") {
         if(taskName == "Print Loan Documents & FSR"){
             validationType = "PEN"
         }
@@ -836,7 +840,7 @@ function updateGroupValStatus(status) {
         }
     }
 
-    if (group == "CLM_BM" || group == "CLM") {
+    if (group == "CMR" || group == "CLM" || group == "BM") {
         if(taskName == "Upload loan documents in Web application"){
             validationType = "CLMAPPROVAL";
         }
@@ -859,7 +863,7 @@ function updateGroupValStatus(status) {
         "groupId": groupId,
         "loanTypeId" :loanTypeId,
         "subStatus": status,
-        "userId": "1996",
+        "userId": userId,
         "comment": comment,
         "validationType": validationType,
         "entityType": "GROUP"
@@ -1028,7 +1032,7 @@ function updateGroupMemberStatus() {
         "entityType": "GROUP",
         "validationType": "POST",
         "groupId": groupId,
-        "userId": "1669",
+        "userId": userId,
         "animator": nAnimator,
         "rep1": nrepm1,
         "rep2": nrepm2
@@ -1209,7 +1213,7 @@ function dropMemberDetail(loanId, dropMember, groupId) {
     var uploadData = {
         "loanId": String(loanId),
         "memberIds": dropMember,
-        "userId": "1996"
+        "userId": userId
 
     }
     dataObj2["uploadData"] = uploadData;
@@ -1252,7 +1256,7 @@ function updateloanDatail(updateloanData) {
         "loanId": String(loanId),
         "installments" : installment,
         "memberLoanDetails": eval(updateloanData),
-        "userId": "1996"
+        "userId": userId
     }
     dataObj3["uploadData"] = uploadData2;
     $.ajax({
@@ -1309,7 +1313,7 @@ function approveLoan(updateloanData){
                         "loanTypeId" :loanTypeId,
                         "entityType": "LOAN",
                         "validationType": "POST",
-                        "userId":101,
+                        "userId":userId,
                         "subStatus":"POST_KYC_VALIDATED",
                         "installments" : installment,
                         "memberLoanDetails": eval(updateloanData),
@@ -1332,7 +1336,21 @@ function approveLoan(updateloanData){
            if(data.code == "2032"){
                $.alert("Loan has been approved");
                var loanAccNumber = data["data"]["loanAccountNumber"];
-               window.location.href = "/loanAccNo/"+loanAccNumber+'/'+appGroupId+'/'+loanTypeName+'/'+groupName;
+               /*var dataArr = {};
+                dataArr["loanAccNo"] = data["data"]["loanAccountNumber"];
+                dataArr["appGroupId"] = appGroupId;
+                dataArr["loanTypeName"] = loanTypeName;
+                dataArr["groupName"] = groupName;
+                $.ajax({
+                    url: '/generateLoanAccNum/',
+                    dataType: 'json',
+                    type: "POST",
+                    sucess: function (data) {
+                        console.log(data);
+                    },
+                    data: JSON.stringify(dataArr)
+                });*/
+                window.location.href = "/loanAccNo/"+loanAccNumber+'/'+appGroupId+'/'+loanTypeName+'/'+groupName;
            }
            if(data.code == "2034"){
                $.alert(data["message"]);
@@ -1342,3 +1360,22 @@ function approveLoan(updateloanData){
     });
 }
 
+function validate(evt) {
+    var theEvent = evt || window.event;
+    var key = theEvent.keyCode || theEvent.which;
+    key = String.fromCharCode(key);
+    var regex = /[0-9]/;
+    if (!regex.test(key)) {
+        theEvent.returnValue = false;
+        if (theEvent.preventDefault)
+            theEvent.preventDefault();
+    }
+}
+
+
+function alpha(e) {
+    var k;
+    document.all ? k = e.keyCode : k = e.which;
+    console.log(k,e);
+    return ((k >= 63 && k <= 91) || (k >= 97 && k < 123) || (k >= 93 && k < 96) || k == 8 || k == 32 || k == 33 || (k >= 40 && k <= 59) || k == 61 ||( k >= 35 && k <= 38));
+}

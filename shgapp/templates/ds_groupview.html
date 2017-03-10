@@ -11,9 +11,11 @@
         var groupId = '{{ groupId | escapejs }}';
         var loanId = '{{ loanId | escapejs }}';
         var taskId = '{{ taskId | escapejs }}';
+        var userId = '{{ userId | escapejs }}';
         var taskName= '{{ taskId | escapejs }}';
         var processInstanceId = '{{ processInstanceId | escapejs }}';
         var group = '{{ group | escapejs }}';
+        console.log(userId);
         $(document).ready(function(){
             getGroupData(groupId,loanId);
             taskCount();
@@ -43,6 +45,7 @@
             <div class="panel panel-default" style="overflow-x:auto;">
                 <div class="panel-heading"><span id="groupName"></span> &nbsp&nbsp&nbsp( <span id="appGroupId"></span> ) <span id="groupId" style="visibility:hidden;"></span>
                 <span id="loanTypeId1" style="visibility:hidden;"></span> </div>
+
                 <div class="panel-body-danger">
                     <!--2row panel body start-->
                     <div class="tabbable">
@@ -86,14 +89,14 @@
                                                         <div id="memberName_label" class="profile-info-name"> Name <font class="mandatory">*</font> </div>
                                                         <div class="profile-info-value">
                                                     <span class="editable">    
-                                                    <input type="text"  id="memberName" placeholder="Member Name"></span>
+                                                    <input type="text"  id="memberName" placeholder="Member Name" onkeypress="return alpha(event)" onpaste="return alpha(event)"></span>
                                                         </div>
                                                     </div>
                                                     <div class="profile-info-row">
                                                         <div id="age_label" class="profile-info-name"> Age <font class="mandatory">*</font></div>
                                                         <div class="profile-info-value">
                                                     <span class="editable">  
-                                                    <input type="text"  id="age" placeholder="Age">
+                                                    <input type="text"  id="age" placeholder="Age" onkeypress='validate(event)' maxlength="3">
                                                     </span>
                                                         </div>
                                                     </div>
@@ -226,7 +229,7 @@
                                                 <div class="profile-info-row">
                                                     <div id="pincode_label" class="profile-info-name"> Pin Code <font class="mandatory">*</font></div>
                                                     <div class="profile-info-value">
-                                                        <span class="editable">    <input type="text" placeholder="Pincode" id="pincode" onchange="areasUnderPincode()" ></span>
+                                                        <span class="editable">    <input type="text" maxlength=6 placeholder="Pincode" id="pincode" onkeypress='validate(event)' onchange="areasUnderPincode()" ></span>
                                                     </div>
                                                 </div>
                                                 <div class="profile-info-row">
@@ -241,7 +244,7 @@
                                                 <div class="profile-info-row">
                                                     <div id="mobileNo_label" class="profile-info-name"> Mobile no <font class="mandatory">*</font></div>
                                                     <div class="profile-info-value">
-                                                        <span class="editable" >    <input type="text" placeholder="Mobile Number" id="mobileNo" maxlength="10"></span>
+                                                        <span class="editable" >    <input type="text" placeholder="Mobile Number" onkeypress='validate(event)' id="mobileNo" maxlength="10"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -297,7 +300,7 @@
                                                 &nbsp;&nbsp; <!--button type="button" class="btn btn-danger btn-md" id="myBtn2">Cancel</button-->
                                                 <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCForm('Rework');">Rework</button>
                                                 <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCForm('Approved');">Approve</button>
-                                                <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCForm('Rejected');">Reject</button>
+                                                <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="updateMemValidationStatus('Rejected');">Reject</button>
                                             </div>
                                         </div>
                                         <!--- tab final row end -->

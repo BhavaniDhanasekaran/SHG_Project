@@ -9,6 +9,7 @@
     var groupId = '{{ groupId | escapejs }}';
     var group= '{{ group | escapejs }}';
     var loanId = '{{ loanId | escapejs }}';
+    var userId = '{{ userId | escapejs }}';
     var taskName = '{{ taskName | escapejs }}';
     var taskId = '{{ taskId | escapejs }}';
 
@@ -129,7 +130,7 @@
                     <div class="profile-info-row">
                         <div class="profile-info-name2"> Installments</div>
                         <div class="profile-info-value">
-                            <input type="text" class="editable" id="loanInstallments"></input>
+                            <input type="text" class="editable" id="loanInstallments" onkeypress='validate(event)'></input>
                         </div>
                     </div></div>
                 </div>

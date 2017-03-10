@@ -13,4 +13,6 @@ def page_not_found(request):
     return render(request, 'error/404.html')
 
 def server_error(request):
-    return render(request, 'error/500.html')
+    userOfficeData = json.loads(request.session["userOfficeData"])
+    groupName = userOfficeData["designation"]
+    return render(request, 'error/500.html', {"group":groupName})

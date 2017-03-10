@@ -8,6 +8,7 @@ from shgapp.utils.sscoreclient import SSCoreClient
 from shgapp.utils.helper import Helper
 from shgapp.utils.shgexceptions import *
 from shgapp.views.camundaViews import taskComplete
+from shgapp.views.decorator import session_required
 from django.contrib.auth.decorators import login_required
 import json
 import urllib2
@@ -17,22 +18,31 @@ helper = Helper()
 sscoreClient = SSCoreClient()
 camundaClient = CamundaClient()
 
-
+@session_required
 def getTasksByTaskName(request,taskName):
     try:
         print "Entering getTasksByTaskName(request): view "
-        username = request.user
-        Grp = request.user.groups.all()
-        groups = request.user.groups.values_list('name',flat=True)
-        groupName = groups[0]
+        username = request.session["userName"]
+        userOfficeData = json.loads(request.session["userOfficeData"])
+        officeId = userOfficeData["officeId"]
+        groupName = userOfficeData["designation"]
         processInstancesArr = []
-        processInstancesQRArr = []
+        officeType = ''
         taskProVarList = []
-        taskProVarList1 = []
         groupTaskDict 	= {}
         groupTaskData	= []
-
-        grp_body_cont 	   = { "unassigned" : "true" , "name" : taskName, "candidateGroup" : str(groupName) }
+        grp_body_cont = {}
+        group = ''
+        if groupName == "RM":
+            grp_body_cont = {"unassigned": "true", "name": taskName, "candidateGroup": str(groupName),
+                             "processVariables": [{"name": "regionId", "operator": "eq", "value": officeId}]}
+        if groupName == "CLM" or groupName == "BM" or groupName == "CMR":
+            grp_body_cont = {"unassigned": "true", "name": taskName, "candidateGroup": "CLM",
+                             "processVariables": [{"name": "clusterId", "operator": "eq", "value": officeId}]}
+        if groupName == "CreditTeam":
+            grp_body_cont 	   = { "unassigned" : "true" , "name" : taskName, "candidateGroup" : str(groupName) }
+        print "grp_body_cont"
+        print grp_body_cont
         groupTaskList	  = camundaClient._urllib2_request('task?firstResult=0', grp_body_cont, requestType='POST')
         print "groupTaskList"
         print groupTaskList
@@ -40,7 +50,7 @@ def getTasksByTaskName(request,taskName):
             processInstancesArr.append(data["processInstanceId"])
             groupTaskDict[data["processInstanceId"]] = data
 
-        bodyData = {"processInstanceIdIn": processInstancesArr, "variableName": "groupstatus"}
+        bodyData = {"processInstanceIdIn": processInstancesArr, "variableName" : "groupstatus"}
         groupStatusList = camundaClient._urllib2_request('variable-instance', bodyData, requestType='POST')
         for data in groupStatusList:
             if data["value"] == "false":
@@ -62,13 +72,13 @@ def getTasksByTaskName(request,taskName):
 
         for key in groupTaskDict:
             groupTaskData.append(groupTaskDict[key])
-
         return HttpResponse(json.dumps(groupTaskData), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting task details.')
 
 
 @csrf_exempt
+@session_required
 def groupRoleDetails(request):
     print "Inside groupRoleDetails(request):"
     try:
@@ -83,6 +93,7 @@ def groupRoleDetails(request):
         return helper.bad_request('Unexpected error occurred while getting Credit History.')
 
 @csrf_exempt
+@session_required
 def updateGrpValidationStatus(request):
     print "Inside updateGrpValidationStatus(request):"
     try:
@@ -106,6 +117,7 @@ def updateGrpValidationStatus(request):
 
 
 @csrf_exempt
+@session_required
 def updateGroupMemberStatus(request):
     print "Inside updateGroupMemberStatus(request):"
     try:
@@ -117,4 +129,4 @@ def updateGroupMemberStatus(request):
             print validationResponse
             return HttpResponse(json.dumps(validationResponse), content_type="application/json")
     except ShgInvalidRequest, e:
-        return helper.bad_request('An expected error occurred while update Group Memeber Status details.')
+        return helper.bad_request('An expected error occurred while update Group Member Status details.')

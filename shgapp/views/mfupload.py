@@ -11,6 +11,7 @@ import mimetypes
 from django.utils.timezone import now as timezone_now
 from django.contrib.auth.decorators import login_required
 from shgapp.utils.helper import Helper
+from shgapp.views.decorator import session_required
 
 helper = Helper()
 s3Resource = boto3.resource('s3',
@@ -27,6 +28,7 @@ def create_random_string(length=30):
     symbols = string.ascii_lowercase + string.ascii_uppercase + string.digits
     return ''.join([random.choice(symbols) for x in range(length)])
 
+
 def upload_to_filename(filename):
     now = timezone_now()
     filename_base, filename_ext = os.path.splitext(filename)
@@ -37,6 +39,7 @@ def upload_to_filename(filename):
         filename_ext.lower()
     )
 
+@session_required
 def ajax_progress_bar_upload(request):
     print "called ajax_progress_bar_upload"
     print 'request: ', request
