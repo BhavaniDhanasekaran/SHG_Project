@@ -37,7 +37,7 @@ def signup(request):
 @csrf_exempt
 def signin(request):
     print 'signin'
-    if request.user.is_authenticated():
+    if 'userName' in request.session:
         print 'authenticated'
         return HttpResponseRedirect('/')
     else:
@@ -62,7 +62,11 @@ def signin(request):
                     request.session["userName"] =  userName
                     request.session["userId"] = userId
                     request.session["loginTime"] = datetime.datetime.now()
-                    return render(request, 'index.html', {"Message": "Successful login","group" : group, "userId" :userId,"user":userName})
+                    #return render(request, 'index.html', {"Message": "Successful login","group" : group, "userId" :userId,"user":userName})
+                    if 'next' in request.GET:
+                        return HttpResponseRedirect(request.GET['next'])
+                    else:
+                        return HttpResponseRedirect('/')
                 if loginResponse["code"] == 5002:
                     message = loginResponse["data"]["logInStatus"]
                     return render(request, 'auth/signin.html', {"Message": message})
