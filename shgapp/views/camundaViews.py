@@ -191,7 +191,8 @@ def assignedTaskList(request):
     for key in myTaskDict:
         if groupName == "DataSupportTeam":
             if myTaskDict[key].has_key("kyc"):
-                myTaskDict[key]["name"] = "Query Response"
+            	if myTaskDict[key]["kyc"] == "resolved":
+	                myTaskDict[key]["name"] = "Query Response"
             myTaskData.append(myTaskDict[key])
         if groupName == "CMR" or groupName == "CLM" or groupName == "BM":
             myTaskData.append(myTaskDict[key])

@@ -1,4 +1,4 @@
-var validationFields = ["memberName", "age", "husbandName", "fatherName", "address", "villageName", "idProofValue", "addressProofValue", "sbAccountNumber", "bankId", "sbAccountName",
+var validationFields = ["memberName", "age", "husbandName", "maritalStatus", "fatherName", "address", "villageName", "idProofValue", "addressProofValue", "sbAccountNumber", "bankId", "sbAccountName",
     "permanentAddress", "pincode", "villages", "mobileNo", "idProofTypeId", "addressProofTypeId", "loanAmount", "loanTypeValue"
 ];
 
@@ -64,6 +64,14 @@ function getGroupData(groupID, loanId) {
                         if (document.getElementById("groupId") && groupData["data"]["groupId"]) {
                             document.getElementById("groupId").innerHTML = groupData["data"]["groupId"];
                         }
+                    }
+                    var membersCount = document.getElementById("san_test").getElementsByTagName("a").length;
+                    var approvedCount = $('.Approved').length;
+                    var rejectedCount = $('.Rejected').length;
+                    var totalCount = approvedCount + rejectedCount;
+                    if(membersCount == totalCount){
+                        $("#operationsDivIdQuery").css("display","none");
+                        $("#groupApproveBtnIdQuery").css("display","block");
                     }
                     getMemberDetails(memId, groupID, loanId);
                 }
@@ -838,6 +846,12 @@ function updateGroupValStatus(status) {
             $.alert("Please input comment");
             return false;
         }
+    }
+    if( group == "DataSupportTeam"){
+        validationType = "PEN";
+    }
+    if( group == "CreditTeam"){
+        validationType = "POST";
     }
 
     if (group == "CMR" || group == "CLM" || group == "BM") {

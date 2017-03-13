@@ -265,27 +265,32 @@
                                         <div class="col-md-2"></div>
                                     </div>
                                 </br>
-                                <div class="row">
+                                <div class="row" id="commentDivIdQuery">
                                     <div class="col-md-2"></div>
-                                    <div id="commentDivId" class="col-md-10">
+                                    <div  class="col-md-10">
                                         <div class="form-group">
-                                            <label for="comment">Comment:</label>{% if taskName == "Resolve Data Support Team Query" %}
-                                            <font class="mandatory">*</font>{%  endif %}
-
-
+                                            <label for="comment">Comment:</label>
+                                            {% if taskName == "Resolve Data Support Team Query"%}
+                                                <font class="mandatory">*</font>
+                                            {%  endif %}
                                             <textarea class="form-control" rows="3" style="width:94%;" id="comment"></textarea>
+                                        </div>
+                                    </div>
+                                </div></div>
+                                    <div class="row" id="operationsDivIdQuery">
+                                        <div class="col-md-2"></div>
+                                        <div  class="col-md-10">&nbsp;&nbsp;
+                                            {% if group == "DataSupportTeam" %}
+                                            <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="updateMemValidationStatus('Rework');">Rework</button>
+                                            {% endif %}
+                                            <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="updateMemValidationStatus('Approved');">Approve</button>
+                                            <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="updateMemValidationStatus('Rejected');">Reject</button>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-2"></div>
-                                        <div id="operationsDivId" class="col-md-10">&nbsp;&nbsp;
-                                                    {% if group == "DataSupportTeam" %}
-
-                                            <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="updateMemValidationStatus('Rework');">Rework</button>
-                                                    {% endif %}
-
-                                            <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="updateMemValidationStatus('Approved');">Approve</button>
-                                            <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="updateMemValidationStatus('Rejected');">Reject</button>
+                                    <div id="groupApproveBtnIdQuery" style="display:none;">
+                                        <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="updateGroupValStatus('Approved');">Approve Group</button>
                                         </div>
                                     </div>
                                 </section>

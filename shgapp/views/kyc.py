@@ -110,8 +110,8 @@ def getIndMemberData(request,memberId,groupId,loanId,taskName):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while searching group members.')
 
-@session_required
 @csrf_exempt
+@session_required
 def getPinCodeDetails(request,pincode):
     print "Inside getPinCodeDetails(request,pincode):"
     try:
