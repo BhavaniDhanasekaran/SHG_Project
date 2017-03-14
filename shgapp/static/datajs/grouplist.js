@@ -843,6 +843,8 @@ function loadGroupRoles(groupId, loanId, taskName) {
 function updateGroupValStatus(status) {
     var validationType = '';
     var comment;
+    var processUpdate ;
+    var dataObj = {};
     if (document.getElementById("comment")) {
         comment = document.getElementById("comment").value;
     }
@@ -858,6 +860,14 @@ function updateGroupValStatus(status) {
     }
     if( group == "CreditTeam"){
         validationType = "POST";
+        processUpdate = {
+            'variables': {
+                'chekcbrespdate': {
+                    'value': "CBApproved"
+                },
+            }
+        };
+        dataObj["processUpdate"]= processUpdate;
     }
 
     if (group == "CMR" || group == "CLM" || group == "BM") {
@@ -891,7 +901,7 @@ function updateGroupValStatus(status) {
         "bpmTaskName": taskName,
         "bpmProcessId": processInstanceId
     };
-    var dataObj = {};
+
     dataObj["groupValData"] = groupValData;
     dataObj["taskId"] = taskId;
     if(comment != ""){

@@ -110,7 +110,11 @@ def updateGrpValidationStatus(request):
                 print "commentUpdate"
                 print commentUpdate
             if validationResponse["message"] == "Group validation completed successfully.":
-                taskUpdateResponse = taskComplete(request,{},taskId)
+                if formData.has_key("processUpdate"):
+                    bodyData = formData["processUpdate"]
+                else:
+                    bodyData = {}
+                taskUpdateResponse = taskComplete(request,json.dumps(bodyData),taskId)
                 return HttpResponse(json.dumps(taskUpdateResponse), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while updating group status.')
