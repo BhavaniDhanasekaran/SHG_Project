@@ -502,6 +502,7 @@ def proposalScrutinyTaskList(request):
 
     bodyData = { "processInstanceIdIn": processInstancesArr, "variableName" : "groupstatus"}
     groupStatusList = camundaClient._urllib2_request('variable-instance', bodyData, requestType='POST')
+
     for data in groupStatusList:
         if data["value"] == "false":
             taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false', {"processInstanceIdIn":[data["processInstanceId"]]},
@@ -514,10 +515,13 @@ def proposalScrutinyTaskList(request):
 
     for key in range(len(taskProVarList)):
         for data in taskProVarList[key]:
+            print data
             if data["processInstanceId"] in proposalScrutinyDict:
                 proposalScrutinyDict[data["processInstanceId"]][data["name"] ] = data["value"]
-            if data["value"] == "resolved":
-                processInstancesQRArr.append(data["processInstanceId"])
+            if data["name"] == "chekcbrespdate":
+                if data["value"] == "resolved":
+                    processInstancesQRArr.append(data["processInstanceId"])
+
 
     #Group Task Assign:
     for key in proposalScrutinyDict:

@@ -318,7 +318,10 @@ function updateMemValidationStatus(status) {
         "comment": comment,
         "checkList": "",
         "validationType": validationType,
-        "entityType": "MEMBER"
+        "entityType": "MEMBER",
+        "bpmTaskId": taskId,
+        "bpmTaskName": taskName,
+        "bpmProcessId": processInstanceId
     };
 
     dataObj["memValData"] = memValData;
@@ -448,7 +451,10 @@ function submitKYCForm(status) {
         "comment": comment,
         "checkList": "",
         "validationType": "POSTKYC",
-        "entityType": "MEMBER"
+        "entityType": "MEMBER",
+        "bpmTaskId": taskId,
+        "bpmTaskName": taskName,
+        "bpmProcessId": processInstanceId
     };
 
     var dataDict = {
@@ -880,7 +886,10 @@ function updateGroupValStatus(status) {
         "userId": userId,
         "comment": comment,
         "validationType": validationType,
-        "entityType": "GROUP"
+        "entityType": "GROUP",
+        "bpmTaskId": taskId,
+        "bpmTaskName": taskName,
+        "bpmProcessId": processInstanceId
     };
     var dataObj = {};
     dataObj["groupValData"] = groupValData;
@@ -1331,6 +1340,9 @@ function approveLoan(updateloanData){
                         "subStatus":"POST_KYC_VALIDATED",
                         "installments" : installment,
                         "memberLoanDetails": eval(updateloanData),
+                        "bpmTaskId": taskId,
+                        "bpmTaskName": taskName,
+                        "bpmProcessId": processInstanceId
                     };
     dataObj["loanData"] = loanData;
     dataObj["taskId"] = taskId;
