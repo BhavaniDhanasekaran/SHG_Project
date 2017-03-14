@@ -121,6 +121,23 @@ function getMemberDetails(memberId, groupId, loanId) {
             //var arrayKeys = ["occupations","villages""conflictList","highMarksList","memberFamilyDetails","memberDocumentDetails"];
             var imgFiles = ["MEMBERPHOTO", "IDPROOF", "IDPROOF_2", "ADDRESSPROOF", "ADDRESSPROOF_2", "SBACCOUNTPASSBOOK", "OVERLAPREPORT"];
             if (memberData["data"]["memberDetails"]) {
+                if(memberData["data"]["conflictList"]){
+                    if(memberData["data"]["conflictList"][0]){
+                        $('#memberHistConflict').css("display", "table");
+                        $('#noConflictData').css("display", "none");
+                        var conflictListData = memberData["data"]["conflictList"];
+                        $.each(conflictListData, function(key, value) {
+                            var tr = $('<tr></tr>');
+                            $('<td>' + value.memberName + '</td><td>' + value.groupName + '</td><td>'+value.appGroupId+'</td><td>'+value.groupId+'</td><td>'+value.memberStatus+'</td> ').appendTo(tr);
+                            tr.appendTo('#conflictListData');
+                        });
+                    }
+                    else{
+                        $('#memberHistConflict').css("display", "none");
+                        $('#noConflictData').css("display", "block");
+                    }
+                }
+
                 if (memberData["data"]["highMarksList"]) {
                     if (memberData["data"]["highMarksList"][0]) {
                         $('#creditData').css("display", "block");
@@ -169,7 +186,7 @@ function getMemberDetails(memberId, groupId, loanId) {
                                         }
                                         $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", memberDocumentsArray[key]["documentPath"]);
                                         $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("data-url", memberDocumentsArray[key]["documentPath"]);
-                                        $("#idProof").imageBox();
+                                       // $("#idProof").imageBox();
                                     }
                                 }
                             }
@@ -193,8 +210,13 @@ function getMemberDetails(memberId, groupId, loanId) {
                         }
                         if (tagname == "SPAN") {
                             document.getElementById(data).innerHTML = memberData["data"]["memberDetails"][data];
-                            if (document.getElementById("villages").tagName == "SPAN")
+                            if (document.getElementById("villages").tagName == "SPAN"){
                                 document.getElementById("villages").innerHTML = memberData["data"]["memberDetails"]["villageId"];
+                                }
+                                if(document.getElementById("memberName2") && document.getElementById("memberId_top")){
+                                    document.getElementById("memberName2").innerHTML = memberData["data"]["memberDetails"]["memberName"];
+                                    document.getElementById("memberId_top").innerHTML = memberData["data"]["memberDetails"]["memberId"];
+                                }
                         }
                     }
                 }
@@ -923,7 +945,7 @@ function updateGroupValStatus(status) {
         },
         success: function(data) {
             if (data == "Successful") {
-                //$.alert("Group Validation completed Successfully");
+                $.alert("Group Validation completed Successfully");
                 window.location = '/assignedTaskList/';
             }
         },
@@ -971,6 +993,7 @@ function getHistComments(processId) {
         dataType: 'json',
         success: function(data) {
             var commentsJson = data;
+            console.log(commentsJson);
             var commentsList = Object.keys(commentsJson).map(function(key) {
                 return [key, commentsJson[key]];
             });
