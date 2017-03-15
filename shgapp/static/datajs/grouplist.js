@@ -867,6 +867,14 @@ function updateGroupValStatus(status) {
     }
     if( group == "DataSupportTeam"){
         validationType = "PEN";
+         processUpdate = {
+            'variables': {
+                'kyc': {
+                    'value': "approved"
+                },
+            }
+        };
+        dataObj["processUpdate"]= processUpdate;
     }
     if( group == "CreditTeam"){
         validationType = "POST";
