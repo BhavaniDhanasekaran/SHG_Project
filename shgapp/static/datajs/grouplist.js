@@ -216,9 +216,9 @@ function getMemberDetails(memberId, groupId, loanId) {
                             if (document.getElementById("villages").tagName == "SPAN"){
                                 document.getElementById("villages").innerHTML = memberData["data"]["memberDetails"]["villageId"];
                                 }
-                                if(document.getElementById("memberName2") && document.getElementById("memberId_top")){
+                                if(document.getElementById("memberName2") && document.getElementById("appMemberId_top")){
                                     document.getElementById("memberName2").innerHTML = memberData["data"]["memberDetails"]["memberName"];
-                                    document.getElementById("memberId_top").innerHTML = memberData["data"]["memberDetails"]["memberId"];
+                                    document.getElementById("appMemberId_top").innerHTML = memberData["data"]["memberDetails"]["appMemberId"];
                                 }
                         }
                     }
