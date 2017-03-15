@@ -66,14 +66,7 @@ function getGroupData(groupID, loanId) {
                     var membersCount = document.getElementById("san_test").getElementsByTagName("a").length;
                     var approvedCount = $('.Approved').length;
                     var rejectedCount = $('.Rejected').length;
-                    var reworkCount = $('.Rework').length;
-                    var penCount = $('.Pending').length;
-                    console.log("approvedCount",approvedCount);
-                    document.getElementById("appCount").innerHTML = approvedCount;
-                    document.getElementById("rejCount").innerHTML = rejectedCount;
-                    document.getElementById("rwrkCount").innerHTML = reworkCount;
-                    document.getElementById("penCount").innerHTML = penCount;
-                    document.getElementById("totCount").innerHTML = membersCount;
+                    updateMembersCount();
                     var totalCount = approvedCount + rejectedCount;
                     if(membersCount == totalCount){
                         $("#operationsDivIdQuery").css("display","none");
@@ -391,17 +384,7 @@ function updateMemValidationStatus(status) {
                     document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-warning Rework";
                     document.getElementById("memberValStatus").innerHTML = "RWRK";
                 }
-                 var membersCount = document.getElementById("san_test").getElementsByTagName("a").length;
-                var approvedCount = $('.Approved').length;
-                var rejectedCount = $('.Rejected').length;
-                var reworkCount = $('.Rework').length;
-                var penCount = $('.Pending').length;
-                console.log("approvedCount",approvedCount);
-                document.getElementById("appCount").innerHTML = approvedCount;
-                document.getElementById("rejCount").innerHTML = rejectedCount;
-                document.getElementById("rwrkCount").innerHTML = reworkCount;
-                document.getElementById("penCount").innerHTML = penCount;
-                document.getElementById("totCount").innerHTML = membersCount;
+                updateMembersCount();
                 getHistComments(processInstanceId);
                 checkForTaskCompletion();
             }
@@ -572,17 +555,7 @@ function submitKYCForm(status) {
                     document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-warning Rework";
                     document.getElementById("memberValStatus").innerHTML = "RWRK";
                 }
-                var membersCount = document.getElementById("san_test").getElementsByTagName("a").length;
-                var approvedCount = $('.Approved').length;
-                var rejectedCount = $('.Rejected').length;
-                var reworkCount = $('.Rework').length;
-                var penCount = $('.Pending').length;
-                console.log("approvedCount",approvedCount);
-                document.getElementById("appCount").innerHTML = approvedCount;
-                document.getElementById("rejCount").innerHTML = rejectedCount;
-                document.getElementById("rwrkCount").innerHTML = reworkCount;
-                document.getElementById("penCount").innerHTML = penCount;
-                document.getElementById("totCount").innerHTML = membersCount;
+                updateMembersCount();
                 getHistComments(processInstanceId);
                 checkForTaskCompletion();
             } else {
@@ -1458,3 +1431,19 @@ function tabControl() {
    // $('#CreditListTable').empty();
 }
 
+function updateMembersCount(){
+    var membersCount = document.getElementById("san_test").getElementsByTagName("a").length;
+    var approvedCount = $('.Approved').length;
+    var rejectedCount = $('.Rejected').length;
+    var reworkCount = $('.Rework').length;
+    var penCount = $('.Pending').length;
+    console.log("approvedCount",approvedCount);
+    document.getElementById("appCount").innerHTML = approvedCount;
+    document.getElementById("rejCount").innerHTML = rejectedCount;
+    document.getElementById("rwrkCount").innerHTML = reworkCount;
+    document.getElementById("penCount").innerHTML = penCount;
+    document.getElementById("totCount").innerHTML = membersCount;
+
+
+
+}
