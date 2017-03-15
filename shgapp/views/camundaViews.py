@@ -455,7 +455,11 @@ def taskComplete(request,processUpdate,taskId):
         else:
             bodyData = {}
         taskId 	= taskId
+        print "bodyData"
+        print bodyData
         taskUpdateResponse =  camundaClient._urllib2_request('task/'+taskId+'/complete',bodyData,requestType='POST')
+        print "taskUpdateResponse in taskcomplete"
+        print taskUpdateResponse
         return taskUpdateResponse
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred.')
