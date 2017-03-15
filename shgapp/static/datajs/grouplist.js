@@ -9,7 +9,6 @@ function getGroupData(groupID, loanId) {
     var appCount = 0;
     var rejCount = 0;
     var rewCount = 0;
-    disableActiveTab();
     $.ajax({
         url: '/getGroupData/' + groupID + '/' + taskName,
         dataType: 'json',
@@ -23,7 +22,6 @@ function getGroupData(groupID, loanId) {
         success: function(data) {
             groupData = data;
             console.log(groupData);
-            enableActiveTab();
             if (groupData["data"]["groupMemDetail"]) {
                 if (groupData["data"]["groupMemDetail"][0]) {
                     totalCount = groupData["data"]["groupMemDetail"].length;
@@ -50,7 +48,7 @@ function getGroupData(groupID, loanId) {
                             rewCount += 1;
                         }
                         if (document.getElementById("san_test")) {
-                            $("#san_test").append('<a id="' + memberId + '" onclick="getMemberDetails(' + memberId + ',' + groupId + ',' + loanId + ');" class="' + className + '" style="font-weight:bold;">' + groupData["data"]["groupMemDetail"][i]["memberName"] + '</a>');
+                            $("#san_test").append('<a id="' + memberId + '" onclick="getMemberDetails(' + memberId + ',' + groupId + ',' + loanId + ');tabControl();" class="' + className + '" style="font-weight:bold;">' + groupData["data"]["groupMemDetail"][i]["memberName"] + '</a>');
                         }
                         if (document.getElementById("groupName") && groupData["data"]["groupName"]) {
                             document.getElementById("groupName").innerHTML = groupData["data"]["groupName"];
@@ -80,7 +78,6 @@ function getGroupData(groupID, loanId) {
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            enableActiveTab();
         }
     });
     getHistComments(processInstanceId);
@@ -102,7 +99,6 @@ function getMemberDetails(memberId, groupId, loanId) {
     if (document.getElementById("comment")) {
         document.getElementById("comment").value = "";
     }
-    disableActiveTab();
     $.ajax({
         url: '/getIndMemberData/' + memberId + '/' + groupId + '/' + loanId + '/' + taskName,
         //type: 'post',
@@ -115,7 +111,6 @@ function getMemberDetails(memberId, groupId, loanId) {
             $("#loading").hide();
         },
         success: function(data) {
-            enableActiveTab();
             var memberData = data;
             console.log("memberData",memberData);
             //var arrayKeys = ["occupations","villages""conflictList","highMarksList","memberFamilyDetails","memberDocumentDetails"];
@@ -227,7 +222,6 @@ function getMemberDetails(memberId, groupId, loanId) {
             document.getElementById("loanId").innerHTML = loanId;
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            enableActiveTab();
         }
     });
 }
@@ -368,13 +362,11 @@ function updateMemValidationStatus(status) {
         dataType: 'json',
         beforeSend: function() {
             triggerLoadFunc();
-            disableActiveTab();
             $("#loading").show();
         },
         complete: function() {
             triggerLoadFunc();
             $("#loading").hide();
-            enableActiveTab();
         },
         success: function(data) {
             if (data["code"] == "2029") {
@@ -449,6 +441,7 @@ function submitKYCForm(status) {
     var memStatus = document.getElementById("memberValStatus").innerHTML;
     var appMemberId = document.getElementById("appMemberId").innerHTML;
     var loanTypeId = document.getElementById("loanTypeId1").innerHTML;
+
 
     var commentCamunda = "";
     if (validation == 1) {
@@ -538,13 +531,11 @@ function submitKYCForm(status) {
         dataType: 'json',
         beforeSend: function() {
             triggerLoadFunc();
-            disableActiveTab();
             $("#loading").show();
         },
         complete: function() {
             triggerLoadFunc();
             $("#loading").hide();
-            enableActiveTab();
         },
         success: function(data) {
             if (data["code"] == "2024") {
@@ -629,12 +620,10 @@ function checkForTaskCompletion() {
                 type: "post",
                 beforeSend: function() {
                     triggerLoadFunc();
-                    disableActiveTab();
                     $("#loading").show();
                 },
                 complete: function() {
                     triggerLoadFunc();
-                    enableActiveTab();
                     $("#loading").hide();
                 },
                 success: function(data) {
@@ -688,12 +677,10 @@ function taskUpdate(status) {
         type: "post",
         beforeSend: function() {
             triggerLoadFunc();
-            disableActiveTab();
             $("#loading").show();
         },
         complete: function() {
             $("#loading").hide();
-            enableActiveTab();
         },
         success: function(data) {
             if (data == "Successful") {
@@ -786,12 +773,10 @@ function rmGroupMaster(groupId) {
         url: '/getGroupData/' + groupId + '/' + taskName,
         dataType: 'json',
         beforeSend: function() {
-            disableActiveTab();
             $("#loading").show();
         },
         complete: function() {
             $("#loading").hide();
-            enableActiveTab();
         },
         success: function(data) {
             var groupViewData2 = data;
@@ -935,13 +920,11 @@ function updateGroupValStatus(status) {
         type: "post",
         beforeSend: function() {
             triggerLoadFunc();
-            disableActiveTab();
             $("#loading").show();
         },
         complete: function() {
             triggerLoadFunc();
             $("#loading").hide();
-            enableActiveTab();
         },
         success: function(data) {
             if (data == "Successful") {
@@ -965,12 +948,10 @@ function updateTask(status) {
         type: "post",
         beforeSend: function() {
             triggerLoadFunc();
-            disableActiveTab();
             $("#loading").show();
         },
         complete: function() {
             $("#loading").hide();
-            enableActiveTab();
         },
         success: function(data) {
             if (data == "Successful") {
@@ -1103,13 +1084,11 @@ function updateGroupMemberStatus() {
         type: "post",
         beforeSend: function() {
             triggerLoadFunc();
-            disableActiveTab();
             $("#loading").show();
         },
         complete: function() {
             triggerLoadFunc();
             $("#loading").hide();
-            enableActiveTab();
         },
         success: function(data) {
             if (data.code == '2024') {
@@ -1320,12 +1299,10 @@ function updateloanDatail(updateloanData) {
         dataType: 'json',
         type: "POST",
         beforeSend: function() {
-            disableActiveTab();
             $("#loading").show();
         },
         complete: function() {
             $("#loading").hide();
-            enableActiveTab();
         },
         success: function(data) {
             if (data.code == "2024") {
@@ -1384,12 +1361,10 @@ function approveLoan(updateloanData){
         dataType: 'json',
         type: "POST",
         beforeSend: function() {
-            disableActiveTab();
             $("#loading").show();
         },
         complete: function() {
             $("#loading").hide();
-            enableActiveTab();
         },
         success: function(data) {
            if(data.code == "2032"){
@@ -1438,3 +1413,18 @@ function alpha(e) {
     console.log(k,e);
     return ((k >= 63 && k <= 91) || (k >= 97 && k < 123) || (k >= 93 && k < 96) || k == 8 || k == 32 || k == 33 || (k >= 40 && k <= 59) || k == 61 ||( k >= 35 && k <= 38));
 }
+
+
+
+
+
+function tabControl() {
+    $("#tab1").addClass("active");
+    $("#tab2").removeClass("active");
+    $("#tab3").removeClass("active");
+    $("#tab4").removeClass("active");
+    $("#tab5").removeClass("active");
+    $("#tab6").removeClass("active");
+   // $('#CreditListTable').empty();
+}
+

@@ -41,6 +41,7 @@ function loadUnassignedTaskList(data){
 				obj["clusterName"] =customerData["clusterName"];
 				obj["centerName"] =customerData["centerName"];
 				obj["regionName"] =customerData["regionName"];
+				obj["loanAmount"] = customerData["loanAmount"];
 				var loanAppDt = customerData["loanApplicationDate"].split("-");
 				var grpFormDt = customerData["groupFormationDate"].split("-");
 
@@ -71,6 +72,7 @@ function loadUnassignedTaskList(data){
                 { "mData": "taskName", "sTitle": "Task Name", "sWidth": "13%", className:"column"},
                 { "mData": "taskDate","sTitle": "Task Date"  , "sWidth": "8%", className:"column"},
                 { "mData": "loanType","sTitle": "Product Name"  , "sWidth": "8%", className:"column"},
+                { "mData": "loanAmount","sTitle": "Loan Amt"  , "sWidth": "8%", className:"column"},
                 { "mData": "shgId","sTitle": "SHG ID"  , "sWidth": "8%", className:"column"},
                 { "mData": "shgName","sTitle": "SHG Name"  , "sWidth": "10%", className:"column"},
                 { "mData": "loanApplicationDate","sTitle": "Loan App. Dt"  , "sWidth": "10%", className:"column"},
@@ -149,6 +151,7 @@ function loadAssignedTaskList(){
 				obj["clusterName"] ='<a class="tdViewData">'+customerData["clusterName"]+'</a>';
 				obj["centerName"] ='<a class="tdViewData">'+customerData["centerName"]+'</a>';
 				obj["regionName"] ='<a class="tdViewData">'+customerData["regionName"]+'</a>';
+				obj["loanAmount"] = '<a class="tdViewData">'+customerData["loanAmount"]+'</a>';
 				var loanAppDt = customerData["loanApplicationDate"].split("-");
 				var grpFormDt = customerData["groupFormationDate"].split("-");
 				obj["loanApplicationDate"] ='<a class="tdViewData">'+loanAppDt[2]+"-"+loanAppDt[1]+"-"+loanAppDt[0]+'</a>';
@@ -179,6 +182,7 @@ function loadAssignedTaskList(){
                 { "mData": "taskName", "sTitle": "Task Name", "sWidth": "13%", className:"column"},
                 { "mData": "taskDate","sTitle": "Task Date"  , "sWidth": "8%", className:"column"},
                 { "mData": "loanType","sTitle": "Product Name"  , "sWidth": "8%", className:"column"},
+                { "mData": "loanAmount","sTitle": "Loan Amt"  , "sWidth": "8%", className:"column"},
                 { "mData": "shgId","sTitle": "SHG ID"  , "sWidth": "8%", className:"column"},
                 { "mData": "shgName","sTitle": "SHG Name"  , "sWidth": "10%", className:"column"},
                 { "mData": "loanApplicationDate","sTitle": "Loan App. Dt"  , "sWidth": "10%", className:"column"},
