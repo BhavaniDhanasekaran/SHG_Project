@@ -5418,7 +5418,7 @@ button.list-group-item-danger.active:hover {
 }
 .panel-heading {
 
-    padding: 3px 5px;
+    padding: 8px 8px;
     border-bottom: 1px solid transparent;
     border-top-right-radius: 3px;
     border-top-left-radius: 3px

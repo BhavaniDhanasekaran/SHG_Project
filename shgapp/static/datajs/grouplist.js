@@ -66,6 +66,14 @@ function getGroupData(groupID, loanId) {
                     var membersCount = document.getElementById("san_test").getElementsByTagName("a").length;
                     var approvedCount = $('.Approved').length;
                     var rejectedCount = $('.Rejected').length;
+                    var reworkCount = $('.Rework').length;
+                    var penCount = $('.Pending').length;
+                    console.log("approvedCount",approvedCount);
+                    document.getElementById("appCount").innerHTML = approvedCount;
+                    document.getElementById("rejCount").innerHTML = rejectedCount;
+                    document.getElementById("rwrkCount").innerHTML = reworkCount;
+                    document.getElementById("penCount").innerHTML = penCount;
+                    document.getElementById("totCount").innerHTML = membersCount;
                     var totalCount = approvedCount + rejectedCount;
                     if(membersCount == totalCount){
                         $("#operationsDivIdQuery").css("display","none");

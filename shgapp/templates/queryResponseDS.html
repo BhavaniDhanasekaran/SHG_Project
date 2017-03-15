@@ -16,8 +16,6 @@
         $(document).ready(function (){
             getGroupData(groupId,loanId);
             taskCount();
-            $("#idProof").imageBox();
-            $("#unbind-pos").draggable();
         });
 
     </script>
@@ -42,8 +40,16 @@
             <div class="panel-heading">
                 <span id="groupName"></span> &nbsp&nbsp&nbsp(
                 <span id="appGroupId"></span> )
+                <span id="memberName2" ></span> 
+                (<span id="memberId_top" ></span>)
                 <span id="groupId" style="visibility:hidden;"></span>
                 <span id="loanTypeId1" style="visibility:hidden;"></span>
+                <br>
+                    Approved: <span id="appCount">0</span>&nbsp; &nbsp;&nbsp;
+                    Rejected : <span id="rejCount">0</span>&nbsp; &nbsp;&nbsp;
+                    Rework : <span id="rwrkCount">0</span>&nbsp; &nbsp;&nbsp;
+                    Pending : <span id="penCount">0</span>&nbsp; &nbsp;&nbsp;
+                    Total : <span id="totCount">0</span>
             </div>
             <div class="panel-body-danger">
                 <!-- tab start-->
