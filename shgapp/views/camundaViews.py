@@ -450,7 +450,7 @@ def taskComplete(request,processUpdate,taskId):
     try:
         print "Entering taskComplete(processUpdate,taskId) : "
         if processUpdate:
-            bodyData = processUpdate
+            bodyData = json.loads(processUpdate)
             print type(bodyData)
         else:
             bodyData = {}

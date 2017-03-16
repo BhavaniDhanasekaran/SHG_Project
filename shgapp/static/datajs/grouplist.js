@@ -938,6 +938,8 @@ function updateGroupValStatus(status) {
             $("#loading").hide();
         },
         success: function(data) {
+            console.log("data===================================================");
+            console.log(data);
             if (data == "Successful") {
                 $.alert("Group Validation completed Successfully");
                 window.location = '/assignedTaskList/';
@@ -1451,7 +1453,5 @@ function updateMembersCount(){
     document.getElementById("rwrkCount").innerHTML = reworkCount;
     document.getElementById("penCount").innerHTML = penCount;
     document.getElementById("totCount").innerHTML = membersCount;
-
-
 
 }

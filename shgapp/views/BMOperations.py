@@ -111,7 +111,7 @@ def updateGrpValidationStatus(request):
                 print commentUpdate
             if validationResponse["message"] == "Group validation completed successfully.":
                 if formData.has_key("processUpdate"):
-                    bodyData = formData["processUpdate"]
+                    bodyData = json.dumps(formData["processUpdate"])
                 else:
                     bodyData = {}
                 taskUpdateResponse = taskComplete(request,bodyData,taskId)
