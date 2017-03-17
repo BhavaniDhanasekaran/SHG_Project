@@ -49,7 +49,7 @@ function loadUnassignedTaskList(data){
 				obj["groupFormationDate"] =grpFormDt[2]+"-"+grpFormDt[1]+"-"+grpFormDt[0];
 
 			}
-		obj["claim"] = '<button type="submit" onclick="claim('+"'"+obj["taskId"]+"'"+');" class="btn btn-danger btn-md button">Claim</button>';
+		obj["claim"] = '<button type="submit" onclick="claimconfirmBox('+"'"+obj["taskId"]+"'"+",'"+obj["shgName"]+"'"+');" class="btn btn-danger btn-md button">Claim</button>';
 
 
 		}
@@ -160,7 +160,7 @@ function loadAssignedTaskList(){
 
 
 			}
-		obj["unClaim"] = '<button type="submit" onclick="unClaim('+"'"+obj["taskId"]+"'"+');" class="btn btn-danger btn-md button">UnClaim</button>';
+		obj["unClaim"] = '<button type="submit" onclick="unClaimconfirmBox('+"'"+obj["taskId"]+"'"+",'"+obj["shgName"]+"'"+');" class="btn btn-danger btn-md button">UnClaim</button>';
 
 		}
 		dataArray.push(obj);
@@ -170,7 +170,6 @@ function loadAssignedTaskList(){
             "pageLength": 50,
             rowId: "groupLoanId",
             destroy: true,
-
             "bProcessing": true,
             "scrollY": true,
             fixedHeader : true,
@@ -227,7 +226,7 @@ $(document).ready(function (){
 	$('.sorting').click(function() {
 		triggerLoadFunc();
 	});
-	$('.button').click(function() {
+	/*$('.button').click(function() {
 		var nRow = $(this).parent().parent()[0];
 		var table=$("#taskListTable").dataTable();
 		table.fnDeleteRow( nRow, null, true );
@@ -245,7 +244,7 @@ $(document).ready(function (){
 				}
 			}
 		}
-	});
+	});*/
 });
 
 function triggerLoadFunc(){
@@ -262,7 +261,7 @@ function triggerLoadFunc(){
 		window.location = '/SHGForm/'+groupID+'/'+loanID+'/'+taskId+'/'+processInstanceId+'/'+taskName+'/'+loanType;
 		//redirectPage(groupID,loanID,taskName,taskId,processInstanceId);
 	});
-	$('.button').click(function() {
+	/*$('.button').click(function() {
 	    	var nRow = $(this).parent().parent()[0];
 	    	var table=$("#taskListTable").dataTable();
 		table.fnDeleteRow( nRow, null, true );
@@ -280,7 +279,7 @@ function triggerLoadFunc(){
 				}
 			}
 		}
-	});
+	});*/
 }
 
 
@@ -319,7 +318,7 @@ function claim(d){
 	    url: '/task/'+d+'/claim/user',
 	    dataType: 'json',
 	    success: function (data) {
-		taskCount();
+		window.location.reload();
 	    }
 	});
 }
@@ -329,7 +328,7 @@ function unClaim(d){
 	    url: '/task/'+d+'/unclaim/user',
 	    dataType: 'json',
 	    success: function (data) {
-		taskCount();
+		window.location.reload();
 	    }
 	});
 }
@@ -454,4 +453,30 @@ function val2key(val,array){
             break;
         }
     }
+}
+
+
+function unClaimconfirmBox(id,shgName){
+	$.confirm({
+		     title: 'Do you want to unclaim '+"'"+shgName+"'"+'?',
+		    confirmButton: 'Yes',
+		    cancelButton: 'No',
+		    confirm: function(){
+		    unClaim(id)
+		    },
+		    cancel: function(){
+		     }
+		});
+}
+function claimconfirmBox(id,shgName){
+	$.confirm({
+		    title: 'Do you want to claim '+"'"+shgName+"'"+'?',
+		    confirmButton: 'Yes',
+		    cancelButton: 'No',
+		    confirm: function(){
+		    claim(id)
+		    },
+		    cancel: function(){
+		     }
+		});
 }
