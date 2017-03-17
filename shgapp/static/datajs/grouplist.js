@@ -48,7 +48,7 @@ function getGroupData(groupID, loanId) {
                             rewCount += 1;
                         }
                         if (document.getElementById("san_test")) {
-                            $("#san_test").append('<a id="' + memberId + '" onclick="getMemberDetails(' + memberId + ',' + groupId + ',' + loanId + ');tabControl();" class="' + className + '" style="font-weight:bold;">' + groupData["data"]["groupMemDetail"][i]["memberName"] + '</a>');
+                            $("#san_test").append('<a id="' + memberId + '" onclick="getMemberDetails(' + memberId + ',' + groupId + ',' + loanId + ');" class="' + className + '" style="font-weight:bold;"> (' + groupData["data"]["groupMemDetail"][i]["sequenceNumber"]+")  "+groupData["data"]["groupMemDetail"][i]["memberName"] + '</a>');
                         }
                         if (document.getElementById("groupName") && groupData["data"]["groupName"]) {
                             document.getElementById("groupName").innerHTML = groupData["data"]["groupName"];
@@ -113,25 +113,51 @@ function getMemberDetails(memberId, groupId, loanId) {
         },
         success: function(data) {
             var memberData = data;
+            var conflictListArr = [];
             console.log("memberData",memberData);
             //var arrayKeys = ["occupations","villages""conflictList","highMarksList","memberFamilyDetails","memberDocumentDetails"];
             var imgFiles = ["MEMBERPHOTO", "IDPROOF", "IDPROOF_2", "ADDRESSPROOF", "ADDRESSPROOF_2", "SBACCOUNTPASSBOOK", "OVERLAPREPORT"];
             if (memberData["data"]["memberDetails"]) {
                 if(memberData["data"]["conflictList"]){
                     if(memberData["data"]["conflictList"][0]){
-                        $('#memberHistConflict').css("display", "table");
-                        $('#noConflictData').css("display", "none");
-                        var conflictListData = memberData["data"]["conflictList"];
-                        $.each(conflictListData, function(key, value) {
-                            var tr = $('<tr></tr>');
-                            $('<td>' + value.memberName + '</td><td>' + value.groupName + '</td><td>'+value.appGroupId+'</td><td>'+value.groupId+'</td><td>'+value.memberStatus+'</td> ').appendTo(tr);
-                            tr.appendTo('#conflictListData');
-                        });
+                        var conflictData = memberData["data"]["conflictList"];
+                        if ($.fn.DataTable.isDataTable( '#memberHistConflict' ) ) {
+                            $("#memberHistConflict").dataTable().fnDestroy();
+                        }
+                        for(var keyData in conflictData){
+                            var obj = {};
+                            obj["memberName"] = conflictData[keyData]["memberName"];
+                            obj["groupName"] = conflictData[keyData]["groupName"];
+                            obj["appGroupId"] = conflictData[keyData]["appGroupId"];
+                            obj["groupId"] = conflictData[keyData]["groupId"];
+                            obj["memberStatus"] = conflictData[keyData]["memberStatus"];
+                            conflictListArr.push(obj);
+                        }
                     }
                     else{
-                        $('#memberHistConflict').css("display", "none");
-                        $('#noConflictData').css("display", "block");
+                        if ($.fn.DataTable.isDataTable( '#memberHistConflict' ) ) {
+                            $("#memberHistConflict").dataTable().fnDestroy();
+                        }
+                        conflictListArr = [];
                     }
+                    $('#memberHistConflict').dataTable({
+                        data: conflictListArr,
+                        "scrollY": true,
+                        "sDom": '<"top">rt<"bottom"flp><"clear">',
+                        "paging"   : false,
+                        "bInfo": false,
+                        "bLengthChange": false,
+                        "bPaginate": false,
+                        "searching" :false,
+                        "aoColumns": [
+                            //{ "mData": "slNo", "sTitle": "S.No", "sWidth": "3%", className:"column"},
+                            { "mData": "memberName", "sTitle": "Member Name", "sWidth": "25%", className:"column"},
+                            { "mData": "groupName","sTitle": "Group Name"  , "sWidth": "30%", className:"column"},
+                            { "mData": "appGroupId","sTitle": "App Group ID"  , "sWidth": "15%", className:"column"},
+                            { "mData": "groupId","sTitle": "Group ID"  , "sWidth": "15%", className:"column"},
+                            { "mData": "memberStatus","sTitle": "Member Status"  , "sWidth": "15%", className:"column"},
+                            ],
+                    });
                 }
 
                 if (memberData["data"]["highMarksList"]) {
@@ -221,6 +247,7 @@ function getMemberDetails(memberId, groupId, loanId) {
             }
             document.getElementById("groupId").innerHTML = groupId;
             document.getElementById("loanId").innerHTML = loanId;
+            $(".dataTables_scrollHeadInner").css({"width":"100%"});
         },
         error: function(jqXHR, textStatus, errorThrown) {
         }
@@ -396,6 +423,13 @@ function updateMemValidationStatus(status) {
 
 
 function submitKYCForm(status) {
+    var validationType;
+    if(group == "DataSupportTeam"){
+        validationType = "POSTKYC";
+    }
+    if(group == "CreditTeam"){
+        validationType = "POST";
+    }
     var mandatoryFieldsDict = {};
     var count = 0;
     var validation = 0;
@@ -467,7 +501,7 @@ function submitKYCForm(status) {
         "userId": userId,
         "comment": comment,
         "checkList": "",
-        "validationType": "POSTKYC",
+        "validationType": validationType,
         "entityType": "MEMBER",
         "bpmTaskId": taskId,
         "bpmTaskName": taskName,
@@ -476,7 +510,7 @@ function submitKYCForm(status) {
 
     var dataDict = {
         "entityType": "MEMBER",
-        "validationType": "POSTKYC",
+        "validationType": validationType,
         "memberId": memberId,
         "groupId": groupId,
         "loanId": loanId,
@@ -711,7 +745,6 @@ function creditHistory(loanId) {
                 for (var i = 0; i < creditData.data.length; i++) {
                     var creditObj = creditData["data"][i]["creditInquiry"];
                     documentObj = creditData["data"][i]["memberDocument"];
-                    console.log(documentObj);
                     var documentPath = '';
                     for (var j = 0; j < documentObj.length; j++) {
                         if (documentObj[j]["documentType"] == "OVERLAPREPORT") {
@@ -783,7 +816,11 @@ function rmGroupMaster(groupId) {
         },
         success: function(data) {
             var groupViewData2 = data;
+            console.log(groupViewData2);
             if(groupViewData2["data"]["groupMemDetail"]){
+                if(groupViewData2["data"]["groupMemDetail"][0]){
+                var groupData = groupViewData2["data"]["groupMemDetail"];
+                var groupDataArr = [];
                 var found_names = $.grep(groupViewData2.data.groupMemDetail, function(v) {
                     return v.memberStatus != "Rejected";
                 });
@@ -792,14 +829,67 @@ function rmGroupMaster(groupId) {
                     $('#repm1').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
                     $('#repm2').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
                 });
+                $.each($('.compact option'), function(key, optionElement) {
+		   			 var curText = $(optionElement).text();
+			 		 $(this).attr('title', curText);
+					 var lengthToShortenTo = Math.round(parseInt('170px', 10) / 9.4);
+			    		 if (curText.length > lengthToShortenTo) {
+						$(this).text(curText.substring(0,lengthToShortenTo)+'...');
+		    			 }
+				});
+				// Show full name in tooltip after choosing an option
+				$('.compact').change(function() {
+					$(this).attr('title', ($(this).find('option:eq('+$(this).get(0).selectedIndex +')').attr('title')));
+				});
 
-                var animatorvalue = $("#animatorId").text();
-                var rep1value = $("#rep1Id").text();
-                var rep2value = $("#rep2Id").text();
+                var animatorvalue = $("#animatorId_groupRole").text();
+                var rep1value = $("#rep1Id_groupRole").text();
+                var rep2value = $("#rep2Id_groupRole").text();
                 //alert(rep2value);
                 $("#Animator").val(animatorvalue);
                 $("#repm1").val(rep1value);
                 $("#repm2").val(rep2value);
+
+
+                    if ($.fn.DataTable.isDataTable( '#groupMemberDetails' ) ) {
+                        $("#groupMemberDetails").dataTable().fnDestroy();
+                    }
+                    for(var keyData in groupData){
+                        var obj = {};
+                        obj["appMemberId"] = groupData[keyData]["appMemberId"];
+                        obj["memberName"] = groupData[keyData]["memberName"];
+                        obj["age"] = groupData[keyData]["age"];
+                        obj["address"] = groupData[keyData]["address"];
+                        obj["villageName"] = groupData[keyData]["villageName"];
+                        obj["pincode"] = groupData[keyData]["pincode"];
+                        groupDataArr.push(obj);
+                    }
+                }
+                else{
+                    if ($.fn.DataTable.isDataTable( '#groupMemberDetails' ) ) {
+                        $("#groupMemberDetails").dataTable().fnDestroy();
+                    }
+                    groupDataArr = [];
+                }
+                    $('#groupMemberDetails').dataTable({
+                        data: groupDataArr,
+                        "scrollY": true,
+                        "sDom": '<"top">rt<"bottom"flp><"clear">',
+                        "paging"   : false,
+                        "bInfo": false,
+                        "bLengthChange": false,
+                        "bPaginate": false,
+                        "searching" :false,
+                        "aoColumns": [
+                            { "mData": "appMemberId", "sTitle": "App Member Id", "sWidth": "10%", className:"column"},
+                            { "mData": "memberName","sTitle": "Member Name"  , "sWidth": "30%", className:"column"},
+                            { "mData": "age","sTitle": "Age"  , "sWidth": "9%", className:"column"},
+                            { "mData": "address","sTitle": "Address"  , "sWidth": "30%", className:"column"},
+                            { "mData": "villageName","sTitle": "Village"  , "sWidth": "20%", className:"column"},
+                            { "mData": "pincode","sTitle": "Pincode"  , "sWidth": "10%", className:"column"},
+                            ],
+                    });
+
             }
         }
     });
@@ -832,11 +922,12 @@ function loadGroupRoles(groupId, loanId, taskName) {
         type: "post",
 
         success: function(data) {
+        console.log(data);
             document.getElementById("loanTypeId1").innerHTML = data["data"]["loanTypeId"];
             var groupDetails = data["data"]["groupDetails"];
             for (var key in groupDetails) {
-                if (document.getElementById(key)) {
-                    document.getElementById(key).innerHTML = groupDetails[key];
+                if (document.getElementById(key+"_groupRole")) {
+                    document.getElementById(key+"_groupRole").innerHTML = groupDetails[key];
                     if (document.getElementById(key + "1")) {
                         document.getElementById(key + "1").innerHTML = groupDetails[key];
                     }
@@ -867,7 +958,11 @@ function updateGroupValStatus(status) {
     }
     if( group == "DataSupportTeam"){
         validationType = "PEN";
+<<<<<<< HEAD
+        processUpdate = {
+=======
          processUpdate = {
+>>>>>>> c641f62a81582d9708a9a036cb87ad8bad775e1a
             'variables': {
                 'kyc': {
                     'value': "approved"
@@ -987,7 +1082,6 @@ function getHistComments(processId) {
         dataType: 'json',
         success: function(data) {
             var commentsJson = data;
-            console.log(commentsJson);
             var commentsList = Object.keys(commentsJson).map(function(key) {
                 return [key, commentsJson[key]];
             });
@@ -1015,14 +1109,14 @@ function getHistComments(processId) {
                                             '<div style="font-weight:bold;color:darkslategrey;">Member : ' + memberName + '<br></div>' +
                                             '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span style="font-style:italic;">' +
                                             '<i class="fa fa-comments" style="color:darkslategrey;" aria-hidden="true"></i>&nbsp' + comment + '</span><div class="time"><i class="ace-icon fa fa-clock-o bigger-110"></i><span > Commented on &nbsp&nbsp' +
-                                            cmtDate + '</span></div></div></div>';
+                                            cmtDate + '</span><br><i class="ace-icon fa fa-clock-o bigger-110"></i><span>Task end Time '+sortedData[key][1]["endTime"]+'</span></div></div></div>';
                                     }
                                 } else {
                                     htmlContent += '<div class="profile-activity clearfix"><div><span style="font-weight:bold;color:#981b1b;"><i class="glyphicon glyphicon-user"></i> ' + sortedData[key][1]["assignee"] + ':</span>  ' +
                                         '&nbsp&nbsp<span style="color:black;">' + sortedData[key][1]["activityName"] + '</span></div>' +
                                         '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span style="font-style:italic;">' +
                                         '<i class="fa fa-comments" style="color:darkslategrey;" aria-hidden="true"></i>&nbsp' + sortedcomments[key1]["message"] + '</span><div class="time"><i class="ace-icon fa fa-clock-o bigger-110"></i><span > Commented on &nbsp&nbsp' +
-                                        cmtDate + '</span></div></div></div>';
+                                        cmtDate + '</span><br><i class="ace-icon fa fa-clock-o bigger-110"></i><span>Task end Time '+sortedData[key][1]["endTime"]+'</span></div></div></div>';
                                 }
                             }
                         }
@@ -1427,10 +1521,6 @@ function alpha(e) {
     return ((k >= 63 && k <= 91) || (k >= 97 && k < 123) || (k >= 93 && k < 96) || k == 8 || k == 32 || k == 33 || (k >= 40 && k <= 59) || k == 61 ||( k >= 35 && k <= 38));
 }
 
-
-
-
-
 function tabControl() {
     $("#tab1").addClass("active");
     $("#tab2").removeClass("active");
@@ -1448,6 +1538,25 @@ function updateMembersCount(){
     var reworkCount = $('.Rework').length;
     var penCount = $('.Pending').length;
     console.log("approvedCount",approvedCount);
+<<<<<<< HEAD
+    if(document.getElementById("appCount")){
+        document.getElementById("appCount").innerHTML = approvedCount;
+    }
+    if(document.getElementById("rejCount")){
+        document.getElementById("rejCount").innerHTML = rejectedCount;
+    }
+    if(document.getElementById("rwrkCount")){
+        document.getElementById("rwrkCount").innerHTML = reworkCount;
+    }
+    if(document.getElementById("penCount")){
+        document.getElementById("penCount").innerHTML = penCount;
+    }
+    if(document.getElementById("totCount")){
+        document.getElementById("totCount").innerHTML = membersCount;
+    }
+}
+
+=======
     document.getElementById("appCount").innerHTML = approvedCount;
     document.getElementById("rejCount").innerHTML = rejectedCount;
     document.getElementById("rwrkCount").innerHTML = reworkCount;
@@ -1455,3 +1564,4 @@ function updateMembersCount(){
     document.getElementById("totCount").innerHTML = membersCount;
 
 }
+>>>>>>> c641f62a81582d9708a9a036cb87ad8bad775e1a

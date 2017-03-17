@@ -56,12 +56,13 @@ def getGroupData(request,groupID,taskName):
     print "Inside getGroupData(request):"
     try:
         username = request.session["userName"]
+        BMTasksArray = ["Conduct BAT- Member approval in CRM","Print Loan Documents & FSR","Upload loan documents in Web application"]
         userOfficeData = json.loads(request.session["userOfficeData"])
         groupName = userOfficeData["designation"]
         if groupName== "CMR" or groupName == "CLM" or groupName == "BM":
             if taskName == "Resolve Data Support Team Query":
                 validationLevel = "RWRK"
-            if taskName == "Conduct BAT- Member approval in CRM":
+            if taskName in BMTasksArray:
                 validationLevel = "BM"
             if taskName == "Resolve Credit Team Query":
                 validationLevel = "RWRK"
