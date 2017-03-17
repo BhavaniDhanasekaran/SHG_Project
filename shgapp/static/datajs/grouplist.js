@@ -1534,7 +1534,7 @@ function updateMembersCount(){
     var reworkCount = $('.Rework').length;
     var penCount = $('.Pending').length;
     console.log("approvedCount",approvedCount);
-<<<<<<< HEAD
+
     if(document.getElementById("appCount")){
         document.getElementById("appCount").innerHTML = approvedCount;
     }
@@ -1552,12 +1552,3 @@ function updateMembersCount(){
     }
 }
 
-=======
-    document.getElementById("appCount").innerHTML = approvedCount;
-    document.getElementById("rejCount").innerHTML = rejectedCount;
-    document.getElementById("rwrkCount").innerHTML = reworkCount;
-    document.getElementById("penCount").innerHTML = penCount;
-    document.getElementById("totCount").innerHTML = membersCount;
-
-}
->>>>>>> c641f62a81582d9708a9a036cb87ad8bad775e1a

@@ -15,12 +15,9 @@
         var processInstanceId = '{{ processInstanceId | escapejs }}';
         $(document).ready(function (){
             getGroupData(groupId,loanId);
-<<<<<<< HEAD
             loadGroupRoles(groupId, loanId, taskName) ;
             rmGroupMaster(groupId);
-=======
             taskCount();
->>>>>>> c641f62a81582d9708a9a036cb87ad8bad775e1a
         });
 
     </script>
@@ -43,17 +40,17 @@
     <div class="col-xs-10" >
         <div class="panel panel-default" style="overflow-x:auto;">
             <div class="panel-heading">
-<<<<<<< HEAD
+
                 <span id="groupName"></span> (
                 <span id="appGroupId"></span> )&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                 <span id="memberName2" ></span>
                 ( <span id="appMemberId_top" ></span> )
-=======
+
                 <span id="groupName"></span> &nbsp&nbsp&nbsp(
                 <span id="appGroupId"></span> )
                 <span id="memberName2" ></span> 
                 (<span id="appMemberId_top" ></span>)
->>>>>>> c641f62a81582d9708a9a036cb87ad8bad775e1a
+
                 <span id="groupId" style="visibility:hidden;"></span>
                 <span id="loanTypeId1" style="visibility:hidden;"></span>
                 <br>
