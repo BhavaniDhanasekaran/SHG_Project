@@ -10,8 +10,7 @@ from shgapp.utils.shgexceptions import *
 from shgapp.views.camundaViews import taskComplete
 from shgapp.views.decorator import session_required
 import json
-import urllib2
-import requests
+
 
 helper = Helper()
 sscoreClient = SSCoreClient()

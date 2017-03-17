@@ -48,7 +48,7 @@ function getGroupData(groupID, loanId) {
                             rewCount += 1;
                         }
                         if (document.getElementById("san_test")) {
-                            $("#san_test").append('<a id="' + memberId + '" onclick="getMemberDetails(' + memberId + ',' + groupId + ',' + loanId + ');" class="' + className + '" style="font-weight:bold;"> (' + groupData["data"]["groupMemDetail"][i]["sequenceNumber"]+")  "+groupData["data"]["groupMemDetail"][i]["memberName"] + '</a>');
+                            $("#san_test").append('<a id="' + memberId + '" onclick="getMemberDetails(' + memberId + ',' + groupId + ',' + loanId + ');tabControl();" class="' + className + '" style="font-weight:bold;"> (' + groupData["data"]["groupMemDetail"][i]["sequenceNumber"]+")  "+groupData["data"]["groupMemDetail"][i]["memberName"] + '</a>');
                         }
                         if (document.getElementById("groupName") && groupData["data"]["groupName"]) {
                             document.getElementById("groupName").innerHTML = groupData["data"]["groupName"];
@@ -119,36 +119,24 @@ function getMemberDetails(memberId, groupId, loanId) {
             var imgFiles = ["MEMBERPHOTO", "IDPROOF", "IDPROOF_2", "ADDRESSPROOF", "ADDRESSPROOF_2", "SBACCOUNTPASSBOOK", "OVERLAPREPORT"];
             if (memberData["data"]["memberDetails"]) {
                 if(memberData["data"]["conflictList"]){
-                    if(memberData["data"]["conflictList"][0]){
-                        var conflictData = memberData["data"]["conflictList"];
-                        if ($.fn.DataTable.isDataTable( '#memberHistConflict' ) ) {
-                            $("#memberHistConflict").dataTable().fnDestroy();
-                        }
-                        for(var keyData in conflictData){
-                            var obj = {};
-                            obj["memberName"] = conflictData[keyData]["memberName"];
-                            obj["groupName"] = conflictData[keyData]["groupName"];
-                            obj["appGroupId"] = conflictData[keyData]["appGroupId"];
-                            obj["groupId"] = conflictData[keyData]["groupId"];
-                            obj["memberStatus"] = conflictData[keyData]["memberStatus"];
-                            conflictListArr.push(obj);
-                        }
-                    }
-                    else{
-                        if ($.fn.DataTable.isDataTable( '#memberHistConflict' ) ) {
-                            $("#memberHistConflict").dataTable().fnDestroy();
-                        }
-                        conflictListArr = [];
+                    var conflictData = memberData["data"]["conflictList"];
+                    if ($.fn.DataTable.isDataTable( '#memberHistConflict' ) ) {
+                        $("#memberHistConflict").dataTable().fnDestroy();
                     }
                     $('#memberHistConflict').dataTable({
-                        data: conflictListArr,
-                        "scrollY": true,
-                        "sDom": '<"top">rt<"bottom"flp><"clear">',
-                        "paging"   : false,
-                        "bInfo": false,
-                        "bLengthChange": false,
+                        data: conflictData,
+                        "bDestroy": true,
+                        "bJQueryUI": false,
+                        "bProcessing": true,
+                        "bSort": true,
+                        "bInfo": true,
                         "bPaginate": false,
+                        "iDisplayLength": 10,
+                        "bSortClasses": false,
+                        "bAutoWidth": false,
                         "searching" :false,
+                        "sDom": '<"top">rt<"bottom"flp><"clear">',
+                        "bDeferRender": true,
                         "aoColumns": [
                             //{ "mData": "slNo", "sTitle": "S.No", "sWidth": "3%", className:"column"},
                             { "mData": "memberName", "sTitle": "Member Name", "sWidth": "25%", className:"column"},
@@ -247,41 +235,11 @@ function getMemberDetails(memberId, groupId, loanId) {
             }
             document.getElementById("groupId").innerHTML = groupId;
             document.getElementById("loanId").innerHTML = loanId;
-            $(".dataTables_scrollHeadInner").css({"width":"100%"});
         },
         error: function(jqXHR, textStatus, errorThrown) {
         }
     });
 }
-/*
- $(document).ready(function(){
- $("#commentsBtn").on("click",function(){
- var mainPane = document.getElementById("main-content-inner").className;
- var commentsPane = document.getElementById("commentsBtn").className;
- if (mainPane == "main-content-inner" && commentsPane == "aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn"){
- document.getElementById("main-content-inner").className = "main-content-inner detail-min";
- }
- else{
- document.getElementById("main-content-inner").className = "main-content-inner";
- }
- });
-
- $(".close").on("click",function(){
- var mainPane = document.getElementById("main-content-inner").className;
- var commentsPane = document.getElementById("commentsBtn").className;
- if (mainPane == "main-content-inner" && commentsPane == "aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn"){
- document.getElementById("main-content-inner").className = "main-content-inner detail-min";
- }
- else{
- document.getElementById("main-content-inner").className = "main-content-inner";
- }
- });
-
-
-
-
- });
- */
 
 function updateMemValidationStatus(status) {
     var memberName = '';
@@ -738,6 +696,7 @@ function creditHistory(loanId) {
         dataType: 'json',
         success: function(data) {
             var creditData = data;
+            console.log(creditData);
             var documentObj = [];
             var docPath = ''
             var docId = ''
@@ -818,9 +777,8 @@ function rmGroupMaster(groupId) {
             var groupViewData2 = data;
             console.log(groupViewData2);
             if(groupViewData2["data"]["groupMemDetail"]){
-                if(groupViewData2["data"]["groupMemDetail"][0]){
                 var groupData = groupViewData2["data"]["groupMemDetail"];
-                var groupDataArr = [];
+
                 var found_names = $.grep(groupViewData2.data.groupMemDetail, function(v) {
                     return v.memberStatus != "Rejected";
                 });
@@ -849,47 +807,29 @@ function rmGroupMaster(groupId) {
                 $("#Animator").val(animatorvalue);
                 $("#repm1").val(rep1value);
                 $("#repm2").val(rep2value);
-
-
-                    if ($.fn.DataTable.isDataTable( '#groupMemberDetails' ) ) {
-                        $("#groupMemberDetails").dataTable().fnDestroy();
-                    }
-                    for(var keyData in groupData){
-                        var obj = {};
-                        obj["appMemberId"] = groupData[keyData]["appMemberId"];
-                        obj["memberName"] = groupData[keyData]["memberName"];
-                        obj["age"] = groupData[keyData]["age"];
-                        obj["address"] = groupData[keyData]["address"];
-                        obj["villageName"] = groupData[keyData]["villageName"];
-                        obj["pincode"] = groupData[keyData]["pincode"];
-                        groupDataArr.push(obj);
-                    }
-                }
-                else{
-                    if ($.fn.DataTable.isDataTable( '#groupMemberDetails' ) ) {
-                        $("#groupMemberDetails").dataTable().fnDestroy();
-                    }
-                    groupDataArr = [];
-                }
-                    $('#groupMemberDetails').dataTable({
-                        data: groupDataArr,
-                        "scrollY": true,
-                        "sDom": '<"top">rt<"bottom"flp><"clear">',
-                        "paging"   : false,
-                        "bInfo": false,
-                        "bLengthChange": false,
-                        "bPaginate": false,
-                        "searching" :false,
-                        "aoColumns": [
-                            { "mData": "appMemberId", "sTitle": "App Member Id", "sWidth": "10%", className:"column"},
-                            { "mData": "memberName","sTitle": "Member Name"  , "sWidth": "30%", className:"column"},
-                            { "mData": "age","sTitle": "Age"  , "sWidth": "9%", className:"column"},
-                            { "mData": "address","sTitle": "Address"  , "sWidth": "30%", className:"column"},
-                            { "mData": "villageName","sTitle": "Village"  , "sWidth": "20%", className:"column"},
-                            { "mData": "pincode","sTitle": "Pincode"  , "sWidth": "10%", className:"column"},
-                            ],
-                    });
-
+                $('#groupMemberDetails').dataTable({
+                    data: groupData,
+                    "bDestroy": true,
+                    "bJQueryUI": false,
+                    "bProcessing": true,
+                    "bSort": true,
+                    "bInfo": true,
+                    "bPaginate": false,
+                    "iDisplayLength": 10,
+                    "bSortClasses": false,
+                    "bAutoWidth": false,
+                    "searching" :false,
+                    "sDom": '<"top">rt<"bottom"flp><"clear">',
+                    "bDeferRender": true,
+                    "aoColumns": [
+                        { "mData": "appMemberId", "sTitle": "App Member Id", "sWidth": "10%", className:"column"},
+                        { "mData": "memberName","sTitle": "Member Name"  , "sWidth": "25%", className:"column"},
+                        { "mData": "age","sTitle": "Age"  , "sWidth": "6%", className:"column"},
+                        { "mData": "address","sTitle": "Address"  , "sWidth": "30%", className:"column"},
+                        { "mData": "villageName","sTitle": "Village"  , "sWidth": "20%", className:"column"},
+                        { "mData": "pincode","sTitle": "Pincode"  , "sWidth": "10%", className:"column"},
+                        ],
+                });
             }
         }
     });

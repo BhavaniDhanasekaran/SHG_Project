@@ -63,6 +63,7 @@
     <!--script src="{% static 'js/jquery.validate.min.js' %}"></script-->
     <script src="{% static 'js/moment.min.js' %}"></script>
     <script src="{% static 'js/jquery.inputlimiter.min.js' %}"></script>
+    <script src="{% static 'js/jquery.alphanumeric.js' %}"></script>
     <!--script src="{% static 'js/app.js' %}"></script-->
 
         {% block javascript %} {% endblock %}
@@ -116,7 +117,18 @@
         </div>
         <!-- /.main-container -->
         <!-- basic scripts -->
+        <script type="text/javascript">
+            $('.sample1').alphanumeric();
+            $('.sample2').alphanumeric({allow:".,/ "});
+            $('.sample3').alpha({nocaps:true});
+            $('.sample4').numeric();
+            $('.sample5').numeric({allow:"."});
+            $('.sample6').alphanumeric({ichars:'.1a'});
+            $('.sample7').numeric({allow:" "});
+            $('.sample8').alpha({allow:" "});
+        </script>
         <!--[if !IE]> -->
+
 
         <!-- inline scripts related to this page -->
     </body>

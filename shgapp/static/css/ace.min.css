@@ -10593,7 +10593,7 @@ tr.detail-row>td {
     filter: progid: DXImageTransform.Microsoft.gradient(enabled=false)
 }
 .widget-color-blue {
-    border-color: #f7953d  /*  previous color 307ECC */
+    /*border-color: #f7953d  /*  previous color 307ECC */
 }
 .widget-color-blue>.widget-header {
     background: #f7953d;    /*  previous color 307ECC */

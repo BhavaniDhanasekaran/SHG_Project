@@ -160,7 +160,7 @@ function loadAssignedTaskList(){
 
 
 			}
-		obj["unClaim"] = '<button type="submit" onclick="unClaimconfirmBox('+"'"+obj["taskId"]+"'"+",'"+obj["shgName"]+"'"+');" class="btn btn-danger btn-md button">UnClaim</button>';
+		obj["unClaim"] = '<button type="submit" onclick="unClaimconfirmBox('+"'"+obj["taskId"]+"'"+",'"+customerData["groupName"]+"'"+');" class="btn btn-danger btn-md button">UnClaim</button>';
 
 		}
 		dataArray.push(obj);

@@ -1,5 +1,4 @@
-
-{% extends 'base.html' %}
+z{% extends 'base.html' %}
 {% load staticfiles %}
 {% block javascript %}
 <script src="{% static 'datajs/grouplist.js' %}"></script>
@@ -17,12 +16,15 @@
     console.log(userId);
     $(document).ready(function(){
         getGroupData(groupId,loanId);
-        loadGroupRoles(groupId, loanId, taskName);
+        loadGroupRoles(groupId, loanId, taskName) ;
         rmGroupMaster(groupId);
-        $('textarea.limited').inputlimiter({
-          remText: '%n character%s remaining...',
-          limitText: 'max allowed : %n.'
-        });
+
+    $('textarea.limited').inputlimiter({
+      remText: '%n character%s remaining...',
+      limitText: 'max allowed : %n.'
+    });
+    
+    
     });
 </script>
 <script>
@@ -49,20 +51,24 @@
     <!--2row Start col2 End-->
     <div class="col-xs-12 pricing-box">
         <!--2row Start col-10 start-->
-        <div-- class="panel panel-default">
+        <div class="panel panel-default">
             <div class="panel-heading">
                 <li class="dropdown list-unstyled"  >
                     <!--  <a class="dropdown-toggle-lg" data-toggle="dropdown" > 
                         <i class="fa fa-users fa-2x" style="cursor:pointer" aria-hidden="true"></i>
                               </a> -->
-                    <label class="btn-sm btn-primary dropdown-toggle-sm" data-toggle="dropdown"><i class="fa fa-users fa-1x" style="cursor:pointer" aria-hidden="true"></i> Group Members
+                    <label class="btn-sm btn-primary dropdown-toggle-sm" data-toggle="dropdown"><i class="fa fa-users fa-1x" style="cursor:pointer" aria-hidden="true"></i> Group Member's
                     </label>
                     <span id="groupName"></span> &nbsp; &nbsp;
                     (<span id="appGroupId"></span>) &nbsp; &nbsp;&nbsp; &nbsp;
                     <span id="memberName2" ></span> 
                     (<span id="appMemberId_top" ></span>)
                     <span id="groupId" style="visibility:hidden;"></span> 
+
+                    <span id="loanTypeId1" style="visibility:hidden;"></span>
+
                     <span id="loanTypeId1" style="visibility:hidden;"></span> 
+
                     <br>
                     Approved: <span id="appCount">0</span>&nbsp; &nbsp;&nbsp;
                     Rejected : <span id="rejCount">0</span>&nbsp; &nbsp;&nbsp;
@@ -127,9 +133,8 @@
                                                 </div>
                                                 <div class="profile-info-value">
                                                     <span class="editable">
-                                                    <input type="text" class="sample8"  id="memberName"  
-                                                    placeholder="Member Name"  
-                                                         style="width:80%">
+                                                    <input type="text"   id="memberName"  placeholder="Member Name"  
+                                                        onkeypress="return alpha(event)" onpaste="return alpha(event)"  style="width:80%">
                                                     </span>
                                                     <a href="#" class="pop">
                                                     <img id="MEMBERPHOTO_docPath" src="{% static 'images/naveen.jpg' %}"
@@ -145,7 +150,7 @@
                                                     <span class="editable">
                                                     <input type="text"  style="width:99%" id="age" 
                                                         class="sample4" placeholder="Age" 
-                                                         maxlength="2">
+                                                        onkeypress='validate(event)' maxlength="2">
                                                     </span> 
                                                 </div>
                                             </div>
@@ -171,7 +176,7 @@
                                                     class="mandatory">*</font> </div>
                                                 <div class="profile-info-value">
                                                     <span class="editable">    
-                                                    <input type="text"    class="sample8"   style="width:99%" id="husbandName" placeholder="Spouse Name"></span>
+                                                    <input type="text"    style="width:99%" id="husbandName" placeholder="Spouse Name"></span>
                                                 </div>
                                             </div>
                                             <div class="profile-info-row">
@@ -179,7 +184,7 @@
                                                     class="mandatory">*</font> </div>
                                                 <div class="profile-info-value">
                                                     <span class="editable">   
-                                                    <input type="text"  class="sample8"  id="fatherName"  style="width:99%" placeholder="Father Name"></span>
+                                                    <input type="text"   id="fatherName"  style="width:99%" placeholder="Father Name"></span>
                                                 </div>
                                             </div>
                                             <div  class="profile-info-row">
@@ -197,10 +202,8 @@
                                                 <div  id="villageName_label" class="profile-info-name"> Village <font
                                                     class="mandatory">*</font></div>
                                                 <div class="profile-info-value">
-                                                    <span class="editable" >
-                                                    <input type="text" class="sample2"
-                                                    id="villageName" style="width:99%"
-                                                        placeholder="Village Name"></span>
+                                                    <span class="editable" ><input type="text" id="villageName" style="width:99%"
+                                                        placeholder="Village Name"></input></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -217,9 +220,9 @@
                                                     class="profile-info-value">
                                                     <span class="editable">
                                                     <textarea
-                                                        class="form-control sample2" rows="3" 
+                                                        class="form-control" rows="3" 
                                                         placeholder="Permanent Address"
-                                                        id="permanentAddress" ></textarea>
+                                                        id="permanentAddress"></textarea>
                                                     </span>
                                                 </div>
                                             </div>
@@ -230,7 +233,7 @@
                                                 <div
                                                     class="profile-info-value">
                                                     <span>
-                                                    <input type="text"  class="sample4" style="width:99%" placeholder="Pincode" id="pincode" maxlength="6" onchange="areasUnderPincode()" ></span>
+                                                    <input type="text"  class="sample4" style="width:99%" maxlength="6" placeholder="Pincode" id="pincode" onkeypress='validate(event)' onchange="areasUnderPincode()" ></span>
                                                 </div>
                                             </div>
                                             <div class="profile-info-row">
@@ -261,7 +264,7 @@
                                                 </div>
                                                 <div class="profile-info-value">
                                                     <span class="editable">    
-                                                    <input type="text"  class="sample2" style="width:60%"
+                                                    <input type="text"   style="width:60%" 
                                                         placeholder="ID Proof" id="idProofValue">
                                                     </span>
                                                     &nbsp;&nbsp;
@@ -288,7 +291,8 @@
                                                     class="profile-info-value">
                                                     <span
                                                         class="editable" > 
-                                                    <input type="text" style="width:60%"  class="sample2"  placeholder="Address Proof" id="addressProofValue"></span>
+                                                    <input type="text" style="width:60%"  placeholder="Address Proof"
+                                                        id="addressProofValue"></span>
                                                     &nbsp;&nbsp;
                                                     <div id="idProof" style="display:inline-block;margin-top: 4px"class="idProof">
                                                         <a href="#" class="pop">
@@ -308,7 +312,7 @@
                                                 <div
                                                     class="profile-info-value">
                                                     <span
-                                                        class="editable" >    <input class="sample2" type="text"  style="width:60%" placeholder="SB Account
+                                                        class="editable" >    <input type="text"  style="width:60%" placeholder="SB Account
                                                         number" id="sbAccountNumber"></span> &nbsp;&nbsp;
                                                     <div  style="display:inline-block;margin-top: 4px" class="idProof">
                                                         <a href="#" class="pop">
@@ -343,7 +347,7 @@
                                                 <div
                                                     class="profile-info-value">
                                                     <span
-                                                        class="editable" >   <input type="text" class="sample8" style="width:80%"  placeholder="SB Account Name"
+                                                        class="editable" >   <input type="text" style="width:80%"  placeholder="SB Account Name"
                                                         id="sbAccountName"></span>
                                                 </div>
                                             </div>
@@ -351,7 +355,7 @@
                                                 <div id="branch_label" class="profile-info-name">Bank branch </div>
                                                 <div class="profile-info-value">
                                                     <span class="editable" >
-                                                    <input type="text"  class ="sample8" style="width:99%" placeholder="Bank Branch" id="branch">
+                                                    <input type="text"  style="width:99%" placeholder="Bank Branch" id="branch">
                                                     </span>
                                                 </div>
                                             </div>
@@ -371,7 +375,7 @@
                                                 <div id="loanAmount_label" class="profile-info-name"> Loan Amount </div>
                                                 <div class="profile-info-value">
                                                     <span class="editable">    
-                                                    <input type="text"  class="sample5" placeholder="Loan Amount"id="loanAmount" maxlength="10" style="width:99%">
+                                                    <input type="text"  class="sample5" placeholder="Loan Amount"id="loanAmount" style="width:99%">
                                                     </span>
                                                 </div>
                                             </div>
@@ -399,7 +403,7 @@
                                                 </div>
                                                 <div class="profile-info-value">
                                                     <span class="editable">
-                                                    <textarea  class="form-control limited sample"
+                                                    <textarea  class="form-control limited"
                                                         maxlength="3000" rows="3" id="comment">
                                                     </textarea>
                                                     </span>
@@ -408,31 +412,18 @@
                                         </div>
                                     </div>
                                     <div></div>
-                                    {% if taskName == "KYC Check"%}
                                     <div  id="operationsDivId" class="col-md-4 text-center .btn-block">
                                         <button type="button"  class="btn btn-danger btn-md " id="myBtn2" onclick="submitKYCForm('Rework');">Rework</button>
                                         <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCForm('Approved');">Approve</button>
                                         <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="updateMemValidationStatus('Rejected');">Reject</button>
                                     </div>
-                                    {% endif %}
-                                    {% if taskName == "Query Response" %}
-                                    <div  id="operationsDivIdQuery" class="col-md-4 text-center .btn-block">
-                                        <button type="button"  class="btn btn-danger btn-md " id="myBtn2" onclick="submitKYCForm('Rework');">Rework</button>
-                                        <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCForm('Approved');">Approve</button>
-                                        <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="updateMemValidationStatus('Rejected');">Reject</button>
-                                    </div>
-                                    <div id="groupApproveBtnIdQuery" class="col-md-4 text-center .btn-block" style="display:none;">
-                                        <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="updateGroupValStatus('Approved');">Approve Group</button>
-                                        </div>
-                                    {% endif %}
                                 </div>
-
                                 <!--- tab final row end -->
                             </section>
                             <!-- SECTION END -->
                         </div>
                         <!--form End-->
-
+                        <div id="fsr"></div>
                         <div id="profile5" class="tab-pane">
                                     <div class="page-content">
                                         <div class="row">
@@ -443,7 +434,19 @@
                                                         <div class="widget-body">
                                                             <div class="widget-main no-padding">
                                                                 <table class="table table-striped table-bordered table-hover" id="memberHistConflict">
+                                                                    <!--thead class="thin-border-bottom">
+                                                                        <tr>
+                                                                            <th>Member Name</th>
+                                                                            <th>Group Name</th>
+                                                                            <th>App Group ID</th>
+                                                                            <th>Group Id</th>
+                                                                            <th>Member Status</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="conflictListData"></tbody-->
                                                                 </table>
+
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -456,7 +459,6 @@
                                         <!-- /.col -->
                                     </div>
                                 </div>
-
                         <!-- groupDetail tab start-->
                         <div id="groupDetail" class="tab-pane">
                             <!-- form start-->
@@ -542,6 +544,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
                                     <div class="row-centered">
                                             <div class="col-md-12" > &nbsp;&nbsp;
@@ -556,32 +559,30 @@
                             <!--form End-->
                         </div>
                         <!-- groupDetail tab start-->
-                        <div id="fsr" class="tab-pane">
-                            <div class="page-content1">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <!-- PAGE CONTENT BEGINS -->
-                                    <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
-                                        <div class="widget-box widget-color-blue" id="widget-box-2">
+                        <div id="profile5" class="tab-pane">
+                                    <div class="page-content">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <!-- PAGE CONTENT BEGINS -->
+                                                <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
+                                                    <div class="widget-box widget-color-blue" id="widget-box-2">
+                                                        <div class="widget-body">
+                                                            <div class="widget-main no-padding">
+                                                                <table class="table table-striped table-bordered table-hover" id="memberHistConflict">
+                                                                </table>
 
-                                            <div class="widget-body">
-                                                <div class="widget-main no-padding">
-
-                                                    <br>
-                                                Data not available.<br><br>
-
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
+                                                <!-- /.span -->
                                             </div>
+                                            <!-- /.row -->
+                                            <!-- PAGE CONTENT ENDS -->
                                         </div>
+                                        <!-- /.col -->
                                     </div>
-                                    <!-- /.span -->
                                 </div>
-                                <!-- /.row -->
-                                <!-- PAGE CONTENT ENDS -->
-                            </div>
-                            <!-- /.col -->
-                        </div>
-                    </div>
                             <div id="profile4" class="tab-pane">
                                 <!--TAB MENU2 CONTENT START-->
                                 <div class="page-content">
@@ -699,19 +700,9 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
-        
-</div>
+        </div>
     </div>
 </div>
 <!-- Modal End -->  
 {% include 'query.html' %}
 {% endblock content %}
-
-
-
-
-
-
-
-
-
