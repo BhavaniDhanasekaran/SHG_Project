@@ -958,11 +958,7 @@ function updateGroupValStatus(status) {
     }
     if( group == "DataSupportTeam"){
         validationType = "PEN";
-<<<<<<< HEAD
-        processUpdate = {
-=======
          processUpdate = {
->>>>>>> c641f62a81582d9708a9a036cb87ad8bad775e1a
             'variables': {
                 'kyc': {
                     'value': "approved"
