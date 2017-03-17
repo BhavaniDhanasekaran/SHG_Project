@@ -115,7 +115,7 @@ def updateGrpValidationStatus(request):
                 else:
                     bodyData = {}
                 taskUpdateResponse = taskComplete(request,bodyData,taskId)
-                return HttpResponse(json.dumps(taskUpdateResponse), content_type="application/json")
+                return HttpResponse(taskUpdateResponse, content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while updating group status.')
 

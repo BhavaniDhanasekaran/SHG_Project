@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+
 {% block javascript %}
     <script>
         var group = '{{group | escapejs}}';
@@ -12,8 +13,10 @@
 
     </script>
     <script src="{% static 'datajs/loadTaskList.js' %}"></script>
+
 {% endblock javascript %}
 <!-- PAGE CONTENT BEGINS -->
+
 {% block content %}
     {% if group == "DataSupportTeam" %}
         <!-- BOX1 BEGINS -->
