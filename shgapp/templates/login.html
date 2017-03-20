@@ -31,10 +31,7 @@
     </div>
     </div>
     {% block javascript %} {% endblock %}
-    <script type="text/javascript">
-    if('ontouchstart' in document.documentElement) document.write("<script src='{% static 'js/jquery.mobile.custom.min.js' %}>"+"<"+"/script>");
-
-    </script>
+   
     <script src="{% static 'js/bootstrap.min.js'  %}"></script>
         <script src="{% static 'js/ace-elements.min.js'  %}"></script>
         <script src="{% static 'js/ace.min.js'  %}"></script>

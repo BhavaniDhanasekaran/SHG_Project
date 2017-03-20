@@ -13,13 +13,14 @@
     var taskId = '{{ taskId | escapejs }}';
     var taskName = '{{ taskName | escapejs }}';
     var group = '{{ group | escapejs }}';
+    var userId = '{{ userId | escapejs }}';
     var loanType = '{{ loanType | escapejs }}';
     var processInstanceId = '{{ processInstanceId | escapejs }}';
 $(document).ready(function (){
 	loanTypeId = loanTypeDict[loanType];
 	loanDocument(loanTypeId);
-	taskCount();
 	loadGroupRoles(groupId,loanId,taskName);
+	rmGroupMaster(groupId);
 	getHistComments(processInstanceId);
 	$("#loading").hide();
 });
@@ -38,64 +39,71 @@ $(document).ready(function (){
             <div class="profile-user-info profile-user-info-striped">
                 <div class="profile-info-row">
                     <div class="profile-info-name"> SHG Name </div>
-                    <div class="profile-info-value"> <span class="editable" id="groupName"></span> </div>
+                    <div class="profile-info-value"> <span class="editable" id="groupName_groupRole"></span> </div>
                 </div>
                 <div class="profile-info-row">
                     <div class="profile-info-name"> Formation Date </div>
-                    <div class="profile-info-value"> <span class="editable" id="groupFormationDate"></span> </div>
+                    <div class="profile-info-value"> <span class="editable" id="groupFormationDate_groupRole"></span> </div>
                 </div>
 
 
                 <div class="profile-info-row">
                     <div class="profile-info-name"> SHG Address </div>
-                    <textarea  rows="3" readonly="true" width="150px" id="shgaddress" placeholder="Address" style="margin: 0px; height: 77px; width: 218px;"></textarea>
+                    <textarea  rows="3" readonly="true" width="150px" id="shgaddress_groupRole" placeholder="Address" style="margin: 0px; height: 77px; width: 218px;"></textarea>
 
                 </div>
-
-
-
-
-
                 <div class="profile-info-row">
                     <div class="profile-info-name"> Animator </div>
                     <div class="profile-info-value">
-                        <span class="editable" id="animator">
-                           
+                        <span class="editable">
+                            <select class="editable compact" id="Animator" >
+                                <option value="">Select Animator</option>
+                            </select>
                         </span>
                     </div>
                 </div>
                 <div class="profile-info-row">
                     <div class="profile-info-name"> Rep 1</div>
                     <div class="profile-info-value">
-                        <span class="editable" id="rep1">
+                        <span class="editable">
+                            <select class="editable compact" id="repm1" >
+                                <option value="">Select Rep1</option>
+                            </select>
                         </span>
                     </div>
                 </div>
                 <div class="profile-info-row">
                     <div class="profile-info-name"> Rep 2</div>
                     <div class="profile-info-value">
-                        <span class="editable" id="rep2">
+                        <span class="editable" >
+                            <select class="editable compact" id="repm2" >
+                                <option value="">Select Rep2</option>
+                            </select>
                         </span>
                     </div>
+                    <span id="animatorId_groupRole" style="display:none;"></span>
+                    <span id="rep1Id_groupRole" style="display:none;"></span>
+                    <span id="rep2Id_groupRole" style="display:none;"></span>
                 </div>
                 <div class="profile-info-row">
                     <div class="profile-info-name"> SHG Id </div>
-                    <div class="profile-info-value"> <span class="editable" id="appGroupId"></span> </div>
+                    <div class="profile-info-value"> <span class="editable" id="appGroupId_groupRole"></span> </div>
                 </div>
                 <div class="profile-info-row">
                     <div class="profile-info-name"> MDA </div>
-                    <div class="profile-info-value"> <span class="editable" id="mda"></span> </div>
+                    <div class="profile-info-value"> <span class="editable" id="mda_groupRole"></span> </div>
                 </div>
                 <div class="profile-info-row">
                     <div class="profile-info-name"> MWA</div>
-                    <div class="profile-info-value"> <span class="editable" id="mwa"></span> </div>
+                    <div class="profile-info-value"> <span class="editable" id="mwa_groupRole"></span> </div>
                 </div>
                 <div class="profile-info-row">
                     <div class="profile-info-name"> Village </div>
-                    <div class="profile-info-value"> <span class="editable" id="villageName"></span></div>
+                    <div class="profile-info-value"> <span class="editable" id="villageName_groupRole"></span></div>
                 </div>
                 
-            </div>
+            </div><br>
+            <button type="button" class="btn btn-danger btn-md " onclick="updateGroupMemberStatus();">Update</button>
         </div>
         <!--2row Start col3 body end-->
     </div>

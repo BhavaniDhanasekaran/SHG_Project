@@ -7080,7 +7080,7 @@ fieldset[disabled] .btn-white.btn-grey:hover {
 .label.arrowed,
 .label.arrowed-in {
     position: relative;
-    z-index: 1
+    /*z-index: 1*/
 }
 .label.arrowed-in:before,
 .label.arrowed:before {
@@ -7098,7 +7098,7 @@ fieldset[disabled] .btn-white.btn-grey:hover {
 .label.arrowed-in-right,
 .label.arrowed-right {
     position: relative;
-    z-index: 1
+    /*z-index: 1*/
 }
 .label.arrowed-in-right:after,
 .label.arrowed-right:after {
@@ -9850,7 +9850,7 @@ textarea.input-transparent:focus {
     border-color: #C5D0DC #C5D0DC transparent;
     border-top: 2px solid #4C8FBD;
     background-color: #FFF;
-    z-index: 1;
+    /*z-index: 1;*/
     line-height: 18px;
     margin-top: -1px;
     box-shadow: 0 -2px 3px 0 rgba(0, 0, 0, .15)
@@ -10593,7 +10593,7 @@ tr.detail-row>td {
     filter: progid: DXImageTransform.Microsoft.gradient(enabled=false)
 }
 .widget-color-blue {
-    border-color: #f7953d  /*  previous color 307ECC */
+    /*border-color: #f7953d  /*  previous color 307ECC */
 }
 .widget-color-blue>.widget-header {
     background: #f7953d;    /*  previous color 307ECC */

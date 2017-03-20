@@ -1,76 +1,44 @@
 from django.shortcuts import render,render_to_response
 from shgapp.utils.helper import Helper
 from shgapp.utils.shgexceptions import *
+from shgapp.views.decorator import session_required
+import json
 
+@session_required
 def dsdatecount(request):
     return render(request, 'ds-datecount.html')
 
+@session_required
 def dstasklist(request):
-    username = request.user
-    Grp = request.user.groups.all()
-    groups = request.user.groups.values_list('name',flat=True)
-    print "grp:"
-    print groups[0]
-    return render(request, 'ds-tasklist.html', {"group":groups[0],"user":username})
+    username = request.session["userName"]
+    userOfficeData = json.loads(request.session["userOfficeData"])
+    groupName = userOfficeData["designation"]
+    userId = request.session["userId"]
+    return render(request, 'ds-tasklist.html', {"userId":userId,"group":groupName,"user":username})
 
+@session_required
 def dstasklistByName(request,taskName):
     print "taskName"
     print taskName
-    username = request.user
-    Grp = request.user.groups.all()
-    groups = request.user.groups.values_list('name',flat=True)
-    print "grp:"
-    print groups[0]
-    return render(request, 'ds-tasklist.html', {"taskName":taskName,"group":groups[0],"user":username})
-
-def taskunclaim(request):
-    return render(request, 'ds-tasklist-unclaim.html')
+    username = request.session["userName"]
+    userOfficeData = json.loads(request.session["userOfficeData"])
+    userId = request.session["userId"]
+    groupName = userOfficeData["designation"]
+    return render(request, 'ds-tasklist.html', {"userId":userId,"taskName":taskName,"group":groupName,"user":username})
 
 def mytask(request):
     return render(request, 'ds-mytask.html')
 
-def dsQueryTaskList(request):
-    return render(request, 'DsMyQueryTask.html')
-
-
-def bmtasklist(request):
-    return render(request, 'BMTasKList.html')
-
-
-def BmBAT(request):
-    return render(request, 'BmBAT.html')
-
-
-def BMUploadDoc(request):
-    return render(request, 'BMUploadDoc.html')
-
-def BMAddNewMember(request):
-    return render(request, 'BMAddNewMember.html')
-
-def rmtasklist(request):
-    return render(request, 'RMTaskList.html')
-
-
-def RmGroupApproval(request):
-    return render(request, 'RmGroupApproval.html')
-
-
-def CTtasklist(request):
-    return render(request, 'CTTasKList.html')
-
-
-def CTLoanApproval(request):
-    return render(request, 'CTLoanApproval.html')
-
-
+@session_required
 def SHGForm(request,groupId,loanId,taskId,processId,taskName,loanType):
     try:
-        username = request.user
-        Grp = request.user.groups.all()
-        groups = request.user.groups.values_list('name',flat=True)
+        username = request.session["userName"]
+        userOfficeData = json.loads(request.session["userOfficeData"])
+        groupName = userOfficeData["designation"]
+        userId = request.session["userId"]
         templateName = {
             "KYC Check"		    				        : "ds_groupview.html"	,
-            "Query Response"        				    : "queryResponseDS.html",
+            "Query Response"        				    : "ds_groupview.html",
             "Conduct BAT- Member approval in CRM"       : "queryResponseDS.html",
             "Upload loan documents in Web application"	: "BMUploadDocs.html",
             "Resolve Data Support Team Query"			: "queryResponseDS.html",
@@ -80,31 +48,9 @@ def SHGForm(request,groupId,loanId,taskId,processId,taskName,loanType):
             "Proposal scrutiny"                         : "proposalScrutiny.html",
             "BM Reply"                                  : "proposalScrutiny.html",
             "Resolve Credit Team Query"                 : "queryResponseDS.html",
-            "Approve Loan"                              : "CTLoanApproval.html"
+            "Approve Loan"                              : "CTLoanApproval.html",
+            "Prepare & print chq through BPM"           : "index.html"
         }
-        return render(request, templateName[taskName], {"loanType" :loanType, "groupId": groupId,"loanId":loanId,"processInstanceId" :processId, "taskId" : taskId,"taskName":taskName,"group":groups[0],"user":username})
+        return render(request, templateName[taskName], {"userId":userId,"loanType" :loanType, "groupId": groupId,"loanId":loanId,"processInstanceId" :processId, "taskId" : taskId,"taskName":taskName,"group":groupName,"user":username})
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred.')
-	
-	
-	
-	
-	
-
-
-      
-
-
-
-    
-
-
-
-    
-    
-
-          
-
-    
-
-

@@ -8,70 +8,68 @@ from shgapp.utils.camundaclient import CamundaClient
 from shgapp.utils.helper import Helper
 from shgapp.utils.shgexceptions import *
 from shgapp.views.camundaViews import taskComplete
+from shgapp.views.decorator import session_required
 import json
-import urllib2
-import requests
+
 
 helper = Helper()
 sscoreClient = SSCoreClient()
 camundaClient = CamundaClient()
 
+@session_required
 @csrf_exempt
 def dsgroupview(request,groupID,loanID,taskId,processInstanceId):
-    username = request.user
-    print processInstanceId
-    Grp = request.user.groups.all()
-    groups = request.user.groups.values_list('name',flat=True)
-    print "grp:"
-    print groups[0]
-    return render_to_response( 'ds_groupview.html', {"groupId": groupID,"loanId":loanID,"processInstanceId" :processInstanceId, "taskId" : taskId,"group":groups[0],"user":username})
+    username = request.session["userName"]
+    userOfficeData = json.loads(request.session["userOfficeData"])
+    groupName = userOfficeData["designation"]
+    userId = request.session["userId"]
+    return render_to_response( 'ds_groupview.html', {"userId":userId,"groupId": groupID,"loanId":loanID,"processInstanceId" :processInstanceId, "taskId" : taskId,"group":groupName,"user":username})
 
 
+@session_required
 def dsgroupview2(request):
-    print "Inside dsgroupview2(request):"
-    username = request.user
-    Grp = request.user.groups.all()
-    groups = request.user.groups.values_list('name',flat=True)
-    print "grp:"
-    print groups[0]
-    return render_to_response('ds_groupview.html',{"group":groups[0],"user":username})
+    username = request.session["userName"]
+    userOfficeData = json.loads(request.session["userOfficeData"])
+    groupName = userOfficeData["designation"]
+    userId = request.session["userId"]
+    return render_to_response('ds_groupview.html',{"group":groupName,"user":username,"userId":userId})
 
+@session_required
 def groupViewQuery2(request,groupID,loanID,taskId,processInstanceId):
-    username = request.user
-    Grp = request.user.groups.all()
-    groups = request.user.groups.values_list('name',flat=True)
-    print "grp:"
-    print groups[0]
-    return render_to_response( 'queryResponseDS.html', {"groupId": groupID,"loanId":loanID,"processInstanceId" :processInstanceId, "taskId" : taskId,"group":groups[0],"user":username})
+    username = request.session["userName"]
+    userOfficeData = json.loads(request.session["userOfficeData"])
+    groupName = userOfficeData["designation"]
+    userId = request.session["userId"]
+    return render_to_response( 'queryResponseDS.html', {"userId":userId,"groupId": groupID,"loanId":loanID,"processInstanceId" :processInstanceId, "taskId" : taskId,"group":groupName,"user":username})
 
+@session_required
 def groupViewQuery(request):
-    username = request.user
-    Grp = request.user.groups.all()
-    groups = request.user.groups.values_list('name',flat=True)
-    print "grp:"
-    print groups[0]
-    return render(request, 'queryResponseDS.html',{"group":groups[0],"user":username})
+    username = request.session["userName"]
+    userOfficeData = json.loads(request.session["userOfficeData"])
+    groupName = userOfficeData["designation"]
+    userId = request.session["userId"]
+    return render(request, 'queryResponseDS.html',{"userId":userId,"group":groupName,"user":username})
 
-
+@session_required
 def getGroupData(request,groupID,taskName):
     print "Inside getGroupData(request):"
     try:
-        username = request.user
-        Grp = request.user.groups.all()
-        url = ''
-        groups = request.user.groups.values_list('name', flat=True)
-        if groups[0] == "CLM_BM" or groups[0] == "CLM":
+        username = request.session["userName"]
+        BMTasksArray = ["Conduct BAT- Member approval in CRM","Print Loan Documents & FSR","Upload loan documents in Web application"]
+        userOfficeData = json.loads(request.session["userOfficeData"])
+        groupName = userOfficeData["designation"]
+        if groupName== "CMR" or groupName == "CLM" or groupName == "BM":
             if taskName == "Resolve Data Support Team Query":
                 validationLevel = "RWRK"
-            if taskName == "Conduct BAT- Member approval in CRM":
+            if taskName in BMTasksArray:
                 validationLevel = "BM"
             if taskName == "Resolve Credit Team Query":
                 validationLevel = "RWRK"
-        if groups[0] == "DataSupportTeam":
+        if groupName == "DataSupportTeam":
             validationLevel = "KYC"
-        if groups[0] == "CreditTeam":
+        if groupName == "CreditTeam":
             validationLevel = "CREDITTEAM"
-        if groups[0] == "RM" or groups[0] == "rm":
+        if groupName == "RM" or groupName == "rm":
             validationLevel = "BM"
         bodyData = {"groupId": groupID, "validationLevel":validationLevel}
         groupMembersData = sscoreClient._urllib2_request('workflowDetailView/getallmembers', bodyData, requestType='POST')
@@ -79,20 +77,19 @@ def getGroupData(request,groupID,taskName):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while searching group.')
 
+@session_required
 def getIndMemberData(request,memberId,groupId,loanId,taskName):
     print "Inside getIndMemberData(request,memberId,groupId,taskName):"
     try:
         validationType = ''
         print taskName
-        username = request.user
-        Grp = request.user.groups.all()
-        validationLevel = ""
-        groups = request.user.groups.values_list('name',flat=True)
-        groupName = groups[0]
+        username = request.session["userName"]
+        userOfficeData = json.loads(request.session["userOfficeData"])
+        groupName = userOfficeData["designation"]
         if groupName == "DataSupportTeam":
             validationType = "PRE"
             validationLevel = "KYC"
-        if groupName == "CLM_BM" or groupName == "CLM":
+        if groupName == "CMR" or groupName == "CLM" or groupName == "BM":
             if taskName == "Resolve Data Support Team Query":
                 validationLevel = "RWRK"
                 validationType = "POSTKYC"
@@ -113,8 +110,8 @@ def getIndMemberData(request,memberId,groupId,loanId,taskName):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while searching group members.')
 
-
 @csrf_exempt
+@session_required
 def getPinCodeDetails(request,pincode):
     print "Inside getPinCodeDetails(request,pincode):"
     try:
@@ -124,6 +121,7 @@ def getPinCodeDetails(request,pincode):
         return helper.bad_request('Unexpected error occurred while getting areas under this pincode.')
 
 
+@session_required
 def creditHistory(request,loanId):
     loanId = loanId
     print 'Inside creditHistory(request,loanId):'
@@ -134,6 +132,7 @@ def creditHistory(request,loanId):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting Credit History.')
 
+@session_required
 def creditHistoryGroup(request,loanId):
     loanId = loanId
     print 'Inside creditHistoryGroup(request,loanId):'
@@ -144,6 +143,7 @@ def creditHistoryGroup(request,loanId):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting Credit History.')
 
+@session_required
 def DocumentView(request,loanId):
     print "Inside DocumentView(request,loanId):"
     try:
@@ -154,28 +154,34 @@ def DocumentView(request,loanId):
         return helper.bad_request('An expected error occurred while getting Documents')
 
 @csrf_exempt
+@session_required
 def updateKYCDetails(request):
     print "Inside updateKYCDetails(request):"
     try:
         if request.method == "POST":
             formData  = json.loads(request.body)
             bodyDataUpdation =  formData["formData"]
+            print bodyDataUpdation
+
             bodymemberValidation =  formData["memValData"]
+            print bodymemberValidation
             taskId = formData["taskId"]
 
+            dataUpdateResponse = sscoreClient._urllib2_request('workflowEdit/updateMemberGroupLoan', bodyDataUpdation,
+                                                               requestType='POST')
             memberValResponse = sscoreClient._urllib2_request('workflowEdit/memberValidation',bodymemberValidation,requestType='POST')
 
             if memberValResponse["data"]["status"] != "fail":
                 if formData.has_key("message"):
                     message = {"message" : formData["message"]}
                     commentUpdate = camundaClient._urllib2_request('task/'+taskId+'/comment/create',message,requestType='POST')
-                dataUpdateResponse = sscoreClient._urllib2_request('workflowEdit/updateMemberGroupLoan',bodyDataUpdation,requestType='POST')
                 return HttpResponse(json.dumps(dataUpdateResponse), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while updating the KYC details.')
 
 
 @csrf_exempt
+@session_required
 def updateMemValidationStatus(request):
     print "Inside updateMemValidationStatus(request):"
     try:
@@ -193,7 +199,7 @@ def updateMemValidationStatus(request):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while updating the KYC details.')
 
-
+@session_required
 def creditHistory(request,groupId):
     print "Inside creditHistory(request,groupid):"
     try:
@@ -204,6 +210,7 @@ def creditHistory(request,groupId):
         return helper.bad_request('Unexpected error occurred while getting Credit History.')
 
 @csrf_exempt
+@session_required
 def updateUrl(request):
     print "Inside updateUrl(request):"
     try:
@@ -217,6 +224,7 @@ def updateUrl(request):
 
 
 @csrf_exempt
+@session_required
 def loanDocument(request,loanTypeId):
     print "Inside getloanDocument(request,loanTypeId):"
     try:
@@ -227,6 +235,7 @@ def loanDocument(request,loanTypeId):
 
 
 @csrf_exempt
+@session_required
 def editUrl(request):
     print "Inside editUrl(request):"
     try:
@@ -240,6 +249,7 @@ def editUrl(request):
 
 
 @csrf_exempt
+@session_required
 def getLoanDetails(request, groupId, loanId):
     print 'Inside getLoanDetails(request,groupId,loanId):'
     try:
@@ -253,6 +263,7 @@ def getLoanDetails(request, groupId, loanId):
         return helper.bad_request('Unexpected error occurred while getting getLoanDetails')
 
 @csrf_exempt
+@session_required
 def dropMemberDetail(request):
     print "Inside dropMemberDetail(request):"
     try:
@@ -268,6 +279,7 @@ def dropMemberDetail(request):
         return helper.bad_request('An expected error occurred while  dropMemberDetail.')
 
 @csrf_exempt
+@session_required
 def updateloanDetail(request):
     print "Inside updateloanDetail(request):"
     try:
@@ -284,6 +296,7 @@ def updateloanDetail(request):
         return helper.bad_request('An expected error occurred while updateloanDetail.')
 
 @csrf_exempt
+@session_required
 def approveLoan(request):
     print "Inside approveLoan(request): "
     try:
@@ -303,10 +316,13 @@ def approveLoan(request):
     except ShgInvalidRequest, e:
         return helper.bad_request('An expected error occurred while approving loan.')
 
-
+@session_required
 def loanAccNo(request,loanAccNumber,appGroupId,loanTypeName,groupName):
     print loanAccNumber
     print loanTypeName,appGroupId,groupName
-    groups = request.user.groups.values_list('name', flat=True)
-    return render_to_response("loanAccNumber.html",{"group":groups[0],"groupName": groupName,"appGroupId" :appGroupId,"loanTypeName":loanTypeName,"loanAccNo":loanAccNumber})
+    username = request.session["userName"]
+    userOfficeData = json.loads(request.session["userOfficeData"])
+    groupRole = userOfficeData["designation"]
+    userId = request.session["userId"]
+    return render_to_response("loanAccNumber.html",{"user":username,"userId":userId,"group":groupRole,"groupName": groupName,"appGroupId" :appGroupId,"loanTypeName":loanTypeName,"loanAccNo":loanAccNumber})
 

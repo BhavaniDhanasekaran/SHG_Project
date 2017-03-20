@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.conf.urls import include, url, handler400, handler403, handler404, handler500
 from django.contrib import admin
 from django.views.generic import TemplateView
-from shgapp.views import index, task, kyc, auth,masterData, camundaViews, BMOperations, mfupload, customError
+from shgapp.views import index, task, kyc, auth,masterData, camundaViews, BMOperations, mfupload, customError,decorator
 handler400 = customError.bad_request
 handler403 = customError.permission_denied
 handler404 = customError.page_not_found
@@ -29,17 +29,7 @@ task_urlpatterns = [
     url(r'^dsdatecount/', task.dsdatecount, name = 'dcount'),
     url(r'^dstasklist/', task.dstasklist, name = 'dstasklist'),
     url(r'^dstasklistByName/(?P<taskName>[^/]+)', task.dstasklistByName, name = 'dstasklistByName'),
-    url(r'^taskunclaim/',task.taskunclaim, name = 'taskunclaim'),
-    url(r'^DsQueryTaskList/',task.dsQueryTaskList, name = 'DsQueryTaskList'),
     url(r'^mytask/', task.mytask, name = 'mytask'),
-    url(r'^bmtasklist/', task.bmtasklist, name = 'bmtasklist'),
-    url(r'^BmBAT/', task.BmBAT, name = 'BmBAT'),
-    url(r'^BMUploadDoc/', task.BMUploadDoc, name = 'BMUploadDoc'),
-    url(r'^BMAddNewMember/', task.BMAddNewMember, name = 'BMAddNewMember'),
-    url(r'^rmtasklist/', task.rmtasklist, name = 'rmtasklist'),
-    url(r'^RmGroupApproval/', task.RmGroupApproval, name = 'RmGroupApproval'),
-    url(r'^CTtasklist/', task.CTtasklist, name = 'CTtasklist'),
-    url(r'^CTLoanApproval/', task.CTLoanApproval, name = 'CTLoanApproval'),
     url(r'^SHGForm/(?P<groupId>[^/]+)/(?P<loanId>[^/]+)/(?P<taskId>[^/]+)/(?P<processId>[^/]+)/(?P<taskName>[^/]+)/(?P<loanType>[^/]+)', task.SHGForm, name = 'SHGForm'),
 ]
 urlpatterns += task_urlpatterns

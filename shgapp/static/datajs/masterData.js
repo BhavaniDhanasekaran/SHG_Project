@@ -1,4 +1,4 @@
-var validationFields = ["memberName","age","husbandName","fatherName","address","villageName","idProofValue","addressProofValue","sbAccountNumber","bankId","sbAccountName",
+var validationFields = ["memberName","age","husbandName","maritalStatus","fatherName","address","villageName","idProofValue","addressProofValue","sbAccountNumber","bankId","sbAccountName",
 			"permanentAddress","pincode","villages","mobileNo","idProofTypeId","addressProofTypeId","loanAmount","loanTypeValue"];
 
 var loanTypeDict = {
@@ -34,11 +34,14 @@ function areasUnderPincode(){
 						$('#villages').append('<option value="'+pincodeData["data"][i]["villageId"]+'">'+pincodeData["data"][i]["villageName"]+'</option>');
 					}
 				}
+				else{
+				    $.alert("No areas available under this pincode!");
+				}
 			}	
 		});
 	}
 	else{
-		alert("Please enter valid Pincode");
+		$.alert("Please enter valid Pincode");
 	}
 		
 }

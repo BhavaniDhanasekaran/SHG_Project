@@ -51,7 +51,7 @@
         <!-- /.breadcrumb -->
     </div>
 {% endif %}
-{% if group == "CLM_BM" or group == "CLM"%}
+{% if group == "CMR" or group == "CLM" or group == "BM"%}
     <!-- start BM login menu -->
     <div class="sidebar-shortcuts" id="sidebar-shortcuts">
         <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
@@ -264,16 +264,16 @@
             </a>
             <b class="arrow"></b>
         </li>
-        <!--li class="">
-            <a href="#">
-                <i class="menu-icon glyphicon glyphicon-remove-sign"></i>
-                <span class="menu-text"> Raised Query
-                    <span class="badge badge-danger">0</span>
+        <li class="">
+            <a href="#" onclick="redirectToTaskPage('Prepare & print chq through BPM');">
+                <i class="menu-icon glyphicon glyphicon-print "></i>
+                <span class="menu-text"> Prepare&Print Chq
+                    <span id="Prepare_&_print_chq_through_BPM" class="badge badge-danger">0</span>
                 </span>
             </a>
             <b class="arrow"></b>
         </li>
-        <li class="">
+        <!--li class="">
             <a href="#">
                 <i class="menu-icon glyphicon glyphicon-file"></i>
                 <span class="menu-text"> Loan Cancel

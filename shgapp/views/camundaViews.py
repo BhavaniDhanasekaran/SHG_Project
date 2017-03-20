@@ -1,12 +1,14 @@
 import json
 
-from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render,render_to_response
 from django.views.decorators.csrf  import csrf_exempt
 from shgapp.utils.camundaclient import CamundaClient
 from shgapp.utils.helper import Helper
 from shgapp.utils.shgexceptions import *
+from shgapp.views.decorator import session_required
+
+
 
 helper = Helper()
 camundaClient = CamundaClient()
@@ -15,14 +17,10 @@ camundaClient = CamundaClient()
 def unassignedTaskList(request):
     try:
         print "Entering unassignedTaskList(request): view"
-        username = request.user
-        Grp = request.user.groups.all()
-        groups = request.user.groups.values_list('name',flat=True)
-        print "grp:"
-        print groups[0]
-        groupName = groups[0]
-
-
+        username = request.session["userName"]
+        userOfficeData = json.loads(request.session["userOfficeData"])
+        groupName = userOfficeData["designation"]
+        userId = request.session["userId"]
         processInstancesArr = []
         groupTaskDict 	= {}
         groupTaskData	= []
@@ -47,18 +45,18 @@ def unassignedTaskList(request):
             groupTaskData.append(groupTaskDict[key])
 
         print "Exiting unassignedTaskList(request): view"
-        return render_to_response('ds-tasklist.html', {"groupTaskList" : json.dumps(groupTaskData),"group" :groupName,"user":username})
+        return render_to_response('ds-tasklist.html', {"groupTaskList" : json.dumps(groupTaskData),"group" :groupName,"user":username,"userId":userId})
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting task details.')
 
-
+@session_required
 def KYCTaskList(request):
     try:
         print "Entering KYCTaskList(request): view "
-        username = request.user
-        groups = request.user.groups.values_list('name',flat=True)
-        print "grp:"
-        print groups[0]
+        username = request.session["userName"]
+        userOfficeData = json.loads(request.session["userOfficeData"])
+        groupName = userOfficeData["designation"]
+        userId = request.session["userId"]
         processInstancesArr = []
         processInstancesQRArr = []
         groupTaskDict 	= {}
@@ -83,17 +81,17 @@ def KYCTaskList(request):
                 groupTaskData.append(data)
 
         print "Exiting KYCTaskList(request): view "
-        return render_to_response('ds-datecount.html', {"groupTaskList" : json.dumps(groupTaskData),"group" :groups[0],"user":username})
+        return render_to_response('ds-datecount.html', {"groupTaskList" : json.dumps(groupTaskData),"group" :groupName,"user":username,"userId":userId})
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting task details.')
 
-
+@session_required
 def KYCTasksGroupByDate(request,dateFrom,dateTo):
     print "Entering KYCTasksGroupByDate(request,dateFrom,dateTo): view "
-    Grp = request.user.groups.all()
-    groups = request.user.groups.values_list('name',flat=True)
-    print "grp:"
-    print groups[0]
+    username = request.session["userName"]
+    userOfficeData = json.loads(request.session["userOfficeData"])
+    groupName = userOfficeData["designation"]
+    userId = request.session["userId"]
     processInstancesQRArr = []
     processInstancesArr = []
     kycTaskDict 	= {}
@@ -135,25 +133,22 @@ def KYCTasksGroupByDate(request,dateFrom,dateTo):
     print "Exiting KYCTasksGroupByDate(request,dateFrom,dateTo): view "
     return HttpResponse(json.dumps(kycTaskData), content_type="application/json")
 
-
-@login_required
+@session_required
 def assignedTaskList(request):
     print "Entering assignedTaskList(request): view"
-    username = request.user
-    Grp = request.user.groups.all()
-    groups = request.user.groups.values_list('name',flat=True)
-    print "grp:"
-    print groups[0]
-    groupName = groups[0]
+    username = request.session["userName"]
+    userOfficeData = json.loads(request.session["userOfficeData"])
+    groupName = userOfficeData["designation"]
+    userId = request.session["userId"]
     processInstancesArr = []
     taskProVarList =[]
-    taskProVarList1 = []
     myTaskDict 	= {}
     myTaskData	= []
-    myTaskList		= camundaClient._urllib2_request('task?&assignee='+str(username), {}, requestType='GET')
+    user = "%20".join(username.split(" "))
+    myTaskList		= camundaClient._urllib2_request('task?&assignee='+str(user), {}, requestType='GET')
 
     for data in myTaskList:
-        if groupName == "CLM_BM" or groupName == "CLM":
+        if groupName == "CMR" or groupName == "CLM" or groupName == "BM":
             processInstancesArr.append(data["processInstanceId"])
             dictKey = data["processInstanceId"]+"_"+data["id"]
             myTaskDict[dictKey] = data
@@ -163,7 +158,11 @@ def assignedTaskList(request):
             myTaskDict[data["processInstanceId"]] = data
 
     bodyData = { "processInstanceIdIn": processInstancesArr, "variableName" :"groupstatus" }
+    print "bodyData"
+    print json.dumps(bodyData)
     groupStatusList = camundaClient._urllib2_request('variable-instance', bodyData, requestType='POST')
+    print "groupStatusList"
+    print groupStatusList
     for data in groupStatusList:
         if data["value"] == "false":
             taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false',
@@ -178,7 +177,7 @@ def assignedTaskList(request):
     #Process Variable Instance:
     for key in range(len(taskProVarList)):
         for data in taskProVarList[key]:
-            if groupName == "CLM_BM" or groupName == "CLM":
+            if groupName == "CMR" or groupName == "CLM" or groupName == "BM":
                 for key1 in myTaskDict:
                     if key1.find(data["processInstanceId"]) != -1:
                         myTaskDict[key1][data["name"] ] = data["value"]
@@ -192,9 +191,10 @@ def assignedTaskList(request):
     for key in myTaskDict:
         if groupName == "DataSupportTeam":
             if myTaskDict[key].has_key("kyc"):
-                myTaskDict[key]["name"] = "Query Response"
+            	if myTaskDict[key]["kyc"] == "resolved":
+	                myTaskDict[key]["name"] = "Query Response"
             myTaskData.append(myTaskDict[key])
-        if groupName == "CLM_BM" or groupName == "CLM":
+        if groupName == "CMR" or groupName == "CLM" or groupName == "BM":
             myTaskData.append(myTaskDict[key])
         if groupName == "RM" or groupName == "rm":
             myTaskData.append(myTaskDict[key])
@@ -203,12 +203,11 @@ def assignedTaskList(request):
     print "myTaskData"
     print myTaskData
     print "Exiting assignedTaskList(request): view"
-    return render(request, 'ds-mytask.html',{"myTaskList" :json.dumps(myTaskData), "group" :groups[0],"user":username})
+    return render(request, 'ds-mytask.html',{"myTaskList" :json.dumps(myTaskData), "group" :groupName, "user":username,"userId":userId})
 
 def claim(request, id, name):
     print "Entering claim(request, id, name): view"
-    dataObjClaim = {}
-    username = request.user
+    username = request.session["userName"]
     try:
         #claim
         if name =="claim":
@@ -229,20 +228,29 @@ def claim(request, id, name):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred.')
 
-
-def tasksCount( request ):
+@session_required
+def tasksCount( request):
     print "Entering tasksCount( request ): view"
     try:
-        username = request.user
-        Grp = request.user.groups.all()
-        groups = request.user.groups.values_list('name',flat=True)
-        groupName = groups[0]
+        username = request.session["userName"]
+        userOfficeData = json.loads(request.session["userOfficeData"])
+        groupName = userOfficeData["designation"]
+        officeId = userOfficeData["officeId"]
         taskCount = {}
         queryCount = 0
         BMReplyCount =0
+        bodyLocationData = {}
         incrementTaskCount = 0
+        if groupName == "RM":
+            bodyLocationData = {"candidateGroup": str(groupName),
+                                "processVariables": [{"name": "regionId", "operator": "eq", "value": officeId}]}
+        if groupName == "CLM" or groupName == "BM" or groupName == "CMR":
+            bodyLocationData = {"candidateGroup": "CLM",
+                                "processVariables": [{"name": "clusterId", "operator": "eq", "value": officeId}]}
+        if groupName == "DataSupportTeam" or groupName == "CreditTeam":
+            bodyLocationData = {"candidateGroup": str(groupName)}
         mytaskURL = camundaClient._urllib2_request('task', {"assignee" : str(username)}, requestType='POST')
-        urlTask = camundaClient._urllib2_request('task', {"candidateGroup" : str(groupName)}, requestType='POST')
+        urlTask = camundaClient._urllib2_request('task', bodyLocationData, requestType='POST')
         print "urlTask:"
         print urlTask
         for data in mytaskURL:
@@ -290,7 +298,7 @@ def tasksCount( request ):
                 taskCount ["KYC Check"] = 0
                 taskCount["Query Response"] = 0
 
-        if groupName == "CLM_BM" or groupName == "CLM" or groupName == "RM" or groupName == "rm":
+        if groupName == "CMR" or groupName == "CLM"  or groupName == "BM" or groupName == "RM" or groupName == "rm":
             for data in urlTask:
                 if data["name"] in taskCount:
                     taskCount [data["name"]] = taskCount[data["name"]] + 1
@@ -338,8 +346,6 @@ def tasksCount( request ):
                 taskCount ["Proposal scrutiny"] = 0
                 taskCount["BM Reply"] = 0
 
-
-
         taskData = {  'Task' : taskCount   }
         taskData = json.dumps(taskData)
         print "taskData"
@@ -352,34 +358,33 @@ def tasksCount( request ):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred.')
 
+@session_required
 def KYCCheck(request,dateFrom,dateTo):
     print "Entering KYCCheck(request,dateFrom,dateTo): view"
-    username = request.user
-    Grp = request.user.groups.all()
-    groups = request.user.groups.values_list('name',flat=True)
-    print "grp:"
-    print groups[0]
+    username = request.session["userName"]
+    userOfficeData = json.loads(request.session["userOfficeData"])
+    groupName = userOfficeData["designation"]
+    userId = request.session["userId"]
     print "Exiting KYCCheck(request,dateFrom,dateTo): view"
-    return render_to_response( 'ds-tasklist.html', {"dateFrom": dateFrom,"dateTo":dateTo,"group" :groups[0],"user":username,"taskName":"KYC Check"})
+    return render_to_response( 'ds-tasklist.html', {"dateFrom": dateFrom,"userId":userId,"dateTo":dateTo,"group" :groupName,"user":username,"taskName":"KYC Check"})
 
+@session_required
 def queryRespTaskList(request):
     print "Entering queryRespTaskList(request): view"
-    username = request.user
-    Grp = request.user.groups.all()
-    groups = request.user.groups.values_list('name',flat=True)
-    print "grp:"
-    print groups[0]
+    username = request.session["userName"]
+    userOfficeData = json.loads(request.session["userOfficeData"])
+    groupName = userOfficeData["designation"]
+    userId = request.session["userId"]
     taskName = ''
-    taskProVarList1 = []
     taskProVarList = []
     processInstancesArr = []
     QRTaskDict 	= {}
     QRTaskData	= []
     grp_body_cont ={}
-    if groups[0] == "DataSupportTeam":
+    if groupName == "DataSupportTeam":
         grp_body_cont 	   = { "unassigned" : "true" , "candidateGroup" : "DataSupportTeam",	"processVariables":[{	"name" : "kyc",	"operator" :"eq","value" :"resolved"}] }
         taskName = "Query Response"
-    if groups[0] == "CreditTeam":
+    if groupName == "CreditTeam":
         grp_body_cont = {"unassigned": "true", "candidateGroup": "CreditTeam",
                          "processVariables": [{"name": "chekcbrespdate", "operator": "eq", "value": "resolved"}]}
         taskName = "BM Reply"
@@ -411,19 +416,20 @@ def queryRespTaskList(request):
 
     #Group Task Assign:	
     for key in QRTaskDict:
-        if groups[0] == "DataSupportTeam":
+        if groupName == "DataSupportTeam":
             if  QRTaskDict[key]["name"] == "KYC Check":
                 QRTaskDict[key]["name"] = "Query Response"
             QRTaskData.append(QRTaskDict[key])
 
-        if groups[0] == "CreditTeam":
+        if groupName == "CreditTeam":
             if  QRTaskDict[key]["name"] == "Proposal scrutiny":
                 QRTaskDict[key]["name"] = "BM Reply"
             QRTaskData.append(QRTaskDict[key])
 
-    return render_to_response('ds-tasklist.html', {"taskList" :json.dumps(QRTaskData),"group" :groups[0],"user":username,"taskName":taskName})
+    return render_to_response('ds-tasklist.html', {"userId":userId,"taskList" :json.dumps(QRTaskData),"group" :groupName,"user":username,"taskName":taskName})
 
 @csrf_exempt
+@session_required
 def updateTask(request):
     try:
         print "Entering updateTask(request) : "
@@ -439,6 +445,7 @@ def updateTask(request):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred.')
 
+@session_required
 def taskComplete(request,processUpdate,taskId):
     try:
         print "Entering taskComplete(processUpdate,taskId) : "
@@ -448,11 +455,16 @@ def taskComplete(request,processUpdate,taskId):
         else:
             bodyData = {}
         taskId 	= taskId
+        print "bodyData"
+        print bodyData
         taskUpdateResponse =  camundaClient._urllib2_request('task/'+taskId+'/complete',bodyData,requestType='POST')
+        print "taskUpdateResponse in taskcomplete"
+        print taskUpdateResponse
         return taskUpdateResponse
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred.')
 
+@session_required
 def getHistoryComments(request,processId):
     try:
         histCommentsDict = {}
@@ -471,19 +483,18 @@ def getHistoryComments(request,processId):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred.')  
 
+@session_required
 def proposalScrutinyTaskList(request):
     print "Entering proposalScrutinyTaskList(request): view "
-    Grp = request.user.groups.all()
-    groups = request.user.groups.values_list('name',flat=True)
-    username = request.user
-    print "grp:"
-    print groups[0]
+    username = request.session["userName"]
+    userOfficeData = json.loads(request.session["userOfficeData"])
+    groupName = userOfficeData["designation"]
+    userId = request.session["userId"]
     processInstancesQRArr = []
     processInstancesArr = []
     proposalScrutinyDict 	= {}
     proposalScrutinyData	= []
     taskProVarList = []
-    taskProVarList1 = []
 
     bodyData = { "unassigned" : "true", "candidateGroup" : "CreditTeam", "name" : "Proposal scrutiny"}
 
@@ -495,6 +506,7 @@ def proposalScrutinyTaskList(request):
 
     bodyData = { "processInstanceIdIn": processInstancesArr, "variableName" : "groupstatus"}
     groupStatusList = camundaClient._urllib2_request('variable-instance', bodyData, requestType='POST')
+
     for data in groupStatusList:
         if data["value"] == "false":
             taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false', {"processInstanceIdIn":[data["processInstanceId"]]},
@@ -507,10 +519,13 @@ def proposalScrutinyTaskList(request):
 
     for key in range(len(taskProVarList)):
         for data in taskProVarList[key]:
+            print data
             if data["processInstanceId"] in proposalScrutinyDict:
                 proposalScrutinyDict[data["processInstanceId"]][data["name"] ] = data["value"]
-            if data["value"] == "resolved":
-                processInstancesQRArr.append(data["processInstanceId"])
+            if data["name"] == "chekcbrespdate":
+                if data["value"] == "resolved":
+                    processInstancesQRArr.append(data["processInstanceId"])
+
 
     #Group Task Assign:
     for key in proposalScrutinyDict:
@@ -518,4 +533,4 @@ def proposalScrutinyTaskList(request):
             proposalScrutinyData.append(proposalScrutinyDict[key])
 
     print "Exiting proposalScrutiny(request): view "
-    return render_to_response('ds-tasklist.html', {"taskList" : json.dumps(proposalScrutinyData),"taskName": "Proposal scrutiny","group" :groups[0],"user":username})
+    return render_to_response('ds-tasklist.html', {"userId":userId,"taskList" : json.dumps(proposalScrutinyData),"taskName": "Proposal scrutiny","group" :groupName,"user":username})
