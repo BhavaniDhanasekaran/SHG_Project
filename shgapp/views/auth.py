@@ -61,6 +61,7 @@ def signin(request):
                     request.session["userOfficeData"] = json.dumps(loginResponse["data"]["userOfficeDetails"])
                     request.session["userName"] =  userName
                     request.session["userId"] = userId
+                    request.session["userLogin"] = username
                     request.session["loginTime"] = datetime.datetime.now()
                     #return render(request, 'index.html', {"Message": "Successful login","group" : group, "userId" :userId,"user":userName})
                     if 'next' in request.GET:

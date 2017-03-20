@@ -1,10 +1,13 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block javascript %}
+
 <script src="{% static 'datajs/grouplist.js' %}"></script>
 <script src="{% static 'datajs/loadTaskList.js' %}"></script>
 <script src="{% static 'datajs/masterData.js' %}"></script>
 <script src="{% static 'datajs/mysidenav.js' %}"></script>
+<script src="{% static 'js/imageViewer.js' %}"></script>
+
 <script>
     var groupId = '{{ groupId | escapejs }}';
     var loanId = '{{ loanId | escapejs }}';
@@ -13,7 +16,6 @@
     var taskName= '{{ taskId | escapejs }}';
     var processInstanceId = '{{ processInstanceId | escapejs }}';
     var group = '{{ group | escapejs }}';
-    console.log(userId);
     $(document).ready(function(){
         getGroupData(groupId,loanId);
         loadGroupRoles(groupId, loanId, taskName);
@@ -23,24 +25,12 @@
         });
     });
 </script>
-<script>
-    $(function() {
-        $('.pop').on('click', function() {
-            $('.imagepreview').attr('src', $(this).find('img').attr('src'));
-            $("#imagemodal").modal({ modal: true ,backdrop: false,   keyboard: true,});
-             //$( "#imagemodal" ).dialog();
-    
-            $('#imagemodal').modal('show');   
-            $("#imagemodal").draggable();
-        });     
-    });
-</script>
-<script></script>
 </div>
 {% endblock %}
 <!-- PAGE CONTENT BEGINS -->
 {% block content %}
 <div class="row" id="main">
+    <div class="docs-pictures clearfix">
     <!--2row Start-->
     <!--2row Start col2 End-->
     <div class="col-xs-12 pricing-box">
@@ -127,10 +117,11 @@
                                                     placeholder="Member Name"  
                                                          style="width:80%">
                                                     </span>
-                                                    <a href="#" class="pop">
-                                                    <img id="MEMBERPHOTO_docPath" src="{% static 'images/naveen.jpg' %}"
-                                                        style="width: 30px; height: 21px;"> 
-                                                    </a>     
+
+
+
+                          <img src=""  id="MEMBERPHOTO_docPath" style="width: 30px; height: 21px;"    data-original="">
+
                                                 </div>
                                             </div>
                                             <div  class="profile-info-row">
@@ -261,14 +252,18 @@
                                                         placeholder="ID Proof" id="idProofValue">
                                                     </span>
                                                     &nbsp;&nbsp;
-                                                    <div  id="idProof" style="display:inline-block;margin-top: 4px" 
-                                                        class="idProof">
-                                                        <a href="#" class="pop">
-                                                        <img id="IDPROOF_docPath" src="" 
-                                                            style="width: 20px; height: 21px;display:none"  data-url="">  </a>
-                                                        <a href="#" class="pop">
-                                                        <img id="IDPROOF_2_docPath" src="" 
-                                                            style="width: 20px; height: 21px;" data-url="">  </a>
+                                                    <div  id="idProof" style="display:inline-block;margin-top: 4px"    class="idProof">
+                                                        <img src=""  id="IDPROOF_docPath" style="width: 20px; height: 21px;"    data-original="">
+
+
+
+      <img src=""  id="IDPROOF_2_docPath" style="width: 20px; height: 21px;" data-original="">
+
+
+
+
+
+
                                                         <!--button
                                                             type="button" class="btn btn-info btn-md btn-danger" id="myBtn2">view
                                                             proof</button-->
@@ -287,12 +282,12 @@
                                                     <input type="text" style="width:60%"  class="sample2"  placeholder="Address Proof" id="addressProofValue"></span>
                                                     &nbsp;&nbsp;
                                                     <div id="idProof" style="display:inline-block;margin-top: 4px"class="idProof">
-                                                        <a href="#" class="pop">
-                                                        <img id="ADDRESSPROOF_docPath" src="" 
-                                                            style=" display:none;width: 20px; height: 21px;" data-url="">  </a>
-                                                        <a href="#" class="pop">
-                                                        <img id="ADDRESSPROOF_2_docPath" src="" 
-                                                            style=" display:none;width: 20px; height: 21px;" data-url="">  </a>
+                                  <img src=""  id="ADDRESSPROOF_docPath" style="width: 20px; height: 21px;" data-original="">
+
+                              <img src=""  id="ADDRESSPROOF_2_docPath" style="width: 20px; height: 21px;" data-original="">
+
+
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -307,9 +302,10 @@
                                                         class="editable" >    <input class="sample2" type="text"  style="width:60%" placeholder="SB Account
                                                         number" id="sbAccountNumber"></span> &nbsp;&nbsp;
                                                     <div  style="display:inline-block;margin-top: 4px" class="idProof">
-                                                        <a href="#" class="pop">
-                                                        <img id="SBACCOUNTPASSBOOK_docPath" src="" 
-                                                            style=" display:none;width: 30px; height: 21px;" data-url="">  </a>
+
+                                  <img src=""  id="SBACCOUNTPASSBOOK_docPath" style="width: 20px; height: 21px;" data-original="">
+
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -648,6 +644,7 @@
                             </div>
                         <!-- /.row -->
                         <!-- PAGE CONTENT ENDS -->
+                    </div>
                     </div>
                     <!-- /.col -->
                 </div>

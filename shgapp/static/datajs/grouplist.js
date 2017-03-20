@@ -184,7 +184,7 @@ function getMemberDetails(memberId, groupId, loanId) {
                                     if (memberDocumentsArray[key]["documentPath"].indexOf("Not%20uploaded") != -1) {
                                         if (memberDocumentsArray[key]["documentType"] == "MEMBERPHOTO") {
                                             //console.log(memberDocumentsArray[key]["documentType"] + "_docPath");
-                                            $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", "/static/images/naveen.jpg");
+                                            //$("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", "/static/images/naveen.jpg");
                                         } else {
                                             $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").css("display", "none");
                                         }
@@ -195,6 +195,7 @@ function getMemberDetails(memberId, groupId, loanId) {
                                         }
                                         $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", memberDocumentsArray[key]["documentPath"]);
                                         $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("data-url", memberDocumentsArray[key]["documentPath"]);
+                                         $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("data-original", memberDocumentsArray[key]["documentPath"]);
                                        // $("#idProof").imageBox();
                                     }
                                 }
@@ -1139,9 +1140,9 @@ function getLoanDetails(groupId, loanId) {
                         creditObj["previousLoanAmount"] + '</td><td>'
 
                         +
-                        ' <input type="text" name="m2street_' + i + '" value=' + creditObj["loanAmount"] + '></td><td>' +
-                        ' <input type="text" style="width: 45px;" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["awb"] + '></td><td>' +
-                        ' <input type="text" style="width: 45px;" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["sellingPrice"] + '></td><td>' +
+                        ' <input maxlength=10 type="text" name="m2street_' + i + '" class="sample5"  value=' + creditObj["loanAmount"] + '></td><td>' +
+                        ' <input maxlength=7 type="text" style="width: 45px;" class="sample5" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["awb"] + '></td><td>' +
+                        ' <input maxlength=7 type="text" style="width: 45px;" class="sample5" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["sellingPrice"] + '></td><td>' +
                         creditObj["sundryDebt"] + '</td><td>'
 
                         +
