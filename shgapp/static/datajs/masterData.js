@@ -48,7 +48,6 @@ function areasUnderPincode(){
 
 window.onload = function(){
 	setSelectOptionInForm();
-	imageViewer();
 }
 
 function setSelectOptionInForm(){

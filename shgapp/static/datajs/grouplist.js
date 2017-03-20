@@ -1140,9 +1140,9 @@ function getLoanDetails(groupId, loanId) {
                         creditObj["previousLoanAmount"] + '</td><td>'
 
                         +
-                        ' <input maxlength=10 type="text" name="m2street_' + i + '" class="sample5"  value=' + creditObj["loanAmount"] + '></td><td>' +
-                        ' <input maxlength=7 type="text" style="width: 45px;" class="sample5" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["awb"] + '></td><td>' +
-                        ' <input maxlength=7 type="text" style="width: 45px;" class="sample5" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["sellingPrice"] + '></td><td>' +
+                        ' <input onkeypress="validate(event,2)" maxlength=10 type="text" name="m2street_' + i + '" class="sample5"  value=' + creditObj["loanAmount"] + '></td><td>' +
+                        ' <input onkeypress="validate(event,2)" maxlength=7 type="text" style="width: 45px;" class="sample5" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["awb"] + '></td><td>' +
+                        ' <input onkeypress="validate(event,2)" maxlength=7 type="text" style="width: 45px;" class="sample5" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["sellingPrice"] + '></td><td>' +
                         creditObj["sundryDebt"] + '</td><td>'
 
                         +
@@ -1368,11 +1368,16 @@ function approveLoan(updateloanData){
     });
 }
 
-function validate(evt) {
+function validate(evt,id) {
     var theEvent = evt || window.event;
     var key = theEvent.keyCode || theEvent.which;
     key = String.fromCharCode(key);
-    var regex = /[0-9]/;
+    if(id == 1){
+        var regex = /[0-9]/;
+    }
+    if(id == 2){
+        var regex =  /[0-9]|\./;
+    }
     if (!regex.test(key)) {
         theEvent.returnValue = false;
         if (theEvent.preventDefault)

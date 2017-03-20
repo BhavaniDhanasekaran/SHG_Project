@@ -17,6 +17,7 @@
     var processInstanceId = '{{ processInstanceId | escapejs }}';
     var group = '{{ group | escapejs }}';
     $(document).ready(function(){
+        imageViewer();
         getGroupData(groupId,loanId);
         loadGroupRoles(groupId, loanId, taskName);
         $('textarea.limited').inputlimiter({
@@ -239,7 +240,7 @@
                                                         class="editable" >    
                                                     <input type="text"  class="sample4" 
                                                         placeholder="Mobile Number"
-                                                        onkeypress='validate(event)' id="mobileNo" maxlength="10" style="width:99%"></span>
+                                                        onkeypress='validate(event,1)' id="mobileNo" maxlength="10" style="width:99%"></span>
                                                 </div>
                                             </div>
                                             <div class="profile-info-row">

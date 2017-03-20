@@ -5,6 +5,7 @@
     <script src="{% static 'datajs/loadTaskList.js' %}"></script>
     <script src="{% static 'datajs/masterData.js' %}"></script>
     <script src="{% static 'datajs/mysidenav.js' %}"></script>
+    <script src="{% static 'js/imageViewer.js' %}"></script>
     <script type="text/javascript">
         var groupId = '{{ groupId | escapejs }}';
         var loanId = '{{ loanId | escapejs }}';
@@ -14,6 +15,7 @@
         var taskName = '{{ taskName | escapejs }}';
         var processInstanceId = '{{ processInstanceId | escapejs }}';
         $(document).ready(function (){
+            imageViewer();
             getGroupData(groupId,loanId);
             loadGroupRoles(groupId, loanId, taskName) ;
             taskCount();
