@@ -450,16 +450,13 @@ def taskComplete(request,processUpdate,taskId):
     try:
         print "Entering taskComplete(processUpdate,taskId) : "
         if processUpdate:
-            bodyData = json.loads(processUpdate)
-            print type(bodyData)
+            bodyData = processUpdate
         else:
             bodyData = {}
         taskId 	= taskId
         print "bodyData"
         print bodyData
         taskUpdateResponse =  camundaClient._urllib2_request('task/'+taskId+'/complete',bodyData,requestType='POST')
-        print "taskUpdateResponse in taskcomplete"
-        print taskUpdateResponse
         return taskUpdateResponse
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred.')

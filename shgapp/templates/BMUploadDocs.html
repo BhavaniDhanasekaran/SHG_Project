@@ -20,7 +20,6 @@ $(document).ready(function (){
 	loanTypeId = loanTypeDict[loanType];
 	loanDocument(loanTypeId);
 	loadGroupRoles(groupId,loanId,taskName);
-	rmGroupMaster(groupId);
 	getHistComments(processInstanceId);
 	$("#loading").hide();
 });

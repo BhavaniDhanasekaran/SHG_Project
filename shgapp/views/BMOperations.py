@@ -109,13 +109,13 @@ def updateGrpValidationStatus(request):
                 commentUpdate = camundaClient._urllib2_request('task/'+taskId+'/comment/create',message,requestType='POST')
                 print "commentUpdate"
                 print commentUpdate
-            if validationResponse["message"] == "Group validation completed successfully.":
+            if validationResponse["code"] == 2032:
                 if formData.has_key("processUpdate"):
-                    bodyData = json.dumps(formData["processUpdate"])
+                    bodyData = formData["processUpdate"]
                 else:
                     bodyData = {}
                 taskUpdateResponse = taskComplete(request,bodyData,taskId)
-                return HttpResponse(taskUpdateResponse, content_type="application/json")
+                return HttpResponse(json.dumps(taskUpdateResponse), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while updating group status.')
 

@@ -17,7 +17,6 @@
     $(document).ready(function(){
         getGroupData(groupId,loanId);
         loadGroupRoles(groupId, loanId, taskName);
-        rmGroupMaster(groupId);
         $('textarea.limited').inputlimiter({
           remText: '%n character%s remaining...',
           limitText: 'max allowed : %n.'

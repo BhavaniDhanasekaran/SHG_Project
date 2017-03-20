@@ -114,7 +114,6 @@ function getMemberDetails(memberId, groupId, loanId) {
         success: function(data) {
             var memberData = data;
             var conflictListArr = [];
-            console.log("memberData",memberData);
             //var arrayKeys = ["occupations","villages""conflictList","highMarksList","memberFamilyDetails","memberDocumentDetails"];
             var imgFiles = ["MEMBERPHOTO", "IDPROOF", "IDPROOF_2", "ADDRESSPROOF", "ADDRESSPROOF_2", "SBACCOUNTPASSBOOK", "OVERLAPREPORT"];
             if (memberData["data"]["memberDetails"]) {
@@ -171,7 +170,7 @@ function getMemberDetails(memberId, groupId, loanId) {
                     }
                 }
                 if (memberData["data"]["memberDocumentDetails"]) {
-                    console.log(memberData["data"]["memberDocumentDetails"]);
+                    //console.log(memberData["data"]["memberDocumentDetails"]);
                     if (memberData["data"]["memberDocumentDetails"][0]) {
                         var memberDocumentsArray = memberData["data"]["memberDocumentDetails"];
                         for (var key in memberDocumentsArray) {
@@ -184,7 +183,7 @@ function getMemberDetails(memberId, groupId, loanId) {
 
                                     if (memberDocumentsArray[key]["documentPath"].indexOf("Not%20uploaded") != -1) {
                                         if (memberDocumentsArray[key]["documentType"] == "MEMBERPHOTO") {
-                                            console.log(memberDocumentsArray[key]["documentType"] + "_docPath");
+                                            //console.log(memberDocumentsArray[key]["documentType"] + "_docPath");
                                             $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", "/static/images/naveen.jpg");
                                         } else {
                                             $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").css("display", "none");
@@ -328,7 +327,7 @@ function updateMemValidationStatus(status) {
 
     dataObj["memValData"] = memValData;
     dataObj["taskId"] = taskId;
-    console.log(dataObj);
+    //console.log(dataObj);
     //return false;
 
     var updateStatus = '';
@@ -578,7 +577,7 @@ function checkForTaskCompletion() {
                 taskUpdate(processStatus);
             }
             if (group == "DataSupportTeam") {
-                processStatus = "approved";
+                processStatus = "Approved";
                 taskUpdate(processStatus);
             }
         }
@@ -637,8 +636,9 @@ function checkForTaskCompletion() {
 
 function taskUpdate(status) {
     var comment = '';
+    var processupdate;
     if (group == "DataSupportTeam") {
-        var processupdate = {
+         processupdate = {
             'variables': {
                 'kyc': {
                     'value': status
@@ -647,7 +647,7 @@ function taskUpdate(status) {
         };
     }
     if (group == "CreditTeam") {
-        var processupdate = {
+         processupdate = {
             'variables': {
                 'chekcbrespdate': {
                     'value': status
@@ -664,7 +664,7 @@ function taskUpdate(status) {
         comment = document.getElementById("comment").value;
         dataObj["message"] = comment;
     }
-    console.log(dataObj);
+   // console.log(dataObj);
     //return false;
     $.ajax({
         url: '/updateTask/',
@@ -696,7 +696,7 @@ function creditHistory(loanId) {
         dataType: 'json',
         success: function(data) {
             var creditData = data;
-            console.log(creditData);
+           // console.log(creditData);
             var documentObj = [];
             var docPath = ''
             var docId = ''
@@ -763,77 +763,6 @@ function enableActiveTab() {
     }
 }
 
-function rmGroupMaster(groupId) {
-    $.ajax({
-        url: '/getGroupData/' + groupId + '/' + taskName,
-        dataType: 'json',
-        beforeSend: function() {
-            $("#loading").show();
-        },
-        complete: function() {
-            $("#loading").hide();
-        },
-        success: function(data) {
-            var groupViewData2 = data;
-            console.log(groupViewData2);
-            if(groupViewData2["data"]["groupMemDetail"]){
-                var groupData = groupViewData2["data"]["groupMemDetail"];
-
-                var found_names = $.grep(groupViewData2.data.groupMemDetail, function(v) {
-                    return v.memberStatus != "Rejected";
-                });
-                $.each(found_names, function(key, value) {
-                    $('#Animator').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
-                    $('#repm1').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
-                    $('#repm2').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
-                });
-                $.each($('.compact option'), function(key, optionElement) {
-		   			 var curText = $(optionElement).text();
-			 		 $(this).attr('title', curText);
-					 var lengthToShortenTo = Math.round(parseInt('170px', 10) / 9.4);
-			    		 if (curText.length > lengthToShortenTo) {
-						$(this).text(curText.substring(0,lengthToShortenTo)+'...');
-		    			 }
-				});
-				// Show full name in tooltip after choosing an option
-				$('.compact').change(function() {
-					$(this).attr('title', ($(this).find('option:eq('+$(this).get(0).selectedIndex +')').attr('title')));
-				});
-
-                var animatorvalue = $("#animatorId_groupRole").text();
-                var rep1value = $("#rep1Id_groupRole").text();
-                var rep2value = $("#rep2Id_groupRole").text();
-                //alert(rep2value);
-                $("#Animator").val(animatorvalue);
-                $("#repm1").val(rep1value);
-                $("#repm2").val(rep2value);
-                $('#groupMemberDetails').dataTable({
-                    data: groupData,
-                    "bDestroy": true,
-                    "bJQueryUI": false,
-                    "bProcessing": true,
-                    "bSort": true,
-                    "bInfo": true,
-                    "bPaginate": false,
-                    "iDisplayLength": 10,
-                    "bSortClasses": false,
-                    "bAutoWidth": false,
-                    "searching" :false,
-                    "sDom": '<"top">rt<"bottom"flp><"clear">',
-                    "bDeferRender": true,
-                    "aoColumns": [
-                        { "mData": "appMemberId", "sTitle": "App Member Id", "sWidth": "10%", className:"column"},
-                        { "mData": "memberName","sTitle": "Member Name"  , "sWidth": "25%", className:"column"},
-                        { "mData": "age","sTitle": "Age"  , "sWidth": "6%", className:"column"},
-                        { "mData": "address","sTitle": "Address"  , "sWidth": "30%", className:"column"},
-                        { "mData": "villageName","sTitle": "Village"  , "sWidth": "20%", className:"column"},
-                        { "mData": "pincode","sTitle": "Pincode"  , "sWidth": "10%", className:"column"},
-                        ],
-                });
-            }
-        }
-    });
-}
 
 function loadGroupRoles(groupId, loanId, taskName) {
     var dataObj = {};
@@ -862,7 +791,7 @@ function loadGroupRoles(groupId, loanId, taskName) {
         type: "post",
 
         success: function(data) {
-        console.log(data);
+        //console.log(data);
             document.getElementById("loanTypeId1").innerHTML = data["data"]["loanTypeId"];
             var groupDetails = data["data"]["groupDetails"];
             for (var key in groupDetails) {
@@ -873,9 +802,12 @@ function loadGroupRoles(groupId, loanId, taskName) {
                     }
                 }
             }
+	     rmGroupMaster(groupId);
         },
         data: JSON.stringify(dataObj)
     });
+
+
 }
 
 
@@ -901,7 +833,7 @@ function updateGroupValStatus(status) {
          processUpdate = {
             'variables': {
                 'kyc': {
-                    'value': "approved"
+                    'value': "Approved"
                 },
             }
         };
@@ -959,7 +891,7 @@ function updateGroupValStatus(status) {
     $.ajax({
         url: '/updateGrpValidationStatus/',
         dataType: 'json',
-        type: "post",
+        type: "POST",
         beforeSend: function() {
             triggerLoadFunc();
             $("#loading").show();
@@ -969,8 +901,6 @@ function updateGroupValStatus(status) {
             $("#loading").hide();
         },
         success: function(data) {
-            console.log("data===================================================");
-            console.log(data);
             if (data == "Successful") {
                 $.alert("Group Validation completed Successfully");
                 window.location = '/assignedTaskList/';
@@ -1473,7 +1403,6 @@ function updateMembersCount(){
     var rejectedCount = $('.Rejected').length;
     var reworkCount = $('.Rework').length;
     var penCount = $('.Pending').length;
-    console.log("approvedCount",approvedCount);
 
     if(document.getElementById("appCount")){
         document.getElementById("appCount").innerHTML = approvedCount;
@@ -1492,3 +1421,81 @@ function updateMembersCount(){
     }
 }
 
+
+function rmGroupMaster(groupId) {
+    $.ajax({
+        url: '/getGroupData/' + groupId + '/' + taskName,
+        dataType: 'json',
+        beforeSend: function() {
+            $("#loading").show();
+        },
+        complete: function() {
+            $("#loading").hide();
+        },
+        success: function(data) {
+            var groupViewData2 = data;
+            if(groupViewData2["data"]["groupMemDetail"]){
+                var groupData = groupViewData2["data"]["groupMemDetail"];
+
+                var found_names = $.grep(groupViewData2.data.groupMemDetail, function(v) {
+                    return v.memberStatus != "Rejected";
+                });
+                $.each(found_names, function(key, value) {
+                    $('#Animator').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
+                    $('#repm1').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
+                    $('#repm2').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
+                });
+
+               var animatorvalue = $("#animatorId_groupRole").text();
+                var rep1value = $("#rep1Id_groupRole").text();
+                var rep2value = $("#rep2Id_groupRole").text();
+
+                //alert(rep2value);
+
+                $("#Animator").val(animatorvalue);
+                $("#repm1").val(rep1value);
+                $("#repm2").val(rep2value);
+
+
+                $.each($('.compact option'), function(key, optionElement) {
+		   			 var curText = $(optionElement).text();
+			 		 $(this).attr('title', curText);
+					 var lengthToShortenTo = Math.round(parseInt('170px', 10) / 9.4);
+			    		 if (curText.length > lengthToShortenTo) {
+						$(this).text(curText.substring(0,lengthToShortenTo)+'...');
+		    			 }
+				});
+				// Show full name in tooltip after choosing an option
+				$('.compact').change(function() {
+					$(this).attr('title', ($(this).find('option:eq('+$(this).get(0).selectedIndex +')').attr('title')));
+				});
+
+                if(document.getElementById("groupMemberDetails")){
+                    $('#groupMemberDetails').dataTable({
+                        data: groupData,
+                        "bDestroy": true,
+                        "bJQueryUI": false,
+                        "bProcessing": true,
+                        "bSort": true,
+                        "bInfo": true,
+                        "bPaginate": false,
+                        "iDisplayLength": 10,
+                        "bSortClasses": false,
+                        "bAutoWidth": false,
+                        "searching" :false,
+                        "sDom": '<"top">rt<"bottom"flp><"clear">',
+                        "bDeferRender": true,
+                        "aoColumns": [
+                            { "mData": "appMemberId", "sTitle": "App Member Id", "sWidth": "10%", className:"column"},
+                            { "mData": "memberName","sTitle": "Member Name"  , "sWidth": "25%", className:"column"},
+                            { "mData": "age","sTitle": "Age"  , "sWidth": "6%", className:"column"},
+                            { "mData": "address","sTitle": "Address"  , "sWidth": "30%", className:"column"},
+                            { "mData": "villageName","sTitle": "Village"  , "sWidth": "20%", className:"column"},
+                            { "mData": "pincode","sTitle": "Pincode"  , "sWidth": "10%", className:"column"},
+                            ],
+                    });
+                }
+            }
+        }
+    });
+}
