@@ -39,24 +39,24 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <li class="dropdown list-unstyled"  >
-                    <!--  <a class="dropdown-toggle-lg" data-toggle="dropdown" > 
+                    <!--  <a class="dropdown-toggle-lg" data-toggle="dropdown" >
                         <i class="fa fa-users fa-2x" style="cursor:pointer" aria-hidden="true"></i>
                               </a> -->
                     <label class="btn-sm btn-primary dropdown-toggle-sm" data-toggle="dropdown"><i class="fa fa-users fa-1x" style="cursor:pointer" aria-hidden="true"></i> Group Members
                     </label>
                     <span id="groupName"></span> &nbsp; &nbsp;
                     (<span id="appGroupId"></span>) &nbsp; &nbsp;&nbsp; &nbsp;
-                    <span id="memberName2" ></span> 
+                    <span id="memberName2" ></span>
                     (<span id="appMemberId_top" ></span>)
-                    <span id="groupId" style="visibility:hidden;"></span> 
-                    <span id="loanTypeId1" style="visibility:hidden;"></span> 
+                    <span id="groupId" style="visibility:hidden;"></span>
+                    <span id="loanTypeId1" style="visibility:hidden;"></span>
                     <br>
                     Approved: <span id="appCount">0</span>&nbsp; &nbsp;&nbsp;
                     Rejected : <span id="rejCount">0</span>&nbsp; &nbsp;&nbsp;
                     Rework : <span id="rwrkCount">0</span>&nbsp; &nbsp;&nbsp;
                     Pending : <span id="penCount">0</span>&nbsp; &nbsp;&nbsp;
                     Total : <span id="totCount">0</span>
-                    <ul class="dropdown-menu scrollable-menu"  
+                    <ul class="dropdown-menu scrollable-menu"
                         style=" height: auto;max-height: 500px; overflow-x: hidden;">
                         <div>
                             <li data-toggle="tab" href="#home4"  class="list-group" id="san_test"></li>
@@ -105,17 +105,17 @@
                                     <!-- tabrow start-->
                                     <!-- tabrow  colmd-2 end-->
                                     <div class="col-md-4">
-                                        <!-- tabrow  colmd-5 start-->                   
+                                        <!-- tabrow  colmd-5 start-->
                                         <form class="form-horizontal" role="form">
                                         <div class="profile-user-info profile-user-info-striped">
                                             <div class="profile-info-row">
                                                 <div id="memberName_label" class="profile-info-name">
-                                                    Name <font class="mandatory">*</font>    
+                                                    Name <font class="mandatory">*</font>
                                                 </div>
                                                 <div class="profile-info-value">
                                                     <span class="editable">
-                                                    <input type="text" class="sample8"  id="memberName"  
-                                                    placeholder="Member Name"  
+                                                    <input type="text" class="sample8"  id="memberName"
+                                                    placeholder="Member Name"
                                                          style="width:80%">
                                                     </span>
 
@@ -126,19 +126,19 @@
                                                 </div>
                                             </div>
                                             <div  class="profile-info-row">
-                                                <div id="age_label" class="profile-info-name"> Age  
+                                                <div id="age_label" class="profile-info-name"> Age
                                                     <font class="mandatory">*</font>
                                                 </div>
                                                 <div class="profile-info-value">
                                                     <span class="editable">
-                                                    <input type="text"  style="width:99%" id="age" 
-                                                        class="sample4" placeholder="Age" 
-                                                         maxlength="2">
-                                                    </span> 
+                                                    <input type="text"  style="width:99%" id="age"
+                                                        class="sample4" placeholder="Age"
+                                                         maxlength="2" onchange="validateFields(this.id,this.value,'age');">
+                                                    </span>
                                                 </div>
                                             </div>
                                             <div  class="profile-info-row">
-                                                <div id="maritalStatus_label" class="profile-info-name"> Marital Status 
+                                                <div id="maritalStatus_label" class="profile-info-name"> Marital Status
                                                     <font class="mandatory">*</font>
                                                 </div>
                                                 <div class="profile-info-value">
@@ -158,7 +158,7 @@
                                                 <div id="husbandName_label" class="profile-info-name"> Spouse <font
                                                     class="mandatory">*</font> </div>
                                                 <div class="profile-info-value">
-                                                    <span class="editable">    
+                                                    <span class="editable">
                                                     <input type="text"    class="sample8"   style="width:99%" id="husbandName" placeholder="Spouse Name"></span>
                                                 </div>
                                             </div>
@@ -166,7 +166,7 @@
                                                 <div id="fatherName_label" class="profile-info-name"> Father <font
                                                     class="mandatory">*</font> </div>
                                                 <div class="profile-info-value">
-                                                    <span class="editable">   
+                                                    <span class="editable">
                                                     <input type="text"  class="sample8"  id="fatherName"  style="width:99%" placeholder="Father Name"></span>
                                                 </div>
                                             </div>
@@ -175,7 +175,7 @@
                                                     class="mandatory">*</font></div>
                                                 <div class="profile-info-value">
                                                     <span class="editable">
-                                                    <textarea class="form-control sample2" rows="3" 
+                                                    <textarea class="form-control sample2" rows="3"
                                                         style="width:99%" id="address"
                                                         placeholder="Address"></textarea>
                                                     </span>
@@ -205,7 +205,7 @@
                                                     class="profile-info-value">
                                                     <span class="editable">
                                                     <textarea
-                                                        class="form-control sample2" rows="3" 
+                                                        class="form-control sample2" rows="3"
                                                         placeholder="Permanent Address"
                                                         id="permanentAddress" ></textarea>
                                                     </span>
@@ -237,18 +237,18 @@
                                                 <div
                                                     class="profile-info-value">
                                                     <span
-                                                        class="editable" >    
-                                                    <input type="text"  class="sample4" 
-                                                        placeholder="Mobile Number"
+                                                        class="editable" >
+                                                    <input type="text"  class="sample4"
+                                                        placeholder="Mobile Number" onchange="validateFields(this.id,this.value,'mobileNumber');"
                                                         onkeypress='validate(event,1)' id="mobileNo" maxlength="10" style="width:99%"></span>
                                                 </div>
                                             </div>
                                             <div class="profile-info-row">
-                                                <div  id="idProofValue_label" class="profile-info-name"> ID Proof 
+                                                <div  id="idProofValue_label" class="profile-info-name"> ID Proof
                                                     <font  class="mandatory">*</font>
                                                 </div>
                                                 <div class="profile-info-value">
-                                                    <span class="editable">    
+                                                    <span class="editable">
                                                     <input type="text"  class="sample2" style="width:60%"
                                                         placeholder="ID Proof" id="idProofValue">
                                                     </span>
@@ -277,7 +277,7 @@
                                                 <div
                                                     class="profile-info-value">
                                                     <span
-                                                        class="editable" > 
+                                                        class="editable" >
                                                     <input type="text" style="width:60%"  class="sample2"  placeholder="Address Proof" id="addressProofValue"></span>
                                                     &nbsp;&nbsp;
                                                     <div id="idProof" style="display:inline-block;margin-top: 4px"class="idProof">
@@ -329,7 +329,7 @@
                                             <div class="profile-info-row">
                                                 <div
                                                     id="sbAccountName_label" class="profile-info-name"> Name ( Bank
-                                                    ) <font class="mandatory">*</font> 
+                                                    ) <font class="mandatory">*</font>
                                                 </div>
                                                 <div
                                                     class="profile-info-value">
@@ -361,7 +361,7 @@
                                             <div class="profile-info-row">
                                                 <div id="loanAmount_label" class="profile-info-name"> Loan Amount </div>
                                                 <div class="profile-info-value">
-                                                    <span class="editable">    
+                                                    <span class="editable">
                                                     <input type="text"  class="sample5" placeholder="Loan Amount"id="loanAmount" maxlength="10" style="width:99%">
                                                     </span>
                                                 </div>
@@ -371,7 +371,7 @@
                                                 <div class="profile-info-value">
                                                     <span class="editable">
                                                     <select id="loanTypeValue"style="width:99%;"></select>
-                                                    </span>     
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -385,7 +385,7 @@
                                     <div class="col-md-8">
                                         <div class="profile-user-info profile-user-info-striped">
                                             <div class="profile-info-row">
-                                                <div id="commentDivId" class="profile-info-name"> 
+                                                <div id="commentDivId" class="profile-info-name">
                                                     <label id="comment_label" for="comment">Comment </label>
                                                 </div>
                                                 <div class="profile-info-value">
@@ -667,16 +667,16 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div  class="modal-body">
-                <img src="" class="imagepreview img-responsive" style="cursor: move;" >     
+                <img src="" class="imagepreview img-responsive" style="cursor: move;" >
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
-        
+
 </div>
     </div>
 </div>
-<!-- Modal End -->  
+<!-- Modal End -->
 {% include 'query.html' %}
 {% endblock content %}
 

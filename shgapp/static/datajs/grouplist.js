@@ -48,7 +48,7 @@ function getGroupData(groupID, loanId) {
                             rewCount += 1;
                         }
                         if (document.getElementById("san_test")) {
-                            $("#san_test").append('<a id="' + memberId + '" onclick="getMemberDetails(' + memberId + ',' + groupId + ',' + loanId + ');tabControl();" class="' + className + '" style="font-weight:bold;"> (' + groupData["data"]["groupMemDetail"][i]["sequenceNumber"]+")  "+groupData["data"]["groupMemDetail"][i]["memberName"] + '</a>');
+                            $("#san_test").append('<a id="' + memberId + '" onclick="getMemberDetails(' + memberId + ',' + groupId + ',' + loanId + ');tabControl();" class="' + className + '" style="font-weight:bold;"> (' + groupData["data"]["groupMemDetail"][i]["sequenceNumber"] + ")  " + groupData["data"]["groupMemDetail"][i]["memberName"] + '</a>');
                         }
                         if (document.getElementById("groupName") && groupData["data"]["groupName"]) {
                             document.getElementById("groupName").innerHTML = groupData["data"]["groupName"];
@@ -68,9 +68,9 @@ function getGroupData(groupID, loanId) {
                     var rejectedCount = $('.Rejected').length;
                     updateMembersCount();
                     var totalCount = approvedCount + rejectedCount;
-                    if(membersCount == totalCount){
-                        $("#operationsDivIdQuery").css("display","none");
-                        $("#groupApproveBtnIdQuery").css("display","block");
+                    if (membersCount == totalCount) {
+                        $("#operationsDivIdQuery").css("display", "none");
+                        $("#groupApproveBtnIdQuery").css("display", "block");
                     }
                     getMemberDetails(memId, groupID, loanId);
                 }
@@ -78,8 +78,7 @@ function getGroupData(groupID, loanId) {
                 $.alert(groupData["message"]);
             }
         },
-        error: function(jqXHR, textStatus, errorThrown) {
-        }
+        error: function(jqXHR, textStatus, errorThrown) {}
     });
     getHistComments(processInstanceId);
 
@@ -117,9 +116,9 @@ function getMemberDetails(memberId, groupId, loanId) {
             //var arrayKeys = ["occupations","villages""conflictList","highMarksList","memberFamilyDetails","memberDocumentDetails"];
             var imgFiles = ["MEMBERPHOTO", "IDPROOF", "IDPROOF_2", "ADDRESSPROOF", "ADDRESSPROOF_2", "SBACCOUNTPASSBOOK", "OVERLAPREPORT"];
             if (memberData["data"]["memberDetails"]) {
-                if(memberData["data"]["conflictList"]){
+                if (memberData["data"]["conflictList"]) {
                     var conflictData = memberData["data"]["conflictList"];
-                    if ($.fn.DataTable.isDataTable( '#memberHistConflict' ) ) {
+                    if ($.fn.DataTable.isDataTable('#memberHistConflict')) {
                         $("#memberHistConflict").dataTable().fnDestroy();
                     }
                     $('#memberHistConflict').dataTable({
@@ -133,17 +132,42 @@ function getMemberDetails(memberId, groupId, loanId) {
                         "iDisplayLength": 10,
                         "bSortClasses": false,
                         "bAutoWidth": false,
-                        "searching" :false,
+                        "searching": false,
                         "sDom": '<"top">rt<"bottom"flp><"clear">',
                         "bDeferRender": true,
                         "aoColumns": [
                             //{ "mData": "slNo", "sTitle": "S.No", "sWidth": "3%", className:"column"},
-                            { "mData": "memberName", "sTitle": "Member Name", "sWidth": "25%", className:"column"},
-                            { "mData": "groupName","sTitle": "Group Name"  , "sWidth": "30%", className:"column"},
-                            { "mData": "appGroupId","sTitle": "App Group ID"  , "sWidth": "15%", className:"column"},
-                            { "mData": "groupId","sTitle": "Group ID"  , "sWidth": "15%", className:"column"},
-                            { "mData": "memberStatus","sTitle": "Member Status"  , "sWidth": "15%", className:"column"},
-                            ],
+                            {
+                                "mData": "memberName",
+                                "sTitle": "Member Name",
+                                "sWidth": "25%",
+                                className: "column"
+                            },
+                            {
+                                "mData": "groupName",
+                                "sTitle": "Group Name",
+                                "sWidth": "30%",
+                                className: "column"
+                            },
+                            {
+                                "mData": "appGroupId",
+                                "sTitle": "App Group ID",
+                                "sWidth": "15%",
+                                className: "column"
+                            },
+                            {
+                                "mData": "groupId",
+                                "sTitle": "Group ID",
+                                "sWidth": "15%",
+                                className: "column"
+                            },
+                            {
+                                "mData": "memberStatus",
+                                "sTitle": "Member Status",
+                                "sWidth": "15%",
+                                className: "column"
+                            },
+                        ],
                     });
                 }
 
@@ -196,8 +220,8 @@ function getMemberDetails(memberId, groupId, loanId) {
                                         }
                                         $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", memberDocumentsArray[key]["documentPath"]);
                                         $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("data-url", memberDocumentsArray[key]["documentPath"]);
-                                         $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("data-original", memberDocumentsArray[key]["documentPath"]);
-                                       // $("#idProof").imageBox();
+                                        $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("data-original", memberDocumentsArray[key]["documentPath"]);
+                                        // $("#idProof").imageBox();
                                     }
                                 }
                             }
@@ -221,13 +245,13 @@ function getMemberDetails(memberId, groupId, loanId) {
                         }
                         if (tagname == "SPAN") {
                             document.getElementById(data).innerHTML = memberData["data"]["memberDetails"][data];
-                            if (document.getElementById("villages").tagName == "SPAN"){
+                            if (document.getElementById("villages").tagName == "SPAN") {
                                 document.getElementById("villages").innerHTML = memberData["data"]["memberDetails"]["villageId"];
-                                }
-                                if(document.getElementById("memberName2") && document.getElementById("appMemberId_top")){
-                                    document.getElementById("memberName2").innerHTML = memberData["data"]["memberDetails"]["memberName"];
-                                    document.getElementById("appMemberId_top").innerHTML = memberData["data"]["memberDetails"]["appMemberId"];
-                                }
+                            }
+                            if (document.getElementById("memberName2") && document.getElementById("appMemberId_top")) {
+                                document.getElementById("memberName2").innerHTML = memberData["data"]["memberDetails"]["memberName"];
+                                document.getElementById("appMemberId_top").innerHTML = memberData["data"]["memberDetails"]["appMemberId"];
+                            }
                         }
                     }
                 }
@@ -237,19 +261,18 @@ function getMemberDetails(memberId, groupId, loanId) {
             document.getElementById("groupId").innerHTML = groupId;
             document.getElementById("loanId").innerHTML = loanId;
         },
-        error: function(jqXHR, textStatus, errorThrown) {
-        }
+        error: function(jqXHR, textStatus, errorThrown) {}
     });
 }
 
 function updateMemValidationStatus(status) {
     var memberName = '';
     var tagname = document.getElementById("memberName").tagName;
-    if(tagname == "SPAN"){
-         memberName = document.getElementById("memberName").innerHTML;
+    if (tagname == "SPAN") {
+        memberName = document.getElementById("memberName").innerHTML;
     }
-    if(tagname == "INPUT"){
-         memberName = document.getElementById("memberName").value;
+    if (tagname == "INPUT") {
+        memberName = document.getElementById("memberName").value;
     }
     var appMemberId = document.getElementById("appMemberId").innerHTML;
     var memberId = document.getElementById("memberId").innerHTML;
@@ -314,7 +337,7 @@ function updateMemValidationStatus(status) {
     var memValData = {
         "memberId": memberId,
         "groupId": groupId,
-        "loanTypeId" :loanTypeId,
+        "loanTypeId": loanTypeId,
         "loanId": loanId,
         "subStatus": status,
         "userId": userId,
@@ -357,7 +380,7 @@ function updateMemValidationStatus(status) {
         },
         success: function(data) {
             if (data["code"] == "2029") {
-                $.alert("'"+ memberName +"'"+ " has been " + updateStatus);
+                $.alert("'"+ memberName +"'" + " has been " + updateStatus);
                 if (status == "Approved") {
                     document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-success Approved";
                     document.getElementById("memberValStatus").innerHTML = "APP";
@@ -383,10 +406,10 @@ function updateMemValidationStatus(status) {
 
 function submitKYCForm(status) {
     var validationType;
-    if(group == "DataSupportTeam"){
+    if (group == "DataSupportTeam") {
         validationType = "POSTKYC";
     }
-    if(group == "CreditTeam"){
+    if (group == "CreditTeam") {
         validationType = "POST";
     }
     var mandatoryFieldsDict = {};
@@ -455,7 +478,7 @@ function submitKYCForm(status) {
         "memberId": memberId,
         "groupId": groupId,
         "loanId": loanId,
-        "loanTypeId" :loanTypeId,
+        "loanTypeId": loanTypeId,
         "subStatus": status,
         "userId": userId,
         "comment": comment,
@@ -534,7 +557,7 @@ function submitKYCForm(status) {
         },
         success: function(data) {
             if (data["code"] == "2024") {
-                $.alert("'"+ name +"'"+ " has been " + updateStatus);
+                $.alert("'"+ name +"'" + " has been " + updateStatus);
 
                 if (status == "Approved") {
                     document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-success Approved";
@@ -640,7 +663,7 @@ function taskUpdate(status) {
     var comment = '';
     var processupdate;
     if (group == "DataSupportTeam") {
-         processupdate = {
+        processupdate = {
             'variables': {
                 'kyc': {
                     'value': status
@@ -649,7 +672,7 @@ function taskUpdate(status) {
         };
     }
     if (group == "CreditTeam") {
-         processupdate = {
+        processupdate = {
             'variables': {
                 'chekcbrespdate': {
                     'value': status
@@ -666,7 +689,7 @@ function taskUpdate(status) {
         comment = document.getElementById("comment").value;
         dataObj["message"] = comment;
     }
-   // console.log(dataObj);
+    // console.log(dataObj);
     //return false;
     $.ajax({
         url: '/updateTask/',
@@ -698,22 +721,30 @@ function creditHistory(loanId) {
         dataType: 'json',
         success: function(data) {
             var creditData = data;
-           // console.log(creditData);
+            // console.log(creditData);
             var documentObj = [];
             var docPath = ''
             var docId = ''
+            var docBtn = ''
             if (creditData.data) {
                 for (var i = 0; i < creditData.data.length; i++) {
                     var creditObj = creditData["data"][i]["creditInquiry"];
                     documentObj = creditData["data"][i]["memberDocument"];
+
                     var documentPath = '';
-                    for (var j = 0; j < documentObj.length; j++) {
-                        if (documentObj[j]["documentType"] == "OVERLAPREPORT") {
-                            docPath = documentObj[j]["documentPath"];
-                             docId = documentObj[j]["docId"];
+                    if (documentObj[0]) {
+                        for (var j = 0; j < documentObj.length; j++) {
+                            if (documentObj[j]["documentType"] == "OVERLAPREPORT") {
+                                docPath = documentObj[j]["documentPath"];
+                                docId = documentObj[j]["docId"];
+                                docBtn = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + docId + "," + "width=200,height=100" + ');"+>View</button>';
+                            }
                         }
+                    } else {
+                        docBtn = '<button type="button" class="btn btn-info btn-md btn-danger"+>View</button>';
+
                     }
-                    htmlContent += '<tr><td> <button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + ","+docId+","+"width=200,height=100"+');"+>View</button></td>' +
+                    htmlContent += '<tr><td>' + docBtn + ' </td>' +
                         '<td>' + creditObj["appMemberId"] + '</td><td>' +
                         creditObj["memberName"] + '</td>' +
                         '<td>' + creditObj["s_product_type"] + '</td>' +
@@ -770,10 +801,10 @@ function loadGroupRoles(groupId, loanId, taskName) {
     var dataObj = {};
     var validationType = '';
     if (group == "CMR" || group == "CLM" || group == "BM") {
-        if(taskName == "Print Loan Documents & FSR"){
+        if (taskName == "Print Loan Documents & FSR") {
             validationType = "PEN"
         }
-        if(taskName == "Upload loan documents in Web application"){
+        if (taskName == "Upload loan documents in Web application") {
             validationType = "PRE"
         }
     }
@@ -793,22 +824,22 @@ function loadGroupRoles(groupId, loanId, taskName) {
         type: "post",
 
         success: function(data) {
-        console.log(data);
+            console.log(data);
             document.getElementById("loanTypeId1").innerHTML = data["data"]["loanTypeId"];
-            if(document.getElementById("appGroupId")){
+            if (document.getElementById("appGroupId")) {
                 document.getElementById("appGroupId").innerHTML = data["data"]["groupDetails"]["appGroupId"];
             }
 
             var groupDetails = data["data"]["groupDetails"];
             for (var key in groupDetails) {
-                if (document.getElementById(key+"_groupRole")) {
-                    document.getElementById(key+"_groupRole").innerHTML = groupDetails[key];
+                if (document.getElementById(key + "_groupRole")) {
+                    document.getElementById(key + "_groupRole").innerHTML = groupDetails[key];
                     if (document.getElementById(key + "1")) {
                         document.getElementById(key + "1").innerHTML = groupDetails[key];
                     }
                 }
             }
-	     rmGroupMaster(groupId);
+            rmGroupMaster(groupId);
         },
         data: JSON.stringify(dataObj)
     });
@@ -822,7 +853,7 @@ function loadGroupRoles(groupId, loanId, taskName) {
 function updateGroupValStatus(status) {
     var validationType = '';
     var comment;
-    var processUpdate ;
+    var processUpdate;
     var dataObj = {};
     if (document.getElementById("comment")) {
         comment = document.getElementById("comment").value;
@@ -834,18 +865,18 @@ function updateGroupValStatus(status) {
             return false;
         }
     }
-    if( group == "DataSupportTeam"){
+    if (group == "DataSupportTeam") {
         validationType = "PEN";
-         processUpdate = {
+        processUpdate = {
             'variables': {
                 'kyc': {
                     'value': "Approved"
                 },
             }
         };
-        dataObj["processUpdate"]= processUpdate;
+        dataObj["processUpdate"] = processUpdate;
     }
-    if( group == "CreditTeam"){
+    if (group == "CreditTeam") {
         validationType = "POST";
         processUpdate = {
             'variables': {
@@ -854,14 +885,14 @@ function updateGroupValStatus(status) {
                 },
             }
         };
-        dataObj["processUpdate"]= processUpdate;
+        dataObj["processUpdate"] = processUpdate;
     }
 
     if (group == "CMR" || group == "CLM" || group == "BM") {
-        if(taskName == "Upload loan documents in Web application"){
+        if (taskName == "Upload loan documents in Web application") {
             validationType = "CLMAPPROVAL";
         }
-        if(taskName == "Print Loan Documents & FSR"){
+        if (taskName == "Print Loan Documents & FSR") {
             validationType = "PRE";
         }
     }
@@ -870,15 +901,14 @@ function updateGroupValStatus(status) {
         if (!document.getElementById("Animator").value || !document.getElementById("repm1").value || !document.getElementById("repm2").value) {
             $.alert("Please update group roles before task completion!");
             return false;
-        }
-        else{
+        } else {
             updateGroupMemberStatus();
         }
     }
 
     var groupValData = {
         "groupId": groupId,
-        "loanTypeId" :loanTypeId,
+        "loanTypeId": loanTypeId,
         "subStatus": status,
         "userId": userId,
         "comment": comment,
@@ -891,8 +921,8 @@ function updateGroupValStatus(status) {
 
     dataObj["groupValData"] = groupValData;
     dataObj["taskId"] = taskId;
-    if(comment != ""){
-         dataObj["message"] = comment;
+    if (comment != "") {
+        dataObj["message"] = comment;
     }
     $.ajax({
         url: '/updateGrpValidationStatus/',
@@ -981,14 +1011,14 @@ function getHistComments(processId) {
                                             '<div style="font-weight:bold;color:darkslategrey;">Member : ' + memberName + '<br></div>' +
                                             '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span style="font-style:italic;">' +
                                             '<i class="fa fa-comments" style="color:darkslategrey;" aria-hidden="true"></i>&nbsp' + comment + '</span><div class="time"><i class="ace-icon fa fa-clock-o bigger-110"></i><span > Commented on &nbsp&nbsp' +
-                                            cmtDate + '</span><br><i class="ace-icon fa fa-clock-o bigger-110"></i><span>Task end Time '+sortedData[key][1]["endTime"]+'</span></div></div></div>';
+                                            cmtDate + '</span><br><i class="ace-icon fa fa-clock-o bigger-110"></i><span>Task end Time ' + sortedData[key][1]["endTime"] + '</span></div></div></div>';
                                     }
                                 } else {
                                     htmlContent += '<div class="profile-activity clearfix"><div><span style="font-weight:bold;color:#981b1b;"><i class="glyphicon glyphicon-user"></i> ' + sortedData[key][1]["assignee"] + ':</span>  ' +
                                         '&nbsp&nbsp<span style="color:black;">' + sortedData[key][1]["activityName"] + '</span></div>' +
                                         '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span style="font-style:italic;">' +
                                         '<i class="fa fa-comments" style="color:darkslategrey;" aria-hidden="true"></i>&nbsp' + sortedcomments[key1]["message"] + '</span><div class="time"><i class="ace-icon fa fa-clock-o bigger-110"></i><span > Commented on &nbsp&nbsp' +
-                                        cmtDate + '</span><br><i class="ace-icon fa fa-clock-o bigger-110"></i><span>Task end Time '+sortedData[key][1]["endTime"]+'</span></div></div></div>';
+                                        cmtDate + '</span><br><i class="ace-icon fa fa-clock-o bigger-110"></i><span>Task end Time ' + sortedData[key][1]["endTime"] + '</span></div></div></div>';
                                 }
                             }
                         }
@@ -1015,7 +1045,7 @@ function documentView(groupId) {
                 $.each(groupDocData.data, function(key, value) {
                     var tr = $('<tr></tr>');
                     current++;
-                    $('<td>' + current + '</td><td>' + value.documentName + '</td><td> <button type="button" class="btn btn-danger" id = "' + value.docId + '" onclick="window.open(' + "'" + value.documentPath + "'" +","+ value.docId+"," +"width=200,height=100"+');"><span class="glyphicon glyphicon-cloud-upload"></span> View  </button></td> ').appendTo(tr);
+                    $('<td>' + current + '</td><td>' + value.documentName + '</td><td> <button type="button" class="btn btn-danger" id = "' + value.docId + '" onclick="window.open(' + "'" + value.documentPath + "'" + "," + value.docId + "," + "width=200,height=100" + ');"><span class="glyphicon glyphicon-cloud-upload"></span> View  </button></td> ').appendTo(tr);
                     tr.appendTo('#docments_table');
                 });
             } else {
@@ -1089,10 +1119,10 @@ function getLoanDetails(groupId, loanId) {
             var htmlContent = '';
             var creditData = data;
             var loanDetails = data["data"]["loanDetails"];
-            if(document.getElementById("loanTypeName")){
+            if (document.getElementById("loanTypeName")) {
                 document.getElementById("loanTypeName").innerHTML = loanDetails["loanTypeName"];
             }
-            if(document.getElementById("loanInstallments")){
+            if (document.getElementById("loanInstallments")) {
                 document.getElementById("loanInstallments").value = loanDetails["loanInstallments"];
             }
             var loanMemberDetails = data["data"]["loanMemberDetails"];
@@ -1108,16 +1138,16 @@ function getLoanDetails(groupId, loanId) {
                         $('.purpose2').append('<option value="' + value.id + '">' + value.name + '</option>');
                     });
                     $.each($('.purpose2 option'), function(key, optionElement) {
-                         var curText = $(optionElement).text();
-                         $(this).attr('title', curText);
-                         var lengthToShortenTo = Math.round(parseInt('200px', 10) / 9.4);
-                             if (curText.length > lengthToShortenTo) {
-                                 $(this).text(curText.substring(0,lengthToShortenTo)+'...');
-                             }
+                        var curText = $(optionElement).text();
+                        $(this).attr('title', curText);
+                        var lengthToShortenTo = Math.round(parseInt('200px', 10) / 9.4);
+                        if (curText.length > lengthToShortenTo) {
+                            $(this).text(curText.substring(0, lengthToShortenTo) + '...');
+                        }
                     });
                     // Show full name in tooltip after choosing an option
                     $('.purpose2').change(function() {
-                        $(this).attr('title', ($(this).find('option:eq('+$(this).get(0).selectedIndex +')').attr('title')));
+                        $(this).attr('title', ($(this).find('option:eq(' + $(this).get(0).selectedIndex + ')').attr('title')));
                     });
                 }
             });
@@ -1127,10 +1157,10 @@ function getLoanDetails(groupId, loanId) {
                     var creditObj = creditData["data"]["loanMemberDetails"][i];
                     var newMem = "";
                     //  console.log(creditObj);
-                    if(creditObj["newMember"] == true){
+                    if (creditObj["newMember"] == true) {
                         newMem = "Yes";
                     }
-                    if(creditObj["newMember"] == false){
+                    if (creditObj["newMember"] == false) {
                         newMem = "No";
                     }
                     htmlContent += '<tr>'
@@ -1145,7 +1175,7 @@ function getLoanDetails(groupId, loanId) {
                         creditObj["previousLoanAmount"] + '</td><td>'
 
                         +
-                        ' <input onkeypress="validate(event,2)" maxlength=10 type="text" name="m2street_' + i + '" class="sample5"  value=' + creditObj["loanAmount"] + '></td><td>' +
+                        ' <input  onkeypress="validate(event,2)"  id="'+creditObj["memberId"]+"_loanAmt"+'" onblur="validateFields(this.id,this.value,'+"'"+'loanAmount'+"'"+');" maxlength=10 type="text" name="m2street_' + i + '" class="sample5"  value=' + creditObj["loanAmount"] + '></td><td>' +
                         ' <input onkeypress="validate(event,2)" maxlength=7 type="text" style="width: 45px;" class="sample5" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["awb"] + '></td><td>' +
                         ' <input onkeypress="validate(event,2)" maxlength=7 type="text" style="width: 45px;" class="sample5" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["sellingPrice"] + '></td><td>' +
                         creditObj["sundryDebt"] + '</td><td>'
@@ -1156,13 +1186,12 @@ function getLoanDetails(groupId, loanId) {
                         creditObj["educationCess"] + '</td><td>'
 
                         +
-                        '<font readonly="readonly" style="width: 45px;" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["insuranceAmount"] + '>'+ creditObj["insuranceAmount"] +'</font></td><td>' +
+                        '<font readonly="readonly" style="width: 45px;" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["insuranceAmount"] + '>' + creditObj["insuranceAmount"] + '</font></td><td>' +
                         creditObj["memNetLoanAmount"] + '</td><td>' +
-                        '<select class="purpose2"  id="purpose_' + creditObj["memberId"] + '   name="purpose"><option value='+creditObj["purposeId"]+'>'+creditObj["purpose"]+'</option></select></td><td>'
+                        '<select class="purpose2"  id="purpose_' + creditObj["memberId"] + '   name="purpose"><option value=' + creditObj["purposeId"] + '>' + creditObj["purpose"] + '</option></select></td><td>'
 
                         +
-                        ' <input type="checkbox" name="drop" id="m2street + creditObj["memberId"] '+ ' value=' + creditObj["memberId"] + ' ></td><td style="display:none;">'
-                        +
+                        ' <input type="checkbox" name="drop" id="m2street + creditObj["memberId"] ' + ' value=' + creditObj["memberId"] + ' ></td><td style="display:none;">' +
                         ' <input type="text" name="atlDebt_' + i + '" value=' + creditObj["atlDebt"] + '></td><td style="display:none">' +
                         ' <input type="text" name="interest_' + i + '" value=' + creditObj["interest"] + '></td><td style="display:none">'
 
@@ -1206,17 +1235,15 @@ function getLoanDetails(groupId, loanId) {
 }
 
 
-function loadDataTable(){
-    var table = $('#paymentTable').DataTable(
-        {
-            "sDom": '<"top">rt<"bottom"flp><"clear">',
-            "paging"   : false,
-            "bInfo": false,
-            "bLengthChange": false,
-            "bPaginate": false,
-            "searching" :false
-        }
-    );
+function loadDataTable() {
+    var table = $('#paymentTable').DataTable({
+        "sDom": '<"top">rt<"bottom"flp><"clear">',
+        "paging": false,
+        "bInfo": false,
+        "bLengthChange": false,
+        "bPaginate": false,
+        "searching": false
+    });
 
     var data = table.$('input, select').serialize();
     return false;
@@ -1250,17 +1277,16 @@ function dropMemberDetail(loanId, dropMember, groupId) {
 
 function updateloanDatail(updateloanData) {
     var installment;
-    if(document.getElementById("loanInstallments")){
-        if(document.getElementById("loanInstallments").value){
+    if (document.getElementById("loanInstallments")) {
+        if (document.getElementById("loanInstallments").value) {
             installment = document.getElementById("loanInstallments").value;
-            if(installment == 0 || installment == "undefined"){
-                $("#loanInstallments").css("background-color","#FEEFB3");
+            if (installment == 0 || installment == "undefined") {
+                $("#loanInstallments").css("background-color", "#FEEFB3");
                 $.alert("Invalid loan installments");
                 return false;
             }
-        }
-        else{
-            $("#loanInstallments").css("background-color","#FEEFB3");
+        } else {
+            $("#loanInstallments").css("background-color", "#FEEFB3");
             $.alert("Please input loan installments");
             return false;
         }
@@ -1268,7 +1294,7 @@ function updateloanDatail(updateloanData) {
     var dataObj3 = {};
     var uploadData2 = {
         "loanId": String(loanId),
-        "installments" : installment,
+        "installments": installment,
         "memberLoanDetails": eval(updateloanData),
         "userId": userId
     }
@@ -1297,42 +1323,41 @@ function updateloanDatail(updateloanData) {
 }
 
 
-function approveLoan(updateloanData){
+function approveLoan(updateloanData) {
     var dataObj = {};
     var groupName = document.getElementById("groupName1").innerHTML;
     var appGroupId = document.getElementById("appGroupId").innerHTML;
     var loanTypeName = document.getElementById("loanTypeName").innerHTML;
     var loanTypeId = document.getElementById("loanTypeId1").innerHTML;
     var installment;
-    if(document.getElementById("loanInstallments")){
-        if(document.getElementById("loanInstallments").value){
+    if (document.getElementById("loanInstallments")) {
+        if (document.getElementById("loanInstallments").value) {
             installment = document.getElementById("loanInstallments").value;
-            if(installment == 0 || installment == "undefined"){
-                $("#loanInstallments").css("background-color","#FEEFB3");
+            if (installment == 0 || installment == "undefined") {
+                $("#loanInstallments").css("background-color", "#FEEFB3");
                 $.alert("Invalid loan installments");
                 return false;
             }
-        }
-        else{
-            $("#loanInstallments").css("background-color","#FEEFB3");
+        } else {
+            $("#loanInstallments").css("background-color", "#FEEFB3");
             $.alert("Please input loan installments");
             return false;
         }
     }
     var loanData = {
-                        "groupId": groupId,
-                        "loanId": loanId,
-                        "loanTypeId" :loanTypeId,
-                        "entityType": "LOAN",
-                        "validationType": "POST",
-                        "userId":userId,
-                        "subStatus":"POST_KYC_VALIDATED",
-                        "installments" : installment,
-                        "memberLoanDetails": eval(updateloanData),
-                        "bpmTaskId": taskId,
-                        "bpmTaskName": taskName,
-                        "bpmProcessId": processInstanceId
-                    };
+        "groupId": groupId,
+        "loanId": loanId,
+        "loanTypeId": loanTypeId,
+        "entityType": "LOAN",
+        "validationType": "POST",
+        "userId": userId,
+        "subStatus": "POST_KYC_VALIDATED",
+        "installments": installment,
+        "memberLoanDetails": eval(updateloanData),
+        "bpmTaskId": taskId,
+        "bpmTaskName": taskName,
+        "bpmProcessId": processInstanceId
+    };
     dataObj["loanData"] = loanData;
     dataObj["taskId"] = taskId;
     $.ajax({
@@ -1346,42 +1371,42 @@ function approveLoan(updateloanData){
             $("#loading").hide();
         },
         success: function(data) {
-           if(data.code == "2032"){
-               $.alert("Loan has been approved");
-               var loanAccNumber = data["data"]["loanAccountNumber"];
-               /*var dataArr = {};
-                dataArr["loanAccNo"] = data["data"]["loanAccountNumber"];
-                dataArr["appGroupId"] = appGroupId;
-                dataArr["loanTypeName"] = loanTypeName;
-                dataArr["groupName"] = groupName;
-                $.ajax({
-                    url: '/generateLoanAccNum/',
-                    dataType: 'json',
-                    type: "POST",
-                    sucess: function (data) {
-                        console.log(data);
-                    },
-                    data: JSON.stringify(dataArr)
-                });*/
-                window.location.href = "/loanAccNo/"+loanAccNumber+'/'+appGroupId+'/'+loanTypeName+'/'+groupName;
-           }
-           if(data.code == "2034"){
-               $.alert(data["message"]);
-           }
+            if (data.code == "2032") {
+                $.alert("Loan has been approved");
+                var loanAccNumber = data["data"]["loanAccountNumber"];
+                /*var dataArr = {};
+                 dataArr["loanAccNo"] = data["data"]["loanAccountNumber"];
+                 dataArr["appGroupId"] = appGroupId;
+                 dataArr["loanTypeName"] = loanTypeName;
+                 dataArr["groupName"] = groupName;
+                 $.ajax({
+                     url: '/generateLoanAccNum/',
+                     dataType: 'json',
+                     type: "POST",
+                     sucess: function (data) {
+                         console.log(data);
+                     },
+                     data: JSON.stringify(dataArr)
+                 });*/
+                window.location.href = "/loanAccNo/" + loanAccNumber + '/' + appGroupId + '/' + loanTypeName + '/' + groupName;
+            }
+            if (data.code == "2034") {
+                $.alert(data["message"]);
+            }
         },
         data: JSON.stringify(dataObj)
     });
 }
 
-function validate(evt,id) {
+function validate(evt, id) {
     var theEvent = evt || window.event;
     var key = theEvent.keyCode || theEvent.which;
     key = String.fromCharCode(key);
-    if(id == 1){
+    if (id == 1) {
         var regex = /[0-9]/;
     }
-    if(id == 2){
-        var regex =  /[0-9]|\./;
+    if (id == 2) {
+        var regex = /[0-9]|\./;
     }
     if (!regex.test(key)) {
         theEvent.returnValue = false;
@@ -1394,8 +1419,8 @@ function validate(evt,id) {
 function alpha(e) {
     var k;
     document.all ? k = e.keyCode : k = e.which;
-    console.log(k,e);
-    return ((k >= 63 && k <= 91) || (k >= 97 && k < 123) || (k >= 93 && k < 96) || k == 8 || k == 32 || k == 33 || (k >= 40 && k <= 59) || k == 61 ||( k >= 35 && k <= 38));
+    console.log(k, e);
+    return ((k >= 63 && k <= 91) || (k >= 97 && k < 123) || (k >= 93 && k < 96) || k == 8 || k == 32 || k == 33 || (k >= 40 && k <= 59) || k == 61 || (k >= 35 && k <= 38));
 }
 
 function tabControl() {
@@ -1405,29 +1430,29 @@ function tabControl() {
     $("#tab4").removeClass("active");
     $("#tab5").removeClass("active");
     $("#tab6").removeClass("active");
-   // $('#CreditListTable').empty();
+    // $('#CreditListTable').empty();
 }
 
-function updateMembersCount(){
+function updateMembersCount() {
     var membersCount = document.getElementById("san_test").getElementsByTagName("a").length;
     var approvedCount = $('.Approved').length;
     var rejectedCount = $('.Rejected').length;
     var reworkCount = $('.Rework').length;
     var penCount = $('.Pending').length;
 
-    if(document.getElementById("appCount")){
+    if (document.getElementById("appCount")) {
         document.getElementById("appCount").innerHTML = approvedCount;
     }
-    if(document.getElementById("rejCount")){
+    if (document.getElementById("rejCount")) {
         document.getElementById("rejCount").innerHTML = rejectedCount;
     }
-    if(document.getElementById("rwrkCount")){
+    if (document.getElementById("rwrkCount")) {
         document.getElementById("rwrkCount").innerHTML = reworkCount;
     }
-    if(document.getElementById("penCount")){
+    if (document.getElementById("penCount")) {
         document.getElementById("penCount").innerHTML = penCount;
     }
-    if(document.getElementById("totCount")){
+    if (document.getElementById("totCount")) {
         document.getElementById("totCount").innerHTML = membersCount;
     }
 }
@@ -1445,7 +1470,7 @@ function rmGroupMaster(groupId) {
         },
         success: function(data) {
             var groupViewData2 = data;
-            if(groupViewData2["data"]["groupMemDetail"]){
+            if (groupViewData2["data"]["groupMemDetail"]) {
                 var groupData = groupViewData2["data"]["groupMemDetail"];
 
                 var found_names = $.grep(groupViewData2.data.groupMemDetail, function(v) {
@@ -1457,31 +1482,51 @@ function rmGroupMaster(groupId) {
                     $('#repm2').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
                 });
 
-               var animatorvalue = $("#animatorId_groupRole").text();
+                var animatorvalue = $("#animatorId_groupRole").text();
                 var rep1value = $("#rep1Id_groupRole").text();
                 var rep2value = $("#rep2Id_groupRole").text();
 
+                 console.log(animatorvalue,rep1value,rep2value)
                 //alert(rep2value);
-
-                $("#Animator").val(animatorvalue);
-                $("#repm1").val(rep1value);
-                $("#repm2").val(rep2value);
-
+                if(document.getElementById("Animator")){
+                     if ( $("#Animator option[value="+animatorvalue+"]").length == 0 ){
+                      $("#Animator").val();
+                    }
+                    else{
+                        $("#Animator").val(animatorvalue);
+                    }
+                }
+                if(document.getElementById("repm1")){
+                    if ( $("#repm1 option[value="+rep1value+"]").length == 0 ){
+                       $("#repm1").val();
+                    }
+                    else{
+                        $("#repm1").val(rep1value);
+                    }
+                }
+                if(document.getElementById("repm2")){
+                    if ( $("#repm2 option[value="+rep2value+"]").length == 0 ){
+                      $("#repm2").val();
+                    }
+                    else{
+                        $("#repm2").val(rep2value);
+                    }
+                 }
 
                 $.each($('.compact option'), function(key, optionElement) {
-		   			 var curText = $(optionElement).text();
-			 		 $(this).attr('title', curText);
-					 var lengthToShortenTo = Math.round(parseInt('170px', 10) / 9.4);
-			    		 if (curText.length > lengthToShortenTo) {
-						$(this).text(curText.substring(0,lengthToShortenTo)+'...');
-		    			 }
-				});
-				// Show full name in tooltip after choosing an option
-				$('.compact').change(function() {
-					$(this).attr('title', ($(this).find('option:eq('+$(this).get(0).selectedIndex +')').attr('title')));
-				});
+                    var curText = $(optionElement).text();
+                    $(this).attr('title', curText);
+                    var lengthToShortenTo = Math.round(parseInt('170px', 10) / 9.4);
+                    if (curText.length > lengthToShortenTo) {
+                        $(this).text(curText.substring(0, lengthToShortenTo) + '...');
+                    }
+                });
+                // Show full name in tooltip after choosing an option
+                $('.compact').change(function() {
+                    $(this).attr('title', ($(this).find('option:eq(' + $(this).get(0).selectedIndex + ')').attr('title')));
+                });
 
-                if(document.getElementById("groupMemberDetails")){
+                if (document.getElementById("groupMemberDetails")) {
                     $('#groupMemberDetails').dataTable({
                         data: groupData,
                         "bDestroy": true,
@@ -1493,20 +1538,83 @@ function rmGroupMaster(groupId) {
                         "iDisplayLength": 10,
                         "bSortClasses": false,
                         "bAutoWidth": false,
-                        "searching" :false,
+                        "searching": false,
                         "sDom": '<"top">rt<"bottom"flp><"clear">',
                         "bDeferRender": true,
-                        "aoColumns": [
-                            { "mData": "appMemberId", "sTitle": "App Member Id", "sWidth": "10%", className:"column"},
-                            { "mData": "memberName","sTitle": "Member Name"  , "sWidth": "25%", className:"column"},
-                            { "mData": "age","sTitle": "Age"  , "sWidth": "6%", className:"column"},
-                            { "mData": "address","sTitle": "Address"  , "sWidth": "30%", className:"column"},
-                            { "mData": "villageName","sTitle": "Village"  , "sWidth": "20%", className:"column"},
-                            { "mData": "pincode","sTitle": "Pincode"  , "sWidth": "10%", className:"column"},
-                            ],
+                        "aoColumns": [{
+                                "mData": "appMemberId",
+                                "sTitle": "App Member Id",
+                                "sWidth": "10%",
+                                className: "column"
+                            },
+                            {
+                                "mData": "memberName",
+                                "sTitle": "Member Name",
+                                "sWidth": "25%",
+                                className: "column"
+                            },
+                            {
+                                "mData": "age",
+                                "sTitle": "Age",
+                                "sWidth": "6%",
+                                className: "column"
+                            },
+                            {
+                                "mData": "address",
+                                "sTitle": "Address",
+                                "sWidth": "30%",
+                                className: "column"
+                            },
+                            {
+                                "mData": "villageName",
+                                "sTitle": "Village",
+                                "sWidth": "20%",
+                                className: "column"
+                            },
+                            {
+                                "mData": "pincode",
+                                "sTitle": "Pincode",
+                                "sWidth": "10%",
+                                className: "column"
+                            },
+                        ],
                     });
                 }
             }
         }
     });
+}
+
+function validateFields(id,val,fieldName){
+    if(fieldName == "age" && val < 18){
+        $("#"+id).css('background-color', '#FEEFB3');
+        $("#"+id).css('color', 'black');
+        setInterval(function(){
+            document.getElementById(id).style.background = "white";
+        }, 20000);
+        $.alert("Age should be above 18 !!");
+        return false;
+    }
+    if(fieldName == "mobileNumber" && val.length < 10){
+        $("#"+id).css('background-color', '#FEEFB3');
+        $("#"+id).css('color', 'black');
+        setInterval(function(){
+            document.getElementById(id).style.background = "white";
+        }, 20000);
+        $.alert("Please enter valid mobile number !!");
+        return false;
+    }
+    if(fieldName == "loanAmount"){
+        console.log(Math.round(val));
+        if(Math.round(val) == 0){
+            $("#"+id).css('background-color', '#FEEFB3');
+            $("#"+id).css('color', 'black');
+            setInterval(function(){
+                document.getElementById(id).style.background = "white";
+            }, 20000);
+            $.alert("Please enter valid amount !!");
+            return false;
+        }
+    }
+
 }
