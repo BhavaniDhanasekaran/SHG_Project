@@ -357,7 +357,7 @@ function updateMemValidationStatus(status) {
         },
         success: function(data) {
             if (data["code"] == "2029") {
-                $.alert(memberName + " has been " + updateStatus);
+                $.alert("'"+ memberName +"'"+ " has been " + updateStatus);
                 if (status == "Approved") {
                     document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-success Approved";
                     document.getElementById("memberValStatus").innerHTML = "APP";
@@ -534,7 +534,7 @@ function submitKYCForm(status) {
         },
         success: function(data) {
             if (data["code"] == "2024") {
-                $.alert(name + " has been " + updateStatus);
+                $.alert("'"+ name +"'"+ " has been " + updateStatus);
 
                 if (status == "Approved") {
                     document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-success Approved";
