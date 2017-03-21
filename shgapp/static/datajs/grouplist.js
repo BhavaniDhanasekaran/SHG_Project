@@ -173,6 +173,7 @@ function getMemberDetails(memberId, groupId, loanId) {
                     //console.log(memberData["data"]["memberDocumentDetails"]);
                     if (memberData["data"]["memberDocumentDetails"][0]) {
                         var memberDocumentsArray = memberData["data"]["memberDocumentDetails"];
+
                         for (var key in memberDocumentsArray) {
                             if ($.inArray(memberDocumentsArray[key]["documentType"], imgFiles) != -1) {
                                 //Need to change with proper URL - Coded just for images display
@@ -195,6 +196,7 @@ function getMemberDetails(memberId, groupId, loanId) {
                                         }
                                         $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", memberDocumentsArray[key]["documentPath"]);
                                         $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("data-url", memberDocumentsArray[key]["documentPath"]);
+                                         $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("data-original", memberDocumentsArray[key]["documentPath"]);
                                        // $("#idProof").imageBox();
                                     }
                                 }
@@ -791,8 +793,12 @@ function loadGroupRoles(groupId, loanId, taskName) {
         type: "post",
 
         success: function(data) {
-        //console.log(data);
+        console.log(data);
             document.getElementById("loanTypeId1").innerHTML = data["data"]["loanTypeId"];
+            if(document.getElementById("appGroupId")){
+                document.getElementById("appGroupId").innerHTML = data["data"]["groupDetails"]["appGroupId"];
+            }
+
             var groupDetails = data["data"]["groupDetails"];
             for (var key in groupDetails) {
                 if (document.getElementById(key+"_groupRole")) {
@@ -1139,9 +1145,9 @@ function getLoanDetails(groupId, loanId) {
                         creditObj["previousLoanAmount"] + '</td><td>'
 
                         +
-                        ' <input type="text" name="m2street_' + i + '" value=' + creditObj["loanAmount"] + '></td><td>' +
-                        ' <input type="text" style="width: 45px;" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["awb"] + '></td><td>' +
-                        ' <input type="text" style="width: 45px;" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["sellingPrice"] + '></td><td>' +
+                        ' <input onkeypress="validate(event,2)" maxlength=10 type="text" name="m2street_' + i + '" class="sample5"  value=' + creditObj["loanAmount"] + '></td><td>' +
+                        ' <input onkeypress="validate(event,2)" maxlength=7 type="text" style="width: 45px;" class="sample5" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["awb"] + '></td><td>' +
+                        ' <input onkeypress="validate(event,2)" maxlength=7 type="text" style="width: 45px;" class="sample5" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["sellingPrice"] + '></td><td>' +
                         creditObj["sundryDebt"] + '</td><td>'
 
                         +
@@ -1367,11 +1373,16 @@ function approveLoan(updateloanData){
     });
 }
 
-function validate(evt) {
+function validate(evt,id) {
     var theEvent = evt || window.event;
     var key = theEvent.keyCode || theEvent.which;
     key = String.fromCharCode(key);
-    var regex = /[0-9]/;
+    if(id == 1){
+        var regex = /[0-9]/;
+    }
+    if(id == 2){
+        var regex =  /[0-9]|\./;
+    }
     if (!regex.test(key)) {
         theEvent.returnValue = false;
         if (theEvent.preventDefault)

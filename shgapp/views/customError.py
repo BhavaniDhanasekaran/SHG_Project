@@ -5,13 +5,19 @@ import json
 
 # custom error views
 def bad_request(request):
-    return render(request, 'error/400.html')
+    userOfficeData = json.loads(request.session["userOfficeData"])
+    groupName = userOfficeData["designation"]
+    return render(request, 'error/400.html', {"group": groupName})
 
 def permission_denied(request):
-    return render(request, 'error/403.html')
+    userOfficeData = json.loads(request.session["userOfficeData"])
+    groupName = userOfficeData["designation"]
+    return render(request, 'error/403.html',{"group": groupName})
 
 def page_not_found(request):
-    return render(request, 'error/404.html')
+    userOfficeData = json.loads(request.session["userOfficeData"])
+    groupName = userOfficeData["designation"]
+    return render(request, 'error/404.html',{"group": groupName})
 
 def server_error(request):
     userOfficeData = json.loads(request.session["userOfficeData"])

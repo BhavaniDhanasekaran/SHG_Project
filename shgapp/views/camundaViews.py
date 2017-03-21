@@ -139,13 +139,14 @@ def assignedTaskList(request):
     username = request.session["userName"]
     userOfficeData = json.loads(request.session["userOfficeData"])
     groupName = userOfficeData["designation"]
+    loginUser = request.session["userLogin"]
     userId = request.session["userId"]
     processInstancesArr = []
     taskProVarList =[]
     myTaskDict 	= {}
     myTaskData	= []
     user = "%20".join(username.split(" "))
-    myTaskList		= camundaClient._urllib2_request('task?&assignee='+str(user), {}, requestType='GET')
+    myTaskList		= camundaClient._urllib2_request('task?&assignee='+str(loginUser), {}, requestType='GET')
 
     for data in myTaskList:
         if groupName == "CMR" or groupName == "CLM" or groupName == "BM":
@@ -207,7 +208,7 @@ def assignedTaskList(request):
 
 def claim(request, id, name):
     print "Entering claim(request, id, name): view"
-    username = request.session["userName"]
+    username = request.session["userLogin"]
     try:
         #claim
         if name =="claim":
@@ -236,6 +237,7 @@ def tasksCount( request):
         userOfficeData = json.loads(request.session["userOfficeData"])
         groupName = userOfficeData["designation"]
         officeId = userOfficeData["officeId"]
+        loginUser = request.session["userLogin"]
         taskCount = {}
         queryCount = 0
         BMReplyCount =0
@@ -249,7 +251,7 @@ def tasksCount( request):
                                 "processVariables": [{"name": "clusterId", "operator": "eq", "value": officeId}]}
         if groupName == "DataSupportTeam" or groupName == "CreditTeam":
             bodyLocationData = {"candidateGroup": str(groupName)}
-        mytaskURL = camundaClient._urllib2_request('task', {"assignee" : str(username)}, requestType='POST')
+        mytaskURL = camundaClient._urllib2_request('task', {"assignee" : str(loginUser)}, requestType='POST')
         urlTask = camundaClient._urllib2_request('task', bodyLocationData, requestType='POST')
         print "urlTask:"
         print urlTask

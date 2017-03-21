@@ -12,7 +12,6 @@
     var userId = '{{ userId | escapejs }}';
     var taskName = '{{ taskName | escapejs }}';
     var taskId = '{{ taskId | escapejs }}';
-
     var processInstanceId = '{{ processInstanceId | escapejs }}';
 
     $(document).ready(function(){
@@ -128,7 +127,7 @@
                     <div class="profile-info-row">
                         <div class="profile-info-name2"> Installments</div>
                         <div class="profile-info-value">
-                            <input type="text" class="editable" id="loanInstallments" onkeypress='validate(event)'></input>
+                            <input type="text" class="editable" id="loanInstallments" maxlength=2 onkeypress='validate(event,1)'></input>
                         </div>
                     </div></div>
                 </div>
@@ -367,21 +366,21 @@
                                             <div class="profile-info-row">
                                                 <div class="profile-info-name"> Animator </div>
                                                 <div class="profile-info-value">
-                                                     <span class="editable" id="animator">
+                                                     <span class="editable" id="animator_groupRole">
                                                     </span>
                                                 </div>
                                             </div>
                                             <div class="profile-info-row">
                                                 <div class="profile-info-name"> Rep 1</div>
                                                 <div class="profile-info-value">
-                                                    <span class="editable" id="rep1">
+                                                    <span class="editable" id="rep1_groupRole">
                                                     </span>
                                                 </div>
                                             </div>
                                             <div class="profile-info-row">
                                                 <div class="profile-info-name"> Rep 2</div>
                                                 <div class="profile-info-value">
-                                                    <span class="editable" id="rep2">
+                                                    <span class="editable" id="rep2_groupRole">
                                                     </span>
                                                 </div>
                                             </div>
