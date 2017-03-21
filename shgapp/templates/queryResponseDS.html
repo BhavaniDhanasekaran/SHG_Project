@@ -19,6 +19,10 @@
             getGroupData(groupId,loanId);
             loadGroupRoles(groupId, loanId, taskName) ;
             taskCount();
+            $('textarea.limited').inputlimiter({
+          remText: '%n character%s remaining...',
+          limitText: 'max allowed : %n.'
+        });
         });
 
     </script>
@@ -29,6 +33,7 @@
 
 <div class="row" id="main">
     <!--second row strat-->
+    <div class="docs-pictures clearfix">
     <div class="col-lg-2 pricing-box" >
         <div class="panel panel-default">
             <div class="panel-heading">Group Detail </div>
@@ -82,7 +87,7 @@
                             <section>
                                 <div class="row">
                                     <div class="col-md-2">
-                                        <img id="MEMBERPHOTO_docPath" class="img img-test" data-url="{% static 'images/naveen.jpg' %}" src="{% static 'images/naveen.jpg' %}" height="135" width="134"  />
+                                        <img src="{% static 'images/naveen.jpg' %}"  id="MEMBERPHOTO_docPath" height="135" width="134" data-original="">
                                             &nbsp;&nbsp;&nbsp;
 
                                         <br/>
@@ -115,6 +120,8 @@
                                                 <div class="profile-info-name"> Name  </div>
                                                 <div class="profile-info-value">
                                                     <span class="editable" id="memberName"></span>
+
+
                                                 </div>
                                             </div>
                                             <div class="profile-info-row">
@@ -190,9 +197,9 @@
                                                     <span class="editable" id="idProofValue"></span>
                                                         &nbsp;&nbsp;
 
-                                                    <div id="idProof" style="display:inline-block;margin-top: 4px">
-                                                        <img id="IDPROOF_docPath" style="display:none;width:30px;height:21px;" data-url="" src="" ></img>
-                                                        <img id="IDPROOF_2_docPath" style="display:none;width:30px;height:21px;" data-url="" src="" >
+                                                    <div id="idProof" style="display:inline-block;margin-top: 4px" class="idProof">
+                                                       <img src=""  id="IDPROOF_docPath" style="display:none;width: 20px; height: 21px;"    data-original="">
+                                                        <img src=""  id="IDPROOF_2_docPath" style="display:none;width: 20px; height: 21px;" data-original="">
                                                             <!--button type="button" class="btn btn-info btn-md btn-danger" id="myBtn2">view proof</button-->
                                                         </img>
                                                     </div>
@@ -204,9 +211,10 @@
                                                     <span class="editable" id="addressProofValue"></span>
                                                         &nbsp;&nbsp;
 
-                                                    <div id="idProof" style="display:inline-block;margin-top: 4px">
-                                                        <img id="ADDRESSPROOF_docPath" style="display:none;width:30px;height:21px;" data-url="" src="" ></img>
-                                                        <img id="ADDRESSPROOF_2_docPath" style="display:none;width:30px;height:21px;" data-url="" src="" >
+                                                    <div id="idProof" style="display:inline-block;margin-top: 4px" class="idProof">
+                                                        <img src=""  id="ADDRESSPROOF_docPath" style="display:none;width: 20px; height: 21px;" data-original="">
+
+                                                        <img src=""  id="ADDRESSPROOF_2_docPath" style="display:none;width: 20px; height: 21px;" data-original="">
                                                             <!--button type="button" class="btn btn-info btn-md btn-danger" id="myBtn2">view proof</button-->
                                                         </img>
                                                     </div>
@@ -216,8 +224,8 @@
                                                 <div class="profile-info-name"> SB Account  </div>
                                                 <div class="profile-info-value">
                                                     <span class="editable" id="sbAccountNumber"></span>
-                                                    <div style="display:inline-block;margin-top: 4px">
-                                                        <img id="SBACCOUNTPASSBOOK_docPath" style="display:none;width:30px;height:21px;" data-url="" src="" ></img>
+                                                    <div style="display:inline-block;margin-top: 4px" class="idProof">
+                                                        <img src=""  id="SBACCOUNTPASSBOOK_docPath" style="display:none;width: 20px; height: 21px;" data-original="">
                                                     </div>
                                                 </div>
                                             </div>
@@ -286,7 +294,7 @@
                                             {% if taskName == "Resolve Data Support Team Query"%}
                                                 <font class="mandatory">*</font>
                                             {%  endif %}
-                                            <textarea class="form-control" rows="3" style="width:94%;" id="comment"></textarea>
+                                            <textarea class="form-control limited sample" maxlength="3000" rows="3" style="width:94%;" id="comment"></textarea>
                                         </div>
                                     </div>
                                 </div></div>
@@ -531,6 +539,7 @@
         <!-- Modal End -->
         <!--modal start query view -->
     </div>
+</div>
 </div>
 <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
     <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>

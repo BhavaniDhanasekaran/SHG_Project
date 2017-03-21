@@ -19,6 +19,10 @@
             getGroupData(groupId,loanId);
             loadGroupRoles(groupId, loanId, taskName) ;
             taskCount();
+             $('textarea.limited').inputlimiter({
+          remText: '%n character%s remaining...',
+          limitText: 'max allowed : %n.'
+        });
             documentView(loanId);
         });
 
@@ -27,6 +31,7 @@
 <!-- PAGE CONTENT BEGINS -->
 {% block content %}
     <div class="row" id="main">
+        <div class="docs-pictures clearfix">
         <!--second row strat-->
         <div class="col-lg-2 pricing-box" >
             <div class="panel panel-default">
@@ -71,7 +76,7 @@
                                 <section>
                                     <div class="row">
                                         <div class="col-md-2">
-                                            <img id="MEMBERPHOTO_docPath" class="img img-test" data-url="{% static 'images/naveen.jpg' %}" src="{% static 'images/naveen.jpg' %}" height="135" width="134"  />
+                                            <img src="{% static 'images/naveen.jpg' %}"  id="MEMBERPHOTO_docPath" height="135" width="134" data-original="">
                                             &nbsp;&nbsp;&nbsp;
                                             <br/>
                                             <br/><label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">Member ID   :&nbsp&nbsp&nbsp <span id="appMemberId"></span></label><br/>
@@ -299,7 +304,7 @@
                                             <div id="commentDivIdQuery" class="col-md-10">
                                                 <div class="form-group">
                                                     <label for="comment">Comment:</label>{% if taskName == "Resolve Data Support Team Query" %}<font class="mandatory">*</font>{%  endif %}
-                                                    <textarea class="form-control" rows="3" style="width:94%;" id="comment"></textarea>
+                                                    <textarea class="form-control limited sample" maxlength="3000" rows="3" style="width:94%;" id="comment"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -593,7 +598,7 @@
         <!-- /.main-content -->
         <!-- Modal End -->
         <!--modal start query view -->
-
+        </div>
     </div>
     </div>
     <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">

@@ -311,7 +311,7 @@ def approveLoan(request):
             print serialized_data
             if serialized_data["code"] == 2032 :
                 processUpdate = { 'variables': { 'dispatchType': { 'value': "Cheque" } } }
-                taskComplete(request,json.dumps(processUpdate),taskId)
+                taskComplete(request,processUpdate,taskId)
             return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('An expected error occurred while approving loan.')

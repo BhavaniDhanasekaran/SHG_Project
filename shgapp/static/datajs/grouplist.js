@@ -173,6 +173,7 @@ function getMemberDetails(memberId, groupId, loanId) {
                     //console.log(memberData["data"]["memberDocumentDetails"]);
                     if (memberData["data"]["memberDocumentDetails"][0]) {
                         var memberDocumentsArray = memberData["data"]["memberDocumentDetails"];
+
                         for (var key in memberDocumentsArray) {
                             if ($.inArray(memberDocumentsArray[key]["documentType"], imgFiles) != -1) {
                                 //Need to change with proper URL - Coded just for images display
@@ -184,7 +185,7 @@ function getMemberDetails(memberId, groupId, loanId) {
                                     if (memberDocumentsArray[key]["documentPath"].indexOf("Not%20uploaded") != -1) {
                                         if (memberDocumentsArray[key]["documentType"] == "MEMBERPHOTO") {
                                             //console.log(memberDocumentsArray[key]["documentType"] + "_docPath");
-                                            //$("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", "/static/images/naveen.jpg");
+                                            $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", "/static/images/naveen.jpg");
                                         } else {
                                             $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").css("display", "none");
                                         }
@@ -792,8 +793,12 @@ function loadGroupRoles(groupId, loanId, taskName) {
         type: "post",
 
         success: function(data) {
-        //console.log(data);
+        console.log(data);
             document.getElementById("loanTypeId1").innerHTML = data["data"]["loanTypeId"];
+            if(document.getElementById("appGroupId")){
+                document.getElementById("appGroupId").innerHTML = data["data"]["groupDetails"]["appGroupId"];
+            }
+
             var groupDetails = data["data"]["groupDetails"];
             for (var key in groupDetails) {
                 if (document.getElementById(key+"_groupRole")) {
