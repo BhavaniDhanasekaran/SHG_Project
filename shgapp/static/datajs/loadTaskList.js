@@ -367,8 +367,6 @@ function filterKYCTasksByDate(){
 		html += '<tr><td>'+sortedData[i][0]+'</td><td><a id="'+sortedData[i][0]+'"href="#" onclick="redirectKYCPage(this.id);">'+sortedData[i][1]+'</a></td></tr>'
 	}
 	$('#tableData').append(html);
-
-
 }
 
 function KYCTasksGroupByDate(dateFrom,dateto){
@@ -423,12 +421,12 @@ function val2key(val,array){
         }
     }
 }
-function redirectToTaskPage(taskName){
-	window.location = '/dstasklistByName/'+taskName;
+function redirectToTaskPage(taskName,loanTypeName){
+	window.location = '/dstasklistByName/'+taskName+'/'+loanTypeName;
 }
-function getTasksByTaskName(taskName){
+function getTasksByTaskName(taskName,loanTypeName){
 	$.ajax({
-	    url: '/getTasksByTaskName/'+taskName,
+	    url: '/getTasksByTaskName/'+taskName+'/'+loanTypeName,
 	    dataType: 'json',
 	    beforeSend: function(){
      		$("#loading").show();
@@ -479,4 +477,40 @@ function claimconfirmBox(id,shgName){
 		    cancel: function(){
 		     }
 		});
+}
+
+
+function KYCCheck(loanType,taskName){
+console.log(loanType);
+window.location = '/KYCCheckLoanType/'+loanType+'/'+taskName;
+}
+
+function getKYCTaskList(loanType,taskName){
+    console.log(loanType);
+    console.log(taskName);
+    var url = '';
+    if(taskName == "KYC Check"){
+        url = '/KYCTaskListByLoanType/'+loanType;
+    }
+    if(taskName == "Query Response"){
+        url = '/queryRespTaskList/'+loanType;
+    }
+    $.ajax({
+	    url: url,
+	    dataType: 'json',
+	    beforeSend: function(){
+     		$("#loading").show();
+	    },
+	    complete: function(){
+		$("#loading").hide();
+	    },
+	    success: function (data) {
+            console.log(data);
+            loadUnassignedTaskList(data);
+            triggerLoadFunc();
+	    }
+	});
+
+
+
 }

@@ -17,14 +17,14 @@ def dstasklist(request):
     return render(request, 'ds-tasklist.html', {"userId":userId,"group":groupName,"user":username})
 
 @session_required
-def dstasklistByName(request,taskName):
+def dstasklistByName(request,taskName,loanTypeName):
     print "taskName"
     print taskName
     username = request.session["userName"]
     userOfficeData = json.loads(request.session["userOfficeData"])
     userId = request.session["userId"]
     groupName = userOfficeData["designation"]
-    return render(request, 'ds-tasklist.html', {"userId":userId,"taskName":taskName,"group":groupName,"user":username})
+    return render(request, 'ds-tasklist.html', {"userId":userId,"taskName":taskName,"group":groupName,"user":username,"loanTypeName":loanTypeName})
 
 def mytask(request):
     return render(request, 'ds-mytask.html')

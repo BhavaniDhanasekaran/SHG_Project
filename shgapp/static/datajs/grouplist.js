@@ -909,6 +909,7 @@ function updateGroupValStatus(status) {
     var groupValData = {
         "groupId": groupId,
         "loanTypeId": loanTypeId,
+        "loanId": loanId,
         "subStatus": status,
         "userId": userId,
         "comment": comment,
@@ -1592,7 +1593,7 @@ function validateFields(id,val,fieldName){
         setInterval(function(){
             document.getElementById(id).style.background = "white";
         }, 20000);
-        $.alert("Age should be above 18 !!");
+        $.alert("Age should be above 18 !");
         return false;
     }
     if(fieldName == "mobileNumber" && val.length < 10){
@@ -1601,7 +1602,7 @@ function validateFields(id,val,fieldName){
         setInterval(function(){
             document.getElementById(id).style.background = "white";
         }, 20000);
-        $.alert("Please enter valid mobile number !!");
+        $.alert("Please enter valid mobile number !");
         return false;
     }
     if(fieldName == "loanAmount"){
@@ -1612,7 +1613,7 @@ function validateFields(id,val,fieldName){
             setInterval(function(){
                 document.getElementById(id).style.background = "white";
             }, 20000);
-            $.alert("Please enter valid amount !!");
+            $.alert("Please enter valid amount !");
             return false;
         }
     }

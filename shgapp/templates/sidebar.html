@@ -20,23 +20,46 @@
             <b class="arrow"></b>
         </li>
         <li class="">
-            <a href="{% url 'KYCTaskList' %}">
+            <!--a href="{% url 'KYCTaskList' %}"-->
+            <a href="#" onclick="KYCCheck('PLL','KYC Check');">
                 <i class="menu-icon glyphicon glyphicon-list-alt"></i>
-                <span class="menu-text"> KYC Task
-        <span id="KYC_Check" class="badge badge-danger">0</span>
+                <span class="menu-text"> KYC Task-PLL
+        <span id="KYC_Check_PLL" class="badge badge-danger">0</span>
+        </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+
+        <li class="">
+            <a href="#" onclick="KYCCheck('PLL','Query Response');">
+                <i class="menu-icon glyphicon glyphicon-retweet"></i>
+                <span class="menu-text"> Query Resp-PLL
+        <span id="Query_Response_PLL" class="badge badge-danger">0</span>
         </span>
             </a>
             <b class="arrow"></b>
         </li>
         <li class="">
-            <a href="{% url 'queryRespTaskList' %}">
-                <i class="menu-icon glyphicon glyphicon-retweet"></i>
-                <span class="menu-text"> Query Response
-        <span id="Query_Response" class="badge badge-danger">0</span>
+            <!--a href="{% url 'KYCTaskList' %}"-->
+            <a href="#" onclick="KYCCheck('BDL','KYC Check');">
+                <i class="menu-icon glyphicon glyphicon-list-alt"></i>
+                <span class="menu-text"> KYC Task-BDL
+        <span id="KYC_Check_BDL" class="badge badge-danger">0</span>
         </span>
             </a>
             <b class="arrow"></b>
         </li>
+        <li class="">
+            <a href="#" onclick="KYCCheck('BDL','Query Response');">
+                <i class="menu-icon glyphicon glyphicon-retweet"></i>
+                <span class="menu-text"> Query Resp-BDL
+        <span id="Query_Response_BDL" class="badge badge-danger">0</span>
+        </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+
+
     </ul>
     <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse"> <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"> </i> </div>
     </div>
@@ -74,85 +97,115 @@
             <b class="arrow"></b>
         </li>
         <li class="">
-            <a href="#" onclick="redirectToTaskPage('Conduct BAT- Member approval in CRM');">
+            <a href="#" onclick="redirectToTaskPage('Conduct BAT- Member approval in CRM','PLL');">
                 <i class="menu-icon glyphicon glyphicon-user"></i>
-                <span class="menu-text"> BAT Approval
-                    <span id="Conduct_BAT-_Member_approval_in_CRM" class="badge badge-danger">0</span> 
+                <span class="menu-text">PLL-BAT Approval
+                    <span id="Conduct_BAT-_Member_approval_in_CRM_PLL" class="badge badge-danger">0</span>
                 </span>
             </a>
             <b class="arrow"></b>
         </li>
         <li class="">
-            <a href="#" onclick="redirectToTaskPage('Upload loan documents in Web application');">
+            <a href="#" onclick="redirectToTaskPage('Conduct BAT- Member approval in CRM','BDL');">
+                <i class="menu-icon glyphicon glyphicon-user" style="color:steelblue"></i>
+                <span class="menu-text">BDL-BAT Approval
+                    <span id="Conduct_BAT-_Member_approval_in_CRM_BDL" class="badge badge-danger">0</span>
+                </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+        <li class="">
+            <a href="#" onclick="redirectToTaskPage('Upload loan documents in Web application','PLL');">
                 <i class="menu-icon glyphicon glyphicon-cloud-upload"></i>
-                <span class="menu-text"> Upload Docs
-                    <span id="Upload_loan_documents_in_Web_application" class="badge badge-danger">0</span>
+                <span class="menu-text">PLL-Upload Docs
+                    <span id="Upload_loan_documents_in_Web_application_PLL" class="badge badge-danger">0</span>
                  </span>
             </a>
             <b class="arrow"></b>
         </li>
         <li class="">
-            <a href="#" onclick="redirectToTaskPage('Resolve Data Support Team Query');">
+            <a href="#" onclick="redirectToTaskPage('Upload loan documents in Web application','BDL');">
+                <i class="menu-icon glyphicon glyphicon-cloud-upload" style="color:steelblue"></i>
+                <span class="menu-text">BDL-Upload Docs
+                    <span id="Upload_loan_documents_in_Web_application_BDL" class="badge badge-danger">0</span>
+                 </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+        <li class="">
+            <a href="#" onclick="redirectToTaskPage('Resolve Data Support Team Query','PLL');">
                 <i class="menu-icon glyphicon glyphicon-share-alt"></i>
-                <span class="menu-text"> Resolve DST Query
-                    <span id="Resolve_Data_Support_Team_Query" class="badge badge-danger">0</span>
+                <span class="menu-text">PLL-RDST Query
+                    <span id="Resolve_Data_Support_Team_Query_PLL" class="badge badge-danger">0</span>
                 </span>
             </a>
             <b class="arrow"></b>
         </li>
         <li class="">
-            <a href="#" onclick="redirectToTaskPage('Resolve Credit Team Query');">
+            <a href="#" onclick="redirectToTaskPage('Resolve Data Support Team Query','BDL');">
+                <i class="menu-icon glyphicon glyphicon-share-alt" style="color:steelblue"></i>
+                <span class="menu-text">BDL-RDST Query
+                    <span id="Resolve_Data_Support_Team_Query_BDL" class="badge badge-danger">0</span>
+                </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+        <li class="">
+            <a href="#" onclick="redirectToTaskPage('Resolve Credit Team Query','PLL');">
                 <i class="menu-icon glyphicon glyphicon-share-alt"></i>
-                <span class="menu-text"> Resolve CT Query
-                    <span id="Resolve_Credit_Team_Query" class="badge badge-danger">0</span>
+                <span class="menu-text">PLL-RCT Query
+                    <span id="Resolve_Credit_Team_Query_PLL" class="badge badge-danger">0</span>
+                </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+        <li class="">
+            <a href="#" onclick="redirectToTaskPage('Resolve Credit Team Query','BDL');">
+                <i class="menu-icon glyphicon glyphicon-share-alt" style="color:steelblue"></i>
+                <span class="menu-text">BDL-RCT Query
+                    <span id="Resolve_Credit_Team_Query_BDL" class="badge badge-danger">0</span>
                 </span>
             </a>
             <b class="arrow"></b>
         </li>
 
         <li class="">
-            <a href="#" onclick="redirectToTaskPage('Add New Members');">
+            <a href="#" onclick="redirectToTaskPage('Add New Members','PLL');">
                 <i class="menu-icon glyphicon glyphicon-plus-sign"></i>
-                <span class="menu-text"> Add new members
-                    <span id="Add_New_Members" class="badge badge-danger">0</span>
+                <span class="menu-text">PLL-New members
+                    <span id="Add_New_Members_PLL" class="badge badge-danger">0</span>
                 </span>
             </a>
             <b class="arrow"></b>
         </li>
         <li class="">
-            <a href="#" onclick="redirectToTaskPage('Print Loan Documents & FSR');">
+            <a href="#" onclick="redirectToTaskPage('Add New Members','BDL');">
+                <i class="menu-icon glyphicon glyphicon-plus-sign" style="color:steelblue"></i>
+                <span class="menu-text">BDL-New members
+                    <span id="Add_New_Members_BDL" class="badge badge-danger">0</span>
+                </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+        <li class="">
+            <a href="#" onclick="redirectToTaskPage('Print Loan Documents & FSR','PLL');">
                 <i class="menu-icon glyphicon glyphicon-print "></i>
-                <span class="menu-text"> Print Loan Docs
-                    <span id="Print_Loan_Documents_&_FSR" class="badge badge-danger">0</span>
+                <span class="menu-text">PLL-Prnt Loan Docs
+                    <span id="Print_Loan_Documents_&_FSR_PLL" class="badge badge-danger">0</span>
                 </span>
             </a>
             <b class="arrow"></b>
         </li>
-        <li class="">
-            <a href="#">
-                <i class="menu-icon fa fa-comments-o"></i>
-                <span class="menu-text"> Loans 
-                   <span class="badge badge-danger"></span> 
+         <li class="">
+            <a href="#" onclick="redirectToTaskPage('Print Loan Documents & FSR','BDL');">
+                <i class="menu-icon glyphicon glyphicon-print" style="color:steelblue"></i>
+                <span class="menu-text">BDL-Prnt Loan Docs
+                    <span id="Print_Loan_Documents_&_FSR_BDL" class="badge badge-danger">0</span>
                 </span>
             </a>
             <b class="arrow"></b>
         </li>
-        <li class="">
-            <a href="#">
-                <i class="menu-icon fa fa-comments-o"></i>
-                <span class="menu-text"> Groups </span>
-            </a>
-            <b class="arrow"></b>
-        </li>
-        <li class="">
-            <a href="{% url 'mytask' %}">
-                <i class="menu-icon fa fa-comments-o"></i>
-                <span class="menu-text"> Generate LOS 
-                    <span class="badge badge-danger"></span> 
-                </span>
-            </a>
-            <b class="arrow"></b>
-        </li>
+
     </ul>
     <!-- /.nav-list -->
     <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse"> <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"> </i> </div>
@@ -256,7 +309,7 @@
             <b class="arrow"></b>
         </li>
         <li class="">
-            <a href="/queryRespTaskList/">
+            <a href="#">
                 <i class="menu-icon glyphicon glyphicon-retweet"></i>
                 <span class="menu-text"> BM Reply
                     <span id="BM_Reply" class="badge badge-danger">0</span>

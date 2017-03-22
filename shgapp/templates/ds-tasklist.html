@@ -10,17 +10,17 @@
         var userId = '{{ userId | escapejs }}';
         var taskName = '{{ taskName | escapejs }}';
         var group = '{{ group | escapejs }}';
+        var loanTypeName = '{{ loanTypeName | escapejs }}';
 
         if(taskList){
             taskList = JSON.parse(taskList);
         }
-        //groupTaskList = JSON.parse(groupTaskList);
         $(document).ready(function(){
-            if(dateFrom && dateTo){
-                KYCTasksGroupByDate(dateFrom,dateTo);
+            if(loanTypeName){
+                getKYCTaskList(loanTypeName,taskName);
             }
             if(taskName != "Query Response" && taskName != "KYC Check" && taskName != "Proposal scrutiny" && taskName != "" && taskName != "BM Reply"){
-                    getTasksByTaskName(taskName);
+                    getTasksByTaskName(taskName,loanTypeName);
             }
             taskCount();
             loadUnassignedTaskList(taskList);
