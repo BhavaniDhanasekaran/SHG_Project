@@ -51,6 +51,6 @@ def SHGForm(request,groupId,loanId,taskId,processId,taskName,loanType):
             "Approve Loan"                              : "CTLoanApproval.html",
             "Prepare & print chq through BPM"           : "index.html"
         }
-        return render(request, templateName[taskName], {"userId":userId,"loanType" :loanType, "groupId": groupId,"loanId":loanId,"processInstanceId" :processId, "taskId" : taskId,"taskName":taskName,"group":groupName,"user":username})
+        return render(request, templateName[taskName], {"loanTypeName":loanType,"userId":userId,"loanType" :loanType, "groupId": groupId,"loanId":loanId,"processInstanceId" :processId, "taskId" : taskId,"taskName":taskName,"group":groupName,"user":username})
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred.')

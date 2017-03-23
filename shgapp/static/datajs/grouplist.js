@@ -1,4 +1,4 @@
-var validationFields = ["memberName", "age", "husbandName", "maritalStatus", "fatherName", "address", "villageName", "idProofValue", "addressProofValue", "sbAccountNumber", "bankId", "sbAccountName",
+var validationFields = ["memberName","sequenceNumber", "age", "husbandName", "maritalStatus", "fatherName", "address", "villageName", "idProofValue", "addressProofValue", "sbAccountNumber", "bankId", "sbAccountName",
     "permanentAddress", "pincode", "villages", "mobileNo", "idProofTypeId", "addressProofTypeId", "loanAmount", "loanTypeValue"
 ];
 
@@ -459,6 +459,7 @@ function submitKYCForm(status) {
     var memStatus = document.getElementById("memberValStatus").innerHTML;
     var appMemberId = document.getElementById("appMemberId").innerHTML;
     var loanTypeId = document.getElementById("loanTypeId1").innerHTML;
+    var sequenceNumber = document.getElementById("sequenceNumber").value;
 
 
     var commentCamunda = "";
@@ -516,7 +517,8 @@ function submitKYCForm(status) {
         "loanPurpose": loanPurpose,
         "sbBranch": sbBranch,
         "sbAccountName": sbAccountName,
-        "mobileNumber": mobileNumber
+        "mobileNumber": mobileNumber,
+        "sequenceNumber" :sequenceNumber
     };
 
     dataObj['formData'] = dataDict;
@@ -774,9 +776,8 @@ function creditHistory(loanId) {
                 }
             }
             document.getElementById("creditData").innerHTML = htmlContent;
-
+            //loadDataTable("#creditTableID");
         }
-
     });
 }
 
@@ -894,18 +895,26 @@ function updateGroupValStatus(status) {
         }
         if (taskName == "Print Loan Documents & FSR") {
             validationType = "PRE";
+            if (!document.getElementById("Animator").value || !document.getElementById("repm1").value || !document.getElementById("repm2").value) {
+                $.alert("Please update group roles before task completion!");
+                return false;
+            }
+            else {
+                updateGroupMemberStatus();
+            }
         }
     }
     if (group == "RM" || group == "rm") {
         validationType = "POST";
+
         if (!document.getElementById("Animator").value || !document.getElementById("repm1").value || !document.getElementById("repm2").value) {
             $.alert("Please update group roles before task completion!");
             return false;
-        } else {
+        }
+        else {
             updateGroupMemberStatus();
         }
     }
-
     var groupValData = {
         "groupId": groupId,
         "loanTypeId": loanTypeId,
@@ -1230,14 +1239,14 @@ function getLoanDetails(groupId, loanId) {
                     }
                 }
             }
-            loadDataTable();
+            loadDataTable("#paymentTable");
         }
     });
 }
 
 
-function loadDataTable() {
-    var table = $('#paymentTable').DataTable({
+function loadDataTable(id) {
+    var table = $(id).DataTable({
         "sDom": '<"top">rt<"bottom"flp><"clear">',
         "paging": false,
         "bInfo": false,
@@ -1249,6 +1258,7 @@ function loadDataTable() {
     var data = table.$('input, select').serialize();
     return false;
 }
+
 
 function dropMemberDetail(loanId, dropMember, groupId) {
     var dataObj2 = {};

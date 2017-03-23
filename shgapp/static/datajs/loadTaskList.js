@@ -32,7 +32,7 @@ function loadUnassignedTaskList(data){
 				obj["groupId"] = customerData["groupId"];
 				obj["loanId"] = customerData["loanId"];
 				obj["groupLocation"] = customerData["groupLocation"];
-				obj["loanType"] = customerData["loanTypeName"];
+				obj["loanType"] = groupTaskdata[key]["loanTypeName"];
 				//obj["shgId"] = customerData["groupId"];
 				obj["shgId"] = customerData["appGroupId"];
 				obj["shgName"] =customerData["groupName"];
@@ -142,12 +142,12 @@ function loadAssignedTaskList(){
 				obj["groupId"] = customerData["groupId"];
 				obj["loanId"] = customerData["loanId"];
 				obj["groupLocation"] = '<a class="tdViewData">'+customerData["groupLocation"]+'</a>';
-				obj["loanType"] = '<a class="tdViewData">'+customerData["loanTypeName"]+'</a>';
+				obj["loanType"] = '<a class="tdViewData">'+myTaskdata[key]["loanTypeName"]+'</a>';
 				//obj["shgId"] = '<a class="tdViewData">'+customerData["groupId"]+'</a>';
 				obj["shgId"] = '<a class="tdViewData">'+customerData["appGroupId"]+'</a>';
 				obj["shgName"] = '<a class="tdViewData">'+customerData["groupName"]+'</a>';
 				obj["memberCount"] = '<a class="tdViewData">'+memberCount+'</a>';
-				obj["groupLoanId"] = obj["groupId"]+"_"+obj["loanId"]+"_"+myTaskdata[key]["name"]+"_"+obj["taskId"]+"_"+obj["processInstanceId"]+"_"+customerData["loanTypeName"];
+				obj["groupLoanId"] = obj["groupId"]+"_"+obj["loanId"]+"_"+myTaskdata[key]["name"]+"_"+obj["taskId"]+"_"+obj["processInstanceId"]+"_"+myTaskdata[key]["loanTypeName"];
 				obj["clusterName"] ='<a class="tdViewData">'+customerData["clusterName"]+'</a>';
 				obj["centerName"] ='<a class="tdViewData">'+customerData["centerName"]+'</a>';
 				obj["regionName"] ='<a class="tdViewData">'+customerData["regionName"]+'</a>';
@@ -480,20 +480,22 @@ function claimconfirmBox(id,shgName){
 }
 
 
-function KYCCheck(loanType,taskName){
-console.log(loanType);
-window.location = '/KYCCheckLoanType/'+loanType+'/'+taskName;
+function tasklistRedirect(loanType,taskName){
+    window.location = '/taskListLoanType/'+loanType+'/'+taskName;
 }
 
-function getKYCTaskList(loanType,taskName){
+function getTaskList(loanType,taskName){
     console.log(loanType);
     console.log(taskName);
     var url = '';
     if(taskName == "KYC Check"){
         url = '/KYCTaskListByLoanType/'+loanType;
     }
-    if(taskName == "Query Response"){
+    if(taskName == "Query Response" || taskName == "BM Reply"){
         url = '/queryRespTaskList/'+loanType;
+    }
+    if(taskName == "Proposal scrutiny"){
+        url = '/proposalScrutinyTaskList/'+loanType;
     }
     $.ajax({
 	    url: url,
@@ -510,7 +512,4 @@ function getKYCTaskList(loanType,taskName){
             triggerLoadFunc();
 	    }
 	});
-
-
-
 }

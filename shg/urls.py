@@ -70,7 +70,7 @@ urlpatterns += masterData_urlpatterns
 
 camundaViews_urlpatterns = [
     url(r'^KYCTaskList/',camundaViews.KYCTaskList, name = 'KYCTaskList'),
-    url(r'^KYCCheckLoanType/(?P<loanType>[^/]+)/(?P<taskName>[^/]+)',camundaViews.KYCCheckLoanType, name = 'KYCCheckLoanType'),
+    url(r'^taskListLoanType/(?P<loanType>[^/]+)/(?P<taskName>[^/]+)',camundaViews.taskListLoanType, name = 'taskListLoanType'),
     url(r'^KYCTaskListByLoanType/(?P<loanTypeName>[^/]+)',camundaViews.KYCTaskListByLoanType, name = 'KYCTaskListByLoanType'),
 
     url(r'^unassignedTaskList/',camundaViews.unassignedTaskList, name = 'unassignedTaskList'),
@@ -83,7 +83,7 @@ camundaViews_urlpatterns = [
     url(r'^updateTask/',camundaViews.updateTask, name = 'updateTask'),
     url(r'^taskComplete/(?P<taskId>[^/]+)',camundaViews.taskComplete, name = 'taskComplete'),
     url(r'^getHistoryComments/(?P<processId>[^/]+)',camundaViews.getHistoryComments, name = 'getHistoryComments'),
-    url(r'^proposalScrutinyTaskList/',camundaViews.proposalScrutinyTaskList, name = 'proposalScrutinyTaskList'),
+    url(r'^proposalScrutinyTaskList/(?P<loanTypeName>[^/]+)',camundaViews.proposalScrutinyTaskList, name = 'proposalScrutinyTaskList'),
 ]
 urlpatterns += camundaViews_urlpatterns
 

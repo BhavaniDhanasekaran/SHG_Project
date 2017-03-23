@@ -17,7 +17,7 @@
         }
         $(document).ready(function(){
             if(loanTypeName){
-                getKYCTaskList(loanTypeName,taskName);
+                getTaskList(loanTypeName,taskName);
             }
             if(taskName != "Query Response" && taskName != "KYC Check" && taskName != "Proposal scrutiny" && taskName != "" && taskName != "BM Reply"){
                     getTasksByTaskName(taskName,loanTypeName);
@@ -36,7 +36,7 @@
         <div class="widget-header">
             <h5 class="widget-title bigger lighter">
                 <i class="ace-icon fa fa-table"></i>
-                Task List - <span id="taskName">{{ taskName }}</span>
+                Task List - <span id="taskName">{{ taskName }} ( {{loanTypeName}} ) </span>
             </h5>
             <div class="widget-toolbar widget-toolbar-light no-border">
                 <select id="simple-colorpicker-1" class="hide">

@@ -14,10 +14,12 @@
     var taskName = '{{ taskName | escapejs }}';
     var group = '{{ group | escapejs }}';
     var userId = '{{ userId | escapejs }}';
-    var loanType = '{{ loanType | escapejs }}';
+    var loanType = '{{ loanTypeName | escapejs }}';
     var processInstanceId = '{{ processInstanceId | escapejs }}';
 $(document).ready(function (){
-	loanTypeId = loanTypeDict[loanType];
+	var loanTypeId = loanTypeDict[loanType];
+	console.log(loanType,loanTypeId);
+
 	loanDocument(loanTypeId);
 	loadGroupRoles(groupId,loanId,taskName);
 	getHistComments(processInstanceId);
@@ -48,7 +50,7 @@ $(document).ready(function (){
 
                 <div class="profile-info-row">
                     <div class="profile-info-name"> SHG Address </div>
-                    <textarea  rows="3" readonly="true" width="150px" id="shgaddress_groupRole" placeholder="Address" style="margin: 0px; height: 77px; width: 218px;"></textarea>
+                    <span  rows="3" readonly="true" width="150px" id="shgaddress_groupRole" placeholder="Address" style="margin: 0px; height: 77px; width: 218px;"></span>
 
                 </div>
                 <div class="profile-info-row">

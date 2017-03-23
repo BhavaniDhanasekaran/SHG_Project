@@ -10,12 +10,10 @@ function loanDocument(loanTypeId) {
         dataType: 'json',
         success: function(data) {
             docUploadedDict = data["data"];
-            console.log(docUploadedDict);
             for (var key in docUploadedDict) {
                 var docId = docUploadedDict[key]["documentName"].split("*")[1];
                 var docName = docUploadedDict[key]["documentName"].split("*")[0];
                 docURLDict[docUploadedDict[key]["documentName"]] = docUploadedDict[key]["documentPath"] + '*' + docUploadedDict[key]["docId"];
-                // console.log(docURLDict[docUploadedDict[key]["documentName"]]);
             }
 
             $.ajax({
@@ -99,7 +97,6 @@ function trigger() {
         doceditId = $(this).attr('id');
         newdoceditId = doceditId.split("_")[0];
         //newdoceditId2 = newdoceditId+ "_2" ;
-        console.log(newdoceditId);
         Editdoc(UniqueId, newdoceditId);
     });
 }
@@ -181,42 +178,24 @@ function UpdateUrl(loanId,groupId, oldfileName, s3url, fileid) {
 }
 
 function Editdoc(UniqueId, newdoceditId) {
-    console.log('newdoceditId');
-    console.log(newdoceditId);
-    console.log(loanId);
     $("#" + newdoceditId + "_Edit").click();
-    //$("#loading").show();
     $("#" + newdoceditId + "_Edit").fileupload({
         dataType: 'json',
         sequentialUploads: true,
         start: function(e) {
-           // $("#modal-progress").modal("show");
              disableActiveTab();
             $("#loading").show()
 
         },
         stop: function(e) {
-            //$("#modal-progress").modal("hide");
             $("#loading").hide();
              enableActiveTab();
         },
-        /*progressall: function(e, data) {
-            var progress = parseInt(data.loaded / data.total * 100, 10);
-            var strProgress = progress + "%";
-            $(".progress-bar").css({
-                "width": strProgress
-            });
-            $(".progress-bar").text(strProgress);
-        },*/
         done: function(e, data) {
             if (data.result.is_valid) {
                 var groupId = document.getElementById("groupId").innerHTML;
-                //  var fileName=docName;
-                //var newfilid=UniqueId;
-                //var newfileName=docName+'*'+fileid;
-                //// var oldfileName=docName;
                 var s3url = data.result.url;
-                EditUrl(loanId,groupId, UniqueId, s3url, newdoceditId,loanId);
+                EditUrl(loanTypeId,groupId, UniqueId, s3url, newdoceditId,loanId);
                 $("#gallery tbody").prepend(
                     "<tr><td><a href='" + data.result.url + "'>" + data.result.name + "</a></td> <td><a href='" + data.result.url + "'>" + "delete" + "</a></td></tr>"
                 )
@@ -225,8 +204,7 @@ function Editdoc(UniqueId, newdoceditId) {
     });
 }
 
-function EditUrl(loanId,groupId, UniqueId, s3url, newdoceditId,loanId) {
-    console.log(UniqueId);
+function EditUrl(loanTypeId,groupId, UniqueId, s3url, newdoceditId,loanId) {
     var dataObj2 = {};
     var uploadData = {
         "loanId": String(loanId),
@@ -242,12 +220,9 @@ function EditUrl(loanId,groupId, UniqueId, s3url, newdoceditId,loanId) {
         type: "POST",
         success: function(data) {
             if (data.code == "8001") {
-                //$("#loading").hide();
                 $.alert("Document Updated Successfully.");
+                $("#" + newdoceditId + "_2").attr('onClick', 'window.open(' + "'" + s3url + "'" + ","+"width=200,height=100" +').focus();');
                 loanDocument(loanTypeId);
-                $("#" + newdoceditId + "_2").attr('onClick', 'window.open(' + "'" + s3url + "'" + ').focus();');
-                //$("#" + newdoceditId + "_3").attr('name',data.data);
-                //$("#"+fileid+"_2").attr('onClick', 'window.open ('+"'"+s3url+"'"+',"mywindow","menubar=1,resizable=1,width=350,height=250");');
             } else {
                 $.alert("Error update");
             }

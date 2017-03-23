@@ -21,15 +21,14 @@ def getTasksByTaskName(request,taskName,loanTypeName):
         officeId = userOfficeData["officeId"]
         groupName = userOfficeData["designation"]
         processInstancesArr = []
-        officeType = ''
         taskProVarList = []
         groupTaskDict 	= {}
         groupTaskData	= []
         grp_body_cont = {}
-        group = ''
         if groupName == "RM":
             grp_body_cont = {"unassigned": "true", "name": taskName, "candidateGroup": str(groupName),
-                             "processVariables": [{"name": "regionId", "operator": "eq", "value": officeId}]}
+                             "processVariables": [{"name": "regionId", "operator": "eq", "value": officeId},
+                                                  {"name": "loanTypeName", "operator": "eq", "value": loanTypeName}]}
 
         if groupName == "CLM" or groupName == "BM" or groupName == "CMR":
             grp_body_cont = {"unassigned": "true", "name": taskName,
@@ -37,7 +36,8 @@ def getTasksByTaskName(request,taskName,loanTypeName):
                              "processVariables": [{"name": "clusterId", "operator": "eq", "value": officeId},
                                                   {"name": "loanTypeName", "operator": "eq", "value": loanTypeName}]}
         if groupName == "CreditTeam":
-            grp_body_cont 	   = { "unassigned" : "true" , "name" : taskName, "candidateGroup" : str(groupName) }
+            grp_body_cont 	   = { "unassigned" : "true" , "name" : taskName, "candidateGroup" : str(groupName),
+                                    "processVariables": [{"name": "loanTypeName", "operator": "eq","value": loanTypeName}]}
 
         print "grp_body_cont"
         print grp_body_cont
