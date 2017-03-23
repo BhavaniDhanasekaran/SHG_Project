@@ -37,7 +37,7 @@ def SHGForm(request,groupId,loanId,taskId,processId,taskName,loanType):
         groupName = userOfficeData["designation"]
         userId = request.session["userId"]
         templateName = {
-            "KYC Check"		    				        : "ds_groupview.html"	,
+            "KYC Check"		    				        : "ds_groupview.html",
             "Query Response"        				    : "ds_groupview.html",
             "Conduct BAT- Member approval in CRM"       : "queryResponseDS.html",
             "Upload loan documents in Web application"	: "BMUploadDocs.html",

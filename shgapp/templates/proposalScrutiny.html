@@ -93,6 +93,14 @@
                                         <div class="col-md-5">
                                             <div class="space-12"></div>
                                             <div class="profile-user-info profile-user-info-striped">
+                                                <div class="profile-info-row">
+                                                <div id="sequenceNumber_label" class="profile-info-name">Sequence Number</div>
+                                                <div class="profile-info-value">
+                                                    <span class="editable">
+                                                    <input type="text"  class="sample4" placeholder="Sequence Number" id="sequenceNumber" maxlength="2" style="width:99%">
+                                                    </span>
+                                                </div>
+                                            </div>
                                                     <div class="profile-info-row">
                                                         <div id="memberName_label" class="profile-info-name"> Name <font class="mandatory">*</font> </div>
                                                         <div class="profile-info-value">
@@ -149,18 +157,19 @@
                                                             <span class="editable">  <input type="text" readonly="readonly" id="roleName"> </font></span>
                                                         </div>
                                                     </div>
-                                                    <div class="profile-info-row">
-                                                        <div id="villageName_label" class="profile-info-name"> Village <font class="mandatory">*</font></div>
-                                                        <div class="profile-info-value">
-                                                            <span class="editable" ><input  class="sample8" type="text" id="villageName" placeholder="Village Name"></input></span>
-                                                        </div>
-                                                    </div>
+
                                                 </div>
                                         </div>
                                         <!-- tabrow  colmd-5 END-->
                                         <div class="col-md-5">
                                             <!-- tabrow  2 colmd-5 sTART-->
                                             <div class="profile-user-info profile-user-info-striped">
+                                                <div class="profile-info-row">
+                                                    <div id="mobileNo_label" class="profile-info-name"> Mobile no <font class="mandatory">*</font></div>
+                                                    <div class="profile-info-value">
+                                                        <span class="editable" >    <input type="text" class="sample4" placeholder="Mobile Number" onchange="validateFields(this.id,this.value,'mobileNumber');" onkeypress='validate(event)' id="mobileNo" maxlength="10"></span>
+                                                    </div>
+                                                </div>
                                                 <div class="profile-info-row">
                                                     <div id="idProofValue_label" class="profile-info-name"> ID Proof <font class="mandatory">*</font></div>
                                                     <div class="profile-info-value">
@@ -210,14 +219,6 @@
                                                         <span class="editable" >    <input type="text" class="sample8" placeholder="Bank Branch" id="branch"></span>
                                                     </div>
                                                 </div>
-                                                <div class="profile-info-row">
-                                                    <div id="sequenceNumber_label" class="profile-info-name">Sequence Number</div>
-                                                    <div class="profile-info-value">
-                                                        <span class="editable">
-                                                        <input type="text"  class="sample4" placeholder="Loan Amount" id="sequenceNumber" maxlength="2" style="width:99%">
-                                                        </span>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                         <!-- tabrow  2 colmd-5 END-->
@@ -234,6 +235,12 @@
                                         <div class="col-md-5">
                                             <!-- tabrow   2form colmd-5 start-->
                                             <div class="profile-user-info profile-user-info-striped">
+                                                <div class="profile-info-row">
+                                                        <div id="villageName_label" class="profile-info-name"> Village <font class="mandatory">*</font></div>
+                                                        <div class="profile-info-value">
+                                                            <span class="editable" ><input  class="sample8" type="text" id="villageName" placeholder="Village Name"></input></span>
+                                                        </div>
+                                                    </div>
                                                 <div class="profile-info-row">
                                                     <div id="permanentAddress_label" class="profile-info-name"> Permanent Addresss <font class="mandatory">*</font></div>
                                                     <div class="profile-info-value">
@@ -255,12 +262,6 @@
                                                         <select id="villages" style="width:49%;">
                                                             <option value="" >Select Area </option>
                                                         </select>
-                                                    </div>
-                                                </div>
-                                                <div class="profile-info-row">
-                                                    <div id="mobileNo_label" class="profile-info-name"> Mobile no <font class="mandatory">*</font></div>
-                                                    <div class="profile-info-value">
-                                                        <span class="editable" >    <input type="text" class="sample4" placeholder="Mobile Number" onchange="validateFields(this.id,this.value,'mobileNumber');" onkeypress='validate(event)' id="mobileNo" maxlength="10"></span>
                                                     </div>
                                                 </div>
 
@@ -297,7 +298,6 @@
                                                         </span>
                                                     </div>
                                                 </div>
-
                                             </div>
                                         </div>
                                         <div class="row">

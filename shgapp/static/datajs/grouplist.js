@@ -1,7 +1,7 @@
 var validationFields = ["memberName","sequenceNumber", "age", "husbandName", "maritalStatus", "fatherName", "address", "villageName", "idProofValue", "addressProofValue", "sbAccountNumber", "bankId", "sbAccountName",
     "permanentAddress", "pincode", "villages", "mobileNo", "idProofTypeId", "addressProofTypeId", "loanAmount", "loanTypeValue"
 ];
-
+//var loanTypeId = loanTypeId;
 function getGroupData(groupID, loanId) {
     var memId;
     var totalCount = 0;
@@ -21,6 +21,7 @@ function getGroupData(groupID, loanId) {
         },
         success: function(data) {
             groupData = data;
+            var activeMembersArr = [];
             console.log(groupData);
             if (groupData["data"]["groupMemDetail"]) {
                 if (groupData["data"]["groupMemDetail"][0]) {
@@ -34,6 +35,7 @@ function getGroupData(groupID, loanId) {
                         if (memberStatus == "Active") {
                             className = "list-group-item list-group-item-action Pending";
                             penCount += 1;
+                            activeMembersArr.push(groupData["data"]["groupMemDetail"][i]["memberId"])
                         }
                         if (memberStatus == "Approved") {
                             className = "list-group-item list-group-item-action list-group-item-success Approved";
@@ -72,7 +74,13 @@ function getGroupData(groupID, loanId) {
                         $("#operationsDivIdQuery").css("display", "none");
                         $("#groupApproveBtnIdQuery").css("display", "block");
                     }
-                    getMemberDetails(memId, groupID, loanId);
+                    if(activeMembersArr[0]){
+                        getMemberDetails(activeMembersArr[0], groupID, loanId);
+                    }
+                    else{
+                        getMemberDetails(memId, groupID, loanId);
+                    }
+
                 }
             } else {
                 $.alert(groupData["message"]);
@@ -559,7 +567,15 @@ function submitKYCForm(status) {
         },
         success: function(data) {
             if (data["code"] == "2024") {
-                $.alert("'"+ name +"'" + " has been " + updateStatus);
+                //$.alert("'"+ name +"'" + " has been " + updateStatus);
+                $.alert({
+                     title: "'"+ name +"'" + " has been " + updateStatus,
+                     confirmButton: 'Okay',
+                     confirm: function(){
+                     $("#san_test").html("");
+                     getGroupData(groupId, loanId);
+                    }
+                });
 
                 if (status == "Approved") {
                     document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-success Approved";

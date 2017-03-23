@@ -17,7 +17,7 @@
     var loanType = '{{ loanTypeName | escapejs }}';
     var processInstanceId = '{{ processInstanceId | escapejs }}';
 $(document).ready(function (){
-	var loanTypeId = loanTypeDict[loanType];
+	loanTypeId = loanTypeDict[loanType];
 	console.log(loanType,loanTypeId);
 
 	loanDocument(loanTypeId);
@@ -50,8 +50,9 @@ $(document).ready(function (){
 
                 <div class="profile-info-row">
                     <div class="profile-info-name"> SHG Address </div>
-                    <span  rows="3" readonly="true" width="150px" id="shgaddress_groupRole" placeholder="Address" style="margin: 0px; height: 77px; width: 218px;"></span>
-
+                    <div class="profile-info-value">
+                        <span  rows="3" class="editable"  id="shgaddress_groupRole" placeholder="Address""></span>
+                    </div>
                 </div>
                 <div class="profile-info-row">
                     <div class="profile-info-name"> Animator </div>
