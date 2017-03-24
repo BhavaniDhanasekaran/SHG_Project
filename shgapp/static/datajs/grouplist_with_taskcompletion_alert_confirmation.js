@@ -539,7 +539,6 @@ function submitKYCForm(status) {
         },
         success: function(data) {
             if (data["code"] == "2024") {
-                //$.alert("'"+ name +"'" + " has been " + updateStatus);
                 $.alert({
                     title: "'" + name + "'" + " has been " + updateStatus,
                     confirmButton: 'Okay',
@@ -637,7 +636,13 @@ function checkForTaskCompletion() {
                 },
                 success: function(data) {
                     if (data == "Successful") {
-                        window.location = '/assignedTaskList/';
+                        $.alert({
+                            title: "Task has been completed!",
+                            confirmButton: 'Okay',
+                            confirm: function() {
+                               window.location = '/assignedTaskList/';
+                            }
+                        });
                     }
                 },
                 data: JSON.stringify(dataObj)
@@ -694,8 +699,13 @@ function taskUpdate(status) {
         },
         success: function(data) {
             if (data == "Successful") {
-                $.alert("Member and Group Validation Completed!!");
-                window.location = '/assignedTaskList/';
+                $.alert({
+                    title: "Member and Group Validation Completed!",
+                    confirmButton: 'Okay',
+                    confirm: function() {
+                       window.location = '/assignedTaskList/';
+                    }
+                });
             } else {
                 $.alert("Failed due to some Issue . Please try after sometime or contact your Administrator");
             }
@@ -934,8 +944,13 @@ function updateGroupValStatus(status) {
         },
         success: function(data) {
             if (data == "Successful") {
-                $.alert("Group Validation completed Successfully");
-                window.location = '/assignedTaskList/';
+                $.alert({
+                    title: "Group Validation completed Successfully!",
+                    confirmButton: 'Okay',
+                    confirm: function() {
+                       window.location = '/assignedTaskList/';
+                    }
+                });
             }
         },
         data: JSON.stringify(dataObj)
@@ -961,8 +976,13 @@ function updateTask(status) {
         },
         success: function(data) {
             if (data == "Successful") {
-                $.alert("Group Updation completed!!");
-                window.location = '/assignedTaskList/';
+                $.alert({
+                    title: "Group Updation completed!",
+                    confirmButton: 'Okay',
+                    confirm: function() {
+                       window.location = '/assignedTaskList/';
+                    }
+                });
             } else {
                 $.alert("Failed due to some Issue . Please try after sometime or contact your Administrator");
             }
