@@ -361,7 +361,14 @@ function updateMemValidationStatus(status) {
         },
         success: function(data) {
             if (data["code"] == "2029") {
-                $.alert("'" + memberName + "'" + " has been " + updateStatus);
+                $.alert({
+                    title: "'" + memberName + "'" + " has been " + updateStatus,
+                    confirmButton: 'Okay',
+                    confirm: function() {
+                        $("#san_test").html("");
+                        getGroupData(groupId, loanId);
+                    }
+                });
                 if (status == "Approved") {
                     document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-success Approved";
                     document.getElementById("memberValStatus").innerHTML = "APP";
@@ -832,115 +839,6 @@ function loadGroupRoles(groupId, loanId, taskName) {
         },
         data: JSON.stringify(dataObj)
     });
-
-
-}
-
-
-
-
-function updateGroupValStatus(status) {
-    var validationType = '';
-    var comment;
-    var processUpdate;
-    var dataObj = {};
-    if (document.getElementById("comment")) {
-        comment = document.getElementById("comment").value;
-    }
-    var loanTypeId = document.getElementById("loanTypeId1").innerHTML;
-    if (status == "Rejected") {
-        if (comment == "") {
-            $.alert("Please input comment");
-            return false;
-        }
-    }
-    if (group == "DataSupportTeam") {
-        validationType = "PEN";
-        processUpdate = {
-            'variables': {
-                'kyc': {
-                    'value': "Approved"
-                },
-            }
-        };
-        dataObj["processUpdate"] = processUpdate;
-    }
-    if (group == "CreditTeam") {
-        validationType = "POST";
-        processUpdate = {
-            'variables': {
-                'chekcbrespdate': {
-                    'value': "CBApproved"
-                },
-            }
-        };
-        dataObj["processUpdate"] = processUpdate;
-    }
-
-    if (group == "CMR" || group == "CLM" || group == "BM") {
-        if (taskName == "Upload loan documents in Web application") {
-            validationType = "CLMAPPROVAL";
-        }
-        if (taskName == "Print Loan Documents & FSR") {
-            validationType = "PRE";
-            if (!document.getElementById("Animator").value || !document.getElementById("repm1").value || !document.getElementById("repm2").value) {
-                $.alert("Please update group roles before task completion!");
-                return false;
-            } else {
-                updateGroupMemberStatus();
-            }
-        }
-    }
-    if (group == "RM" || group == "rm") {
-        validationType = "POST";
-
-        if (!document.getElementById("Animator").value || !document.getElementById("repm1").value || !document.getElementById("repm2").value) {
-            $.alert("Please update group roles before task completion!");
-            return false;
-        } else {
-            updateGroupMemberStatus();
-        }
-    }
-    var groupValData = {
-        "groupId": groupId,
-        "loanTypeId": loanTypeId,
-        "loanId": loanId,
-        "subStatus": status,
-        "userId": userId,
-        "comment": comment,
-        "validationType": validationType,
-        "entityType": "GROUP",
-        "bpmTaskId": taskId,
-        "bpmTaskName": taskName,
-        "bpmProcessId": processInstanceId
-    };
-
-    dataObj["groupValData"] = groupValData;
-    dataObj["taskId"] = taskId;
-    if (comment != "") {
-        dataObj["message"] = comment;
-    }
-    $.ajax({
-        url: '/updateGrpValidationStatus/',
-        dataType: 'json',
-        type: "POST",
-        beforeSend: function() {
-            triggerLoadFunc();
-            $("#loading").show();
-        },
-        complete: function() {
-            triggerLoadFunc();
-            $("#loading").hide();
-        },
-        success: function(data) {
-            if (data == "Successful") {
-                $.alert("Group Validation completed Successfully");
-                window.location = '/assignedTaskList/';
-            }
-        },
-        data: JSON.stringify(dataObj)
-    });
-
 }
 
 
@@ -1054,7 +952,7 @@ function documentView(groupId) {
 
 
 function updateGroupMemberStatus() {
-    //alert("updateGroupMemeberStatus");
+    var validationType = ''
     if (!document.getElementById("Animator").value) {
         $.alert("Please select Group Animator");
         return false;
@@ -1070,6 +968,7 @@ function updateGroupMemberStatus() {
     var nAnimator = document.getElementById("Animator").value;
     var nrepm1 = document.getElementById("repm1").value;
     var nrepm2 = document.getElementById("repm2").value;
+
     var groupValData = {
         "entityType": "GROUP",
         "validationType": "POST",
@@ -1082,30 +981,30 @@ function updateGroupMemberStatus() {
     //console.log(groupValData);
     var dataObj = {};
     dataObj["groupValData"] = groupValData;
-
-    $.ajax({
-        url: '/updateGroupMemberStatus/',
-        dataType: 'json',
-        type: "post",
-        beforeSend: function() {
-            triggerLoadFunc();
-            $("#loading").show();
-        },
-        complete: function() {
-            triggerLoadFunc();
-            $("#loading").hide();
-        },
-        success: function(data) {
-            if (data.code == '2024') {
-                $.alert("Member roles have been updated successfully");
-            }
-        },
-        data: JSON.stringify(dataObj)
-    });
+    console.log(dataObj);
+    var responseData;
+    return $.ajax({
+            url: '/updateGroupMemberStatus/',
+            dataType: 'json',
+            async : false,
+            type: "post",
+            beforeSend: function() {
+                triggerLoadFunc();
+                $("#loading").show();
+            },
+            complete: function() {
+                triggerLoadFunc();
+                $("#loading").hide();
+            },
+            success: function(data) {
+                if (data.code == '2024') {
+                    $.alert("Member roles have been updated successfully");
+                    return "Success";
+                }
+            },
+            data: JSON.stringify(dataObj)
+        });
 }
-
-
-
 
 function getLoanDetails(groupId, loanId) {
     $.ajax({
@@ -1412,7 +1311,6 @@ function validate(evt, id) {
     }
 }
 
-
 function alpha(e) {
     var k;
     document.all ? k = e.keyCode : k = e.which;
@@ -1427,7 +1325,6 @@ function tabControl() {
     $("#tab4").removeClass("active");
     $("#tab5").removeClass("active");
     $("#tab6").removeClass("active");
-    // $('#CreditListTable').empty();
 }
 
 function updateMembersCount() {
@@ -1612,3 +1509,119 @@ function validateFields(id, val, fieldName) {
     }
 
 }
+
+
+function updateGroupValStatus(status) {
+    var flag  =0;
+    var validationType = '';
+    var comment;
+    var processUpdate;
+    var dataObj = {};
+    if (document.getElementById("comment")) {
+        comment = document.getElementById("comment").value;
+    }
+    var loanTypeId = document.getElementById("loanTypeId1").innerHTML;
+    if (status == "Rejected") {
+        if (comment == "") {
+            $.alert("Please input comment");
+            return false;
+        }
+    }
+    if (group == "DataSupportTeam") {
+        validationType = "PEN";
+        processUpdate = {
+            'variables': {
+                'kyc': {
+                    'value': "Approved"
+                },
+            }
+        };
+        dataObj["processUpdate"] = processUpdate;
+        flag =1;
+    }
+    if (group == "CreditTeam") {
+        validationType = "POST";
+        processUpdate = {
+            'variables': {
+                'chekcbrespdate': {
+                    'value': "CBApproved"
+                },
+            }
+        };
+        dataObj["processUpdate"] = processUpdate;
+        flag =1;
+    }
+
+
+    if (group == "CMR" || group == "CLM" || group == "BM") {
+        if (taskName == "Upload loan documents in Web application") {
+            validationType = "CLMAPPROVAL";
+            flag = 1;
+        }
+        if (taskName == "Print Loan Documents & FSR") {
+            validationType = "PRE";
+            if (!document.getElementById("Animator").value || !document.getElementById("repm1").value || !document.getElementById("repm2").value) {
+                $.alert("Please update group roles before task completion!");
+                return false;
+            } else {
+                var resp = updateGroupMemberStatus().done(function(result) { if(result.code == 2024) flag = 1; }).fail(function() {  flag = 0; });
+            }
+        }
+    }
+    if (group == "RM" || group == "rm") {
+        validationType = "POST";
+
+        if (!document.getElementById("Animator").value || !document.getElementById("repm1").value || !document.getElementById("repm2").value) {
+            $.alert("Please update group roles before task completion!");
+            return false;
+        } else {
+            var resp = updateGroupMemberStatus().done(function(result) { if(result.code == 2024) flag = 1; }).fail(function() {  flag = 0; });
+        }
+    }
+    if(flag == 1){
+        var groupValData = {
+            "groupId": groupId,
+            "loanTypeId": loanTypeId,
+            "loanId": loanId,
+            "subStatus": status,
+            "userId": userId,
+            "comment": comment,
+            "validationType": validationType,
+            "entityType": "GROUP",
+            "bpmTaskId": taskId,
+            "bpmTaskName": taskName,
+            "bpmProcessId": processInstanceId
+        };
+
+        dataObj["groupValData"] = groupValData;
+        dataObj["taskId"] = taskId;
+        console.log(dataObj);
+        if (comment != "") {
+            dataObj["message"] = comment;
+        }
+        $.ajax({
+            url: '/updateGrpValidationStatus/',
+            dataType: 'json',
+            type: "POST",
+            beforeSend: function() {
+                triggerLoadFunc();
+                $("#loading").show();
+            },
+            complete: function() {
+                triggerLoadFunc();
+                $("#loading").hide();
+            },
+            success: function(data) {
+                if (data == "Successful") {
+                    $.alert("Group Validation completed Successfully");
+                    window.location = '/assignedTaskList/';
+                }
+            },
+            data: JSON.stringify(dataObj)
+        });
+
+    }
+
+}
+
+

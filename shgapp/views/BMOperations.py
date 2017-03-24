@@ -98,6 +98,8 @@ def updateGrpValidationStatus(request):
         if request.method == "POST":
             formData  = json.loads(request.body)
             bodyGroupValidation =  formData["groupValData"]
+            print "bodyGroupValidation-----------------------"
+            print json.dumps(bodyGroupValidation)
             taskId = formData["taskId"]
             validationResponse = sscoreClient._urllib2_request('workflowEdit/groupValidation',bodyGroupValidation,requestType='POST')
             if formData.has_key("message"):
@@ -126,6 +128,8 @@ def updateGroupMemberStatus(request):
         if request.method == "POST":
             formData  = json.loads(request.body)
             bodyGroupValidation =  formData["groupValData"]
+            print "bodyGroupValidation"
+            print json.dumps(bodyGroupValidation)
             validationResponse = sscoreClient._urllib2_request('workflowEdit/updateMemberGroupLoan',bodyGroupValidation,requestType='POST')
             print "validationResponse"
             print validationResponse
