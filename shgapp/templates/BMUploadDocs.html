@@ -16,15 +16,15 @@
     var userId = '{{ userId | escapejs }}';
     var loanType = '{{ loanTypeName | escapejs }}';
     var processInstanceId = '{{ processInstanceId | escapejs }}';
-$(document).ready(function (){
-	loanTypeId = loanTypeDict[loanType];
-	console.log(loanType,loanTypeId);
+    $(document).ready(function (){
+        loanTypeId = loanTypeDict[loanType];
+        console.log(loanType,loanTypeId);
 
-	loanDocument(loanTypeId);
-	loadGroupRoles(groupId,loanId,taskName);
-	getHistComments(processInstanceId);
-	$("#loading").hide();
-});
+        loanDocument(loanTypeId);
+        loadGroupRoles(groupId,loanId,taskName);
+        getHistComments(processInstanceId);
+        $("#loading").hide();
+    });
 </script>
 {% endblock %}
 <!-- PAGE CONTENT BEGINS -->
@@ -46,8 +46,6 @@ $(document).ready(function (){
                     <div class="profile-info-name"> Formation Date </div>
                     <div class="profile-info-value"> <span class="editable" id="groupFormationDate_groupRole"></span> </div>
                 </div>
-
-
                 <div class="profile-info-row">
                     <div class="profile-info-name"> SHG Address </div>
                     <div class="profile-info-value">

@@ -472,7 +472,6 @@ function submitKYCForm(status) {
 
     var commentCamunda = "";
     if (validation == 1) {
-        //$("#warningId").css("display","block");
         $.alert("Please proceed after mandatory fields are entered");
         return false;
     }
