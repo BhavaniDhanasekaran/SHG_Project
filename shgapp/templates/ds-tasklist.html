@@ -10,17 +10,17 @@
         var userId = '{{ userId | escapejs }}';
         var taskName = '{{ taskName | escapejs }}';
         var group = '{{ group | escapejs }}';
+        var loanTypeName = '{{ loanTypeName | escapejs }}';
 
         if(taskList){
             taskList = JSON.parse(taskList);
         }
-        //groupTaskList = JSON.parse(groupTaskList);
         $(document).ready(function(){
-            if(dateFrom && dateTo){
-                KYCTasksGroupByDate(dateFrom,dateTo);
+            if(loanTypeName){
+                getTaskList(loanTypeName,taskName);
             }
             if(taskName != "Query Response" && taskName != "KYC Check" && taskName != "Proposal scrutiny" && taskName != "" && taskName != "BM Reply"){
-                    getTasksByTaskName(taskName);
+                    getTasksByTaskName(taskName,loanTypeName);
             }
             taskCount();
             loadUnassignedTaskList(taskList);
@@ -36,7 +36,7 @@
         <div class="widget-header">
             <h5 class="widget-title bigger lighter">
                 <i class="ace-icon fa fa-table"></i>
-                Task List - <span id="taskName">{{ taskName }}</span>
+                Task List - <span id="taskName">{{ taskName }} ( {{loanTypeName}} ) </span>
             </h5>
             <div class="widget-toolbar widget-toolbar-light no-border">
                 <select id="simple-colorpicker-1" class="hide">

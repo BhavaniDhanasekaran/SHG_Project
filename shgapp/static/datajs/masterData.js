@@ -1,4 +1,4 @@
-var validationFields = ["memberName","age","husbandName","maritalStatus","fatherName","address","villageName","idProofValue","addressProofValue","sbAccountNumber","bankId","sbAccountName",
+var validationFields = ["memberName","age","sequenceNumber", "husbandName","maritalStatus","fatherName","address","villageName","idProofValue","addressProofValue","sbAccountNumber","bankId","sbAccountName",
 			"permanentAddress","pincode","villages","mobileNo","idProofTypeId","addressProofTypeId","loanAmount","loanTypeValue"];
 
 var loanTypeDict = {

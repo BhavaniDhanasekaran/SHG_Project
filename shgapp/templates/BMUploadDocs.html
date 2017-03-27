@@ -8,21 +8,23 @@
 <script src="{% static 'datajs/mysidenav.js' %}"></script>
 
 <script>
-  var groupId = '{{ groupId | escapejs }}';
+    var groupId = '{{ groupId | escapejs }}';
     var loanId = '{{ loanId | escapejs }}';
     var taskId = '{{ taskId | escapejs }}';
     var taskName = '{{ taskName | escapejs }}';
     var group = '{{ group | escapejs }}';
     var userId = '{{ userId | escapejs }}';
-    var loanType = '{{ loanType | escapejs }}';
+    var loanType = '{{ loanTypeName | escapejs }}';
     var processInstanceId = '{{ processInstanceId | escapejs }}';
-$(document).ready(function (){
-	loanTypeId = loanTypeDict[loanType];
-	loanDocument(loanTypeId);
-	loadGroupRoles(groupId,loanId,taskName);
-	getHistComments(processInstanceId);
-	$("#loading").hide();
-});
+    $(document).ready(function (){
+        loanTypeId = loanTypeDict[loanType];
+        console.log(loanType,loanTypeId);
+
+        loanDocument(loanTypeId);
+        loadGroupRoles(groupId,loanId,taskName);
+        getHistComments(processInstanceId);
+        $("#loading").hide();
+    });
 </script>
 {% endblock %}
 <!-- PAGE CONTENT BEGINS -->
@@ -44,12 +46,11 @@ $(document).ready(function (){
                     <div class="profile-info-name"> Formation Date </div>
                     <div class="profile-info-value"> <span class="editable" id="groupFormationDate_groupRole"></span> </div>
                 </div>
-
-
                 <div class="profile-info-row">
                     <div class="profile-info-name"> SHG Address </div>
-                    <textarea  rows="3" readonly="true" width="150px" id="shgaddress_groupRole" placeholder="Address" style="margin: 0px; height: 77px; width: 218px;"></textarea>
-
+                    <div class="profile-info-value">
+                        <span  rows="3" class="editable"  id="shgaddress_groupRole" placeholder="Address""></span>
+                    </div>
                 </div>
                 <div class="profile-info-row">
                     <div class="profile-info-name"> Animator </div>

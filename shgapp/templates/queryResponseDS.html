@@ -291,7 +291,7 @@
                                     <div  class="col-md-10">
                                         <div class="form-group">
                                             <label for="comment">Comment:</label>
-                                            {% if taskName == "Resolve Data Support Team Query"%}
+                                            {% if taskName == "Resolve Data Support Team Query" or taskName == "Resolve Credit Team Query" %}
                                                 <font class="mandatory">*</font>
                                             {%  endif %}
                                             <textarea class="form-control limited sample" maxlength="3000" rows="3" style="width:94%;" id="comment"></textarea>
