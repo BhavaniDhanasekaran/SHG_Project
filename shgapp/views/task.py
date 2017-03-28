@@ -1,8 +1,9 @@
 from django.shortcuts import render,render_to_response
 from shgapp.utils.helper import Helper
 from shgapp.utils.shgexceptions import *
-from shgapp.views.decorator import session_required
+from shgapp.views.decorator import session_required,decryption_required
 import json
+
 
 @session_required
 def dsdatecount(request):
@@ -16,6 +17,7 @@ def dstasklist(request):
     userId = request.session["userId"]
     return render(request, 'ds-tasklist.html', {"userId":userId,"group":groupName,"user":username})
 
+@decryption_required
 @session_required
 def dstasklistByName(request,taskName,loanTypeName):
     print "taskName"
@@ -29,6 +31,8 @@ def dstasklistByName(request,taskName,loanTypeName):
 def mytask(request):
     return render(request, 'ds-mytask.html')
 
+
+@decryption_required
 @session_required
 def SHGForm(request,groupId,loanId,taskId,processId,taskName,loanType):
     try:

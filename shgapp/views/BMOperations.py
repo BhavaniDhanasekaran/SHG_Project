@@ -1,17 +1,18 @@
-from django.views.decorators.csrf  import csrf_protect, csrf_exempt
-from django.http import HttpResponseRedirect,HttpResponse,JsonResponse
+from django.views.decorators.csrf  import csrf_exempt
+from django.http import HttpResponse
 from shgapp.utils.camundaclient import CamundaClient
 from shgapp.utils.sscoreclient import SSCoreClient
 from shgapp.utils.helper import Helper
 from shgapp.utils.shgexceptions import *
 from shgapp.views.camundaViews import taskComplete
-from shgapp.views.decorator import session_required
+from shgapp.views.decorator import session_required,decryption_required
 import json
 
 helper = Helper()
 sscoreClient = SSCoreClient()
 camundaClient = CamundaClient()
 
+@decryption_required
 @session_required
 def getTasksByTaskName(request,taskName,loanTypeName):
     try:
@@ -39,11 +40,7 @@ def getTasksByTaskName(request,taskName,loanTypeName):
             grp_body_cont 	   = { "unassigned" : "true" , "name" : taskName, "candidateGroup" : str(groupName),
                                     "processVariables": [{"name": "loanTypeName", "operator": "eq","value": loanTypeName}]}
 
-        print "grp_body_cont"
-        print grp_body_cont
         groupTaskList	  = camundaClient._urllib2_request('task?firstResult=0', grp_body_cont, requestType='POST')
-        print "groupTaskList"
-        print groupTaskList
         for data in groupTaskList:
             processInstancesArr.append(data["processInstanceId"])
             groupTaskDict[data["processInstanceId"]] = data
@@ -62,7 +59,6 @@ def getTasksByTaskName(request,taskName,loanTypeName):
                                                                  requestType='POST')
                 taskProVarList.append(taskProVarList1)
 
-        # Process Variable Instance:
         for key in range(len(taskProVarList)):
             for data in taskProVarList[key]:
                 if data["processInstanceId"] in groupTaskDict:
@@ -84,8 +80,6 @@ def groupRoleDetails(request):
             formData  = json.loads(request.body)
             bodyData =  formData["roleObj"]
             roleResponse = sscoreClient._urllib2_request('workflowDetailView/workflowGroupDetail',bodyData,requestType='POST')
-            print "roleResponse"
-            print roleResponse
             return HttpResponse(json.dumps(roleResponse), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting Credit History.')
@@ -98,17 +92,11 @@ def updateGrpValidationStatus(request):
         if request.method == "POST":
             formData  = json.loads(request.body)
             bodyGroupValidation =  formData["groupValData"]
-            print "bodyGroupValidation-----------------------"
-            print json.dumps(bodyGroupValidation)
             taskId = formData["taskId"]
             validationResponse = sscoreClient._urllib2_request('workflowEdit/groupValidation',bodyGroupValidation,requestType='POST')
             if formData.has_key("message"):
                 message = {"message" : formData["message"]}
-                print "message"
-                print message
                 commentUpdate = camundaClient._urllib2_request('task/'+taskId+'/comment/create',message,requestType='POST')
-                print "commentUpdate"
-                print commentUpdate
             if validationResponse["code"] == 2032:
                 if formData.has_key("processUpdate"):
                     bodyData = formData["processUpdate"]
@@ -128,11 +116,7 @@ def updateGroupMemberStatus(request):
         if request.method == "POST":
             formData  = json.loads(request.body)
             bodyGroupValidation =  formData["groupValData"]
-            print "bodyGroupValidation"
-            print json.dumps(bodyGroupValidation)
             validationResponse = sscoreClient._urllib2_request('workflowEdit/updateMemberGroupLoan',bodyGroupValidation,requestType='POST')
-            print "validationResponse"
-            print validationResponse
             return HttpResponse(json.dumps(validationResponse), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('An expected error occurred while update Group Member Status details.')

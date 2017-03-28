@@ -5,6 +5,7 @@ import json
 
 @session_required
 def hello(request):
+
     userId = request.session["userId"]
     userName = request.session["userName"]
     userOfficeData = json.loads(request.session["userOfficeData"])

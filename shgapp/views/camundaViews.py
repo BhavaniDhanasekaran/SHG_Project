@@ -1,14 +1,11 @@
 import json
-
 from django.http import HttpResponse
 from django.shortcuts import render,render_to_response
 from django.views.decorators.csrf  import csrf_exempt
 from shgapp.utils.camundaclient import CamundaClient
 from shgapp.utils.helper import Helper
 from shgapp.utils.shgexceptions import *
-from shgapp.views.decorator import session_required
-
-
+from shgapp.views.decorator import session_required,decryption_required
 
 helper = Helper()
 camundaClient = CamundaClient()
@@ -35,12 +32,10 @@ def unassignedTaskList(request):
         bodyData = { "processInstanceIdIn": processInstancesArr }
         taskProVarList	 = camundaClient._urllib2_request('variable-instance?deserializeValues=false', bodyData, requestType='POST')
 
-        #Process Variable Instance:
         for data in taskProVarList:
             if data["processInstanceId"] in groupTaskDict:
                 groupTaskDict[data["processInstanceId"]][data["name"] ] = data["value"]
 
-        #Group Task Assign:
         for key in groupTaskDict:
             groupTaskData.append(groupTaskDict[key])
 
@@ -87,6 +82,7 @@ def KYCTaskList(request):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting task details.')
 
+@decryption_required
 @session_required
 def KYCTasksGroupByDate(request,dateFrom,dateTo):
     print "Entering KYCTasksGroupByDate(request,dateFrom,dateTo): view "
@@ -148,7 +144,7 @@ def assignedTaskList(request):
     loginUser = request.session["userLogin"]
     userId = request.session["userId"]
     processInstancesArr = []
-    taskProVarList =[]
+    taskProVarList = []
     myTaskDict 	= {}
     myTaskData	= []
     proInstArrFalse = []
@@ -207,11 +203,11 @@ def assignedTaskList(request):
     print "Exiting assignedTaskList(request): view"
     return render(request, 'ds-mytask.html',{"myTaskList" :json.dumps(myTaskData), "group" :groupName, "user":username,"userId":userId})
 
+@decryption_required
 def claim(request, id, name):
     print "Entering claim(request, id, name): view"
     username = request.session["userLogin"]
     try:
-        #claim
         if name =="claim":
             print name
             dataObjClaim = {"userId": str(username)}
@@ -219,7 +215,6 @@ def claim(request, id, name):
             print "Exiting claim(request, id, name): view"
             return HttpResponse(json.dumps(claimTask), content_type="application/json" )
 
-        #Unclaim
         if name =="unclaim":
             print name
             dataObjClaim = {"userId": str(username)}
@@ -230,144 +225,7 @@ def claim(request, id, name):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred.')
 
-@session_required
-def tasksCount_old(request):
-    print "Entering tasksCount( request ): view"
-    try:
-        username = request.session["userName"]
-        userOfficeData = json.loads(request.session["userOfficeData"])
-        groupName = userOfficeData["designation"]
-        officeId = userOfficeData["officeId"]
-        loginUser = request.session["userLogin"]
-        taskCount = {}
-        queryCount = 0
-        BMReplyCount =0
-        bodyLocationData = {}
-        incrementTaskCount = 0
-        if groupName == "RM":
-            bodyLocationData = {"candidateGroup": str(groupName),
-                                "processVariables": [{"name": "regionId", "operator": "eq", "value": officeId}]}
-
-        if groupName == "CLM" or groupName == "BM" or groupName == "CMR":
-            bodyLocationData = {"candidateGroup": "CLM",
-                                "processVariables": [{"name": "clusterId", "operator": "eq", "value": officeId}]}
-
-        if groupName == "DataSupportTeam" or groupName == "CreditTeam":
-            bodyLocationData = {"candidateGroup": str(groupName)}
-
-        mytaskURL = camundaClient._urllib2_request('task', {"assignee" : str(loginUser)}, requestType='POST')
-        urlTask = camundaClient._urllib2_request('task', bodyLocationData, requestType='POST')
-
-        for data in mytaskURL:
-            if data["name"]:
-                incrementTaskCount += 1
-                taskCount["myTasks"]  = incrementTaskCount
-            else:
-                taskCount["myTasks"]  = incrementTaskCount
-
-        if groupName == "DataSupportTeam":
-            for data in urlTask:
-                if data["name"] in taskCount:
-                    if data["name"] == "KYC Check":
-                        taskCount [data["name"]] = taskCount[data["name"]] + 1
-                        grp_body_cont   = { "processVariables": [{"name"  : "kyc","operator" :"eq","value" : "resolved"	}],
-                                            "unassigned" : "true",
-                                            "candidateGroup" :"DataSupportTeam"}
-                        groupTaskList	= camundaClient._urllib2_request('task?firstResult=0', grp_body_cont, requestType='POST')
-
-                        if groupTaskList:
-                            if groupTaskList[0]:
-                                taskCount["Query Response"] = len(groupTaskList)
-                                queryCount = len(groupTaskList)
-                            else:
-                                taskCount["Query Response"] = 0
-                        else:
-                            taskCount["Query Response"] = 0
-                    else:
-                        taskCount [data["name"]] = taskCount[data["name"]] + 1
-                else:
-                    taskCount[data["name"]] = 1
-                    grp_body_cont = {"processVariables": [{"name": "kyc", "operator": "eq", "value": "resolved"}],
-                                     "unassigned": "true",
-                                     "candidateGroup": "DataSupportTeam"}
-                    groupTaskList = camundaClient._urllib2_request('task?firstResult=0', grp_body_cont,
-                                                                   requestType='POST')
-                    if groupTaskList:
-                        if groupTaskList[0]:
-                            taskCount["Query Response"] = len(groupTaskList)
-                            queryCount = len(groupTaskList)
-                        else:
-                            taskCount["Query Response"] = 0
-                    else:
-                        taskCount["Query Response"] = 0
-            if taskCount.has_key('KYC Check'):
-                taskCount ["KYC Check"]  = taskCount["KYC Check"] - queryCount
-            else:
-                taskCount ["KYC Check"] = 0
-                taskCount["Query Response"] = 0
-
-        if groupName == "CMR" or groupName == "CLM"  or groupName == "BM" or groupName == "RM" or groupName == "rm":
-            for data in urlTask:
-                if data["name"] in taskCount:
-                    taskCount [data["name"]] = taskCount[data["name"]] + 1
-                else:
-                    taskCount [data["name"]] = 1
-
-        if groupName == "CreditTeam":
-            for data in urlTask:
-                if data["name"] in taskCount:
-                    if data["name"] == "Proposal scrutiny":
-                        taskCount [data["name"]] = taskCount[data["name"]] + 1
-                        grp_body_cont   = { "processVariables": [{"name"  : "chekcbrespdate","operator" :"eq","value" : "resolved"	}],
-                                            "unassigned" : "true",
-                                            "candidateGroup" :"CreditTeam"}
-                        groupTaskList	= camundaClient._urllib2_request('task?firstResult=0', grp_body_cont, requestType='POST')
-                        if groupTaskList:
-                            if groupTaskList[0]:
-                                taskCount["BM Reply"] = len(groupTaskList)
-                                BMReplyCount = len(groupTaskList)
-                            else:
-                                taskCount["BM Reply"] = 0
-                        else:
-                            taskCount["BM Reply"] = 0
-                    else:
-                        taskCount [data["name"]] = taskCount[data["name"]] + 1
-                else:
-                    if data["name"] != "Proposal scrutiny":
-                        taskCount [data["name"]] = 1
-                    else:
-                        taskCount[data["name"]] =  1
-                        grp_body_cont = { "processVariables": [{"name": "chekcbrespdate", "operator": "eq", "value": "resolved"}],
-                                          "unassigned": "true",
-                                          "candidateGroup": "CreditTeam"}
-                        groupTaskList = camundaClient._urllib2_request('task?firstResult=0', grp_body_cont,
-                                                                       requestType='POST')
-                        if groupTaskList:
-                            if groupTaskList[0]:
-                                taskCount["BM Reply"] = len(groupTaskList)
-                                BMReplyCount = len(groupTaskList)
-                            else:
-                                taskCount["BM Reply"] = 0
-                        else:
-                            taskCount["BM Reply"] = 0
-            if taskCount.has_key('Proposal scrutiny'):
-                taskCount ["Proposal scrutiny"]  = taskCount["Proposal scrutiny"] - BMReplyCount
-            else:
-                taskCount ["Proposal scrutiny"] = 0
-                taskCount["BM Reply"] = 0
-
-        taskData = {  'Task' : taskCount   }
-        taskData = json.dumps(taskData)
-        print "taskData"
-        print taskData
-        response = HttpResponse(taskData, content_type='text/plain')
-        response['Content-Length'] = len( taskData )
-        print "Exiting tasksCount( request ): view"
-        return response
-
-    except ShgInvalidRequest, e:
-        return helper.bad_request('Unexpected error occurred.')
-
+@decryption_required
 @session_required
 def taskListLoanType(request,loanType,taskName):
     print "Entering taskListLoanType(request,loanType): view"
@@ -379,6 +237,7 @@ def taskListLoanType(request,loanType,taskName):
     return render_to_response( 'ds-tasklist.html', {"loanTypeName":loanType,"userId":userId,"group" :groupName,"user":username,"taskName":taskName})
 
 
+@decryption_required
 @session_required
 def KYCCheck(request,dateFrom,dateTo):
     print "Entering KYCCheck(request,dateFrom,dateTo): view"
@@ -389,6 +248,7 @@ def KYCCheck(request,dateFrom,dateTo):
     print "Exiting KYCCheck(request,dateFrom,dateTo): view"
     return render_to_response( 'ds-tasklist.html', {"dateFrom": dateFrom,"userId":userId,"dateTo":dateTo,"group" :groupName,"user":username,"taskName":"KYC Check"})
 
+@decryption_required
 @session_required
 def queryRespTaskList(request,loanTypeName):
     print "Entering queryRespTaskList(request): view"
@@ -456,70 +316,6 @@ def queryRespTaskList(request,loanTypeName):
                 QRTaskData.append(QRTaskDict[key])
     return HttpResponse(json.dumps(QRTaskData), content_type="application/json")
 
-@session_required
-def queryRespTaskListold(request):
-    print "Entering queryRespTaskList(request): view"
-    username = request.session["userName"]
-    userOfficeData = json.loads(request.session["userOfficeData"])
-    groupName = userOfficeData["designation"]
-    userId = request.session["userId"]
-    taskName = ''
-    taskProVarList = []
-    processInstancesArr = []
-    QRTaskDict 	= {}
-    QRTaskData	= []
-    grp_body_cont ={}
-    if groupName == "DataSupportTeam":
-        grp_body_cont 	   = { "unassigned" : "true" ,
-                                "candidateGroup" : "DataSupportTeam",
-                                "processVariables":[{	"name" : "kyc",	"operator" :"eq","value" :"resolved"}] }
-        taskName = "Query Response"
-    if groupName == "CreditTeam":
-        grp_body_cont = {"unassigned": "true",
-                         "candidateGroup": "CreditTeam",
-                         "processVariables": [{"name": "chekcbrespdate", "operator": "eq", "value": "resolved"}]}
-        taskName = "BM Reply"
-    QRTaskList	  = camundaClient._request('task', grp_body_cont, requestType='POST')
-
-    for data in QRTaskList:
-        processInstancesArr.append(data["processInstanceId"])
-        QRTaskDict[data["processInstanceId"]] = data
-
-    bodyData = {"processInstanceIdIn": processInstancesArr, "variableName": "groupstatus"}
-    groupStatusList = camundaClient._urllib2_request('variable-instance', bodyData, requestType='POST')
-    for data in groupStatusList:
-        if data["value"] == "false":
-            taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false',
-                                                             {"processInstanceIdIn": [data["processInstanceId"]]},
-                                                             requestType='POST')
-            taskProVarList.append(taskProVarList1)
-        else:
-            taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=true',
-                                                             {"processInstanceIdIn": [data["processInstanceId"]]},
-                                                             requestType='POST')
-            taskProVarList.append(taskProVarList1)
-
-    for key in range(len(taskProVarList)):
-        for data in taskProVarList[key]:
-            if data["processInstanceId"] in QRTaskDict:
-                QRTaskDict[data["processInstanceId"]][data["name"] ] = data["value"]
-
-    for key in QRTaskDict:
-        if groupName == "DataSupportTeam":
-            if  QRTaskDict[key]["name"] == "KYC Check":
-                QRTaskDict[key]["name"] = "Query Response"
-            QRTaskData.append(QRTaskDict[key])
-
-        if groupName == "CreditTeam":
-            if  QRTaskDict[key]["name"] == "Proposal scrutiny":
-                QRTaskDict[key]["name"] = "BM Reply"
-            QRTaskData.append(QRTaskDict[key])
-
-    return render_to_response('ds-tasklist.html', {"userId":userId,"taskList" :json.dumps(QRTaskData),"group" :groupName,"user":username,"taskName":taskName})
-
-
-
-
 @csrf_exempt
 @session_required
 def updateTask(request):
@@ -546,13 +342,12 @@ def taskComplete(request,processUpdate,taskId):
         else:
             bodyData = {}
         taskId 	= taskId
-        print "bodyData"
-        print bodyData
         taskUpdateResponse =  camundaClient._urllib2_request('task/'+taskId+'/complete',bodyData,requestType='POST')
         return taskUpdateResponse
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred.')
 
+@decryption_required
 @session_required
 def getHistoryComments(request,processId):
     try:
@@ -572,6 +367,7 @@ def getHistoryComments(request,processId):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred.')
 
+@decryption_required
 @session_required
 def proposalScrutinyTaskList(request,loanTypeName):
     print "Entering proposalScrutinyTaskList(request): view "
@@ -632,65 +428,7 @@ def proposalScrutinyTaskList(request,loanTypeName):
     return HttpResponse(json.dumps(proposalScrutinyData), content_type="application/json")
 
 
-def KYCTaskListByLoanType_OLD(request,loanTypeName):
-    try:
-        print "Entering KYCTaskListByLoanType(request,loanTypeName): view "
-        username = request.session["userName"]
-        userOfficeData = json.loads(request.session["userOfficeData"])
-        groupName = userOfficeData["designation"]
-        userId = request.session["userId"]
-        processInstancesArr = []
-        groupTaskDict 	= {}
-        groupTaskData	= []
-        proVarList = []
-        loanTypeProInstArr = []
-
-        grp_body_cont 	   = { "unassigned" : "true" , "candidateGroup" : "DataSupportTeam" }
-        groupTaskList	  = camundaClient._urllib2_request('task?firstResult=0', grp_body_cont, requestType='POST')
-
-        for data in groupTaskList:
-            processInstancesArr.append(data["processInstanceId"])
-            groupTaskDict[data["processInstanceId"]] = data
-
-        bodyData1 = {"processInstanceIdIn": processInstancesArr, "variableName": "groupstatus"}
-        groupStatusList = camundaClient._urllib2_request('variable-instance', bodyData1, requestType='POST')
-
-        for data in groupStatusList:
-            if data["value"] == "false":
-                taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false',
-                                                                 {"processInstanceIdIn": [data["processInstanceId"]]},
-                                                                 requestType='POST')
-                proVarList.append(taskProVarList1)
-            else:
-                taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=true',
-                                                                 {"processInstanceIdIn": [data["processInstanceId"]]},
-                                                                 requestType='POST')
-                proVarList.append(taskProVarList1)
-
-        for key in range(len(proVarList)):
-            for data in proVarList[key]:
-                groupTaskDict[data["processInstanceId"]][data["name"]] = data["value"]
-                if data["name"] == "customerData":
-                    customerData = json.loads(data["value"]["value"])
-                    if customerData["loanTypeName"] == loanTypeName:
-                        if data["processInstanceId"] in groupTaskDict:
-                            groupTaskDict[data["processInstanceId"]][data["name"]] = data["value"]
-                            loanTypeProInstArr.append(data["processInstanceId"])
-        print "groupTaskDict"
-        print groupTaskDict
-        for key in groupTaskDict:
-            if key in loanTypeProInstArr:
-                groupTaskData.append(groupTaskDict[key])
-
-        print "groupTaskData"
-        print groupTaskData
-
-        print "Exiting KYCTaskListByLoanType(request,loanTypeName): view "
-        return HttpResponse(json.dumps(groupTaskData), content_type="application/json")
-    except ShgInvalidRequest, e:
-        return helper.bad_request('Unexpected error occurred while getting task details.')
-
-
+@decryption_required
 def KYCTaskListByLoanType(request,loanTypeName):
     try:
         print "Entering KYCTaskListByLoanType(request,loanTypeName): view "
@@ -750,7 +488,6 @@ def KYCTaskListByLoanType(request,loanTypeName):
         return HttpResponse(json.dumps(groupTaskData), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting task details.')
-
 
 
 @session_required

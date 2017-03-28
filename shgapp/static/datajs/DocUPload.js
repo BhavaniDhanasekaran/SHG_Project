@@ -6,7 +6,7 @@ function loanDocument(loanTypeId) {
     var documentData;
     var docUploadedDict = {};
     $.ajax({
-        url: '/DocumentView/' + loanId,
+        url: '/DocumentView/' + btoa(loanId),
         dataType: 'json',
         success: function(data) {
             docUploadedDict = data["data"];
@@ -17,7 +17,7 @@ function loanDocument(loanTypeId) {
             }
 
             $.ajax({
-                url: '/loanDocument/' + loanTypeId,
+                url: '/loanDocument/' + btoa(loanTypeId),
                 dataType: 'json',
                 success: function(data) {
                     var documentData = data["data"];
@@ -73,7 +73,6 @@ $(document).ready(function() {
         UniqueId = $(this).attr('name');
         doceditId = $(this).attr('id');
         newdoceditId = doceditId.split("_")[0];
-        //newdoceditId2 = newdoceditId+ "_2" 
         Editdoc(UniqueId, newdoceditId);
     });
 });
@@ -91,41 +90,27 @@ function trigger() {
         var UniqueId = "";
         var doceditId = "";
         var newdoceditId = "";
-        //var newdoceditId2="";
-        //var docName="";
         UniqueId = $(this).attr('name');
         doceditId = $(this).attr('id');
         newdoceditId = doceditId.split("_")[0];
-        //newdoceditId2 = newdoceditId+ "_2" ;
         Editdoc(UniqueId, newdoceditId);
     });
 }
 
 function uploaddoc(fileid, docName, groupId) {
     $("#" + fileid).click();
-    //$("#loading").show();
     $("#" + fileid).fileupload({
         dataType: 'json',
         sequentialUploads: true,
         start: function(e) {
-            //$("#modal-progress").modal("show");
              disableActiveTab();
             $("#loading").show();
 
         },
         stop: function(e) {
-            //$("#modal-progress").modal("hide");
             $("#loading").hide()
              enableActiveTab();
         },
-        /*progressall: function(e, data) {
-            var progress = parseInt(data.loaded / data.total * 100, 10);
-            var strProgress = progress + "%";
-            $(".progress-bar").css({
-                "width": strProgress
-            });
-            $(".progress-bar").text(strProgress);
-        },*/
         done: function(e, data) {
             if (data.result.is_valid) {
                 var groupId = document.getElementById("groupId").innerHTML;
@@ -168,7 +153,6 @@ function UpdateUrl(loanId,groupId, oldfileName, s3url, fileid) {
                 $("#" + fileid + "_2").css("display", "inline-block");
                 $("#" + fileid + "_2").attr('onClick', 'window.open(' + "'" + s3url + "'" + ').focus();');
                 $("#" + fileid + "_3").attr('name', data.data);
-                //$("#"+fileid+"_2").attr('onClick', 'window.open ('+"'"+s3url+"'"+',"mywindow","menubar=1,resizable=1,width=350,height=250");');
             } else {
                 $.alert("Error Upload");
             }
