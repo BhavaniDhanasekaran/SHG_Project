@@ -27,7 +27,7 @@ urlpatterns += auth_urlpatterns
 task_urlpatterns = [
     url(r'^dsdatecount/', task.dsdatecount, name = 'dcount'),
     url(r'^dstasklist/', task.dstasklist, name = 'dstasklist'),
-    url(r'^dstasklistByName/(?P<taskName>[^/]+)/(?P<loanTypeName>[^/]+)', task.dstasklistByName, name = 'dstasklistByName'),
+    url(r'^dstasklistByName/(?P<taskName>[^/]+)', task.dstasklistByName, name = 'dstasklistByName'),
     url(r'^mytask/', task.mytask, name = 'mytask'),
     url(r'^SHGForm/(?P<groupId>[^/]+)/(?P<loanId>[^/]+)/(?P<taskId>[^/]+)/(?P<processId>[^/]+)/(?P<taskName>[^/]+)/(?P<loanType>[^/]+)', task.SHGForm, name = 'SHGForm'),
 
@@ -65,8 +65,8 @@ urlpatterns += masterData_urlpatterns
 
 camundaViews_urlpatterns = [
     url(r'^KYCTaskList/',camundaViews.KYCTaskList, name = 'KYCTaskList'),
-    url(r'^taskListLoanType/(?P<loanType>[^/]+)/(?P<taskName>[^/]+)',camundaViews.taskListLoanType, name = 'taskListLoanType'),
-    url(r'^KYCTaskListByLoanType/(?P<loanTypeName>[^/]+)',camundaViews.KYCTaskListByLoanType, name = 'KYCTaskListByLoanType'),
+    url(r'^taskListLoanType/(?P<taskName>[^/]+)',camundaViews.taskListLoanType, name = 'taskListLoanType'),
+    url(r'^KYCTaskListByLoanType/',camundaViews.KYCTaskListByLoanType, name = 'KYCTaskListByLoanType'),
 
     url(r'^unassignedTaskList/',camundaViews.unassignedTaskList, name = 'unassignedTaskList'),
     url(r'^assignedTaskList/',camundaViews.assignedTaskList, name = 'assignedTaskList'),
@@ -74,16 +74,16 @@ camundaViews_urlpatterns = [
     url(r'^task/(?P<id>[^/]+)/(?P<name>[^/]+)/user$', camundaViews.claim, name='claim'	),
     url(r'^KYCTasksGroupByDate/(?P<dateFrom>[^/]+)/(?P<dateTo>[^/]+)',camundaViews.KYCTasksGroupByDate, name = 'KYCTasksGroupByDate'),
     url(r'^KYCCheck/(?P<dateFrom>[^/]+)/(?P<dateTo>[^/]+)',camundaViews.KYCCheck, name = 'KYCCheck'),        
-    url(r'^queryRespTaskList/(?P<loanTypeName>[^/]+)',camundaViews.queryRespTaskList, name = 'queryRespTaskList'),
+    url(r'^queryRespTaskList/',camundaViews.queryRespTaskList, name = 'queryRespTaskList'),
     url(r'^updateTask/',camundaViews.updateTask, name = 'updateTask'),
     url(r'^taskComplete/(?P<taskId>[^/]+)',camundaViews.taskComplete, name = 'taskComplete'),
     url(r'^getHistoryComments/(?P<processId>[^/]+)',camundaViews.getHistoryComments, name = 'getHistoryComments'),
-    url(r'^proposalScrutinyTaskList/(?P<loanTypeName>[^/]+)',camundaViews.proposalScrutinyTaskList, name = 'proposalScrutinyTaskList'),
+    url(r'^proposalScrutinyTaskList/',camundaViews.proposalScrutinyTaskList, name = 'proposalScrutinyTaskList'),
 ]
 urlpatterns += camundaViews_urlpatterns
 
 BMOperations_urlpatterns = [
-    url(r'^getTasksByTaskName/(?P<taskName>[^/]+)/(?P<loanTypeName>[^/]+)',BMOperations.getTasksByTaskName, name = 'getTasksByTaskName'),
+    url(r'^getTasksByTaskName/(?P<taskName>[^/]+)',BMOperations.getTasksByTaskName, name = 'getTasksByTaskName'),
     url(r'^groupRoleDetails/',BMOperations.groupRoleDetails, name = 'groupRoleDetails'),
     url(r'^updateGrpValidationStatus/',BMOperations.updateGrpValidationStatus, name = 'updateGrpValidationStatus'),
     url(r'^updateGroupMemberStatus/',BMOperations.updateGroupMemberStatus, name = 'updateGrpValidationStatus'),

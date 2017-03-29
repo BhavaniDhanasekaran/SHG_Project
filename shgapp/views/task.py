@@ -19,14 +19,12 @@ def dstasklist(request):
 
 @decryption_required
 @session_required
-def dstasklistByName(request,taskName,loanTypeName):
-    print "taskName"
-    print taskName
+def dstasklistByName(request,taskName):
     username = request.session["userName"]
     userOfficeData = json.loads(request.session["userOfficeData"])
     userId = request.session["userId"]
     groupName = userOfficeData["designation"]
-    return render(request, 'ds-tasklist.html', {"userId":userId,"taskName":taskName,"group":groupName,"user":username,"loanTypeName":loanTypeName})
+    return render(request, 'ds-tasklist.html', {"userId":userId,"taskName":taskName,"group":groupName,"user":username})
 
 def mytask(request):
     return render(request, 'ds-mytask.html')
@@ -55,6 +53,6 @@ def SHGForm(request,groupId,loanId,taskId,processId,taskName,loanType):
             "Approve Loan"                              : "CTLoanApproval.html",
             "Prepare & print chq through BPM"           : "index.html"
         }
-        return render(request, templateName[taskName], {"loanTypeName":loanType,"userId":userId,"loanType" :loanType, "groupId": groupId,"loanId":loanId,"processInstanceId" :processId, "taskId" : taskId,"taskName":taskName,"group":groupName,"user":username})
+        return render(request, templateName[taskName], {"userId":userId,"loanType" :loanType, "groupId": groupId,"loanId":loanId,"processInstanceId" :processId, "taskId" : taskId,"taskName":taskName,"group":groupName,"user":username})
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred.')

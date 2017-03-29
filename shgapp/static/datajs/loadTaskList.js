@@ -377,11 +377,11 @@ function val2key(val,array){
     }
 }
 function redirectToTaskPage(taskName,loanTypeName){
-	window.location = '/dstasklistByName/'+btoa(taskName)+'/'+btoa(loanTypeName);
+	window.location = '/dstasklistByName/'+btoa(taskName);
 }
-function getTasksByTaskName(taskName,loanTypeName){
+function getTasksByTaskName(taskName){
 	$.ajax({
-	    url: '/getTasksByTaskName/'+btoa(taskName)+'/'+btoa(loanTypeName),
+	    url: '/getTasksByTaskName/'+btoa(taskName),
 	    dataType: 'json',
 	    beforeSend: function(){
      		$("#loading").show();
@@ -433,20 +433,20 @@ function claimconfirmBox(id,shgName){
 		});
 }
 
-function tasklistRedirect(loanType,taskName){
-    window.location = '/taskListLoanType/'+btoa(loanType)+'/'+btoa(taskName);
+function tasklistRedirect(taskName){
+    window.location = '/taskListLoanType/'+btoa(taskName);
 }
 
-function getTaskList(loanType,taskName){
+function getTaskList(taskName){
     var url = '';
     if(taskName == "KYC Check"){
-        url = '/KYCTaskListByLoanType/'+btoa(loanType);
+        url = '/KYCTaskListByLoanType/';
     }
     if(taskName == "Query Response" || taskName == "BM Reply"){
-        url = '/queryRespTaskList/'+btoa(loanType);
+        url = '/queryRespTaskList/';
     }
     if(taskName == "Proposal scrutiny"){
-        url = '/proposalScrutinyTaskList/'+btoa(loanType);
+        url = '/proposalScrutinyTaskList/';
     }
     $.ajax({
 	    url: url,
