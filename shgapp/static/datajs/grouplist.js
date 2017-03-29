@@ -808,7 +808,7 @@ function loadGroupRoles(groupId, loanId, taskName) {
     var dataObj = {};
     var validationType = '';
     if (group == "CMR" || group == "CLM" || group == "BM") {
-        if (taskName == "Print Loan Documents & FSR") {
+        if (taskName == "Print Loan Documents & FSR" || taskName == "Add new members") {
             validationType = "PEN"
         }
         if (taskName == "Upload loan documents in Web application") {
@@ -1469,6 +1469,8 @@ function rmGroupMaster(groupId) {
                     });
                 }
             }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
         }
     });
 }

@@ -20,7 +20,7 @@ def getGroupData(request,groupID,loanId,taskName):
     print "Inside getGroupData(request):"
     try:
         username = request.session["userName"]
-        BMTasksArray = ["Conduct BAT- Member approval in CRM","Print Loan Documents & FSR","Upload loan documents in Web application"]
+        BMTasksArray = ["Conduct BAT- Member approval in CRM","Print Loan Documents & FSR","Upload loan documents in Web application","Add New Members"]
         userOfficeData = json.loads(request.session["userOfficeData"])
         groupName = userOfficeData["designation"]
         if groupName== "CMR" or groupName == "CLM" or groupName == "BM":
