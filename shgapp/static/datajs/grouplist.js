@@ -107,8 +107,10 @@ function getMemberDetails(memberId, groupId, loanId) {
         },
         success: function(data) {
             var memberData = data;
+            console.log(memberData);
             var conflictListArr = [];
             var imgFiles = ["MEMBERPHOTO", "IDPROOF", "IDPROOF_2", "ADDRESSPROOF", "ADDRESSPROOF_2", "SBACCOUNTPASSBOOK", "OVERLAPREPORT"];
+
             if (memberData["data"]["memberDetails"]) {
                 if (memberData["data"]["conflictList"]) {
                     var conflictData = memberData["data"]["conflictList"];
@@ -216,6 +218,16 @@ function getMemberDetails(memberId, groupId, loanId) {
                             }
                         }
                     }
+                }
+                if(document.getElementById("previousLoanMemberCycle")){
+                    var tagname = document.getElementById("previousLoanMemberCycle").tagName;
+                    if (tagname == "INPUT"){
+                        document.getElementById("previousLoanMemberCycle").value = memberData["data"]["previousLoanMemberCycle"];
+                    }
+                    if (tagname == "SPAN"){
+                        document.getElementById("previousLoanMemberCycle").innerHTML = memberData["data"]["previousLoanMemberCycle"];
+                    }
+
                 }
                 for (var data in memberData["data"]["memberDetails"]) {
                     if (document.getElementById(data)) {

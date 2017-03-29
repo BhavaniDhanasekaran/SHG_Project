@@ -93,7 +93,7 @@ function setSelectOptionInForm(){
 			$.each($('#idProofTypeId option'), function(key, optionElement) {
 	   			 var curText = $(optionElement).text();
 		 		 $(this).attr('title', curText);
-				 var lengthToShortenTo = Math.round(parseInt('350px', 10) / 9.4);
+				 var lengthToShortenTo = Math.round(parseInt('265px', 10) / 9.4);
 		    		 if (curText.length > lengthToShortenTo) {
 					$(this).text(curText.substring(0,lengthToShortenTo)+'...');
 	    			 }
@@ -118,7 +118,7 @@ function setSelectOptionInForm(){
 			$.each($('#addressProofTypeId option'), function(key, optionElement) {
 	   			 var curText = $(optionElement).text();
 		 		 $(this).attr('title', curText);
-				 var lengthToShortenTo = Math.round(parseInt('350px', 10) / 9.4);
+				 var lengthToShortenTo = Math.round(parseInt('265px', 10) / 9.4);
 		    		 if (curText.length > lengthToShortenTo) {
 					$(this).text(curText.substring(0,lengthToShortenTo)+'...');
 	    			 }
@@ -143,7 +143,7 @@ function setSelectOptionInForm(){
 			$.each($('#loanTypeValue option'), function(key, optionElement) {
 	   			 var curText = $(optionElement).text();
 		 		 $(this).attr('title', curText);
-				 var lengthToShortenTo = Math.round(parseInt('350px', 10) / 9.4);
+				 var lengthToShortenTo = Math.round(parseInt('265px', 10) / 9.4);
 		    		 if (curText.length > lengthToShortenTo) {
 						 $(this).text(curText.substring(0,lengthToShortenTo)+'...');
 	    			 }
