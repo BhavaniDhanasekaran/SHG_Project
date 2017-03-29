@@ -1,14 +1,12 @@
-from django.shortcuts import render,render_to_response,reverse
-from django.views.decorators import csrf
-from   django.views.decorators.csrf  import csrf_protect, csrf_exempt
-from django.http import HttpResponseRedirect,HttpResponse,JsonResponse
-from django.conf import settings as django_settings
+from django.shortcuts import render_to_response,reverse
+from   django.views.decorators.csrf  import csrf_exempt
+from django.http import HttpResponse
 from shgapp.utils.sscoreclient import SSCoreClient
 from shgapp.utils.camundaclient import CamundaClient
 from shgapp.utils.helper import Helper
 from shgapp.utils.shgexceptions import *
 from shgapp.views.camundaViews import taskComplete
-from shgapp.views.decorator import session_required
+from shgapp.views.decorator import session_required,decryption_required
 import json
 
 
@@ -16,42 +14,9 @@ helper = Helper()
 sscoreClient = SSCoreClient()
 camundaClient = CamundaClient()
 
+@decryption_required
 @session_required
-@csrf_exempt
-def dsgroupview(request,groupID,loanID,taskId,processInstanceId):
-    username = request.session["userName"]
-    userOfficeData = json.loads(request.session["userOfficeData"])
-    groupName = userOfficeData["designation"]
-    userId = request.session["userId"]
-    return render_to_response( 'ds_groupview.html', {"userId":userId,"groupId": groupID,"loanId":loanID,"processInstanceId" :processInstanceId, "taskId" : taskId,"group":groupName,"user":username})
-
-
-@session_required
-def dsgroupview2(request):
-    username = request.session["userName"]
-    userOfficeData = json.loads(request.session["userOfficeData"])
-    groupName = userOfficeData["designation"]
-    userId = request.session["userId"]
-    return render_to_response('ds_groupview.html',{"group":groupName,"user":username,"userId":userId})
-
-@session_required
-def groupViewQuery2(request,groupID,loanID,taskId,processInstanceId):
-    username = request.session["userName"]
-    userOfficeData = json.loads(request.session["userOfficeData"])
-    groupName = userOfficeData["designation"]
-    userId = request.session["userId"]
-    return render_to_response( 'queryResponseDS.html', {"userId":userId,"groupId": groupID,"loanId":loanID,"processInstanceId" :processInstanceId, "taskId" : taskId,"group":groupName,"user":username})
-
-@session_required
-def groupViewQuery(request):
-    username = request.session["userName"]
-    userOfficeData = json.loads(request.session["userOfficeData"])
-    groupName = userOfficeData["designation"]
-    userId = request.session["userId"]
-    return render(request, 'queryResponseDS.html',{"userId":userId,"group":groupName,"user":username})
-
-@session_required
-def getGroupData(request,groupID,taskName):
+def getGroupData(request,groupID,loanId,taskName):
     print "Inside getGroupData(request):"
     try:
         username = request.session["userName"]
@@ -77,6 +42,7 @@ def getGroupData(request,groupID,taskName):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while searching group.')
 
+@decryption_required
 @session_required
 def getIndMemberData(request,memberId,groupId,loanId,taskName):
     print "Inside getIndMemberData(request,memberId,groupId,taskName):"
@@ -110,6 +76,7 @@ def getIndMemberData(request,memberId,groupId,loanId,taskName):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while searching group members.')
 
+@decryption_required
 @csrf_exempt
 @session_required
 def getPinCodeDetails(request,pincode):
@@ -121,17 +88,7 @@ def getPinCodeDetails(request,pincode):
         return helper.bad_request('Unexpected error occurred while getting areas under this pincode.')
 
 
-@session_required
-def creditHistory(request,loanId):
-    loanId = loanId
-    print 'Inside creditHistory(request,loanId):'
-    try:
-        bodyData = { "loanId" : str(loanId)}
-        serialized_data = sscoreClient._urllib2_request('workflowDetailView/GroupCreditInquiry', bodyData ,requestType='POST')
-        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
-    except ShgInvalidRequest, e:
-        return helper.bad_request('Unexpected error occurred while getting Credit History.')
-
+@decryption_required
 @session_required
 def creditHistoryGroup(request,loanId):
     loanId = loanId
@@ -143,6 +100,7 @@ def creditHistoryGroup(request,loanId):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting Credit History.')
 
+@decryption_required
 @session_required
 def DocumentView(request,loanId):
     print "Inside DocumentView(request,loanId):"
@@ -222,7 +180,7 @@ def updateUrl(request):
     except ShgInvalidRequest, e:
         return helper.bad_request('An expected error occurred while Updating Url details.')
 
-
+@decryption_required
 @csrf_exempt
 @session_required
 def loanDocument(request,loanTypeId):
@@ -248,6 +206,7 @@ def editUrl(request):
         return helper.bad_request('An expected error occurred while Editing Url details.')
 
 
+@decryption_required
 @csrf_exempt
 @session_required
 def getLoanDetails(request, groupId, loanId):
@@ -316,6 +275,7 @@ def approveLoan(request):
     except ShgInvalidRequest, e:
         return helper.bad_request('An expected error occurred while approving loan.')
 
+@decryption_required
 @session_required
 def loanAccNo(request,loanAccNumber,appGroupId,loanTypeName,groupName):
     print loanAccNumber

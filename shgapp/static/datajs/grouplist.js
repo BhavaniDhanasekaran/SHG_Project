@@ -10,7 +10,7 @@ function getGroupData(groupID, loanId) {
     var rejCount = 0;
     var rewCount = 0;
     $.ajax({
-        url: '/getGroupData/' + groupID + '/' + taskName,
+        url: '/getGroupData/' + btoa(groupID) + '/' + btoa(loanId) + '/'+ btoa(taskName),
         dataType: 'json',
         beforeSend: function() {
             triggerLoadFunc();
@@ -96,7 +96,7 @@ function getMemberDetails(memberId, groupId, loanId) {
         document.getElementById("comment").value = "";
     }
     $.ajax({
-        url: '/getIndMemberData/' + memberId + '/' + groupId + '/' + loanId + '/' + taskName,
+        url: '/getIndMemberData/' + btoa(memberId) + '/' + btoa(groupId) + '/' + btoa(loanId) + '/' + btoa(taskName),
         dataType: 'json',
         beforeSend: function() {
             triggerLoadFunc();
@@ -107,8 +107,10 @@ function getMemberDetails(memberId, groupId, loanId) {
         },
         success: function(data) {
             var memberData = data;
+            console.log(memberData);
             var conflictListArr = [];
             var imgFiles = ["MEMBERPHOTO", "IDPROOF", "IDPROOF_2", "ADDRESSPROOF", "ADDRESSPROOF_2", "SBACCOUNTPASSBOOK", "OVERLAPREPORT"];
+
             if (memberData["data"]["memberDetails"]) {
                 if (memberData["data"]["conflictList"]) {
                     var conflictData = memberData["data"]["conflictList"];
@@ -216,6 +218,16 @@ function getMemberDetails(memberId, groupId, loanId) {
                             }
                         }
                     }
+                }
+                if(document.getElementById("previousLoanMemberCycle")){
+                    var tagname = document.getElementById("previousLoanMemberCycle").tagName;
+                    if (tagname == "INPUT"){
+                        document.getElementById("previousLoanMemberCycle").value = memberData["data"]["previousLoanMemberCycle"];
+                    }
+                    if (tagname == "SPAN"){
+                        document.getElementById("previousLoanMemberCycle").innerHTML = memberData["data"]["previousLoanMemberCycle"];
+                    }
+
                 }
                 for (var data in memberData["data"]["memberDetails"]) {
                     if (document.getElementById(data)) {
@@ -714,11 +726,10 @@ function taskUpdate(status) {
 function creditHistory(loanId) {
     var htmlContent = '';
     $.ajax({
-        url: '/creditHistoryGroup/' + loanId,
+        url: '/creditHistoryGroup/' + btoa(loanId),
         dataType: 'json',
         success: function(data) {
             var creditData = data;
-            // console.log(creditData);
             var documentObj = [];
             var docPath = ''
             var docId = ''
@@ -874,7 +885,7 @@ function updateTask(status) {
 function getHistComments(processId) {
     var htmlContent = '';
     $.ajax({
-        url: '/getHistoryComments/' + processId,
+        url: '/getHistoryComments/' + btoa(processId),
         dataType: 'json',
         success: function(data) {
             var commentsJson = data;
@@ -930,7 +941,7 @@ function getHistComments(processId) {
 
 function documentView(groupId) {
     $.ajax({
-        url: '/DocumentView/' + groupId,
+        url: '/DocumentView/' + btoa(groupId),
         dataType: 'json',
         success: function(data) {
             groupDocData = data;
@@ -1008,7 +1019,7 @@ function updateGroupMemberStatus() {
 
 function getLoanDetails(groupId, loanId) {
     $.ajax({
-        url: '/getLoanDetails/' + groupId + '/' + loanId,
+        url: '/getLoanDetails/' + btoa(groupId) + '/' + btoa(loanId),
         dataType: 'json',
         success: function(data) {
             var htmlContent = '';
@@ -1270,21 +1281,7 @@ function approveLoan(updateloanData) {
             if (data.code == "2032") {
                 $.alert("Loan has been approved");
                 var loanAccNumber = data["data"]["loanAccountNumber"];
-                /*var dataArr = {};
-                 dataArr["loanAccNo"] = data["data"]["loanAccountNumber"];
-                 dataArr["appGroupId"] = appGroupId;
-                 dataArr["loanTypeName"] = loanTypeName;
-                 dataArr["groupName"] = groupName;
-                 $.ajax({
-                     url: '/generateLoanAccNum/',
-                     dataType: 'json',
-                     type: "POST",
-                     sucess: function (data) {
-                         console.log(data);
-                     },
-                     data: JSON.stringify(dataArr)
-                 });*/
-                window.location.href = "/loanAccNo/" + loanAccNumber + '/' + appGroupId + '/' + loanTypeName + '/' + groupName;
+                window.location.href = "/loanAccNo/" + btoa(loanAccNumber) + '/' + btoa(appGroupId) + '/' + btoa(loanTypeName) + '/' + btoa(groupName);
             }
             if (data.code == "2034") {
                 $.alert(data["message"]);
@@ -1354,7 +1351,7 @@ function updateMembersCount() {
 
 function rmGroupMaster(groupId) {
     $.ajax({
-        url: '/getGroupData/' + groupId + '/' + taskName,
+        url: '/getGroupData/' + btoa(groupId) + '/' + btoa(loanId) + '/'+ btoa(taskName),
         dataType: 'json',
         beforeSend: function() {
             $("#loading").show();

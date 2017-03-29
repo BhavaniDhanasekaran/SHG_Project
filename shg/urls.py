@@ -1,17 +1,16 @@
-from django.conf import settings as django_settings
-from django.conf.urls.static import static
-from django.conf.urls import include, url, handler400, handler403, handler404, handler500
+from django.conf.urls import  url, handler400, handler403, handler404, handler500
 from django.contrib import admin
-from django.views.generic import TemplateView
 from shgapp.views import index, task, kyc, auth,masterData, camundaViews, BMOperations, mfupload, customError,decorator
 handler400 = customError.bad_request
 handler403 = customError.permission_denied
 handler404 = customError.page_not_found
 handler500 = customError.server_error
 
+
 index_urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', index.hello, name='hello'),
+
 ]
 urlpatterns = index_urlpatterns
 
@@ -31,19 +30,15 @@ task_urlpatterns = [
     url(r'^dstasklistByName/(?P<taskName>[^/]+)/(?P<loanTypeName>[^/]+)', task.dstasklistByName, name = 'dstasklistByName'),
     url(r'^mytask/', task.mytask, name = 'mytask'),
     url(r'^SHGForm/(?P<groupId>[^/]+)/(?P<loanId>[^/]+)/(?P<taskId>[^/]+)/(?P<processId>[^/]+)/(?P<taskName>[^/]+)/(?P<loanType>[^/]+)', task.SHGForm, name = 'SHGForm'),
+
 ]
 urlpatterns += task_urlpatterns
 
 kyc_urlpatterns = [
-    url(r'^dsgroupview2/',kyc.dsgroupview2, name = 'dsgroupview2'),
-    url(r'^dsgroupview/(?P<groupID>[^/]+)/(?P<loanID>[^/]+)/(?P<taskId>[^/]+)/(?P<processInstanceId>[^/]+)',kyc.dsgroupview, name = 'dsgroupview'),
-    url(r'^groupViewQuery2/(?P<groupID>[^/]+)/(?P<loanID>[^/]+)/(?P<taskId>[^/]+)/(?P<processInstanceId>[^/]+)',kyc.groupViewQuery2, name = 'groupViewQuery2'),  
-    url(r'^getGroupData/(?P<groupID>[^/]+)/(?P<taskName>[^/]+)',kyc.getGroupData, name = 'getGroupData'),
-    url(r'^groupViewQuery/',kyc.groupViewQuery, name = 'groupViewQuery'),
+    url(r'^getGroupData/(?P<groupID>[^/]+)/(?P<loanId>[^/]+)/(?P<taskName>[^/]+)',kyc.getGroupData, name = 'getGroupData'),
     url(r'^getIndMemberData/(?P<memberId>[^/]+)/(?P<groupId>[^/]+)/(?P<loanId>[^/]+)/(?P<taskName>[^/]+)',kyc.getIndMemberData, name = 'getIndMemberData'),
     url(r'^getPinCodeDetails/(?P<pincode>[^/]+)',kyc.getPinCodeDetails, name = 'getPinCodeDetails'),
     url(r'^updateKYCDetails/',kyc.updateKYCDetails, name = 'updateKYCDetails'),
-    url(r'^creditHistory/(?P<loanId>[^/]+)',kyc.creditHistory, name = 'creditHistory'),
     url(r'^creditHistoryGroup/(?P<loanId>[^/]+)', kyc.creditHistoryGroup, name='creditHistoryGroup'),
     url(r'^DocumentView/(?P<loanId>[^/]+)',kyc.DocumentView, name = 'DocumentView'),
     url(r'^updateMemValidationStatus/',kyc.updateMemValidationStatus, name = 'updateMemValidationStatus'),
@@ -100,6 +95,3 @@ mfupload_urlpatterns = [
 ]
 urlpatterns += mfupload_urlpatterns
 
-'''if django_settings.DEBUG:
-    urlpatterns += static(django_settings.STATIC_URL, document_root=django_settings.STATIC_ROOT)
-    urlpatterns += static(django_settings.MEDIA_URL, document_root=django_settings.MEDIA_ROOT)'''
