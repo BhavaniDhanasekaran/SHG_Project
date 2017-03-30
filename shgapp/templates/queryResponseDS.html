@@ -5,7 +5,6 @@
 <script src="/static/datajs/grouplist.js?v={{JS_VERSION}}"></script>
 <script src="/static/datajs/loadTaskList.js?v={{JS_VERSION}}"></script>
 <script src="/static/datajs/mysidenav.js?v={{JS_VERSION}}"></script>
-<script src="/static/js/imageViewer.js?v={{JS_VERSION}}"></script>
 <script type="text/javascript">
         var groupId = '{{ groupId | escapejs }}';
         var loanId = '{{ loanId | escapejs }}';
@@ -15,7 +14,8 @@
         var taskName = '{{ taskName | escapejs }}';
         var processInstanceId = '{{ processInstanceId | escapejs }}';
         $(document).ready(function (){
-            imageViewer();
+            $(".main").imageBox();
+            $("#unbind-pos").draggable();
             getGroupData(groupId,loanId);
             loadGroupRoles(groupId, loanId, taskName) ;
             taskCount();
@@ -33,7 +33,7 @@
 
 <div class="row" id="main">
     <!--second row strat-->
-    <div class="docs-pictures clearfix">
+    <div class="main">
     <div class="col-lg-2 pricing-box" >
         <div class="panel panel-default">
             <div class="panel-heading">Group Detail </div>
@@ -89,8 +89,8 @@
                             <section>
                                 <div class="row">
                                     <div class="col-md-2">
-                                        <img src="{% static 'images/naveen.jpg' %}"  id="MEMBERPHOTO_docPath" height="135" width="134" data-original="">
-                                            &nbsp;&nbsp;&nbsp;
+                                         <img src=""  id="MEMBERPHOTO_docPath" class="img img-test"
+                                                   height="135" width="134"   data-original="">    &nbsp;&nbsp;&nbsp;
 
                                         <br/>
                                         <br/>
@@ -207,8 +207,11 @@
                                                         &nbsp;&nbsp;
 
                                                     <div id="idProof" style="display:inline-block;margin-top: 4px" class="idProof">
-                                                       <img src=""  id="IDPROOF_docPath" style="display:none;width: 20px; height: 21px;"    data-original="">
-                                                        <img src=""  id="IDPROOF_2_docPath" style="display:none;width: 20px; height: 21px;" data-original="">
+                                                       <img src=""  id="IDPROOF_docPath" class="img img-test"
+                                  style="width: 20px; height:21px;"    data-original="">
+
+                                     <img src=""  id="IDPROOF_2_docPath"  class="img img-test"
+                                   style="display:none;width: 20px; height: 21px;" data-original="">
                                                             <!--button type="button" class="btn btn-info btn-md btn-danger" id="myBtn2">view proof</button-->
                                                         </img>
                                                     </div>
@@ -221,9 +224,12 @@
                                                         &nbsp;&nbsp;
 
                                                     <div id="idProof" style="display:inline-block;margin-top: 4px" class="idProof">
-                                                        <img src=""  id="ADDRESSPROOF_docPath" style="display:none;width: 20px; height: 21px;" data-original="">
+                                                        <img src=""  id="ADDRESSPROOF_docPath"  class="img img-test"
+                                   style="display:none;width: 20px; height: 21px;" data-original="">
 
-                                                        <img src=""  id="ADDRESSPROOF_2_docPath" style="display:none;width: 20px; height: 21px;" data-original="">
+
+                          <img src=""  id="ADDRESSPROOF_2_docPath"  class="img img-test"
+                                   style="display:none;width: 20px; height: 21px;" data-original="">
                                                             <!--button type="button" class="btn btn-info btn-md btn-danger" id="myBtn2">view proof</button-->
                                                         </img>
                                                     </div>
@@ -234,7 +240,9 @@
                                                 <div class="profile-info-value">
                                                     <span class="editable" id="sbAccountNumber"></span>
                                                     <div style="display:inline-block;margin-top: 4px" class="idProof">
-                                                        <img src=""  id="SBACCOUNTPASSBOOK_docPath" style="display:none;width: 20px; height: 21px;" data-original="">
+                                                        <img src=""  id="SBACCOUNTPASSBOOK_docPath"  class="img img-test"
+                                   style="display:none;width: 20px; height: 21px;" data-original="">
+
                                                     </div>
                                                 </div>
                                             </div>
