@@ -1,19 +1,21 @@
 
+
 (function($){
   $.fn.imageBox = function(options){
     var options = $.extend({
-      objClicked: '.img',      
-      rotateDirection: 'right' 
-    }, options);   
+      objClicked: '.img',
+      rotateDirection: 'right'
+    }, options);
     var obj = this, objClicked = options.objClicked, fileName = options.fileName, list_images = [];
 
     initHtml(obj);
     initCss(obj);
 
     $(objClicked).on('click', function(){
-      var _url = $(this).data("url"), current = 0;
+    	  var _url = $(this).attr('data-original'), current = 0;
+      //var _url = $(this).data("url"), current = 0;
       console.log(_url);
-    
+
       if(list_images.length > 0){
         list_images.length = 0;
       }
@@ -41,7 +43,7 @@
   var rotateDeg = 0;
 
   function initHtml(obj){
-    var div = $('<div id="unbind-pos" class="modal fade" data-backdrop="false" data-modal="false" style="display:none;" aria-hidden="true"></div>'); 
+    var div = $('<div id="unbind-pos" class="modal fade" data-backdrop="false" data-modal="false" style="display:none;" aria-hidden="true"></div>');
     div.append('<div class="modal-dialog">' +
                   '<div class="modal-content">'+
                         '<div class="modal-header">'+
@@ -65,7 +67,7 @@
                   '</div>'+
                 '</div>');
     $(obj).append(div);
-    
+
   };
 
 
@@ -115,7 +117,7 @@
     });
   };
 
- 
+
   function zoomOut(){
     $('.zoom-out').click(function(){
       var imageHeight = $('#img-preview img').height();
@@ -145,7 +147,7 @@
       });
 
       $(document).on('mouseup', function(){
-        $(document).off("mousemove");     
+        $(document).off("mousemove");
       });
       return false;
     });
@@ -178,7 +180,7 @@
     });
   };
 
-  //图片切换
+  //????
   function switchImage(list_images){
     var $modal = $('#unbind-pos');
     $('#unbind-pos').on('click', '.switch', function(){
@@ -209,3 +211,5 @@
   };
 
 })(jQuery);
+
+

@@ -13,7 +13,7 @@
     var taskName = '{{ taskName | escapejs }}';
     var group = '{{ group | escapejs }}';
     var userId = '{{ userId | escapejs }}';
-    var loanType = '{{ loanTypeName | escapejs }}';
+    var loanType = '{{ loanType | escapejs }}';
     var processInstanceId = '{{ processInstanceId | escapejs }}';
     $(document).ready(function (){
         loanTypeId = loanTypeDict[loanType];
@@ -21,7 +21,9 @@
 
         loanDocument(loanTypeId);
         loadGroupRoles(groupId,loanId,taskName);
-        getHistComments(processInstanceId);
+        //getHistComments(processInstanceId);
+        getMemberComments(processInstanceId,loanId);
+        getGroupComments(processInstanceId,loanId);
         $("#loading").hide();
     });
 </script>
@@ -170,9 +172,15 @@
     <!--2row Start col-10 End-->
 </div>
 <!--2row End-->
+
 <div class="row">
-    <div class="col-md-offset-3 col-xs-9">
+    <div class="col-md-offset-3">
+
         <div class="clearfix form-actions">
+            <label id="comment_label" for="comment">Comment </label>
+            <textarea class="form-control limited sample"
+                            maxlength="3000" rows="3" id="comment">
+                        </textarea></br>
             <div class="col-md-offset-3 col-md-9">
                 <button onclick="updateGroupValStatus('Approved');" class="btn btn-danger" type="button">
                 <i class="ace-icon fa fa-check bigger-110"></i>

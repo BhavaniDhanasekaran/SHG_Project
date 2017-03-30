@@ -16,7 +16,9 @@
     
     $(document).ready(function(){
         loadGroupRoles(groupId,loanId,taskName);
-        getHistComments(processInstanceId);
+        //getHistComments(processInstanceId);
+        getMemberComments(processInstanceId,loanId);
+        getGroupComments(processInstanceId,loanId);
     });
 </script>
 {% endblock %}

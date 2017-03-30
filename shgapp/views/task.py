@@ -4,6 +4,7 @@ from shgapp.utils.shgexceptions import *
 from shgapp.views.decorator import session_required,decryption_required
 import json
 
+from   django.views.decorators.csrf  import csrf_exempt
 
 @session_required
 def dsdatecount(request):
@@ -31,6 +32,7 @@ def mytask(request):
 
 
 @decryption_required
+@csrf_exempt
 @session_required
 def SHGForm(request,groupId,loanId,taskId,processId,taskName,loanType):
     try:

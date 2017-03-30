@@ -19270,3 +19270,36 @@ css
   opacity: 0.6;
 } 
 
+.panel-default > .panel-heading {
+  color: #00000;
+  background-color: #f7953d; /* D15B47 */
+  border-color: #ddd;
+  font-size:13px;
+  font-weight:bold;
+
+}
+
+.panel-custom-horrible-red {
+    border-color: #d12e2a;
+}
+.panel-custom-horrible-red > .panel-heading {
+    background: #d12e2a;
+
+}
+
+
+/*
+css
+*/
+.container{
+  text-align: center;
+}
+.container .img{
+  width: 500px;
+  height: 300px;
+  padding: 5px;
+}
+.container .img:hover, .container .img:hover{
+  cursor: pointer;
+  opacity: 0.6;
+}

@@ -296,3 +296,55 @@ def getMemberFSR(request,memberId):
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting Member FSR.')
+
+
+@session_required
+def getMemberComments(request, processId, loanId):
+    print 'Inside getLoanDetails(request,processId,loanId):'
+    try:
+        bodyData = {"processId": str(processId), "loanId": str(loanId)}
+        serialized_data = sscoreClient._urllib2_request('workflowDetailView/MemberComments', bodyData,
+                                                        requestType='POST')
+
+        print "serialized_data"
+        print serialized_data
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while getting getMemberComments')
+
+
+@session_required
+def getGroupComments(request, processId, loanId):
+    print 'Inside getGroupComments(request,processId,loanId):'
+    try:
+        bodyData = {"processId": str(processId), "loanId": str(loanId)}
+        serialized_data = sscoreClient._urllib2_request('workflowDetailView/GroupComments', bodyData,
+                                                        requestType='POST')
+
+        print "serialized_data"
+        print serialized_data
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while getting getGroupComments')
+
+@csrf_exempt
+@session_required
+def getLoanMemberPaymentHistory(request,memberId,groupId):
+    print 'Inside LoanMemberPaymentHistory(request,memberIds,groupId):'
+    try:
+        bodyData = { "memberIds" : [str(memberId)], "groupId" : str(groupId)}
+        serialized_data = sscoreClient._urllib2_request('workflowDetailView/LoanMemberPaymentHistory', bodyData ,requestType='POST')
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while getting Loan Member PaymentHistory.')
+
+@csrf_exempt
+@session_required
+def getLoanGroupPaymentHistory(request,groupId):
+    print 'Inside getLoanGroupPaymentHistory(request,memberIds,groupId):'
+    try:
+        bodyData = { "groupId" : str(groupId)}
+        serialized_data = sscoreClient._urllib2_request('workflowDetailView/AllMembersLoanPaymentHistory', bodyData ,requestType='POST')
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while getting Loan group PaymentHistory.')
