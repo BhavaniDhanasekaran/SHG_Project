@@ -1,12 +1,11 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block javascript %}
-<script src="{% static 'datajs/grouplist.js' %}"></script>
-<script src="{% static 'datajs/loadTaskList.js' %}"></script>
-<script src="{% static 'datajs/masterData.js' %}"></script>
-<script src="{% static 'datajs/DocUPload.js' %}"></script>
-<script src="{% static 'datajs/mysidenav.js' %}"></script>
-
+<script src="/static/datajs/grouplist.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/loadTaskList.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/masterData.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/mysidenav.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/DocUPload.js?v={{JS_VERSION}}"></script>
 <script>
     var groupId = '{{ groupId | escapejs }}';
     var loanId = '{{ loanId | escapejs }}';
@@ -14,7 +13,7 @@
     var taskName = '{{ taskName | escapejs }}';
     var group = '{{ group | escapejs }}';
     var userId = '{{ userId | escapejs }}';
-    var loanType = '{{ loanType | escapejs }}';
+    var loanType = '{{ loanTypeName | escapejs }}';
     var processInstanceId = '{{ processInstanceId | escapejs }}';
     $(document).ready(function (){
         loanTypeId = loanTypeDict[loanType];

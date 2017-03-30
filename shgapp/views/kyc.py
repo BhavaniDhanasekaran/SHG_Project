@@ -21,15 +21,14 @@ def getGroupData(request,groupID,loanId,taskName):
     try:
         username = request.session["userName"]
         BMTasksArray = ["Conduct BAT- Member approval in CRM","Print Loan Documents & FSR","Upload loan documents in Web application","Add New Members"]
+        rwrkTasksArr = ["Resolve Data Support Team Query","Resolve Credit Team Query"]
         userOfficeData = json.loads(request.session["userOfficeData"])
         groupName = userOfficeData["designation"]
         if groupName== "CMR" or groupName == "CLM" or groupName == "BM":
-            if taskName == "Resolve Data Support Team Query":
+            if taskName in rwrkTasksArr:
                 validationLevel = "RWRK"
             if taskName in BMTasksArray:
                 validationLevel = "BM"
-            if taskName == "Resolve Credit Team Query":
-                validationLevel = "RWRK"
         if groupName == "DataSupportTeam":
             validationLevel = "KYC"
         if groupName == "CreditTeam":
@@ -286,3 +285,14 @@ def loanAccNo(request,loanAccNumber,appGroupId,loanTypeName,groupName):
     userId = request.session["userId"]
     return render_to_response("loanAccNumber.html",{"user":username,"userId":userId,"group":groupRole,"groupName": groupName,"appGroupId" :appGroupId,"loanTypeName":loanTypeName,"loanAccNo":loanAccNumber})
 
+
+@decryption_required
+@session_required
+def getMemberFSR(request,memberId):
+    print 'Inside MemberFSR(request,memberId):'
+    try:
+        bodyData = { "memberId" : str(memberId)}
+        serialized_data = sscoreClient._urllib2_request('workflowDetailView/MemberFsr', bodyData ,requestType='POST')
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while getting Member FSR.')

@@ -50,6 +50,7 @@ kyc_urlpatterns = [
     url(r'^updateloanDetail/', kyc.updateloanDetail, name='updateloanDetail'),
     url(r'^approveLoan/', kyc.approveLoan, name='approveLoan'),
     url(r'^loanAccNo/(?P<loanAccNumber>[^/]+)/(?P<appGroupId>[^/]+)/(?P<loanTypeName>[^/]+)/(?P<groupName>[^/]+)', kyc.loanAccNo, name='loanAccNo'),
+    url(r'^getMemberFSR/(?P<memberId>[^/]+)',kyc.getMemberFSR, name = 'getMemberFSR'),
 
 ]
 urlpatterns += kyc_urlpatterns

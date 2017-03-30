@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block javascript %}
-    <script src="{% static 'datajs/grouplist.js' %}"></script>
-    <script src="{% static 'datajs/loadTaskList.js' %}"></script>
-    <script src="{% static 'datajs/masterData.js' %}"></script>
-    <script src="{% static 'datajs/mysidenav.js' %}"></script>
-    <script src="{% static 'js/imageViewer.js' %}"></script>
+<script src="/static/datajs/grouplist.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/loadTaskList.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/masterData.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/mysidenav.js?v={{JS_VERSION}}"></script>
+<script src="/static/js/imageViewer.js?v={{JS_VERSION}}"></script>
     <script type="text/javascript">
         var groupId = '{{ groupId | escapejs }}';
         var loanId = '{{ loanId | escapejs }}';

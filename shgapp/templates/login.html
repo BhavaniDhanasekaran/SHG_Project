@@ -32,8 +32,8 @@
     </div>
     {% block javascript %} {% endblock %}
    
-    <script src="{% static 'js/bootstrap.min.js'  %}"></script>
-        <script src="{% static 'js/ace-elements.min.js'  %}"></script>
-        <script src="{% static 'js/ace.min.js'  %}"></script>
+    <script src="/static/js/bootstrap.min.js?v={{JS_VERSION}}"></script>
+        <script src="/static/js/ace-elements.min.js?v={{JS_VERSION}}"></script>
+        <script src="/static/js/ace.min.js?v={{JS_VERSION}}"></script>
         </body>
         </html>

@@ -40,13 +40,13 @@
         <script src="{% static 'js/dataTables.fixedHeader.min.js' %}"></script>
         <script src="{% static 'js/fnPagingInfo.js' %}"></script>
 
-        <script src="{% static 'js/bootstrap.min.js'  %}"></script>
-        <script src="{% static 'js/jquery-confirm.js' %}"></script>
+        <script src="/static/js/bootstrap.min.js?v={{JS_VERSION}}"></script>
+        <script src="/static/js/jquery-confirm.js?v={{JS_VERSION}}"></script>
         <!-- page specific plugin scripts -->
         <!-- ace scripts -->
-        <script src="{% static 'js/ace-elements.min.js'  %}"></script>
-        <script src="{% static 'js/ace.min.js'  %}"></script>
-        <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+        <script src="/static/js/ace-elements.min.js?v={{JS_VERSION}}"></script>
+        <script src="/static/js/ace.min.js?v={{JS_VERSION}}"></script>
+        <script src="/static/js/jquery-ui.min.js?v={{JS_VERSION}}"></script>
         <script src="{% static 'js/jquery-file-upload/vendor/jquery.ui.widget.js' %}"></script>
 	<script src="{% static 'js/jquery-file-upload/jquery.iframe-transport.js' %}"></script>
 	<script src="{% static 'js/jquery-file-upload/jquery.fileupload.js' %}"></script>
@@ -65,7 +65,7 @@
     <script src="{% static 'js/jquery.alphanumeric.js' %}"></script>
     <!--script src="{% static 'js/app.js' %}"></script-->
 
-        {% block javascript %} {% endblock %}
+        {% block javascript %}{% endblock %}
         <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
         <!--[if lte IE 8]>
         <script src="{% static 'js/html5shiv.min.js' %}"></script>

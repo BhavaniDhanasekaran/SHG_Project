@@ -118,7 +118,7 @@ function getMemberDetails(memberId, groupId, loanId) {
                         $("#memberHistConflict").dataTable().fnDestroy();
                     }
                     $('#memberHistConflict').dataTable({
-                        data: conflictData,
+                        "data": conflictData,
                         "bDestroy": true,
                         "bJQueryUI": false,
                         "bProcessing": true,
@@ -167,26 +167,67 @@ function getMemberDetails(memberId, groupId, loanId) {
                 }
 
                 if (memberData["data"]["highMarksList"]) {
-                    if (memberData["data"]["highMarksList"][0]) {
-                        $('#creditData').css("display", "block");
-                        $('#creditData').css("display", "table-row");
-                        $('#nodata').css("display", "none");
-                        var creditData = memberData["data"]["highMarksList"][0];
-                        for (var index in creditData) {
-                            if (document.getElementById(index)) {
-                                document.getElementById(index).innerHTML = creditData[index];
-                            }
-                            if (document.getElementById("CBStatus")) {
-                                document.getElementById("CBStatus").innerHTML = creditData["status"];
-                            }
-                        }
-                    } else {
-                        $('#creditData').css("display", "none");
-                        $('#nodata').css("display", "block");
-                        if (document.getElementById("CBStatus")) {
-                            document.getElementById("CBStatus").innerHTML = "";
+                    var conflictDataCreditEnquiry = memberData["data"]["highMarksList"];
+                    var memberDocumentDetails = memberData["data"]["memberDocumentDetails"];
+                    var memberOverlapLink = ''
+                    var docPath = ''
+                    var docId = ''
+                    for (var j = 0; j < memberDocumentDetails.length; j++) {
+                        if (memberDocumentDetails[j]["documentType"] == "OVERLAPREPORT") {
+                            docPath = memberDocumentDetails[j]["documentPath"];
+                             docId = memberDocumentDetails[j]["docId"];
                         }
                     }
+                    memberOverlapLink = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + "'MemberOverlapWin'" + "," + "'left=30,top=50,width=600,height=550'"+');">View</button>';
+                    if ($.fn.DataTable.isDataTable( '#creditLoadData' ) ) {
+                        $("#creditLoadData").dataTable().fnDestroy();
+                    }
+
+                    $('#creditLoadData').dataTable({
+                        "data": conflictDataCreditEnquiry,
+                        "bDestroy": true,
+                        "bJQueryUI": false,
+                        "bProcessing": true,
+                        "bSort": false,
+                        "bInfo": true,
+                        "bPaginate": false,
+                        "iDisplayLength": 10,
+                        "bSortClasses": false,
+                        "bAutoWidth": false,
+                        "searching" :false,
+                        "sDom": '<"top">rt<"bottom"flp><"clear">',
+                        "bDeferRender": true,
+                        "aoColumns": [
+                            { "mData": "remarks", "sTitle": "OverLap Report",
+                                "mRender": function(data, type, full) {
+                                return memberOverlapLink;
+                                }
+                            },
+                            { "mData": "s_product_type", "sTitle": "Product"},
+                            { "mData": "status","sTitle": "Status"},
+                            { "mData": "remarks","sTitle": "Remarks"},
+                            { "mData": "hm_response_date","sTitle": "HM Response Date"},
+                            { "mData": "existing_loan_limit","sTitle": "Existing Loan Limit"},
+                            { "mData": "loan_amount_eligible","sTitle": "Loan Amount Eligible"},
+                            { "mData": "no_of_mfi_eligible","sTitle": "MFI Eligible"},
+                            { "mData": "name_of_mfi_1","sTitle": "MFI 1 Name"},
+                            { "mData": "overdue_amount_1","sTitle": "Overdue_1"},
+                            { "mData": "loan_amount_1","sTitle": "Loan Amount_1"},
+                            { "mData": "balance_1","sTitle": "Balance_1"},
+                            { "mData": "name_of_mfi_2","sTitle": "MFI 2 Name"},
+                            { "mData": "overdue_amount_2","sTitle": "Overdue_2"},
+                            { "mData": "loan_amount_2","sTitle": "Loan Amount_2"},
+                            { "mData": "balance_2","sTitle": "Balance_2"},
+                            { "mData": "name_of_mfi_3","sTitle": "MFI 3 Name"},
+                            { "mData": "overdue_amount_3","sTitle": "Overdue_3"},
+                            { "mData": "loan_amount_3","sTitle": "Loan Amount_3"},
+                            { "mData": "balance_3","sTitle": "Balance_3"},
+                            { "mData": "name_of_mfi_4","sTitle": "MFI 4 Name"},
+                            { "mData": "overdue_amount_4","sTitle": "Overdue_4"},
+                            { "mData": "loan_amount_4","sTitle": "Loan Amount_4"},
+                            { "mData": "balance_4","sTitle": "Balance_4"}
+                            ],
+                    });
                 }
                 if (memberData["data"]["memberDocumentDetails"]) {
                     if (memberData["data"]["memberDocumentDetails"][0]) {
@@ -264,6 +305,7 @@ function getMemberDetails(memberId, groupId, loanId) {
         },
         error: function(jqXHR, textStatus, errorThrown) {}
     });
+    getMemberFSRData(memberId);
 }
 
 function updateMemValidationStatus(status) {
@@ -1623,4 +1665,52 @@ function updateGroupValStatus(status) {
 
 }
 
+function getMemberFSRData(memberId){
+    $.ajax({
+        url: '/getMemberFSR/' + btoa(memberId),
+        dataType: 'json',
+        success: function(data) {
+            var childRowHtml = '';
+            childRowHtml = '<thead><td><b>Field Name</b></td><td><b>Actual Value</b></td></thead>';
+            var fsrData = data;
+            var formSectionData = [];
+            var fsrDataJsonStr = fsrData.data;
+            if(fsrDataJsonStr == null){
+                childRowHtml +=
+                    '<tr>'+
+                        '<td colspan="2">' + 'No Data' + '</td>'
+                    '</tr>';
+            }
+            else{
+                var fsrDataJson = JSON.parse(fsrDataJsonStr);
+                console.log(fsrDataJson);
+                formSectionData = fsrDataJson.form_sections;
+                var irrelevantDataArr = ["Official Details","Signature","CMR/BM/CLM confirmation after screening"];
+                for(var key in formSectionData){
+                    var sectionName = formSectionData[key]["section_name"]
+                    var sectionFields = formSectionData[key]["section_fields"];
+                    if ($.inArray(sectionName, irrelevantDataArr) == -1) {
+                        childRowHtml += '<th colspan="2">'+sectionName+'</th>';
+
+                        $.each(sectionFields , function (index, item){
+                            var fieldValue = '';
+                            if(item.value == undefined){
+                                fieldValue = "";
+                            }
+                            else{
+                                fieldValue = item.value;
+                            }
+                          childRowHtml +=
+                            '<tr>'+
+                                '<td style="width:60%">' + item.label + '</td>'+
+                                '<td style="width:40%">' + fieldValue + '</td>'+
+                            '</tr>';
+                        });
+                    }
+                }
+            }
+           document.getElementById("fsrLoadData").innerHTML = childRowHtml;
+        }
+   });
+}
 

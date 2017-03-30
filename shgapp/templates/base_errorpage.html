@@ -34,10 +34,10 @@
         <![endif]-->
         <!-- inline styles related to this page -->
         <!-- ace settings handler -->
-        <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
-        <script src="{% static 'js/ace-extra.min.js' %}"></script>
+        <script src="/static/js/jquery-2.1.4.min.js?v={{JS_VERSION}}"></script>
+        <script src="/static/js/ace-extra.min.js?v={{JS_VERSION}}"></script>
 
-        <script src="{% static 'js/jquery-2.1.4.min.js' %}">    </script>
+        <script src="/static/js/jquery-2.1.4.min.js?v={{JS_VERSION}}">    </script>
 
         <script src="{% static 'js/datatables.min.js' %}"></script>
         <script src="{% static 'js/dataTables.fixedHeader.min.js' %}"></script>
@@ -47,13 +47,13 @@
             if('ontouchstart' in document.documentElement) document.write("<script src='{% static 'js/jquery.mobile.custom.min.js' %}>"+"<"+"/script>");
 
         </script>
-        <script src="{% static 'js/bootstrap.min.js'  %}"></script>
-        <script src="{% static 'js/jquery-confirm.js' %}"></script>
+        <script src="/static/js/bootstrap.min.js?v={{JS_VERSION}}"></script>
+        <script src="/static/js/jquery-confirm.js?v={{JS_VERSION}}"></script>
         <!-- page specific plugin scripts -->
         <!-- ace scripts -->
-        <script src="{% static 'js/ace-elements.min.js'  %}"></script>
-        <script src="{% static 'js/ace.min.js'  %}"></script>
-        <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+        <script src="/static/js/ace-elements.min.js?v={{JS_VERSION}}"></script>
+        <script src="/static/js/ace.min.js?v={{JS_VERSION}}"></script>
+        <script src="/static/js/jquery-ui.min.js?v={{JS_VERSION}}"></script>
         <script src="{% static 'js/jquery-file-upload/vendor/jquery.ui.widget.js' %}"></script>
 	<script src="{% static 'js/jquery-file-upload/jquery.iframe-transport.js' %}"></script>
 	<script src="{% static 'js/jquery-file-upload/jquery.fileupload.js' %}"></script>
