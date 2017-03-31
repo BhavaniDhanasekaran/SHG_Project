@@ -82,7 +82,7 @@ def KYCTaskList(request):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting task details.')
 
-@decryption_required
+#@decryption_required
 @session_required
 def KYCTasksGroupByDate(request,dateFrom,dateTo):
     print "Entering KYCTasksGroupByDate(request,dateFrom,dateTo): view "
@@ -203,7 +203,7 @@ def assignedTaskList(request):
     print "Exiting assignedTaskList(request): view"
     return render(request, 'ds-mytask.html',{"myTaskList" :json.dumps(myTaskData), "group" :groupName, "user":username,"userId":userId})
 
-@decryption_required
+#@decryption_required
 def claim(request, id, name):
     print "Entering claim(request, id, name): view"
     username = request.session["userLogin"]
@@ -225,7 +225,7 @@ def claim(request, id, name):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred.')
 
-@decryption_required
+#@decryption_required
 @session_required
 def taskListLoanType(request,taskName):
     print "Entering taskListLoanType(request): view"
@@ -237,7 +237,7 @@ def taskListLoanType(request,taskName):
     return render_to_response( 'ds-tasklist.html', {"userId":userId,"group" :groupName,"user":username,"taskName":taskName})
 
 
-@decryption_required
+#@decryption_required
 @session_required
 def KYCCheck(request,dateFrom,dateTo):
     print "Entering KYCCheck(request,dateFrom,dateTo): view"
@@ -248,7 +248,7 @@ def KYCCheck(request,dateFrom,dateTo):
     print "Exiting KYCCheck(request,dateFrom,dateTo): view"
     return render_to_response( 'ds-tasklist.html', {"dateFrom": dateFrom,"userId":userId,"dateTo":dateTo,"group" :groupName,"user":username,"taskName":"KYC Check"})
 
-@decryption_required
+#@decryption_required
 @session_required
 def queryRespTaskList(request):
     print "Entering queryRespTaskList(request): view"
@@ -345,7 +345,7 @@ def taskComplete(request,processUpdate,taskId):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred.')
 
-@decryption_required
+#@decryption_required
 @session_required
 def getHistoryComments(request,processId):
     try:
@@ -365,7 +365,7 @@ def getHistoryComments(request,processId):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred.')
 
-@decryption_required
+#@decryption_required
 @session_required
 def proposalScrutinyTaskList(request):
     print "Entering proposalScrutinyTaskList(request): view "

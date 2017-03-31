@@ -14,7 +14,7 @@ helper = Helper()
 sscoreClient = SSCoreClient()
 camundaClient = CamundaClient()
 
-@decryption_required
+#@decryption_required
 @session_required
 def getGroupData(request,groupID,loanId,taskName):
     print "Inside getGroupData(request):"
@@ -41,7 +41,7 @@ def getGroupData(request,groupID,loanId,taskName):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while searching group.')
 
-@decryption_required
+#@decryption_required
 @session_required
 def getIndMemberData(request,memberId,groupId,loanId,taskName):
     print "Inside getIndMemberData(request,memberId,groupId,taskName):"
@@ -75,7 +75,7 @@ def getIndMemberData(request,memberId,groupId,loanId,taskName):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while searching group members.')
 
-@decryption_required
+#@decryption_required
 @csrf_exempt
 @session_required
 def getPinCodeDetails(request,pincode):
@@ -87,7 +87,7 @@ def getPinCodeDetails(request,pincode):
         return helper.bad_request('Unexpected error occurred while getting areas under this pincode.')
 
 
-@decryption_required
+#@decryption_required
 @session_required
 def creditHistoryGroup(request,loanId):
     loanId = loanId
@@ -99,7 +99,7 @@ def creditHistoryGroup(request,loanId):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting Credit History.')
 
-@decryption_required
+#@decryption_required
 @session_required
 def DocumentView(request,loanId):
     print "Inside DocumentView(request,loanId):"
@@ -179,7 +179,7 @@ def updateUrl(request):
     except ShgInvalidRequest, e:
         return helper.bad_request('An expected error occurred while Updating Url details.')
 
-@decryption_required
+#@decryption_required
 @csrf_exempt
 @session_required
 def loanDocument(request,loanTypeId):
@@ -205,7 +205,7 @@ def editUrl(request):
         return helper.bad_request('An expected error occurred while Editing Url details.')
 
 
-@decryption_required
+#@decryption_required
 @csrf_exempt
 @session_required
 def getLoanDetails(request, groupId, loanId):
@@ -274,7 +274,7 @@ def approveLoan(request):
     except ShgInvalidRequest, e:
         return helper.bad_request('An expected error occurred while approving loan.')
 
-@decryption_required
+#@decryption_required
 @session_required
 def loanAccNo(request,loanAccNumber,appGroupId,loanTypeName,groupName):
     print loanAccNumber
@@ -286,7 +286,7 @@ def loanAccNo(request,loanAccNumber,appGroupId,loanTypeName,groupName):
     return render_to_response("loanAccNumber.html",{"user":username,"userId":userId,"group":groupRole,"groupName": groupName,"appGroupId" :appGroupId,"loanTypeName":loanTypeName,"loanAccNo":loanAccNumber})
 
 
-@decryption_required
+#@decryption_required
 @session_required
 def getMemberFSR(request,memberId):
     print 'Inside MemberFSR(request,memberId):'

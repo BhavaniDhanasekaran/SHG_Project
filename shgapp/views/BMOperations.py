@@ -12,7 +12,7 @@ helper = Helper()
 sscoreClient = SSCoreClient()
 camundaClient = CamundaClient()
 
-@decryption_required
+#@decryption_required
 @session_required
 def getTasksByTaskName(request,taskName):
     try:

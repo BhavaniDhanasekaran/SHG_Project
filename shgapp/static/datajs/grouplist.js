@@ -11,7 +11,7 @@ function getGroupData(groupID, loanId) {
     var rewCount = 0;
     $("#san_test").empty();
     $.ajax({
-        url: '/getGroupData/' + btoa(groupID) + '/' + btoa(loanId) + '/'+ btoa(taskName),
+        url: '/getGroupData/' + groupID + '/' + loanId + '/'+taskName,
         dataType: 'json',
         beforeSend: function() {
             triggerLoadFunc();
@@ -118,7 +118,7 @@ function getMemberDetails(memberId, groupId, loanId) {
         document.getElementById("comment").value = "";
     }
     $.ajax({
-        url: '/getIndMemberData/' + btoa(memberId) + '/' + btoa(groupId) + '/' + btoa(loanId) + '/' + btoa(taskName),
+        url: '/getIndMemberData/' + memberId + '/' + groupId + '/' + loanId+ '/' + taskName,
         dataType: 'json',
         beforeSend: function() {
             triggerLoadFunc();
@@ -854,7 +854,7 @@ function taskUpdate(status) {
 function creditHistory(loanId) {
     var htmlContent = '';
     $.ajax({
-        url: '/creditHistoryGroup/' + btoa(loanId),
+        url: '/creditHistoryGroup/' + loanId,
         dataType: 'json',
         success: function(data) {
             var creditData = data;
@@ -1013,7 +1013,7 @@ function updateTask(status) {
 function getHistComments(processId) {
     var htmlContent = '';
     $.ajax({
-        url: '/getHistoryComments/' + btoa(processId),
+        url: '/getHistoryComments/' + processId,
         dataType: 'json',
         success: function(data) {
             var commentsJson = data;
@@ -1069,7 +1069,7 @@ function getHistComments(processId) {
 
 function documentView(groupId) {
     $.ajax({
-        url: '/DocumentView/' + btoa(groupId),
+        url: '/DocumentView/' + groupId,
         dataType: 'json',
         success: function(data) {
             groupDocData = data;
@@ -1147,7 +1147,7 @@ function updateGroupMemberStatus() {
 
 function getLoanDetails(groupId, loanId) {
     $.ajax({
-        url: '/getLoanDetails/' + btoa(groupId) + '/' + btoa(loanId),
+        url: '/getLoanDetails/' + groupId + '/' + loanId,
         dataType: 'json',
         success: function(data) {
             var htmlContent = '';
@@ -1409,7 +1409,7 @@ function approveLoan(updateloanData) {
             if (data.code == "2032") {
                 $.alert("Loan has been approved");
                 var loanAccNumber = data["data"]["loanAccountNumber"];
-                window.location.href = "/loanAccNo/" + btoa(loanAccNumber) + '/' + btoa(appGroupId) + '/' + btoa(loanTypeName) + '/' + btoa(groupName);
+                window.location.href = "/loanAccNo/" + loanAccNumber + '/' + appGroupId + '/' + loanTypeName + '/' + groupName;
             }
             if (data.code == "2034") {
                 $.alert(data["message"]);
@@ -1450,6 +1450,7 @@ function tabControl() {
     $("#tab4").removeClass("active");
     $("#tab5").removeClass("active");
     $("#tab6").removeClass("active");
+    $("#tab7").removeClass("active");
 }
 
 function updateMembersCount() {
@@ -1479,7 +1480,7 @@ function updateMembersCount() {
 
 function rmGroupMaster(groupId) {
     $.ajax({
-        url: '/getGroupData/' + btoa(groupId) + '/' + btoa(loanId) + '/'+ btoa(taskName),
+        url: '/getGroupData/' + groupId + '/' + loanId + '/'+ taskName,
         dataType: 'json',
         beforeSend: function() {
             $("#loading").show();
@@ -1753,7 +1754,7 @@ function updateGroupValStatus(status) {
 
 function getMemberFSRData(memberId){
     $.ajax({
-        url: '/getMemberFSR/' + btoa(memberId),
+        url: '/getMemberFSR/' + memberId,
         dataType: 'json',
         success: function(data) {
             var childRowHtml = '';

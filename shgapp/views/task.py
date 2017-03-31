@@ -18,7 +18,7 @@ def dstasklist(request):
     userId = request.session["userId"]
     return render(request, 'ds-tasklist.html', {"userId":userId,"group":groupName,"user":username})
 
-@decryption_required
+#@decryption_required
 @session_required
 def dstasklistByName(request,taskName):
     username = request.session["userName"]
@@ -31,7 +31,7 @@ def mytask(request):
     return render(request, 'ds-mytask.html')
 
 
-@decryption_required
+#@decryption_required
 @csrf_exempt
 @session_required
 def SHGForm(request,groupId,loanId,taskId,processId,taskName,loanType):
