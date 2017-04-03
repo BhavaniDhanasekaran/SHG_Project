@@ -170,7 +170,7 @@
                                                 <div class="profile-info-row">
                                                     <div id="mobileNo_label" class="profile-info-name"> Mobile no <font class="mandatory">*</font></div>
                                                     <div class="profile-info-value">
-                                                        <span class="editable" >    <input type="text" class="sample4" placeholder="Mobile Number" onchange="validateFields(this.id,this.value,'mobileNumber');" onkeypress='validate(event)' id="mobileNo" maxlength="10"></span>
+                                                        <span class="editable" >    <input type="text" class="sample4" placeholder="Mobile Number" onchange="validateFields(this.id,this.value,'mobileNumber');" onkeypress='validate(event,1)' id="mobileNo" maxlength="10"></span>
                                                     </div>
                                                 </div>
                                                 <div class="profile-info-row">
@@ -262,7 +262,7 @@
                                                 <div class="profile-info-row">
                                                     <div id="pincode_label" class="profile-info-name"> Pin Code <font class="mandatory">*</font></div>
                                                     <div class="profile-info-value">
-                                                        <span class="editable">    <input class="sample4" type="text" maxlength=6 placeholder="Pincode" id="pincode" onkeypress='validate(event)' onchange="areasUnderPincode()" ></span>
+                                                        <span class="editable">    <input class="sample4" type="text" maxlength=6 placeholder="Pincode" id="pincode" onkeypress='validate(event,1)' onchange="areasUnderPincode()" ></span>
                                                     </div>
                                                 </div>
                                                 <div class="profile-info-row">
@@ -311,8 +311,7 @@
                                                 <div class="profile-info-row">
                                                     <div id="previousLoanMemberCycle_label" class="profile-info-name">Previous Loan Cycle<font class="mandatory">*</font></div>
                                                     <div class="profile-info-value">
-                                                        <span class="editable">
-                                                        <input id="previousLoanMemberCycle" type="text" placeholder="Previous Loan Cycle" style="width:99%;">
+                                                        <span class="editable" id="previousLoanMemberCycle">
                                                         </span>
                                                     </div>
                                                 </div>

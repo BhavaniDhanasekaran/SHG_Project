@@ -22,7 +22,7 @@ function areasUnderPincode(){
 		$('#villages').empty();
 		
 		$.ajax({
-			url	:  '/getPinCodeDetails/'+btoa(pincode),
+			url	:  '/getPinCodeDetails/'+pincode,
 			type	: 'post',
 			dataType: 'json',
 			success	: function (pincodeData) {
