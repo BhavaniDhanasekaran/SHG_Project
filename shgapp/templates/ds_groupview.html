@@ -385,7 +385,7 @@
                                                         class="profile-info-value">
                                                         <span>
                                                         <input type="text" class="sample4" style="width:99%"
-                                                            placeholder="Pincode" id="pincode" maxlength="6"
+                                                            placeholder="Pincode" id="pincode" maxlength="6" onkeypress='validate(event,1)' 
                                                             onchange="areasUnderPincode()"></span>
                                                     </div>
                                                 </div>
@@ -575,9 +575,8 @@
                                                         Previous Loan Cycle
                                                     </div>
                                                     <div class="profile-info-value">
-                                                         <span class="editable">
-                                                        <input type="text" class="sample5" placeholder="Previous Loan Cycle"
-                                                            id="previousLoanMemberCycle" maxlength="10" style="width:99%">
+                                                         <span class="editable" 
+                                                            id="previousLoanMemberCycle">
                                                         </span>
                                                     </div>
                                                 </div>
