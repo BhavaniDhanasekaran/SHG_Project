@@ -77,7 +77,8 @@
     });
     $(obj).find('.img-op').css({
       'margin-top': '5px',
-      'text-align': 'center'
+      'text-align': 'center',
+      'padding': 'inherit'
     });
     $(obj).find('.modal .modal-content .btn').css('border-radius', '0');
     $(obj).find('.img-op .btn').css({

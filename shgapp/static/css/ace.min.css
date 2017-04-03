@@ -5125,7 +5125,9 @@ fieldset[disabled] .btn:hover {
 .btn-primary.focus,
 .btn-primary:focus {
     background-color: #428BCA!important;
-    border-color: #428BCA
+    border-color: #428BCA;
+    cursor:pointer;
+
 }
 .btn-primary.focus:hover,
 .btn-primary:active:hover,

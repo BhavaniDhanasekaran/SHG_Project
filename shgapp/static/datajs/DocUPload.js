@@ -6,7 +6,7 @@ function loanDocument(loanTypeId) {
     var documentData;
     var docUploadedDict = {};
     $.ajax({
-        url: '/DocumentView/' + btoa(loanId),
+        url: '/DocumentView/' + loanId,
         dataType: 'json',
         success: function(data) {
             docUploadedDict = data["data"];
@@ -17,7 +17,7 @@ function loanDocument(loanTypeId) {
             }
 
             $.ajax({
-                url: '/loanDocument/' + btoa(loanTypeId),
+                url: '/loanDocument/' + loanTypeId,
                 dataType: 'json',
                 success: function(data) {
                     var documentData = data["data"];

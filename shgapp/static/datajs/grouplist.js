@@ -190,7 +190,7 @@ function getMemberDetails(memberId, groupId, loanId) {
 
                 if (memberData["data"]["highMarksList"]) {
                     var conflictDataCreditEnquiry = memberData["data"]["highMarksList"];
-                    if (document.getElementById("CBStatus")) {
+                    if (document.getElementById("CBStatus") && conflictDataCreditEnquiry[0]) {
                          document.getElementById("CBStatus").innerHTML = conflictDataCreditEnquiry[0]["status"];
                     }
                     var memberDocumentDetails = memberData["data"]["memberDocumentDetails"];
@@ -910,6 +910,21 @@ function creditHistory(loanId) {
                 }
             }
             document.getElementById("creditData").innerHTML = htmlContent;
+             var table = $("#creditTableID").DataTable({
+                "bDestroy": true,
+                "bJQueryUI": false,
+                "bProcessing": true,
+                "bSort": false,
+                "bInfo": true,
+                "bPaginate": false,
+                "iDisplayLength": 10,
+                "bSortClasses": false,
+                "bAutoWidth": false,
+                "searching": false,
+                "sDom": '<"top">rt<"bottom"flp><"clear">',
+                "bDeferRender": true
+            });
+
             //loadDataTable("#creditTableID");
         }
     });
@@ -1082,9 +1097,10 @@ function documentView(groupId) {
                     tr.appendTo('#docments_table');
                 });
             } else {
-                $('#docments_table').css("display", "none");
+                document.getElementById('docments_table').innerHTML = "No documents uploaded";
                 $('#nodata2').css("display", "block");
             }
+            loadDataTable("#documents_table");
         }
     });
 }
@@ -1271,12 +1287,19 @@ function getLoanDetails(groupId, loanId) {
 
 function loadDataTable(id) {
     var table = $(id).DataTable({
-        "sDom": '<"top">rt<"bottom"flp><"clear">',
-        "paging": false,
-        "bInfo": false,
-        "bLengthChange": false,
+        "bDestroy": true,
+        "bJQueryUI": false,
+        "bProcessing": true,
+        "bSort": true,
+        "bInfo": true,
         "bPaginate": false,
-        "searching": false
+        "iDisplayLength": 10,
+        "bSortClasses": false,
+        "bAutoWidth": false,
+        "searching": false,
+        "sDom": '<"top">rt<"bottom"flp><"clear">',
+        "bDeferRender": true
+
     });
 
     var data = table.$('input, select').serialize();
