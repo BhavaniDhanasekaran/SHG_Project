@@ -14,22 +14,21 @@ helper = Helper()
 sscoreClient = SSCoreClient()
 camundaClient = CamundaClient()
 
-@decryption_required
+#@decryption_required
 @session_required
 def getGroupData(request,groupID,loanId,taskName):
     print "Inside getGroupData(request):"
     try:
         username = request.session["userName"]
-        BMTasksArray = ["Conduct BAT- Member approval in CRM","Print Loan Documents & FSR","Upload loan documents in Web application"]
+        BMTasksArray = ["Conduct BAT- Member approval in CRM","Print Loan Documents & FSR","Upload loan documents in Web application","Add New Members"]
+        rwrkTasksArr = ["Resolve Data Support Team Query","Resolve Credit Team Query"]
         userOfficeData = json.loads(request.session["userOfficeData"])
         groupName = userOfficeData["designation"]
         if groupName== "CMR" or groupName == "CLM" or groupName == "BM":
-            if taskName == "Resolve Data Support Team Query":
+            if taskName in rwrkTasksArr:
                 validationLevel = "RWRK"
             if taskName in BMTasksArray:
                 validationLevel = "BM"
-            if taskName == "Resolve Credit Team Query":
-                validationLevel = "RWRK"
         if groupName == "DataSupportTeam":
             validationLevel = "KYC"
         if groupName == "CreditTeam":
@@ -42,7 +41,7 @@ def getGroupData(request,groupID,loanId,taskName):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while searching group.')
 
-@decryption_required
+#@decryption_required
 @session_required
 def getIndMemberData(request,memberId,groupId,loanId,taskName):
     print "Inside getIndMemberData(request,memberId,groupId,taskName):"
@@ -76,7 +75,7 @@ def getIndMemberData(request,memberId,groupId,loanId,taskName):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while searching group members.')
 
-@decryption_required
+#@decryption_required
 @csrf_exempt
 @session_required
 def getPinCodeDetails(request,pincode):
@@ -88,7 +87,7 @@ def getPinCodeDetails(request,pincode):
         return helper.bad_request('Unexpected error occurred while getting areas under this pincode.')
 
 
-@decryption_required
+#@decryption_required
 @session_required
 def creditHistoryGroup(request,loanId):
     loanId = loanId
@@ -100,7 +99,7 @@ def creditHistoryGroup(request,loanId):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting Credit History.')
 
-@decryption_required
+#@decryption_required
 @session_required
 def DocumentView(request,loanId):
     print "Inside DocumentView(request,loanId):"
@@ -180,7 +179,7 @@ def updateUrl(request):
     except ShgInvalidRequest, e:
         return helper.bad_request('An expected error occurred while Updating Url details.')
 
-@decryption_required
+#@decryption_required
 @csrf_exempt
 @session_required
 def loanDocument(request,loanTypeId):
@@ -206,7 +205,7 @@ def editUrl(request):
         return helper.bad_request('An expected error occurred while Editing Url details.')
 
 
-@decryption_required
+#@decryption_required
 @csrf_exempt
 @session_required
 def getLoanDetails(request, groupId, loanId):
@@ -275,7 +274,7 @@ def approveLoan(request):
     except ShgInvalidRequest, e:
         return helper.bad_request('An expected error occurred while approving loan.')
 
-@decryption_required
+#@decryption_required
 @session_required
 def loanAccNo(request,loanAccNumber,appGroupId,loanTypeName,groupName):
     print loanAccNumber
@@ -286,3 +285,66 @@ def loanAccNo(request,loanAccNumber,appGroupId,loanTypeName,groupName):
     userId = request.session["userId"]
     return render_to_response("loanAccNumber.html",{"user":username,"userId":userId,"group":groupRole,"groupName": groupName,"appGroupId" :appGroupId,"loanTypeName":loanTypeName,"loanAccNo":loanAccNumber})
 
+
+#@decryption_required
+@session_required
+def getMemberFSR(request,memberId):
+    print 'Inside MemberFSR(request,memberId):'
+    try:
+        bodyData = { "memberId" : str(memberId)}
+        serialized_data = sscoreClient._urllib2_request('workflowDetailView/MemberFsr', bodyData ,requestType='POST')
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while getting Member FSR.')
+
+
+@session_required
+def getMemberComments(request, processId, loanId):
+    print 'Inside getLoanDetails(request,processId,loanId):'
+    try:
+        bodyData = {"processId": str(processId), "loanId": str(loanId)}
+        serialized_data = sscoreClient._urllib2_request('workflowDetailView/MemberComments', bodyData,
+                                                        requestType='POST')
+
+        print "serialized_data"
+        print serialized_data
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while getting getMemberComments')
+
+
+@session_required
+def getGroupComments(request, processId, loanId):
+    print 'Inside getGroupComments(request,processId,loanId):'
+    try:
+        bodyData = {"processId": str(processId), "loanId": str(loanId)}
+        serialized_data = sscoreClient._urllib2_request('workflowDetailView/GroupComments', bodyData,
+                                                        requestType='POST')
+
+        print "serialized_data"
+        print serialized_data
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while getting getGroupComments')
+
+@csrf_exempt
+@session_required
+def getLoanMemberPaymentHistory(request,memberId,groupId):
+    print 'Inside LoanMemberPaymentHistory(request,memberIds,groupId):'
+    try:
+        bodyData = { "memberIds" : [str(memberId)], "groupId" : str(groupId)}
+        serialized_data = sscoreClient._urllib2_request('workflowDetailView/LoanMemberPaymentHistory', bodyData ,requestType='POST')
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while getting Loan Member PaymentHistory.')
+
+@csrf_exempt
+@session_required
+def getLoanGroupPaymentHistory(request,groupId):
+    print 'Inside getLoanGroupPaymentHistory(request,memberIds,groupId):'
+    try:
+        bodyData = { "groupId" : str(groupId)}
+        serialized_data = sscoreClient._urllib2_request('workflowDetailView/AllMembersLoanPaymentHistory', bodyData ,requestType='POST')
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while getting Loan group PaymentHistory.')

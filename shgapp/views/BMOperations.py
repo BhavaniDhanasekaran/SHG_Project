@@ -12,9 +12,9 @@ helper = Helper()
 sscoreClient = SSCoreClient()
 camundaClient = CamundaClient()
 
-@decryption_required
+#@decryption_required
 @session_required
-def getTasksByTaskName(request,taskName,loanTypeName):
+def getTasksByTaskName(request,taskName):
     try:
         print "Entering getTasksByTaskName(request): view "
         username = request.session["userName"]
@@ -28,17 +28,14 @@ def getTasksByTaskName(request,taskName,loanTypeName):
         grp_body_cont = {}
         if groupName == "RM":
             grp_body_cont = {"unassigned": "true", "name": taskName, "candidateGroup": str(groupName),
-                             "processVariables": [{"name": "regionId", "operator": "eq", "value": officeId},
-                                                  {"name": "loanTypeName", "operator": "eq", "value": loanTypeName}]}
+                             "processVariables": [{"name": "regionId", "operator": "eq", "value": officeId}]}
 
         if groupName == "CLM" or groupName == "BM" or groupName == "CMR":
             grp_body_cont = {"unassigned": "true", "name": taskName,
                              "candidateGroup": "CLM",
-                             "processVariables": [{"name": "clusterId", "operator": "eq", "value": officeId},
-                                                  {"name": "loanTypeName", "operator": "eq", "value": loanTypeName}]}
+                             "processVariables": [{"name": "clusterId", "operator": "eq", "value": officeId}] }
         if groupName == "CreditTeam":
-            grp_body_cont 	   = { "unassigned" : "true" , "name" : taskName, "candidateGroup" : str(groupName),
-                                    "processVariables": [{"name": "loanTypeName", "operator": "eq","value": loanTypeName}]}
+            grp_body_cont 	   = { "unassigned" : "true" , "name" : taskName, "candidateGroup" : str(groupName)}
 
         groupTaskList	  = camundaClient._urllib2_request('task?firstResult=0', grp_body_cont, requestType='POST')
         for data in groupTaskList:

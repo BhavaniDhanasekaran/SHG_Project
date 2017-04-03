@@ -1,3 +1,4 @@
+
 <div id="mySidenav" class="sidenav">
     <div class="table-header">
         <button type="button" class="closebtn" onClick="closeNav()" data-dismiss="modal" aria-hidden="true">
@@ -5,12 +6,119 @@
         </button>
         Queries
     </div>
-    <div class="modal-body">
+    <div class="modal-body" style="padding:1px;">
+
+          
+
         <!--- query resolution started -->
         <div class="widget-box transparent">
             <div class="widget-body">
                 <div class="widget-main padding-8">
-                    <div id="profile-feed-1" class="profile-feed">
+                    <div  class="profile-feed">
+                         
+
+                    <!--according Menu start-->
+
+
+          <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+        <div class="panel panel-custom-horrible-red" >
+            <div class="panel-heading" role="tab" id="headingOne">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" 
+                    aria-expanded="true"
+                     aria-controls="collapseOne">
+                        <i class="more-less glyphicon glyphicon-plus"></i>
+                        Member 
+                    </a>
+                </h2>
+            </div>
+
+
+            <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                     <div id="profile-feed-1">
+
+
+                         <div id='ajax_loader' style=" display: none;">
+                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <img src="/static/images/ajax-loader.gif" id='ajax_loader' ></img>
+                         </div>
+
+
+
+
+
+
+                     </div>
+                     
+
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-custom-horrible-red" >
+            <div class="panel-heading" role="tab" id="headingTwo">
+               
+    
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <i class="more-less glyphicon glyphicon-plus"></i>
+                        Group 
+                    </a>
+               
+            </div>
+
+
+            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                <div class="panel-body">
+
+                  <div id="profile-feed-2">
+
+
+
+                         <div id='ajax_loader2' style=" display: none;">
+                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <img src="/static/images/ajax-loader.gif" id='ajax_loader' ></img>
+                         </div>
+                     
+
+
+
+
+
+                     </div>
+                    
+                </div>
+            </div>
+        </div>
+
+  
+
+    </div><!-- panel-group -->
+
+
+
+
+
+
+
+
+
+                    <!---according Menu Ends-->
+
+
+
+
+
+
+           
+
+
+
+
+
+
+
+
                     </div>
                 </div>
             </div>
@@ -18,26 +126,24 @@
     </div>
 </div>
 </div>
+
+ 
+   
+
 {% block javascript %}
-<script type="text/javascript">
-    jQuery(function($) {
-        $('.modal.aside').ace_aside();
-
-        $('#aside-inside-modal').addClass('aside').ace_aside({container: '#my-modal > .modal-dialog'});
-
-        $('#right-menu').modal('show')
-
-        $(document).one('ajaxloadstart.page', function(e) {
-            //in ajax mode, remove before leaving page
-            $('.modal.aside').remove();
-            $(window).off('.aside')
-        });
-
-
-        //make content sliders resizable using jQuery UI (you should include jquery ui files)
-        //$('#right-menu > .modal-dialog').resizable({handles: "w", grid: [ 20, 0 ], minWidth: 200, maxWidth: 600});
-
-        $('#right-menu > .modal-dialog').css("width", "300");
-    })
+<script>
+  function toggleIcon(e) {
+    $(e.target)
+        .prev('.panel-heading')
+        .find(".more-less")
+        .toggleClass('glyphicon-plus glyphicon-minus');
+}
+$('.panel-group').on('hidden.bs.collapse', toggleIcon);
+$('.panel-group').on('shown.bs.collapse', toggleIcon);
+    
+    
 </script>
+
 {% endblock  %}
+
+

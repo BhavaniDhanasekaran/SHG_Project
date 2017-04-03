@@ -200,12 +200,12 @@ $(document).ready(function (){
 		var trId = $(this).closest('tr').attr('id');
 		var groupLoanID = trId;
 		groupLoanIDSplit = groupLoanID.split("_");
-		groupID = btoa(groupLoanIDSplit[0]);
-		loanID =  btoa(groupLoanIDSplit[1]);
-		taskName =  btoa(groupLoanIDSplit[2]);
-		taskId =  btoa(groupLoanIDSplit[3]);
-		processInstanceId =  btoa(groupLoanIDSplit[4]);
-		loanType =  btoa(groupLoanIDSplit[5]);
+		groupID = groupLoanIDSplit[0];
+		loanID =  groupLoanIDSplit[1];
+		taskName =  groupLoanIDSplit[2];
+		taskId =  groupLoanIDSplit[3];
+		processInstanceId =  groupLoanIDSplit[4];
+		loanType =  groupLoanIDSplit[5];
 		window.location = '/SHGForm/'+groupID+'/'+loanID+'/'+taskId+'/'+processInstanceId+'/'+taskName+'/'+loanType;
 	});
 	$('.paginate_button').click(function() {
@@ -228,12 +228,12 @@ function triggerLoadFunc(){
 	    	var trId = $(this).closest('tr').attr('id');
 	    	var groupLoanID = trId;
             groupLoanIDSplit = groupLoanID.split("_");
-            groupID = btoa(groupLoanIDSplit[0]);
-            loanID =  btoa(groupLoanIDSplit[1]);
-            taskName =  btoa(groupLoanIDSplit[2]);
-            taskId =  btoa(groupLoanIDSplit[3]);
-            processInstanceId =  btoa(groupLoanIDSplit[4]);
-            loanType =  btoa(groupLoanIDSplit[5]);
+            groupID = groupLoanIDSplit[0];
+            loanID =  groupLoanIDSplit[1];
+            taskName =  groupLoanIDSplit[2];
+            taskId =  groupLoanIDSplit[3];
+            processInstanceId =  groupLoanIDSplit[4];
+            loanType =  groupLoanIDSplit[5];
 		window.location = '/SHGForm/'+groupID+'/'+loanID+'/'+taskId+'/'+processInstanceId+'/'+taskName+'/'+loanType;
 	});
 }
@@ -270,7 +270,7 @@ function taskCount(){
 
 function claim(d){
 	$.ajax({
-	    url: '/task/'+btoa(d)+'/'+btoa('claim')+'/user',
+	    url: '/task/'+d+'/claim/user',
 	    dataType: 'json',
 	    success: function (data) {
 		window.location.reload();
@@ -280,7 +280,7 @@ function claim(d){
 
 function unClaim(d){
 	$.ajax({
-	    url: '/task/'+btoa(d)+'/'+btoa('unclaim')+'/user',
+	    url: '/task/'+d+'/unclaim/user',
 	    dataType: 'json',
 	    success: function (data) {
 		window.location.reload();
@@ -326,7 +326,7 @@ function filterKYCTasksByDate(){
 
 function KYCTasksGroupByDate(dateFrom,dateto){
 	$.ajax({
-	    url: '/KYCTasksGroupByDate/'+btoa(dateFrom)+'/'+btoa(dateto),
+	    url: '/KYCTasksGroupByDate/'+dateFrom+'/'+dateto,
 	    dataType: 'json',
 	    beforeSend: function(){
      		$("#loading").show();
@@ -364,7 +364,7 @@ function redirectKYCPage(date){
 	var key = val2key(dateSplit[1],monthDict);
 	var date = dateSplit[2]+"-"+key+"-"+dateSplit[0]+"T00:00:00";
 	var nextDate = setNextDate(date);
-	window.location = '/KYCCheck/'+btoa(date)+'/'+btoa(nextDate);
+	window.location = '/KYCCheck/'+date+'/'+nextDate;
 }
 
 function val2key(val,array){
@@ -377,11 +377,11 @@ function val2key(val,array){
     }
 }
 function redirectToTaskPage(taskName,loanTypeName){
-	window.location = '/dstasklistByName/'+btoa(taskName)+'/'+btoa(loanTypeName);
+	window.location = '/dstasklistByName/'+taskName;
 }
-function getTasksByTaskName(taskName,loanTypeName){
+function getTasksByTaskName(taskName){
 	$.ajax({
-	    url: '/getTasksByTaskName/'+btoa(taskName)+'/'+btoa(loanTypeName),
+	    url: '/getTasksByTaskName/'+taskName,
 	    dataType: 'json',
 	    beforeSend: function(){
      		$("#loading").show();
@@ -433,20 +433,20 @@ function claimconfirmBox(id,shgName){
 		});
 }
 
-function tasklistRedirect(loanType,taskName){
-    window.location = '/taskListLoanType/'+btoa(loanType)+'/'+btoa(taskName);
+function tasklistRedirect(taskName){
+    window.location = '/taskListLoanType/'+taskName;
 }
 
-function getTaskList(loanType,taskName){
+function getTaskList(taskName){
     var url = '';
     if(taskName == "KYC Check"){
-        url = '/KYCTaskListByLoanType/'+btoa(loanType);
+        url = '/KYCTaskListByLoanType/';
     }
     if(taskName == "Query Response" || taskName == "BM Reply"){
-        url = '/queryRespTaskList/'+btoa(loanType);
+        url = '/queryRespTaskList/';
     }
     if(taskName == "Proposal scrutiny"){
-        url = '/proposalScrutinyTaskList/'+btoa(loanType);
+        url = '/proposalScrutinyTaskList/';
     }
     $.ajax({
 	    url: url,

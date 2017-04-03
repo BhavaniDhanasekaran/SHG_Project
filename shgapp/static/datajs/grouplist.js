@@ -9,8 +9,9 @@ function getGroupData(groupID, loanId) {
     var appCount = 0;
     var rejCount = 0;
     var rewCount = 0;
+    $("#san_test").empty();
     $.ajax({
-        url: '/getGroupData/' + btoa(groupID) + '/' + btoa(loanId) + '/'+ btoa(taskName),
+        url: '/getGroupData/' + groupID + '/' + loanId + '/'+taskName,
         dataType: 'json',
         beforeSend: function() {
             triggerLoadFunc();
@@ -87,16 +88,37 @@ function getGroupData(groupID, loanId) {
         },
         error: function(jqXHR, textStatus, errorThrown) {}
     });
-    getHistComments(processInstanceId);
+    //getHistComments(processInstanceId);
+    getMemberComments(processInstanceId,loanId);
+    getGroupComments(processInstanceId,loanId);
 
 }
 
 function getMemberDetails(memberId, groupId, loanId) {
+    console.log("getMemberDetails");
+    console.log(taskName);
+    if(taskName == "KYC Check"){
+      console.log(taskName);
+        $("#defaultDisplay").show();
+        $("#sucessDisplay").hide();
+        $("#msg1").hide();
+        $("#msg2").hide();
+        $("#msg3").hide();
+        $("#msg4").hide();
+    }
+    else
+    {
+     $("#defaultDisplay").show();
+     $("#sucessDisplay").hide();
+    }
+
+
+
     if (document.getElementById("comment")) {
         document.getElementById("comment").value = "";
     }
     $.ajax({
-        url: '/getIndMemberData/' + btoa(memberId) + '/' + btoa(groupId) + '/' + btoa(loanId) + '/' + btoa(taskName),
+        url: '/getIndMemberData/' + memberId + '/' + groupId + '/' + loanId+ '/' + taskName,
         dataType: 'json',
         beforeSend: function() {
             triggerLoadFunc();
@@ -118,7 +140,7 @@ function getMemberDetails(memberId, groupId, loanId) {
                         $("#memberHistConflict").dataTable().fnDestroy();
                     }
                     $('#memberHistConflict').dataTable({
-                        data: conflictData,
+                        "data": conflictData,
                         "bDestroy": true,
                         "bJQueryUI": false,
                         "bProcessing": true,
@@ -167,26 +189,70 @@ function getMemberDetails(memberId, groupId, loanId) {
                 }
 
                 if (memberData["data"]["highMarksList"]) {
-                    if (memberData["data"]["highMarksList"][0]) {
-                        $('#creditData').css("display", "block");
-                        $('#creditData').css("display", "table-row");
-                        $('#nodata').css("display", "none");
-                        var creditData = memberData["data"]["highMarksList"][0];
-                        for (var index in creditData) {
-                            if (document.getElementById(index)) {
-                                document.getElementById(index).innerHTML = creditData[index];
-                            }
-                            if (document.getElementById("CBStatus")) {
-                                document.getElementById("CBStatus").innerHTML = creditData["status"];
-                            }
-                        }
-                    } else {
-                        $('#creditData').css("display", "none");
-                        $('#nodata').css("display", "block");
-                        if (document.getElementById("CBStatus")) {
-                            document.getElementById("CBStatus").innerHTML = "";
+                    var conflictDataCreditEnquiry = memberData["data"]["highMarksList"];
+                    if (document.getElementById("CBStatus") && conflictDataCreditEnquiry[0]) {
+                         document.getElementById("CBStatus").innerHTML = conflictDataCreditEnquiry[0]["status"];
+                    }
+                    var memberDocumentDetails = memberData["data"]["memberDocumentDetails"];
+                    var memberOverlapLink = ''
+                    var docPath = ''
+                    var docId = ''
+                    for (var j = 0; j < memberDocumentDetails.length; j++) {
+                        if (memberDocumentDetails[j]["documentType"] == "OVERLAPREPORT") {
+                            docPath = memberDocumentDetails[j]["documentPath"];
+                             docId = memberDocumentDetails[j]["docId"];
                         }
                     }
+                    memberOverlapLink = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + "'MemberOverlapWin'" + "," + "'left=30,top=50,width=600,height=550'"+');">View</button>';
+                    if ($.fn.DataTable.isDataTable( '#creditLoadData' ) ) {
+                        $("#creditLoadData").dataTable().fnDestroy();
+                    }
+
+                    $('#creditLoadData').dataTable({
+                        "data": conflictDataCreditEnquiry,
+                        "bDestroy": true,
+                        "bJQueryUI": false,
+                        "bProcessing": true,
+                        "bSort": false,
+                        "bInfo": true,
+                        "bPaginate": false,
+                        "iDisplayLength": 10,
+                        "bSortClasses": false,
+                        "bAutoWidth": false,
+                        "searching" :false,
+                        "sDom": '<"top">rt<"bottom"flp><"clear">',
+                        "bDeferRender": true,
+                        "aoColumns": [
+                            { "mData": "remarks", "sTitle": "OverLap Report",
+                                "mRender": function(data, type, full) {
+                                return memberOverlapLink;
+                                }
+                            },
+                            { "mData": "s_product_type", "sTitle": "Product"},
+                            { "mData": "status","sTitle": "Status"},
+                            { "mData": "remarks","sTitle": "Remarks"},
+                            { "mData": "hm_response_date","sTitle": "HM Response Date"},
+                            { "mData": "existing_loan_limit","sTitle": "Existing Loan Limit"},
+                            { "mData": "loan_amount_eligible","sTitle": "Loan Amount Eligible"},
+                            { "mData": "no_of_mfi_eligible","sTitle": "MFI Eligible"},
+                            { "mData": "name_of_mfi_1","sTitle": "MFI 1 Name"},
+                            { "mData": "overdue_amount_1","sTitle": "Overdue_1"},
+                            { "mData": "loan_amount_1","sTitle": "Loan Amount_1"},
+                            { "mData": "balance_1","sTitle": "Balance_1"},
+                            { "mData": "name_of_mfi_2","sTitle": "MFI 2 Name"},
+                            { "mData": "overdue_amount_2","sTitle": "Overdue_2"},
+                            { "mData": "loan_amount_2","sTitle": "Loan Amount_2"},
+                            { "mData": "balance_2","sTitle": "Balance_2"},
+                            { "mData": "name_of_mfi_3","sTitle": "MFI 3 Name"},
+                            { "mData": "overdue_amount_3","sTitle": "Overdue_3"},
+                            { "mData": "loan_amount_3","sTitle": "Loan Amount_3"},
+                            { "mData": "balance_3","sTitle": "Balance_3"},
+                            { "mData": "name_of_mfi_4","sTitle": "MFI 4 Name"},
+                            { "mData": "overdue_amount_4","sTitle": "Overdue_4"},
+                            { "mData": "loan_amount_4","sTitle": "Loan Amount_4"},
+                            { "mData": "balance_4","sTitle": "Balance_4"}
+                            ],
+                    });
                 }
                 if (memberData["data"]["memberDocumentDetails"]) {
                     if (memberData["data"]["memberDocumentDetails"][0]) {
@@ -199,12 +265,12 @@ function getMemberDetails(memberId, groupId, loanId) {
                                         $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr('onClick', 'window.open(' + "'" + memberDocumentsArray[key]["documentPath"] + "'" + "," + memberDocumentsArray[key]["docId"] + "," + "width=100,height=100" + ').focus();');
                                     }
                                     if (memberDocumentsArray[key]["documentPath"].indexOf("Not%20uploaded") != -1) {
-                                        if (memberDocumentsArray[key]["documentType"] == "MEMBERPHOTO") {
+                                        /*if (memberDocumentsArray[key]["documentType"] == "MEMBERPHOTO") {
                                             $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", "/static/images/naveen.jpg");
                                         }
-                                        else {
+                                        else {*/
                                             $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").css("display", "none");
-                                        }
+                                      //  }
                                     } else {
                                         $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").css("display", "inline-block");
                                         if (memberDocumentsArray[key]["documentType"] != "OVERLAPREPORT") {
@@ -264,6 +330,8 @@ function getMemberDetails(memberId, groupId, loanId) {
         },
         error: function(jqXHR, textStatus, errorThrown) {}
     });
+    getMemberFSRData(memberId);
+    getPaymentHistory("member",memberId,groupId);
 }
 
 function updateMemValidationStatus(status) {
@@ -354,9 +422,15 @@ function updateMemValidationStatus(status) {
     }
     if (status == "Rejected") {
         updateStatus = " rejected";
+        if(taskName == "KYC Check"){
+             $("#msg1").hide();
+            $("#msg2").show();
+            $("#msg3").hide();
+        }
     }
     if (status == "Rework") {
         updateStatus = " sent for rework";
+
     }
 
     $.ajax({
@@ -366,6 +440,11 @@ function updateMemValidationStatus(status) {
         beforeSend: function() {
             triggerLoadFunc();
             $("#loading").show();
+            if(taskName == "KYC Check"){
+                $(".sucess").text("'"+ memberName +"'" + " has been " + updateStatus);
+                $("#defaultDisplay").hide();
+                $("#sucessDisplay").show();
+            }
         },
         complete: function() {
             triggerLoadFunc();
@@ -373,7 +452,10 @@ function updateMemValidationStatus(status) {
         },
         success: function(data) {
             if (data["code"] == "2029") {
-                $.alert({
+
+
+                if(taskName != "KYC Check"){
+                    $.alert({
                     title: "'" + memberName + "'" + " has been " + updateStatus,
                     confirmButton: 'Okay',
                     confirm: function() {
@@ -381,6 +463,9 @@ function updateMemValidationStatus(status) {
                         getGroupData(groupId, loanId);
                     }
                 });
+                }
+
+
                 if (status == "Approved") {
                     document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-success Approved";
                     document.getElementById("memberValStatus").innerHTML = "APP";
@@ -394,7 +479,9 @@ function updateMemValidationStatus(status) {
                     document.getElementById("memberValStatus").innerHTML = "RWRK";
                 }
                 updateMembersCount();
-                getHistComments(processInstanceId);
+                //getHistComments(processInstanceId);
+                getMemberComments(processInstanceId,loanId);
+                getGroupComments(processInstanceId,loanId);
                 checkForTaskCompletion();
             }
         },
@@ -526,15 +613,38 @@ function submitKYCForm(status) {
     var updateStatus = '';
     if (status == "Rework") {
         updateStatus = " sent for Rework";
+        if( taskName == "KYC Check"){
+             $("#msg1").hide();
+            $("#msg2").hide();
+            $("#msg3").show();
+        }
+
+
     }
     if (status == "Approved") {
         updateStatus = " approved";
+         if( taskName == "KYC Check"){
+        $("#msg1").show();
+        $("#msg2").hide();
+        $("#msg3").hide();
+    }
     }
     if (status == "Rejected") {
         updateStatus = " rejected";
+
+        if( taskName == "KYC Check"){
+         $("#msg1").hide();
+         $("#msg2").show();
+        $("#msg3").hide();
+        }
+
     }
     if (status == "Rework" || status == "Rejected") {
         if (comment == "") {
+            if( taskName == "KYC Check"){
+                $("#defaultDisplay").show();
+                $("#sucessDisplay").hide();
+            }
             $.alert("Please input Comment!");
             return false;
         } else {
@@ -558,8 +668,14 @@ function submitKYCForm(status) {
         },
         success: function(data) {
             if (data["code"] == "2024") {
-                //$.alert("'"+ name +"'" + " has been " + updateStatus);
-                $.alert({
+               if( taskName == "KYC Check"){
+               $(".sucess").text("'"+ name +"'" + " has been " + updateStatus);
+               $("#defaultDisplay").hide();
+                $("#sucessDisplay").show();
+               }
+
+              else{
+                 $.alert({
                     title: "'" + name + "'" + " has been " + updateStatus,
                     confirmButton: 'Okay',
                     confirm: function() {
@@ -567,7 +683,7 @@ function submitKYCForm(status) {
                         getGroupData(groupId, loanId);
                     }
                 });
-
+              }
                 if (status == "Approved") {
                     document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-success Approved";
                     document.getElementById("memberValStatus").innerHTML = "APP";
@@ -581,7 +697,9 @@ function submitKYCForm(status) {
                     document.getElementById("memberValStatus").innerHTML = "RWRK";
                 }
                 updateMembersCount();
-                getHistComments(processInstanceId);
+                //getHistComments(processInstanceId);
+                getMemberComments(processInstanceId,loanId);
+                getGroupComments(processInstanceId,loanId);
                 checkForTaskCompletion();
             } else {
                 $.alert("Connection Time out");
@@ -713,8 +831,18 @@ function taskUpdate(status) {
         },
         success: function(data) {
             if (data == "Successful") {
-                $.alert("Member and Group Validation Completed!!");
-                window.location = '/assignedTaskList/';
+
+                if(taskName == "KYC Check"){
+                    $("#group1").hide();
+                    $("#group2").show();
+                    $("#defaultDisplay").hide();
+                    $("#sucessDisplay").show();
+                }
+                else{
+                    $.alert("Member and Group Validation Completed!!");
+                    window.location = '/assignedTaskList/';
+                }
+
             } else {
                 $.alert("Failed due to some Issue . Please try after sometime or contact your Administrator");
             }
@@ -726,7 +854,7 @@ function taskUpdate(status) {
 function creditHistory(loanId) {
     var htmlContent = '';
     $.ajax({
-        url: '/creditHistoryGroup/' + btoa(loanId),
+        url: '/creditHistoryGroup/' + loanId,
         dataType: 'json',
         success: function(data) {
             var creditData = data;
@@ -782,6 +910,21 @@ function creditHistory(loanId) {
                 }
             }
             document.getElementById("creditData").innerHTML = htmlContent;
+             var table = $("#creditTableID").DataTable({
+                "bDestroy": true,
+                "bJQueryUI": false,
+                "bProcessing": true,
+                "bSort": false,
+                "bInfo": true,
+                "bPaginate": false,
+                "iDisplayLength": 10,
+                "bSortClasses": false,
+                "bAutoWidth": false,
+                "searching": false,
+                "sDom": '<"top">rt<"bottom"flp><"clear">',
+                "bDeferRender": true
+            });
+
             //loadDataTable("#creditTableID");
         }
     });
@@ -808,7 +951,7 @@ function loadGroupRoles(groupId, loanId, taskName) {
     var dataObj = {};
     var validationType = '';
     if (group == "CMR" || group == "CLM" || group == "BM") {
-        if (taskName == "Print Loan Documents & FSR") {
+        if (taskName == "Print Loan Documents & FSR" || taskName == "Add new members") {
             validationType = "PEN"
         }
         if (taskName == "Upload loan documents in Web application") {
@@ -885,7 +1028,7 @@ function updateTask(status) {
 function getHistComments(processId) {
     var htmlContent = '';
     $.ajax({
-        url: '/getHistoryComments/' + btoa(processId),
+        url: '/getHistoryComments/' + processId,
         dataType: 'json',
         success: function(data) {
             var commentsJson = data;
@@ -941,7 +1084,7 @@ function getHistComments(processId) {
 
 function documentView(groupId) {
     $.ajax({
-        url: '/DocumentView/' + btoa(groupId),
+        url: '/DocumentView/' + groupId,
         dataType: 'json',
         success: function(data) {
             groupDocData = data;
@@ -954,9 +1097,10 @@ function documentView(groupId) {
                     tr.appendTo('#docments_table');
                 });
             } else {
-                $('#docments_table').css("display", "none");
+                document.getElementById('docments_table').innerHTML = "No documents uploaded";
                 $('#nodata2').css("display", "block");
             }
+            loadDataTable("#documents_table");
         }
     });
 }
@@ -1019,7 +1163,7 @@ function updateGroupMemberStatus() {
 
 function getLoanDetails(groupId, loanId) {
     $.ajax({
-        url: '/getLoanDetails/' + btoa(groupId) + '/' + btoa(loanId),
+        url: '/getLoanDetails/' + groupId + '/' + loanId,
         dataType: 'json',
         success: function(data) {
             var htmlContent = '';
@@ -1143,12 +1287,19 @@ function getLoanDetails(groupId, loanId) {
 
 function loadDataTable(id) {
     var table = $(id).DataTable({
-        "sDom": '<"top">rt<"bottom"flp><"clear">',
-        "paging": false,
-        "bInfo": false,
-        "bLengthChange": false,
+        "bDestroy": true,
+        "bJQueryUI": false,
+        "bProcessing": true,
+        "bSort": true,
+        "bInfo": true,
         "bPaginate": false,
-        "searching": false
+        "iDisplayLength": 10,
+        "bSortClasses": false,
+        "bAutoWidth": false,
+        "searching": false,
+        "sDom": '<"top">rt<"bottom"flp><"clear">',
+        "bDeferRender": true
+
     });
 
     var data = table.$('input, select').serialize();
@@ -1281,7 +1432,7 @@ function approveLoan(updateloanData) {
             if (data.code == "2032") {
                 $.alert("Loan has been approved");
                 var loanAccNumber = data["data"]["loanAccountNumber"];
-                window.location.href = "/loanAccNo/" + btoa(loanAccNumber) + '/' + btoa(appGroupId) + '/' + btoa(loanTypeName) + '/' + btoa(groupName);
+                window.location.href = "/loanAccNo/" + loanAccNumber + '/' + appGroupId + '/' + loanTypeName + '/' + groupName;
             }
             if (data.code == "2034") {
                 $.alert(data["message"]);
@@ -1322,6 +1473,7 @@ function tabControl() {
     $("#tab4").removeClass("active");
     $("#tab5").removeClass("active");
     $("#tab6").removeClass("active");
+    $("#tab7").removeClass("active");
 }
 
 function updateMembersCount() {
@@ -1351,7 +1503,7 @@ function updateMembersCount() {
 
 function rmGroupMaster(groupId) {
     $.ajax({
-        url: '/getGroupData/' + btoa(groupId) + '/' + btoa(loanId) + '/'+ btoa(taskName),
+        url: '/getGroupData/' + groupId + '/' + loanId + '/'+ taskName,
         dataType: 'json',
         beforeSend: function() {
             $("#loading").show();
@@ -1469,6 +1621,8 @@ function rmGroupMaster(groupId) {
                     });
                 }
             }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
         }
     });
 }
@@ -1511,7 +1665,7 @@ function validateFields(id, val, fieldName) {
 function updateGroupValStatus(status) {
     var flag  =0;
     var validationType = '';
-    var comment;
+    var comment = '';
     var processUpdate;
     var dataObj = {};
     if (document.getElementById("comment")) {
@@ -1621,4 +1775,285 @@ function updateGroupValStatus(status) {
 
 }
 
+function getMemberFSRData(memberId){
+    $.ajax({
+        url: '/getMemberFSR/' + memberId,
+        dataType: 'json',
+        success: function(data) {
+            var childRowHtml = '';
+            childRowHtml = '<thead><td><b>Field Name</b></td><td><b>Actual Value</b></td></thead>';
+            var fsrData = data;
+            console.log("fsrData",fsrData);
+            var formSectionData = [];
+            var fsrDataJsonStr = fsrData.data;
+            if(fsrDataJsonStr == null){
+                childRowHtml +=
+                    '<tr>'+
+                        '<td colspan="2">' + 'No Data' + '</td>'
+                    '</tr>';
+            }
+            else{
+                var fsrDataJson = JSON.parse(fsrDataJsonStr);
+                console.log(fsrDataJson);
+                formSectionData = fsrDataJson.form_sections;
+                var irrelevantDataArr = ["Official Details","Signature","CMR/BM/CLM confirmation after screening"];
+                for(var key in formSectionData){
+                    var sectionName = formSectionData[key]["section_name"]
+                    var sectionFields = formSectionData[key]["section_fields"];
+                    if ($.inArray(sectionName, irrelevantDataArr) == -1) {
+                        childRowHtml += '<th colspan="2" style="color:darkblue;background-color:aliceblue;">'+sectionName+'</th>';
 
+                        $.each(sectionFields , function (index, item){
+                            var fieldValue = '';
+                            if(item.value == undefined){
+                                fieldValue = "";
+                            }
+                            else{
+                                fieldValue = item.value;
+                            }
+                          childRowHtml +=
+                            '<tr>'+
+                                '<td style="width:60%">' + item.label + '</td>'+
+                                '<td style="width:40%">' + fieldValue + '</td>'+
+                            '</tr>';
+                        });
+                    }
+                }
+            }
+            if(document.getElementById("fsrLoadData")){
+                 document.getElementById("fsrLoadData").innerHTML = childRowHtml;
+            }
+
+        }
+   });
+}
+
+
+
+function getMemberComments(processInstanceId, loanId) {
+    console.log("getMemberComments called");
+    //var processInstanceId="cb2fa258-04ce-11e7-b56c-56847afe9799";
+    //  console.log(processInstanceId);
+    //   console.log(loanId);
+     $("#ajax_loader").show();
+    $.ajax({
+        url: '/getMemberComments/' + processInstanceId + '/' + loanId,
+        dataType: 'json',
+
+        beforeSend: function() {
+
+            $("#ajax_loader").show();
+        },
+        complete: function() {
+            $("#ajax_loader").show();
+        },
+
+
+        success: function(data) {
+            $("#ajax_loader").hide();
+            //console.log("Member Comment");
+            //console.log(data);
+            $('#profile-feed-1').empty();
+            var commentData = data;
+            //console.log(commentData.data.length);
+            //console.log(commentData);
+           if(commentData.data.length>0){
+
+            $.each(commentData.data, function(key, value) {
+
+                    var count=0;
+
+                   for (var i=0; i< value.comments.length;i++)
+                   {
+                        if(value.comments[i].comments !=""){
+                            count ++;}
+                   }
+
+
+
+                      if(count>0)
+                       {
+                            $('#profile-feed-1').append('<div ><i class="fa fa-user fa-2" aria-hidden="true"></i> &nbsp<span style="font-size:12px;color:darkblue;"><b>' + value.memberName + ' (' + value.memberId + ' ) </b> <span> </div>');
+                       }
+
+
+
+                //console.log("commentData.data");
+                //console.log(commentData.data);
+
+
+
+                $.each(value.comments, function(index, val) {
+                    //console.log(value)
+                    if (val.comments != "") {
+
+                        //$('#profile-feed-2').append($('<div style="font-size:11px; font-weight:bold;color:darkslategrey;"></div>').html(value.memberName ));
+                        $('#profile-feed-1').append('' +
+                            '<div class="profile-activity clearfix"><div><span style="font-weight:bold; font-size:11px;color:#981b1b;">' +
+                            '' + val.userName + ':</span> ' +
+                            '&nbsp&nbsp<span style="color:black;,font-size:11px; ">' + val.taskName + '</span>' +
+                            '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span style="font-style:italic;"><br>' +
+                            '<i class="fa fa-comments" style="color:darkslategrey;" aria-hidden="true"></i>&nbsp' + val.comments +
+                            '</span> <div class="time"><i class="ace-icon fa fa-clock-o bigger-110"></i><span > &nbsp&nbsp' +
+                            val.validatedDate + '</span></div></div></div>');
+                    }
+
+
+                });
+            });
+
+        }
+
+        else
+        {
+             $('#profile-feed-1').append('No Comments');
+             console.log("no comments");
+        }
+
+        }
+
+    });
+
+}
+
+
+
+
+
+
+function getGroupComments(processInstanceId, loanId) {
+    //var processInstanceId = "2667fa07-02f9-11e7-8ce8-56847afe9799";
+    //var loanId = "119951";
+    //cnsole.log(processInstanceId);
+    //console.log(loanId);
+
+
+    $.ajax({
+        url: '/getGroupComments/' + processInstanceId + '/' + loanId,
+        dataType: 'json',
+        beforeSend: function() {
+
+         $("#ajax_loader2").show();
+        },
+        complete: function() {
+           $("#ajax_loader2").hide();
+        },
+
+
+        success: function(data) {
+        $('#profile-feed-2').empty();
+            console.log("group comments");
+            console.log(data);
+             $("#ajax_loader2").hide();
+
+            var jsondata = data;
+            // console.log(jsondata.data[0].comments.length);
+            if(jsondata.data[0]){
+
+            if (jsondata.data[0].comments.length>0) {
+                var groupName = jsondata.data[0].groupName;
+                var appGroupId = jsondata.data[0].appGroupId;
+                var groupId = jsondata.data[0].groupId;
+                $('#profile-feed-2').append('<div style="font-size:12px; font-weight:bold;color:darkslategrey;"><i class="fa fa-user fa-3" aria-hidden="true"></i> &nbsp<span style="font-size:13px;color:darkblue; align:center"><b>' + groupName + '</b></span> </div>');
+
+
+                $.each(jsondata.data[0].comments, function(key, value) {
+                    // console.log(value);
+                    if (value.comments != "") {
+
+                        $('#profile-feed-2').append('' +
+                            '<div class="profile-activity clearfix"><div><span style="font-weight:bold; font-size:11px;color:#981b1b;"><b>' +
+                            '' + value.userName + '</b>:</span> ' +
+                            '<span style="color:black;,font-size:8px; "><b>' + value.taskName + '<b></span>' +
+                            '<span style="font-style:italic;"><br>' +
+                            '<i class="fa fa-comments" style="color:darkslategrey;" aria-hidden="true"></i>&nbsp<B>' + value.comments +
+                            '</b></span> <div class="time"><i class="ace-icon fa fa-clock-o bigger-110"></i><span > &nbsp&nbsp' +
+                            value.validatedDate + '</span></div></div></div>');
+
+                    }
+
+                });
+
+
+
+
+
+            }}
+             else{
+
+                    $('#profile-feed-2').append('No Comments');
+
+                }
+
+
+
+
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            $('#profile-feed-2').append('No Comments');
+        }
+
+
+    });
+
+}
+
+function loadNextMem(){
+    getGroupData(groupId,loanId);
+
+}
+
+function getPaymentHistory(key,memberId,groupId){
+    var url = '';
+    if(key == "member"){
+        url = '/getLoanMemberPaymentHistory/' + memberId + '/' + groupId;
+    }
+    if(key == "group"){
+        url = '/getLoanGroupPaymentHistory/'+groupId;
+    }
+    $.ajax({
+        url: url,
+        type: 'post',
+        dataType: 'json',
+        success: function(data) {
+
+            var paymentHisData = data;
+            var paymentHisLoanData = paymentHisData.data;
+
+            var paymentHistoryData = [];
+            if(!$.isArray(paymentHisLoanData) || !paymentHisLoanData.length){
+                //console.log('if paymentHisLoanData.length:', paymentHisLoanData.length);
+            }else{
+                var memberPaymentHistoryData = paymentHisLoanData[0];
+                paymentHistoryData = memberPaymentHistoryData.paymentHistory;
+                console.log('paymentHistoryData: ',JSON.stringify(paymentHistoryData));
+            }
+
+            $('#paymentHistoryLoadData').dataTable({
+            "data": paymentHistoryData,
+            "bDestroy": true,
+            "bJQueryUI": false,
+            "bProcessing": true,
+            "bSort": true,
+            "bInfo": true,
+            "bPaginate": false,
+            "iDisplayLength": 10,
+            "bSortClasses": false,
+            "bAutoWidth": false,
+            "searching" :false,
+            "sDom": '<"top">rt<"bottom"flp><"clear">',
+            "bDeferRender": true,
+            "aoColumns": [
+                { "mData": "appMemberId", "sTitle": "App MemberId"},
+                { "mData": "loanTypeId","sTitle": "Loan TypeId"},
+                { "mData": "loanType","sTitle": "Loan Type"},
+                { "mData": "demand","sTitle": "Demand"},
+                { "mData": "arrears","sTitle": "Arrears"},
+                { "mData": "balance","sTitle": "Balance"},
+                { "mData": "bucketStatus","sTitle": "Bucket Status"},
+                { "mData": "npaBucket","sTitle": "Npa Bucket"}
+                ]
+            });
+        }
+    });
+}

@@ -2,10 +2,9 @@
 {% load staticfiles %}
 {% block javascript %}
 
-<script src="{% static 'datajs/grouplist.js' %}"></script>
-<script src="{% static 'datajs/loadTaskList.js' %}"></script>
-<script src="{% static 'datajs/mysidenav.js' %}"></script>
-<script src="{% static 'js/imageViewer.js' %}"></script>
+<script src="/static/datajs/grouplist.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/loadTaskList.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/mysidenav.js?v={{JS_VERSION}}"></script>
 <script type="text/javascript">
         var groupId = '{{ groupId | escapejs }}';
         var loanId = '{{ loanId | escapejs }}';
@@ -15,7 +14,8 @@
         var taskName = '{{ taskName | escapejs }}';
         var processInstanceId = '{{ processInstanceId | escapejs }}';
         $(document).ready(function (){
-            imageViewer();
+            $(".main").imageBox();
+            $("#unbind-pos").draggable();
             getGroupData(groupId,loanId);
             loadGroupRoles(groupId, loanId, taskName) ;
             taskCount();
@@ -33,7 +33,7 @@
 
 <div class="row" id="main">
     <!--second row strat-->
-    <div class="docs-pictures clearfix">
+    <div class="main">
     <div class="col-lg-2 pricing-box" >
         <div class="panel panel-default">
             <div class="panel-heading">Group Detail </div>
@@ -73,6 +73,8 @@
                         </li>
                         <li id="tab3"><a data-toggle="tab" href="#groupDetail">Group Details</a></li>
                         <li id="tab4"><a data-toggle="tab" href="#profile5">Member History</a></li>
+                        <li id="tab5"><a data-toggle="tab" href="#fsr">FSR</a></li>
+                        <li id="tab6"><a data-toggle="tab" href="#paymentHistory">Payment History</a></li>
                     </ul>
                     <div class="tab-content">
                         <div align="right" title="Comments">
@@ -87,8 +89,8 @@
                             <section>
                                 <div class="row">
                                     <div class="col-md-2">
-                                        <img src="{% static 'images/naveen.jpg' %}"  id="MEMBERPHOTO_docPath" height="135" width="134" data-original="">
-                                            &nbsp;&nbsp;&nbsp;
+                                         <img src=""  id="MEMBERPHOTO_docPath" class="img img-test"
+                                                   height="135" width="134"   data-original="">    &nbsp;&nbsp;&nbsp;
 
                                         <br/>
                                         <br/>
@@ -185,6 +187,13 @@
                                                     <span class="editable" id="mobileNo"></span>
                                                 </div>
                                             </div>
+                                            <div class="profile-info-row">
+                                                <div class="profile-info-name"> Previous Loan Cycle  </div>
+                                                <div class="profile-info-value">
+                                                    <span class="editable" id="previousLoanMemberCycle"></span>
+
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="space-20"></div>
                                     </div>
@@ -198,8 +207,11 @@
                                                         &nbsp;&nbsp;
 
                                                     <div id="idProof" style="display:inline-block;margin-top: 4px" class="idProof">
-                                                       <img src=""  id="IDPROOF_docPath" style="display:none;width: 20px; height: 21px;"    data-original="">
-                                                        <img src=""  id="IDPROOF_2_docPath" style="display:none;width: 20px; height: 21px;" data-original="">
+                                                       <img src=""  id="IDPROOF_docPath" class="img img-test"
+                                  style="width: 20px; height:21px;"    data-original="">
+
+                                     <img src=""  id="IDPROOF_2_docPath"  class="img img-test"
+                                   style="display:none;width: 20px; height: 21px;" data-original="">
                                                             <!--button type="button" class="btn btn-info btn-md btn-danger" id="myBtn2">view proof</button-->
                                                         </img>
                                                     </div>
@@ -212,9 +224,12 @@
                                                         &nbsp;&nbsp;
 
                                                     <div id="idProof" style="display:inline-block;margin-top: 4px" class="idProof">
-                                                        <img src=""  id="ADDRESSPROOF_docPath" style="display:none;width: 20px; height: 21px;" data-original="">
+                                                        <img src=""  id="ADDRESSPROOF_docPath"  class="img img-test"
+                                   style="display:none;width: 20px; height: 21px;" data-original="">
 
-                                                        <img src=""  id="ADDRESSPROOF_2_docPath" style="display:none;width: 20px; height: 21px;" data-original="">
+
+                          <img src=""  id="ADDRESSPROOF_2_docPath"  class="img img-test"
+                                   style="display:none;width: 20px; height: 21px;" data-original="">
                                                             <!--button type="button" class="btn btn-info btn-md btn-danger" id="myBtn2">view proof</button-->
                                                         </img>
                                                     </div>
@@ -225,7 +240,9 @@
                                                 <div class="profile-info-value">
                                                     <span class="editable" id="sbAccountNumber"></span>
                                                     <div style="display:inline-block;margin-top: 4px" class="idProof">
-                                                        <img src=""  id="SBACCOUNTPASSBOOK_docPath" style="display:none;width: 20px; height: 21px;" data-original="">
+                                                        <img src=""  id="SBACCOUNTPASSBOOK_docPath"  class="img img-test"
+                                   style="display:none;width: 20px; height: 21px;" data-original="">
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -275,13 +292,7 @@
                                                     <span  style="visibility:hidden" id="loanTypeValue"></span>
                                                 </div>
                                             </div>
-                                            <div class="profile-info-row">
-                                                <div class="profile-info-name"> Previous Loan Cycle  </div>
-                                                <div class="profile-info-value">
-                                                    <span class="editable" id="previousLoanMemberCycle"></span>
 
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -447,7 +458,52 @@
                             <!-- CONATINER END -->
                             <!--form End-->
                         </div>
+                        <div id="paymentHistory" class="tab-pane">
+                            <div class="page-content">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <!-- PAGE CONTENT BEGINS -->
+                                    <div class="col-xs-12 col-sm-12  col-md-12 widget-container-col" id="widget-container-col-2">
+                                        <div class="widget-box widget-color-blue" id="widget-box-2">
 
+                                            <div class="widget-body">
+                                                        <div class="widget-main no-padding" style="overflow: auto;">
+                                                            <table class="table table-striped table-bordered table-hover" id="paymentHistoryLoadData">  </table>
+
+                                                        </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.span -->
+                                </div>
+                                <!-- /.row -->
+                                <!-- PAGE CONTENT ENDS -->
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                    </div>
+                        <div id="fsr" class="tab-pane">
+                                <div class="page-content">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                        <!-- PAGE CONTENT BEGINS -->
+                                            <div class="col-xs-12 col-sm-12  col-md-12 widget-container-col" id="widget-container-col-2">
+                                                <div class="widget-box widget-color-blue" id="widget-box-2">
+                                                    <div class="widget-body">
+                                                        <div class="widget-main no-padding" style="overflow: auto;">
+                                                            <table class="table table-striped table-bordered table-hover" id="fsrLoadData">  </table>
+                                                         </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <!-- /.span -->
+                                        </div>
+                                        <!-- /.row -->
+                                        <!-- PAGE CONTENT ENDS -->
+                                    </div>
+                                <!-- /.col -->
+                                </div>
+                            </div>
                             <div id="profile4" class="tab-pane">
                                 <div class="page-content">
                                     <div class="row">
@@ -457,7 +513,7 @@
                                                 <div class="widget-box widget-color-blue" id="widget-box-2">
                                                     <div class="widget-body">
                                                         <div class="widget-main no-padding" style="overflow: auto;">
-                                                            <table class="table table-striped table-bordered table-hover">
+                                                            <table class="table table-striped table-bordered table-hover" id="creditLoadData">
                                                                 <thead class="thin-border-bottom">
                                                                     <tr>
                                                                         <th>OverLap Report</th>
@@ -487,7 +543,7 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody id="credit">
-                                                                    <tr id="creditData">
+                                                                    <!--tr id="creditData">
                                                                         <td>
                                                                             <button type="button" id="OVERLAPREPORT_docPath" class="btn btn-info btn-md btn-danger" >View</button>
                                                                         </td>
@@ -514,10 +570,10 @@
                                                                         <td id="overdue_amount_4"></td>
                                                                         <td id="loan_amount_4"></td>
                                                                         <td id="balance_4"></td>
-                                                                    </tr>
+                                                                    </tr-->
                                                                 </tbody>
                                                             </table>
-                                                            <div id="nodata" style="display:none;font-weight:bold;margin:1%">No Data Available</div>
+                                                            <!--div id="nodata" style="display:none;font-weight:bold;margin:1%">No Data Available</div-->
                                                         </div>
                                                     </div>
                                                 </div>

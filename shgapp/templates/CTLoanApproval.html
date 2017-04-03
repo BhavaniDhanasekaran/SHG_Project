@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block javascript %}
-<script src="{% static 'datajs/grouplist.js' %}"></script>
-<script src="{% static 'datajs/loadTaskList.js' %}"></script>
-<script src="{% static 'datajs/masterData.js' %}"></script>
-<script src="{% static 'datajs/mysidenav.js' %}"></script>
+<script src="/static/datajs/grouplist.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/loadTaskList.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/masterData.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/mysidenav.js?v={{JS_VERSION}}"></script>
 <script>
     var groupId = '{{ groupId | escapejs }}';
     var group= '{{ group | escapejs }}';
@@ -16,10 +16,13 @@
 
     $(document).ready(function(){
         loadGroupRoles(groupId,loanId,taskName);
-        getHistComments(processInstanceId);
+        //getHistComments(processInstanceId);
+        getMemberComments(processInstanceId,loanId);
+        getGroupComments(processInstanceId,loanId);
         creditHistory(loanId);
         documentView(loanId);
         getLoanDetails(groupId,loanId);
+        getPaymentHistory("group",0,groupId);
     });
 </script>
 <script type="text/javascript">
@@ -221,6 +224,7 @@
                                                             <div class="widget-main no-padding">
                                                                 <table class="table table-striped table-bordered table-hover paymentTable" id="paymentTable" >
                                                                     <thead class="thin-border-bottom">
+
                                                                         <tr>
                                                                             <th> S.No</th>
                                                                             <th>App Mem Id</th>
@@ -317,21 +321,19 @@
                             <!-- /.col -->
                         </div>
                     </div>
-                    <div id="paymentHistory" class="tab-pane">
-                        <div class="page-content1">
+                   <div id="paymentHistory" class="tab-pane">
+                            <div class="page-content">
                             <div class="row">
                                 <div class="col-xs-12">
                                     <!-- PAGE CONTENT BEGINS -->
-                                    <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
+                                    <div class="col-xs-12 col-sm-12  col-md-12 widget-container-col" id="widget-container-col-2">
                                         <div class="widget-box widget-color-blue" id="widget-box-2">
 
                                             <div class="widget-body">
-                                                <div class="widget-main no-padding">
+                                                        <div class="widget-main no-padding" style="overflow: auto;">
+                                                            <table class="table table-striped table-bordered table-hover" id="paymentHistoryLoadData">  </table>
 
-                                                    <br>
-                                               Under Processing..<br><br>
-
-                                                </div>
+                                                        </div>
                                             </div>
                                         </div>
                                     </div>
@@ -483,7 +485,6 @@
                                     <!-- PAGE CONTENT BEGINS -->
                                     <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
                                         <div class="widget-box widget-color-blue" id="widget-box-2">
-                                            <div class="scrollable-horizontal" data-size="800">
                                                 <div class="widget-body"   style="overflow-x:scroll;">
                                                     <div class="widget-main no-padding">
                                                         <table id="creditTableID" class="table table-striped table-bordered table-hover">
@@ -520,7 +521,6 @@
                                                             <tbody id="creditData"></tbody>
                                                         </table>
                                                     </div>
-                                                </div>
                                             </div>
                                         </div>
                                         <!-- /.span -->

@@ -11,8 +11,8 @@
             loadAssignedTaskList();
         });
     </script>
-    <script src="{% static 'datajs/loadTaskList.js' %}"></script>
-    <script src="{% static 'datajs/grouplist.js' %}"></script>
+    <script src="/static/datajs/loadTaskList.js?v={{JS_VERSION}}"></script>
+    <script src="/static/datajs/grouplist.js?v={{JS_VERSION}}"></script>
 {% endblock %}
 <!-- PAGE CONTENT BEGINS -->
 {% block content %}

@@ -23,20 +23,13 @@ def session_required(func):
 
 def decryption_required(func):
     def decryptParameters(request, *args, **kwargs):
-        print "\n\n\n\n\n\n\n\n"
-        print args
         import base64
-        print kwargs
         if args:
             for key in args:
                 args[key] =  base64.b64decode(args[key])
-                print "decoded key"
-                print args[key]
         if kwargs:
             for key in kwargs:
                 kwargs[key] =  base64.b64decode(kwargs[key])
-                print "decoded key"
-                print kwargs[key]
         return func(request, *args, **kwargs)
     return decryptParameters
 
