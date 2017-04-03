@@ -9,7 +9,7 @@ function getGroupData(groupID, loanId) {
     var appCount = 0;
     var rejCount = 0;
     var rewCount = 0;
-    $("#san_test").empty();
+    $("#groupMembersDropDown").empty();
     $.ajax({
         url: '/getGroupData/' + groupID + '/' + loanId + '/'+taskName,
         dataType: 'json',
@@ -50,8 +50,8 @@ function getGroupData(groupID, loanId) {
                             className = "list-group-item list-group-item-action list-group-item-warning Rework";
                             rewCount += 1;
                         }
-                        if (document.getElementById("san_test")) {
-                            $("#san_test").append('<a id="' + memberId + '" onclick="getMemberDetails(' + memberId + ',' + groupId + ',' + loanId + ');tabControl();" class="' + className + '" style="font-weight:bold;"> (' + groupData["data"]["groupMemDetail"][i]["sequenceNumber"] + ")  " + groupData["data"]["groupMemDetail"][i]["memberName"] + '</a>');
+                        if (document.getElementById("groupMembersDropDown")) {
+                            $("#groupMembersDropDown").append('<a id="' + memberId + '" onclick="getMemberDetails(' + memberId + ',' + groupId + ',' + loanId + ');tabControl();" class="' + className + '" style="font-weight:bold;"> (' + groupData["data"]["groupMemDetail"][i]["sequenceNumber"] + ")  " + groupData["data"]["groupMemDetail"][i]["memberName"] + '</a>');
                         }
                         if (document.getElementById("groupName") && groupData["data"]["groupName"]) {
                             document.getElementById("groupName").innerHTML = groupData["data"]["groupName"];
@@ -66,7 +66,7 @@ function getGroupData(groupID, loanId) {
                             document.getElementById("groupId").innerHTML = groupData["data"]["groupId"];
                         }
                     }
-                    var membersCount = document.getElementById("san_test").getElementsByTagName("a").length;
+                    var membersCount = document.getElementById("groupMembersDropDown").getElementsByTagName("a").length;
                     var approvedCount = $('.Approved').length;
                     var rejectedCount = $('.Rejected').length;
                     updateMembersCount();
@@ -89,8 +89,8 @@ function getGroupData(groupID, loanId) {
         error: function(jqXHR, textStatus, errorThrown) {}
     });
     //getHistComments(processInstanceId);
-    getMemberComments(processInstanceId,loanId);
-    getGroupComments(processInstanceId,loanId);
+    //getMemberComments(processInstanceId,loanId);
+    //getGroupComments(processInstanceId,loanId);
 
 }
 
@@ -459,7 +459,7 @@ function updateMemValidationStatus(status) {
                     title: "'" + memberName + "'" + " has been " + updateStatus,
                     confirmButton: 'Okay',
                     confirm: function() {
-                        $("#san_test").html("");
+                        $("#groupMembersDropDown").html("");
                         getGroupData(groupId, loanId);
                     }
                 });
@@ -480,8 +480,8 @@ function updateMemValidationStatus(status) {
                 }
                 updateMembersCount();
                 //getHistComments(processInstanceId);
-                getMemberComments(processInstanceId,loanId);
-                getGroupComments(processInstanceId,loanId);
+                //getMemberComments(processInstanceId,loanId);
+                //getGroupComments(processInstanceId,loanId);
                 checkForTaskCompletion();
             }
         },
@@ -679,7 +679,7 @@ function submitKYCForm(status) {
                     title: "'" + name + "'" + " has been " + updateStatus,
                     confirmButton: 'Okay',
                     confirm: function() {
-                        $("#san_test").html("");
+                        $("#groupMembersDropDown").html("");
                         getGroupData(groupId, loanId);
                     }
                 });
@@ -698,8 +698,8 @@ function submitKYCForm(status) {
                 }
                 updateMembersCount();
                 //getHistComments(processInstanceId);
-                getMemberComments(processInstanceId,loanId);
-                getGroupComments(processInstanceId,loanId);
+                //getMemberComments(processInstanceId,loanId);
+                //getGroupComments(processInstanceId,loanId);
                 checkForTaskCompletion();
             } else {
                 $.alert("Connection Time out");
@@ -711,7 +711,7 @@ function submitKYCForm(status) {
 
 
 function checkForTaskCompletion() {
-    var membersCount = document.getElementById("san_test").getElementsByTagName("a").length;
+    var membersCount = document.getElementById("groupMembersDropDown").getElementsByTagName("a").length;
     var approvedCount = $('.Approved').length;
     var rejectedCount = $('.Rejected').length;
     var reworkCount = $('.Rework').length;
@@ -1477,7 +1477,7 @@ function tabControl() {
 }
 
 function updateMembersCount() {
-    var membersCount = document.getElementById("san_test").getElementsByTagName("a").length;
+    var membersCount = document.getElementById("groupMembersDropDown").getElementsByTagName("a").length;
     var approvedCount = $('.Approved').length;
     var rejectedCount = $('.Rejected').length;
     var reworkCount = $('.Rework').length;
