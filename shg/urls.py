@@ -29,7 +29,7 @@ task_urlpatterns = [
     url(r'^dstasklist/', task.dstasklist, name = 'dstasklist'),
     url(r'^dstasklistByName/(?P<taskName>[^/]+)', task.dstasklistByName, name = 'dstasklistByName'),
     url(r'^mytask/', task.mytask, name = 'mytask'),
-    url(r'^SHGForm/(?P<groupId>[^/]+)/(?P<loanId>[^/]+)/(?P<taskId>[^/]+)/(?P<processId>[^/]+)/(?P<taskName>[^/]+)/(?P<loanType>[^/]+)', task.SHGForm, name = 'SHGForm'),
+    url(r'^SHGForm/(?P<groupId>[^/]+)/(?P<loanId>[^/]+)/(?P<taskId>[^/]+)/(?P<processId>[^/]+)/(?P<taskName>[^/]+)/(?P<loanTypeName>[^/]+)/(?P<loanTypeId>[^/]+)', task.SHGForm, name = 'SHGForm'),
 
 ]
 urlpatterns += task_urlpatterns
@@ -55,6 +55,7 @@ kyc_urlpatterns = [
     url(r'^getGroupComments/(?P<processId>[^/]+)/(?P<loanId>[^/]+)', kyc.getGroupComments, name='getGroupComments'),
     url(r'^getLoanMemberPaymentHistory/(?P<memberId>[^/]+)/(?P<groupId>[^/]+)',kyc.getLoanMemberPaymentHistory, name = 'getLoanMemberPaymentHistory'),
     url(r'^getLoanGroupPaymentHistory/(?P<groupId>[^/]+)',kyc.getLoanGroupPaymentHistory, name = 'getLoanGroupPaymentHistory'),
+    url(r'^getATLForeClosureData/',kyc.getATLForeClosureData, name = 'getATLForeClosureData'),
 
 ]
 urlpatterns += kyc_urlpatterns

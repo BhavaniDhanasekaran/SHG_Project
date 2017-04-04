@@ -55,9 +55,6 @@
                                 '<span class="btn-sm btn-primary zoom-in">Zoom In</span>&nbsp;'+
                                 '<span class="btn-sm btn-primary zoom-out">Zoom Out</span>&nbsp;'+
                                 '<span class="btn-sm btn-primary rotate">Rotate</span>&nbsp;'+
-                               
-                                '<span role="prev" class="btn-sm btn-primary switch">Prev</span>&nbsp;'+
-                                '<span role="next" class="btn-sm btn-primary switch">Next</span>&nbsp;'+
                             '</div>'+
                         '</div>'+
                        

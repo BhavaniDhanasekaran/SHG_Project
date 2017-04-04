@@ -51,7 +51,7 @@ function getGroupData(groupID, loanId) {
                             rewCount += 1;
                         }
                         if (document.getElementById("groupMembersDropDown")) {
-                            $("#groupMembersDropDown").append('<a id="' + memberId + '" onclick="getMemberDetails(' + memberId + ',' + groupId + ',' + loanId + ');tabControl();" class="' + className + '" style="font-weight:bold;"> (' + groupData["data"]["groupMemDetail"][i]["sequenceNumber"] + ")  " + groupData["data"]["groupMemDetail"][i]["memberName"] + '</a>');
+                            $("#groupMembersDropDown").append('<a id="' + memberId + '" onclick="getMemberDetails(' + memberId + ',' + groupId + ',' + loanId + ');" class="' + className + '" style="font-weight:bold;"> (' + groupData["data"]["groupMemDetail"][i]["sequenceNumber"] + ")  " + groupData["data"]["groupMemDetail"][i]["memberName"] + '</a>');
                         }
                         if (document.getElementById("groupName") && groupData["data"]["groupName"]) {
                             document.getElementById("groupName").innerHTML = groupData["data"]["groupName"];
@@ -1100,7 +1100,7 @@ function documentView(groupId) {
                 document.getElementById('docments_table').innerHTML = "No documents uploaded";
                 $('#nodata2').css("display", "block");
             }
-            loadDataTable("#documents_table");
+            loadDataTable("#docments_table");
         }
     });
 }
@@ -1168,6 +1168,7 @@ function getLoanDetails(groupId, loanId) {
         success: function(data) {
             var htmlContent = '';
             var creditData = data;
+            console.log(data,"data");
             var loanDetails = data["data"]["loanDetails"];
             if (document.getElementById("loanTypeName")) {
                 document.getElementById("loanTypeName").innerHTML = loanDetails["loanTypeName"];
@@ -1262,8 +1263,8 @@ function getLoanDetails(groupId, loanId) {
                         ' <input type="text" name="ltypeid_' + i + '" value=' + creditObj["loanTypeId"] + '></td><td style="display:none">'
 
                         +
-                        ' <input type="text" name="atLlonaid' + i + '" value=' + creditObj["atLloanId"] + '></td><td style="display:none">' +
-                        ' <input type="text" name="atlAcc' + i + '" value=' + creditObj["atlLoanAccountNumber"] + '></td>'
+                        ' <input type="text" id="atlLoanId_'+creditObj["memberId"]+'" name="atlLoanId' + i + '" value=' + creditObj["atLloanId"] + '></td><td style="display:none">' +
+                        ' <input type="text" id="atlAccNo_'+creditObj["memberId"]+'" name="atlAcc' + i + '" value=' + creditObj["atlLoanAccountNumber"] + '></td>'
 
                         +
                         '</tr>';
@@ -1280,6 +1281,10 @@ function getLoanDetails(groupId, loanId) {
                 }
             }
             loadDataTable("#paymentTable");
+            /*if(loanTypeName == "ATL"){
+                console.log("ATLATLATLATLATLATLATLATLATLATLATLATLATL")
+                getForeClosureInfo();
+            }*/
         }
     });
 }
@@ -1647,7 +1652,6 @@ function validateFields(id, val, fieldName) {
         return false;
     }
     if (fieldName == "loanAmount") {
-        console.log(Math.round(val));
         if (Math.round(val) == 0) {
             $("#" + id).css('background-color', '#FEEFB3');
             $("#" + id).css('color', 'black');
@@ -2056,4 +2060,59 @@ function getPaymentHistory(key,memberId,groupId){
             });
         }
     });
+}
+
+
+function getForeClosureInfo(){
+    var rows = [];
+    $('table.paymentTable tr').not('thead tr').each(function(i, n){
+        var $row = $(n);
+        console.log($row.find("td:eq(28) input[type='text']").val());
+        if($row.find("td:eq(28) input[type='text']").val() != "null"){
+            rows.push({
+              "memberId":   $row.find("td:eq(17) input[type='checkbox']").val(),
+              "atldebt": $row.find("td:eq(18) input[type='text']").val(),
+              "interest": $row.find("td:eq(19) input[type='text']").val(),
+              "prevMonthGroupBalance":  $row.find("td:eq(20) input[type='text']").val(),
+              "currentMonthCollection": $row.find("td:eq(21) input[type='text']").val(),
+              "currentMonthOutstanding":  $row.find("td:eq(22) input[type='text']").val(),
+              "prevLoanGroupAmount": $row.find("td:eq(23) input[type='text']").val(),
+              "sumOldActiveMembersAmount": $row.find("td:eq(24) input[type='text']").val(),
+              "memberLoanAmount":  $row.find("td:eq(25) input[type='text']").val(),
+              //"loanTypeId": $row.find("td:eq(27) input[type='text']").val()
+              "loanTypeId": loanTypeId
+        });
+        }
+
+
+    });
+    console.log(rows);
+    var atlLoanId;
+    var atlAccNo;
+    if(rows[0]){
+        atlLoanId = document.getElementById("atlLoanId_"+rows[0]["memberId"]).value;
+        atlAccNo = document.getElementById("atlAccNo_"+rows[0]["memberId"]).value;
+    }
+    var dataObj = {};
+    var foreClosureInput = {
+    "userId": userId,
+    "groupId": groupId,
+    "loanId": loanId,
+    "atlLoanId": atlLoanId,
+    "atlAccNo": atlAccNo,
+    "memberLoanDetails": eval(JSON.stringify(rows))
+    };
+    dataObj["foreClosureInput"]  = foreClosureInput;
+    console.log(dataObj);
+    $.ajax({
+        url: '/getATLForeClosureData/',
+        dataType: 'json',
+        type : "POST",
+        success: function(data) {
+            console.log(data);
+        },
+        data: JSON.stringify(dataObj)
+    });
+
+
 }

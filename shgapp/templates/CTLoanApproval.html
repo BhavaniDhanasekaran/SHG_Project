@@ -12,9 +12,14 @@
     var userId = '{{ userId | escapejs }}';
     var taskName = '{{ taskName | escapejs }}';
     var taskId = '{{ taskId | escapejs }}';
+    var loanTypeName = '{{ loanType | escapejs }}';
+    var loanTypeId = '{{ loanTypeId | escapejs }}';
+
     var processInstanceId = '{{ processInstanceId | escapejs }}';
 
     $(document).ready(function(){
+    console.log("loanTypeName,loanTypeId");
+    console.log(loanTypeName,loanTypeId);
         loadGroupRoles(groupId,loanId,taskName);
         //getHistComments(processInstanceId);
         //getMemberComments(processInstanceId,loanId);
@@ -23,6 +28,7 @@
         documentView(loanId);
         getLoanDetails(groupId,loanId);
         getPaymentHistory("group",0,groupId);
+
     });
 </script>
 <script type="text/javascript">
