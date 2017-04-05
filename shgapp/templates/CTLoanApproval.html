@@ -18,8 +18,6 @@
     var processInstanceId = '{{ processInstanceId | escapejs }}';
 
     $(document).ready(function(){
-    console.log("loanTypeName,loanTypeId");
-    console.log(loanTypeName,loanTypeId);
         loadGroupRoles(groupId,loanId,taskName);
         //getHistComments(processInstanceId);
         //getMemberComments(processInstanceId,loanId);
@@ -63,7 +61,7 @@
                       "insuranceAmount":  $row.find("td:eq(14)").text(),
                       "solarLight":  $row.find("td:eq(9) input[type='text']").val(),
                       "purpose":  $row.find("td:eq(16) :selected").val(),
-                      "atldebt": $row.find("td:eq(18) input[type='text']").val(),
+                      "atldebt": $row.find("td:eq(10)").text(),
                       "interest": $row.find("td:eq(19) input[type='text']").val(),
                       "prevMonthGroupBalance":  $row.find("td:eq(20) input[type='text']").val(),
                       "currentMonthCollection": $row.find("td:eq(21) input[type='text']").val(),
@@ -174,7 +172,7 @@
                         </div>
                     </div>
                     <div class="profile-info-row">
-                        <div class="profile-info-name2"> Sundry Debt(ATL) (INR)):</div>
+                        <div class="profile-info-name2"> Sundry Debt(ATL) (INR):</div>
                         <div class="profile-info-value">
                             <span class="editable" id="sundryDebt" style="float:right"></span>
                         </div>

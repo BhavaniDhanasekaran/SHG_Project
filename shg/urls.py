@@ -14,6 +14,16 @@ index_urlpatterns = [
 ]
 urlpatterns = index_urlpatterns
 
+customError_urlpatterns = [
+    url(r'^bad_request/', customError.bad_request, name = 'bad_request'),
+    url(r'^permission_denied/', customError.permission_denied, name = 'permission_denied'),
+    url(r'^page_not_found/', customError.page_not_found, name = 'page_not_found'),
+    url(r'^server_error/', customError.server_error, name = 'server_error'),
+    url(r'^connection_timeout/', customError.connection_timeout, name = 'connection_timeout'),
+    url(r'^service_unavailable/', customError.service_unavailable, name = 'service_unavailable'),
+]
+urlpatterns += customError_urlpatterns
+
 auth_urlpatterns = [
     url(r'^signup/$', auth.signup, name='signup'),
     url(r'^signin/$', auth.signin, name='signin'),

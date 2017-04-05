@@ -1,6 +1,31 @@
 var validationFields = ["memberName", "sequenceNumber", "age", "husbandName", "maritalStatus", "fatherName", "address", "villageName", "idProofValue", "addressProofValue", "sbAccountNumber", "bankId", "sbAccountName",
     "permanentAddress", "pincode", "villages", "mobileNo", "idProofTypeId", "addressProofTypeId", "loanAmount", "loanTypeValue"
 ];
+
+$.ajaxSetup({
+    cache : false,
+    statusCode: {
+        400: function(data) {
+           $.alert("Bad Request !!");
+        },
+        404: function(data) {
+           window.location = '/page_not_found/';
+        },
+        500: function(data) {
+           window.location = '/server_error/';
+        },
+        403: function(data) {
+           window.location = '/permission_denied/';
+        },
+        504: function(data) {
+           window.location = '/connection_timeout/';
+        },
+        503: function(data){
+           window.location = '/service_unavailable/';
+        }
+    }
+});
+
 //var loanTypeId = loanTypeId;
 function getGroupData(groupID, loanId) {
     var memId;
@@ -85,8 +110,7 @@ function getGroupData(groupID, loanId) {
             } else {
                 $.alert(groupData["message"]);
             }
-        },
-        error: function(jqXHR, textStatus, errorThrown) {}
+        }
     });
     //getHistComments(processInstanceId);
     //getMemberComments(processInstanceId,loanId);
@@ -95,16 +119,14 @@ function getGroupData(groupID, loanId) {
 }
 
 function getMemberDetails(memberId, groupId, loanId) {
-    console.log("getMemberDetails");
-    console.log(taskName);
     if(taskName == "KYC Check"){
-      console.log(taskName);
         $("#defaultDisplay").show();
         $("#sucessDisplay").hide();
         $("#msg1").hide();
         $("#msg2").hide();
         $("#msg3").hide();
         $("#msg4").hide();
+        tabControl();
     }
     else
     {
@@ -327,8 +349,7 @@ function getMemberDetails(memberId, groupId, loanId) {
             }
             document.getElementById("groupId").innerHTML = groupId;
             document.getElementById("loanId").innerHTML = loanId;
-        },
-        error: function(jqXHR, textStatus, errorThrown) {}
+        }
     });
     getMemberFSRData(memberId);
     getPaymentHistory("member",memberId,groupId);
@@ -951,7 +972,7 @@ function loadGroupRoles(groupId, loanId, taskName) {
     var dataObj = {};
     var validationType = '';
     if (group == "CMR" || group == "CLM" || group == "BM") {
-        if (taskName == "Print Loan Documents & FSR" || taskName == "Add new members") {
+        if (taskName == "Print Loan Documents & FSR" || taskName == "Add New Members") {
             validationType = "PEN"
         }
         if (taskName == "Upload loan documents in Web application") {
@@ -974,7 +995,6 @@ function loadGroupRoles(groupId, loanId, taskName) {
         type: "post",
 
         success: function(data) {
-            console.log(data);
             document.getElementById("loanTypeId1").innerHTML = data["data"]["loanTypeId"];
             if (document.getElementById("appGroupId")) {
                 document.getElementById("appGroupId").innerHTML = data["data"]["groupDetails"]["appGroupId"];
@@ -1136,7 +1156,6 @@ function updateGroupMemberStatus() {
     //console.log(groupValData);
     var dataObj = {};
     dataObj["groupValData"] = groupValData;
-    console.log(dataObj);
     var responseData;
     return $.ajax({
             url: '/updateGroupMemberStatus/',
@@ -1162,13 +1181,16 @@ function updateGroupMemberStatus() {
 }
 
 function getLoanDetails(groupId, loanId) {
+console.log("32444444444444444444444444444444444444");
+console.log(window.btoa(unescape(encodeURIComponent(groupId))));
+console.log(btoa(groupId));
     $.ajax({
         url: '/getLoanDetails/' + groupId + '/' + loanId,
         dataType: 'json',
         success: function(data) {
             var htmlContent = '';
             var creditData = data;
-            console.log(data,"data");
+            console.log(creditData);
             var loanDetails = data["data"]["loanDetails"];
             if (document.getElementById("loanTypeName")) {
                 document.getElementById("loanTypeName").innerHTML = loanDetails["loanTypeName"];
@@ -1183,6 +1205,7 @@ function getLoanDetails(groupId, loanId) {
                 type: 'post',
                 dataType: 'json',
                 success: function(loanPurposeData) {
+
                     $.each(loanPurposeData.data, function(key, value) {
                         // console.log(value.name);
                         //$(".purpose2").css("width","100%");
@@ -1214,8 +1237,10 @@ function getLoanDetails(groupId, loanId) {
                     if (creditObj["newMember"] == false) {
                         newMem = "No";
                     }
+                    if(creditObj["atlDebt"] == null){
+                        creditObj["atlDebt"] = 0;
+                    }
                     htmlContent += '<tr>'
-
                         +
                         '<td>' + creditObj["sequenceNumber"] + '</td><td>' +
                         creditObj["appMemId"] + '</td><td>' +
@@ -1229,7 +1254,7 @@ function getLoanDetails(groupId, loanId) {
                         ' <input  onkeypress="validate(event,2)"  id="' + creditObj["memberId"] + "_loanAmt" + '" onblur="validateFields(this.id,this.value,' + "'" + 'loanAmount' + "'" + ');" maxlength=10 type="text" name="m2street_' + i + '" class="sample5"  value=' + creditObj["loanAmount"] + '></td><td>' +
                         ' <input onkeypress="validate(event,2)" maxlength=7 type="text" style="width: 45px;" class="sample5" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["awb"] + '></td><td>' +
                         ' <input onkeypress="validate(event,2)" maxlength=7 type="text" style="width: 45px;" class="sample5" name="m2street_' + creditObj["memberId"] + '" value=' + creditObj["sellingPrice"] + '></td><td>' +
-                        creditObj["sundryDebt"] + '</td><td>'
+                         creditObj["atlDebt"]+ '</td><td>'
 
                         +
                         creditObj["processingFee"] + '</td><td>' +
@@ -1243,7 +1268,7 @@ function getLoanDetails(groupId, loanId) {
 
                         +
                         ' <input type="checkbox" name="drop" id="m2street + creditObj["memberId"] ' + ' value=' + creditObj["memberId"] + ' ></td><td style="display:none;">' +
-                        ' <input type="text" name="atlDebt_' + i + '" value=' + creditObj["atlDebt"] + '></td><td style="display:none">' +
+                        ' <input type="text" name="atlDebt_' + i + '" value=' +creditObj["sundryDebt"] + '></td><td style="display:none">' +
                         ' <input type="text" name="interest_' + i + '" value=' + creditObj["interest"] + '></td><td style="display:none">'
 
                         +
@@ -1355,12 +1380,33 @@ function updateloanDatail(updateloanData) {
         }
     }
     var dataObj3 = {};
+    var atlLoanId = '';
+    var atlAccNo = '';
+    var updateloanData = eval(updateloanData);
+    console.log(updateloanData);
+    for(var key in updateloanData){
+        console.log(updateloanData[key]);
+        if(updateloanData[key]["ATLloanId"] != null){
+            atlLoanId = updateloanData[key]["ATLloanId"];
+            atlAccNo  = updateloanData[key]["ATLaccNo"];
+        }
+    }
+    console.log(atlAccNo,atlLoanId);
     var uploadData2 = {
+        "loanId": String(loanId),
+        "installments": installment,
+        "userId": userId,
+        "groupId" : groupId,
+        "atlLoanId" :atlLoanId,
+        "atlAccNo" : atlAccNo,
+        "memberLoanDetails": eval(updateloanData),
+    }
+   /* var uploadData2 = {
         "loanId": String(loanId),
         "installments": installment,
         "memberLoanDetails": eval(updateloanData),
         "userId": userId
-    }
+    }*/
     dataObj3["uploadData"] = uploadData2;
     $.ajax({
         url: '/updateloanDetail/',
@@ -1407,7 +1453,20 @@ function approveLoan(updateloanData) {
             return false;
         }
     }
+    var atlLoanId = '';
+    var atlAccNo = '';
+    var updateloanData = eval(updateloanData);
+    console.log(updateloanData);
+    for(var key in updateloanData){
+        console.log(updateloanData[key]);
+        if(updateloanData[key]["ATLloanId"] != null){
+            atlLoanId = updateloanData[key]["ATLloanId"];
+            atlAccNo  = updateloanData[key]["ATLaccNo"];
+        }
+    }
     var loanData = {
+        "atlLoanId" :atlLoanId,
+        "atlAccNo" : atlAccNo,
         "groupId": groupId,
         "loanId": loanId,
         "loanTypeId": loanTypeId,
@@ -1423,6 +1482,7 @@ function approveLoan(updateloanData) {
     };
     dataObj["loanData"] = loanData;
     dataObj["taskId"] = taskId;
+
     $.ajax({
         url: '/approveLoan/',
         dataType: 'json',
@@ -1534,7 +1594,7 @@ function rmGroupMaster(groupId) {
                 var rep1value = $("#rep1Id_groupRole").text();
                 var rep2value = $("#rep2Id_groupRole").text();
 
-                console.log(animatorvalue, rep1value, rep2value)
+                //console.log(animatorvalue, rep1value, rep2value)
                 //alert(rep2value);
                 if (document.getElementById("Animator")) {
                     if ($("#Animator option[value=" + animatorvalue + "]").length == 0) {
@@ -1626,8 +1686,6 @@ function rmGroupMaster(groupId) {
                     });
                 }
             }
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
         }
     });
 }
@@ -1750,7 +1808,7 @@ function updateGroupValStatus(status) {
 
         dataObj["groupValData"] = groupValData;
         dataObj["taskId"] = taskId;
-        console.log(dataObj);
+       // console.log(dataObj);
         if (comment != "") {
             dataObj["message"] = comment;
         }
@@ -1787,7 +1845,7 @@ function getMemberFSRData(memberId){
             var childRowHtml = '';
             childRowHtml = '<thead><td><b>Field Name</b></td><td><b>Actual Value</b></td></thead>';
             var fsrData = data;
-            console.log("fsrData",fsrData);
+            //console.log("fsrData",fsrData);
             var formSectionData = [];
             var fsrDataJsonStr = fsrData.data;
             if(fsrDataJsonStr == null){
@@ -1798,7 +1856,7 @@ function getMemberFSRData(memberId){
             }
             else{
                 var fsrDataJson = JSON.parse(fsrDataJsonStr);
-                console.log(fsrDataJson);
+                //console.log(fsrDataJson);
                 formSectionData = fsrDataJson.form_sections;
                 var irrelevantDataArr = ["Official Details","Signature","CMR/BM/CLM confirmation after screening"];
                 for(var key in formSectionData){
@@ -1835,10 +1893,6 @@ function getMemberFSRData(memberId){
 
 
 function getMemberComments(processInstanceId, loanId) {
-    console.log("getMemberComments called");
-    //var processInstanceId="cb2fa258-04ce-11e7-b56c-56847afe9799";
-    //  console.log(processInstanceId);
-    //   console.log(loanId);
      $("#ajax_loader").show();
     $.ajax({
         url: '/getMemberComments/' + processInstanceId + '/' + loanId,
@@ -1851,47 +1905,24 @@ function getMemberComments(processInstanceId, loanId) {
         complete: function() {
             $("#ajax_loader").show();
         },
-
-
         success: function(data) {
             $("#ajax_loader").hide();
-            //console.log("Member Comment");
-            //console.log(data);
             $('#profile-feed-1').empty();
             var commentData = data;
-            //console.log(commentData.data.length);
-            //console.log(commentData);
            if(commentData.data.length>0){
-
             $.each(commentData.data, function(key, value) {
-
                     var count=0;
-
                    for (var i=0; i< value.comments.length;i++)
                    {
                         if(value.comments[i].comments !=""){
                             count ++;}
                    }
-
-
-
-                      if(count>0)
-                       {
-                            $('#profile-feed-1').append('<div ><i class="fa fa-user fa-2" aria-hidden="true"></i> &nbsp<span style="font-size:12px;color:darkblue;"><b>' + value.memberName + ' (' + value.memberId + ' ) </b> <span> </div>');
-                       }
-
-
-
-                //console.log("commentData.data");
-                //console.log(commentData.data);
-
-
-
+                   if(count>0)
+                   {
+                        $('#profile-feed-1').append('<div ><i class="fa fa-user fa-2" aria-hidden="true"></i> &nbsp<span style="font-size:12px;color:darkblue;"><b>' + value.memberName + ' (' + value.memberId + ' ) </b> <span> </div>');
+                   }
                 $.each(value.comments, function(index, val) {
-                    //console.log(value)
                     if (val.comments != "") {
-
-                        //$('#profile-feed-2').append($('<div style="font-size:11px; font-weight:bold;color:darkslategrey;"></div>').html(value.memberName ));
                         $('#profile-feed-1').append('' +
                             '<div class="profile-activity clearfix"><div><span style="font-weight:bold; font-size:11px;color:#981b1b;">' +
                             '' + val.userName + ':</span> ' +
@@ -1901,21 +1932,15 @@ function getMemberComments(processInstanceId, loanId) {
                             '</span> <div class="time"><i class="ace-icon fa fa-clock-o bigger-110"></i><span > &nbsp&nbsp' +
                             val.validatedDate + '</span></div></div></div>');
                     }
-
-
                 });
             });
-
         }
-
         else
         {
              $('#profile-feed-1').append('No Comments');
              console.log("no comments");
         }
-
         }
-
     });
 
 }
@@ -1926,12 +1951,6 @@ function getMemberComments(processInstanceId, loanId) {
 
 
 function getGroupComments(processInstanceId, loanId) {
-    //var processInstanceId = "2667fa07-02f9-11e7-8ce8-56847afe9799";
-    //var loanId = "119951";
-    //cnsole.log(processInstanceId);
-    //console.log(loanId);
-
-
     $.ajax({
         url: '/getGroupComments/' + processInstanceId + '/' + loanId,
         dataType: 'json',
@@ -1946,65 +1965,42 @@ function getGroupComments(processInstanceId, loanId) {
 
         success: function(data) {
         $('#profile-feed-2').empty();
-            console.log("group comments");
-            console.log(data);
              $("#ajax_loader2").hide();
-
             var jsondata = data;
-            // console.log(jsondata.data[0].comments.length);
             if(jsondata.data[0]){
-
-            if (jsondata.data[0].comments.length>0) {
-                var groupName = jsondata.data[0].groupName;
-                var appGroupId = jsondata.data[0].appGroupId;
-                var groupId = jsondata.data[0].groupId;
-                $('#profile-feed-2').append('<div style="font-size:12px; font-weight:bold;color:darkslategrey;"><i class="fa fa-user fa-3" aria-hidden="true"></i> &nbsp<span style="font-size:13px;color:darkblue; align:center"><b>' + groupName + '</b></span> </div>');
-
-
-                $.each(jsondata.data[0].comments, function(key, value) {
-                    // console.log(value);
-                    if (value.comments != "") {
-
-                        $('#profile-feed-2').append('' +
-                            '<div class="profile-activity clearfix"><div><span style="font-weight:bold; font-size:11px;color:#981b1b;"><b>' +
-                            '' + value.userName + '</b>:</span> ' +
-                            '<span style="color:black;,font-size:8px; "><b>' + value.taskName + '<b></span>' +
-                            '<span style="font-style:italic;"><br>' +
-                            '<i class="fa fa-comments" style="color:darkslategrey;" aria-hidden="true"></i>&nbsp<B>' + value.comments +
-                            '</b></span> <div class="time"><i class="ace-icon fa fa-clock-o bigger-110"></i><span > &nbsp&nbsp' +
-                            value.validatedDate + '</span></div></div></div>');
-
-                    }
-
-                });
+                if (jsondata.data[0].comments.length>0) {
+                    var groupName = jsondata.data[0].groupName;
+                    var appGroupId = jsondata.data[0].appGroupId;
+                    var groupId = jsondata.data[0].groupId;
+                    $('#profile-feed-2').append('<div style="font-size:12px; font-weight:bold;color:darkslategrey;"><i class="fa fa-user fa-3" aria-hidden="true"></i> &nbsp<span style="font-size:13px;color:darkblue; align:center"><b>' + groupName + '</b></span> </div>');
 
 
+                    $.each(jsondata.data[0].comments, function(key, value) {
+                        // console.log(value);
+                        if (value.comments != "") {
 
-
-
-            }}
-             else{
-
-                    $('#profile-feed-2').append('No Comments');
-
+                            $('#profile-feed-2').append('' +
+                                '<div class="profile-activity clearfix"><div><span style="font-weight:bold; font-size:11px;color:#981b1b;"><b>' +
+                                '' + value.userName + '</b>:</span> ' +
+                                '<span style="color:black;,font-size:8px; "><b>' + value.taskName + '<b></span>' +
+                                '<span style="font-style:italic;"><br>' +
+                                '<i class="fa fa-comments" style="color:darkslategrey;" aria-hidden="true"></i>&nbsp<B>' + value.comments +
+                                '</b></span> <div class="time"><i class="ace-icon fa fa-clock-o bigger-110"></i><span > &nbsp&nbsp' +
+                                value.validatedDate + '</span></div></div></div>');
+                        }
+                    });
                 }
-
-
-
-
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            $('#profile-feed-2').append('No Comments');
+            }
+            else{
+                    $('#profile-feed-2').append('No Comments');
+                }
         }
-
-
     });
 
 }
 
 function loadNextMem(){
     getGroupData(groupId,loanId);
-
 }
 
 function getPaymentHistory(key,memberId,groupId){
@@ -2030,7 +2026,6 @@ function getPaymentHistory(key,memberId,groupId){
             }else{
                 var memberPaymentHistoryData = paymentHisLoanData[0];
                 paymentHistoryData = memberPaymentHistoryData.paymentHistory;
-                console.log('paymentHistoryData: ',JSON.stringify(paymentHistoryData));
             }
 
             $('#paymentHistoryLoadData').dataTable({
@@ -2067,7 +2062,6 @@ function getForeClosureInfo(){
     var rows = [];
     $('table.paymentTable tr').not('thead tr').each(function(i, n){
         var $row = $(n);
-        console.log($row.find("td:eq(28) input[type='text']").val());
         if($row.find("td:eq(28) input[type='text']").val() != "null"){
             rows.push({
               "memberId":   $row.find("td:eq(17) input[type='checkbox']").val(),
@@ -2083,10 +2077,7 @@ function getForeClosureInfo(){
               "loanTypeId": loanTypeId
         });
         }
-
-
     });
-    console.log(rows);
     var atlLoanId;
     var atlAccNo;
     if(rows[0]){
@@ -2103,7 +2094,6 @@ function getForeClosureInfo(){
     "memberLoanDetails": eval(JSON.stringify(rows))
     };
     dataObj["foreClosureInput"]  = foreClosureInput;
-    console.log(dataObj);
     $.ajax({
         url: '/getATLForeClosureData/',
         dataType: 'json',

@@ -236,6 +236,8 @@ def updateloanDetail(request):
         if request.method == "POST":
             formData = json.loads(request.body)
             bodyData = formData["uploadData"]
+            print "bodyData"
+            print json.dumps(bodyData)
             serialized_data = sscoreClient._urllib2_request('workflowEdit/updateMemberLoan', bodyData,
                                                             requestType='POST')
             return HttpResponse(json.dumps(serialized_data), content_type="application/json")
@@ -250,6 +252,8 @@ def approveLoan(request):
         if request.method == "POST":
             formData = json.loads(request.body)
             bodyData = formData["loanData"]
+            print "bodyDatabodyDatabodyDatabodyDatabodyDatabodyDatabodyData------------------------"
+            print json.dumps(bodyData)
             taskId = formData["taskId"]
             serialized_data = sscoreClient._urllib2_request('workflowEdit/loanValidation', bodyData,
                                                             requestType='POST')

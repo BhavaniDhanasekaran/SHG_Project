@@ -1,7 +1,12 @@
 {% extends 'base_errorpage.html' %}
 {% load staticfiles %}
 {% block javascript %}
-    
+<script src="/static/datajs/loadTaskList.js?v={{JS_VERSION}}"></script>
+<script>
+    $(document).ready(function(){
+        taskCount();
+    });
+</script>
 {% endblock %}
 
 {% block content %}
