@@ -119,6 +119,7 @@ function getGroupData(groupID, loanId) {
 }
 
 function getMemberDetails(memberId, groupId, loanId) {
+    clearImagePath();
     if(taskName == "KYC Check"){
         $("#defaultDisplay").show();
         $("#sucessDisplay").hide();
@@ -277,6 +278,50 @@ function getMemberDetails(memberId, groupId, loanId) {
                     });
                 }
                 if (memberData["data"]["memberDocumentDetails"]) {
+                    var documentObj = memberData["data"]["memberDocumentDetails"];
+                    $.each(documentObj, function(key, value) {
+                        if (value.documentType == "OVERLAPREPORT") {
+                            $("#OVERLAPREPORT_docPath").attr('onClick', 'window.open(' + "'" + value.documentPath + "'" + "," + value.docId + "," + "width=100,height=100" + ').focus();');
+                        } else if (value.documentType == "ADDRESSPROOF") {
+                            $("#ADDRESSPROOF_docPath").css("display", "inline-block");
+                            $("#ADDRESSPROOF_docPath").attr("src", value.documentPath);
+                            $("#ADDRESSPROOF_docPath").attr("data-url", value.documentPath);
+                            $("#ADDRESSPROOF_docPath").attr("data-original", value.documentPath);
+                        } else if (value.documentType == "ADDRESSPROOF_2") {
+                            $("#ADDRESSPROOF_2_docPath").css("display", "inline-block");
+                            $("#ADDRESSPROOF_2_docPath").attr("src", value.documentPath);
+                            $("#ADDRESSPROOF_2_docPath").attr("data-url", value.documentPath);
+                            $("#ADDRESSPROOF_2_docPath").attr("data-original", value.documentPath);
+                        } else if (value.documentType == "SBACCOUNTPASSBOOK") {
+                            $("#SBACCOUNTPASSBOOK_docPath").css("display", "inline-block");
+                            $("#SBACCOUNTPASSBOOK_docPath").attr("src", value.documentPath);
+                            $("#SBACCOUNTPASSBOOK_docPath").attr("data-url", value.documentPath);
+                            $("#SBACCOUNTPASSBOOK_docPath").attr("data-original", value.documentPath);
+                        } else if (value.documentType == "IDPROOF_2") {
+                            $("#IDPROOF_2_docPath").css("display", "inline-block");
+                            $("#IDPROOF_2_docPath").attr("src", value.documentPath);
+                            $("#IDPROOF_2_docPath").attr("data-url", value.documentPath);
+                            $("#IDPROOF_2_docPath").attr("data-original", value.documentPath);
+                        } else if (value.documentType == "MEMBERPHOTO") {
+                            $("#MEMBERPHOTO_docPath").css("display", "inline-block");
+                            $("#MEMBERPHOTO_docPath").attr("src", value.documentPath);
+                            $("#MEMBERPHOTO_docPath").attr("data-url", value.documentPath);
+                            $("#MEMBERPHOTO_docPath").attr("data-original", value.documentPath);
+                        } else if (value.documentType == "IDPROOF") {
+                            $("#IDPROOF_docPath").css("display", "inline-block");
+                            $("#IDPROOF_docPath").attr("src", value.documentPath);
+                            $("#IDPROOF_docPath").attr("data-url", value.documentPath);
+                            $("#IDPROOF_docPath").attr("data-original", value.documentPath);
+                        } else if (value.documentType == "OverLapReport") {
+                            $("#OverLapReport_docPath").css("display", "inline-block");
+                            $("#OverLapReport_docPath").attr("src", value.documentPath);
+                            $("#OverLapReport_docPath").attr("data-url", value.documentPath);
+                            $("#OverLapReport_docPath").attr("data-original", value.documentPath);
+                        } else {
+                        }
+                    });
+                }
+                /*if (memberData["data"]["memberDocumentDetails"]) {
                     if (memberData["data"]["memberDocumentDetails"][0]) {
                         var memberDocumentsArray = memberData["data"]["memberDocumentDetails"];
 
@@ -291,9 +336,9 @@ function getMemberDetails(memberId, groupId, loanId) {
                                             $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", "/static/images/naveen.jpg");
                                         }
                                         else {*/
-                                            $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").css("display", "none");
+                                            //$("#" + memberDocumentsArray[key]["documentType"] + "_docPath").css("display", "none");
                                       //  }
-                                    } else {
+                                   /* } else {
                                         $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").css("display", "inline-block");
                                         if (memberDocumentsArray[key]["documentType"] != "OVERLAPREPORT") {
                                             $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").addClass("img img-test");
@@ -306,7 +351,7 @@ function getMemberDetails(memberId, groupId, loanId) {
                             }
                         }
                     }
-                }
+                }*/
                 if(document.getElementById("previousLoanMemberCycle")){
                     var tagname = document.getElementById("previousLoanMemberCycle").tagName;
                     if (tagname == "INPUT"){
@@ -1889,116 +1934,146 @@ function getMemberFSRData(memberId){
         }
    });
 }
-
-
-
 function getMemberComments(processInstanceId, loanId) {
-     $("#ajax_loader").show();
-    $.ajax({
-        url: '/getMemberComments/' + processInstanceId + '/' + loanId,
-        dataType: 'json',
+    console.log("getMemberComments called");
+    //console.log(processInstanceId);
+    //console.log(loanId);
+    var commentsHtml = '';
+    $('#profile-feed-1').html('');
+    $("#ajax_loader1").show();
 
-        beforeSend: function() {
+    window.setTimeout(function() {
+        console.log("getMemberCommentsDelay");
+        $.ajax({
+            url: '/getMemberComments/' + processInstanceId + '/' + loanId,
+            dataType: 'json',
+            timeout: 60000,
+            beforeSend: function() {
+                $("#ajax_loader1").show();
+            },
+            complete: function() {
+                $("#ajax_loader1").hide();
+            },
+            error: function(xhr,status,error){
+                console.log("Error Member Comment: ",xhr,status,error);
+                commentsHtml = 'Unexpected error in member comments. Try again later';
+                $('#profile-feed-1').html(commentsHtml);
+                //$.alert("Unexpected error in member comments. Try again later");
+            },
+            success: function(data) {
+                console.log("Success Member Comment");
+                //console.log(data);
+                var commentData = data;
+                //console.log(commentData.data.length);
+                //console.log(commentData);
+                if(commentData.data.length>0) {
+                    $.each(commentData.data, function(key, value) {
+                        var count=0;
+                        for (var i=0; i< value.comments.length;i++)
+                        {
+                            if(value.comments[i].comments !=""){
+                                count ++;
+                            }
+                        }
+                        if(count>0){
+                            commentsHtml += '<div ><i class="fa fa-user fa-2" aria-hidden="true"></i> &nbsp<span style="font-size:12px;color:darkblue;"><b>' + value.memberName + ' (' + value.memberId + ' ) </b> <span> </div>';
+                        }
 
-            $("#ajax_loader").show();
-        },
-        complete: function() {
-            $("#ajax_loader").show();
-        },
-        success: function(data) {
-            $("#ajax_loader").hide();
-            $('#profile-feed-1').empty();
-            var commentData = data;
-           if(commentData.data.length>0){
-            $.each(commentData.data, function(key, value) {
-                    var count=0;
-                   for (var i=0; i< value.comments.length;i++)
-                   {
-                        if(value.comments[i].comments !=""){
-                            count ++;}
-                   }
-                   if(count>0)
-                   {
-                        $('#profile-feed-1').append('<div ><i class="fa fa-user fa-2" aria-hidden="true"></i> &nbsp<span style="font-size:12px;color:darkblue;"><b>' + value.memberName + ' (' + value.memberId + ' ) </b> <span> </div>');
-                   }
-                $.each(value.comments, function(index, val) {
-                    if (val.comments != "") {
-                        $('#profile-feed-1').append('' +
-                            '<div class="profile-activity clearfix"><div><span style="font-weight:bold; font-size:11px;color:#981b1b;">' +
-                            '' + val.userName + ':</span> ' +
-                            '&nbsp&nbsp<span style="color:black;,font-size:11px; ">' + val.taskName + '</span>' +
-                            '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span style="font-style:italic;"><br>' +
-                            '<i class="fa fa-comments" style="color:darkslategrey;" aria-hidden="true"></i>&nbsp' + val.comments +
-                            '</span> <div class="time"><i class="ace-icon fa fa-clock-o bigger-110"></i><span > &nbsp&nbsp' +
-                            val.validatedDate + '</span></div></div></div>');
-                    }
-                });
-            });
-        }
-        else
-        {
-             $('#profile-feed-1').append('No Comments');
-             console.log("no comments");
-        }
-        }
-    });
-
+                        $.each(value.comments, function(index, val) {
+                            //console.log(value)
+                            if (val.comments != "") {
+                                commentsHtml += '' +
+                                    '<div class="profile-activity clearfix"><div><span style="font-weight:bold; font-size:11px;color:#981b1b;">' +
+                                    '' + val.userName + ':</span> ' +
+                                    '&nbsp&nbsp<span style="color:black;,font-size:11px; ">' + val.taskName + '</span>' +
+                                    '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span style="font-style:italic;"><br>' +
+                                    '<i class="fa fa-comments" style="color:darkslategrey;" aria-hidden="true"></i>&nbsp' + val.comments +
+                                    '</span> <div class="time"><i class="ace-icon fa fa-clock-o bigger-110"></i><span > &nbsp&nbsp' +
+                                    val.validatedDate + '</span></div></div></div>';
+                            }
+                        });
+                    });
+                }
+                else
+                {
+                     commentsHtml += 'No Comments';
+                     console.log("no comments");
+                }
+                //console.log("CommentsHtml: ",commentsHtml);
+                $('#profile-feed-1').html(commentsHtml);
+                //console.log("getGroupComments call from success part of getMemberComments fn");
+                //getGroupComments(processInstanceId,loanId);
+            } //success part end
+        });
+    }, 1000);
 }
-
-
-
-
 
 
 function getGroupComments(processInstanceId, loanId) {
-    $.ajax({
-        url: '/getGroupComments/' + processInstanceId + '/' + loanId,
-        dataType: 'json',
-        beforeSend: function() {
+    console.log("getGroupComments called");
+    //console.log(processInstanceId);
+    //console.log(loanId);
+    var commentsHtml = '';
+    $('#profile-feed-2').html('');
+    $("#ajax_loader2").show();
 
-         $("#ajax_loader2").show();
-        },
-        complete: function() {
-           $("#ajax_loader2").hide();
-        },
+    window.setTimeout(function() {
+        console.log("getGroupCommentsDelay");
+        $.ajax({
+            url: '/getGroupComments/' + processInstanceId + '/' + loanId,
+            dataType: 'json',
+            timeout: 60000,
+            beforeSend: function() {
+             $("#ajax_loader2").show();
+            },
+            complete: function() {
+               $("#ajax_loader2").hide();
+            },
+            error: function(xhr,status,error){
+                console.log("Error Group Comment: ",xhr,status,error);
+                commentsHtml = 'Unexpected error in group comments. Try again later';
+                $('#profile-feed-2').html(commentsHtml);
+                //$.alert("Unexpected error in group comments. Try again later");
+            },
+            success: function(data) {
+                console.log("Success Group Comment");
+                //console.log(data);
+                var jsondata = data;
+                if(jsondata.data[0]){
 
+                    if (jsondata.data[0].comments.length>0) {
+                        var groupName = jsondata.data[0].groupName;
+                        var appGroupId = jsondata.data[0].appGroupId;
+                        var groupId = jsondata.data[0].groupId;
+                        commentsHtml += '<div style="font-size:12px; font-weight:bold;color:darkslategrey;"><i class="fa fa-user fa-3" aria-hidden="true"></i> &nbsp<span style="font-size:13px;color:darkblue; align:center"><b>' + groupName + '</b></span> </div>';
 
-        success: function(data) {
-        $('#profile-feed-2').empty();
-             $("#ajax_loader2").hide();
-            var jsondata = data;
-            if(jsondata.data[0]){
-                if (jsondata.data[0].comments.length>0) {
-                    var groupName = jsondata.data[0].groupName;
-                    var appGroupId = jsondata.data[0].appGroupId;
-                    var groupId = jsondata.data[0].groupId;
-                    $('#profile-feed-2').append('<div style="font-size:12px; font-weight:bold;color:darkslategrey;"><i class="fa fa-user fa-3" aria-hidden="true"></i> &nbsp<span style="font-size:13px;color:darkblue; align:center"><b>' + groupName + '</b></span> </div>');
-
-
-                    $.each(jsondata.data[0].comments, function(key, value) {
-                        // console.log(value);
-                        if (value.comments != "") {
-
-                            $('#profile-feed-2').append('' +
+                        $.each(jsondata.data[0].comments, function(key, value) {
+                            // console.log(value);
+                            if (value.comments != "") {
+                                commentsHtml += '' +
                                 '<div class="profile-activity clearfix"><div><span style="font-weight:bold; font-size:11px;color:#981b1b;"><b>' +
-                                '' + value.userName + '</b>:</span> ' +
-                                '<span style="color:black;,font-size:8px; "><b>' + value.taskName + '<b></span>' +
-                                '<span style="font-style:italic;"><br>' +
-                                '<i class="fa fa-comments" style="color:darkslategrey;" aria-hidden="true"></i>&nbsp<B>' + value.comments +
-                                '</b></span> <div class="time"><i class="ace-icon fa fa-clock-o bigger-110"></i><span > &nbsp&nbsp' +
-                                value.validatedDate + '</span></div></div></div>');
-                        }
-                    });
+                                    '' + value.userName + '</b>:</span> ' +
+                                    '<span style="color:black;,font-size:8px; "><b>' + value.taskName + '<b></span>' +
+                                    '<span style="font-style:italic;"><br>' +
+                                    '<i class="fa fa-comments" style="color:darkslategrey;" aria-hidden="true"></i>&nbsp<B>' + value.comments +
+                                    '</b></span> <div class="time"><i class="ace-icon fa fa-clock-o bigger-110"></i><span > &nbsp&nbsp' +
+                                    value.validatedDate + '</span></div></div></div>';
+                            }
+                        });
+                    }
                 }
-            }
-            else{
-                    $('#profile-feed-2').append('No Comments');
+                else
+                {
+                     commentsHtml += 'No Comments';
+                     console.log("no comments");
                 }
-        }
-    });
 
+                $('#profile-feed-2').html(commentsHtml);
+
+            } //success part end
+        });
+    }, 1000);
 }
-
 function loadNextMem(){
     getGroupData(groupId,loanId);
 }
@@ -2105,4 +2180,40 @@ function getForeClosureInfo(){
     });
 
 
+}
+function clearImagePath(){
+       $("#ADDRESSPROOF_docPath").css("display", "none");
+       $("#ADDRESSPROOF_docPath").attr("src","");
+
+       $("#ADDRESSPROOF_docPath").attr("data-original", "");
+       $("#ADDRESSPROOF_2_docPath").css("display", "none");
+       $("#ADDRESSPROOF_2_docPath").attr("src","");
+
+       $("#ADDRESSPROOF_2_docPath").attr("data-original", "");
+       $("#SBACCOUNTPASSBOOK_docPath").css("display", "none");
+       $("#SBACCOUNTPASSBOOK_docPath").attr("src","");
+
+       $("#SBACCOUNTPASSBOOK_docPath").attr("data-original", "");
+       $("#IDPROOF_2_docPath").css("display", "none");
+       $("#IDPROOF_2_docPath").attr("src","");
+
+       $("#IDPROOF_2_docPath").attr("data-original", "");
+       $("#MEMBERPHOTO_docPath").css("display", "none");
+       $("#MEMBERPHOTO_docPath").attr("src","");
+
+       $("#MEMBERPHOTO_docPath").attr("data-original", "");
+       $("#IDPROOF_docPath").css("display", "none");
+       $("#IDPROOF_docPath").attr("src","");
+
+       $("#IDPROOF_docPath").attr("data-original","");
+       $("#OverLapReport_docPath").css("display", "none");
+       $("#OverLapReport_docPath").attr("src","");
+
+       $("#OverLapReport_docPath").attr("data-original", "");
+
+    }
+
+function reloadComments() {
+    getMemberComments(processInstanceId,loanId);
+    getGroupComments(processInstanceId,loanId);
 }
