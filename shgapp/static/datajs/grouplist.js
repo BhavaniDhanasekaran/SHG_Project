@@ -1935,144 +1935,110 @@ function getMemberFSRData(memberId){
    });
 }
 function getMemberComments(processInstanceId, loanId) {
-    console.log("getMemberComments called");
-    //console.log(processInstanceId);
-    //console.log(loanId);
     var commentsHtml = '';
     $('#profile-feed-1').html('');
     $("#ajax_loader1").show();
-
-    window.setTimeout(function() {
-        console.log("getMemberCommentsDelay");
-        $.ajax({
-            url: '/getMemberComments/' + processInstanceId + '/' + loanId,
-            dataType: 'json',
-            timeout: 60000,
-            beforeSend: function() {
-                $("#ajax_loader1").show();
-            },
-            complete: function() {
-                $("#ajax_loader1").hide();
-            },
-            error: function(xhr,status,error){
-                console.log("Error Member Comment: ",xhr,status,error);
-                commentsHtml = 'Unexpected error in member comments. Try again later';
-                $('#profile-feed-1').html(commentsHtml);
-                //$.alert("Unexpected error in member comments. Try again later");
-            },
-            success: function(data) {
-                console.log("Success Member Comment");
-                //console.log(data);
-                var commentData = data;
-                //console.log(commentData.data.length);
-                //console.log(commentData);
-                if(commentData.data.length>0) {
-                    $.each(commentData.data, function(key, value) {
-                        var count=0;
-                        for (var i=0; i< value.comments.length;i++)
-                        {
-                            if(value.comments[i].comments !=""){
-                                count ++;
-                            }
+    $.ajax({
+        url: '/getMemberComments/' + processInstanceId + '/' + loanId,
+        dataType: 'json',
+        beforeSend: function() {
+            $("#ajax_loader1").show();
+        },
+        complete: function() {
+            $("#ajax_loader1").hide();
+        },
+        error: function(xhr,status,error){
+            commentsHtml = 'Unexpected error in member comments. Try again later';
+            $('#profile-feed-1').html(commentsHtml);
+        },
+        success: function(data) {
+            var commentData = data;
+            if(commentData.data.length>0) {
+                $.each(commentData.data, function(key, value) {
+                    var count=0;
+                    for (var i=0; i< value.comments.length;i++)
+                    {
+                        if(value.comments[i].comments !=""){
+                            count ++;
                         }
-                        if(count>0){
-                            commentsHtml += '<div ><i class="fa fa-user fa-2" aria-hidden="true"></i> &nbsp<span style="font-size:12px;color:darkblue;"><b>' + value.memberName + ' (' + value.memberId + ' ) </b> <span> </div>';
+                    }
+                    if(count>0){
+                        commentsHtml += '<div ><i class="fa fa-user fa-2" aria-hidden="true"></i> &nbsp<span style="font-size:12px;color:darkblue;"><b>' + value.memberName + ' (' + value.memberId + ' ) </b> <span> </div>';
+                    }
+                    $.each(value.comments, function(index, val) {
+                        //console.log(value)
+                        if (val.comments != "") {
+                            commentsHtml += '' +
+                                '<div class="profile-activity clearfix"><div><span style="font-weight:bold; font-size:11px;color:#981b1b;">' +
+                                '' + val.userName + ':</span> ' +
+                                '&nbsp&nbsp<span style="color:black;,font-size:11px; ">' + val.taskName + '</span>' +
+                                '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span style="font-style:italic;"><br>' +
+                                '<i class="fa fa-comments" style="color:darkslategrey;" aria-hidden="true"></i>&nbsp' + val.comments +
+                                '</span> <div class="time"><i class="ace-icon fa fa-clock-o bigger-110"></i><span > &nbsp&nbsp' +
+                                val.validatedDate + '</span></div></div></div>';
                         }
-
-                        $.each(value.comments, function(index, val) {
-                            //console.log(value)
-                            if (val.comments != "") {
-                                commentsHtml += '' +
-                                    '<div class="profile-activity clearfix"><div><span style="font-weight:bold; font-size:11px;color:#981b1b;">' +
-                                    '' + val.userName + ':</span> ' +
-                                    '&nbsp&nbsp<span style="color:black;,font-size:11px; ">' + val.taskName + '</span>' +
-                                    '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span style="font-style:italic;"><br>' +
-                                    '<i class="fa fa-comments" style="color:darkslategrey;" aria-hidden="true"></i>&nbsp' + val.comments +
-                                    '</span> <div class="time"><i class="ace-icon fa fa-clock-o bigger-110"></i><span > &nbsp&nbsp' +
-                                    val.validatedDate + '</span></div></div></div>';
-                            }
-                        });
                     });
-                }
-                else
-                {
-                     commentsHtml += 'No Comments';
-                     console.log("no comments");
-                }
-                //console.log("CommentsHtml: ",commentsHtml);
-                $('#profile-feed-1').html(commentsHtml);
-                //console.log("getGroupComments call from success part of getMemberComments fn");
-                //getGroupComments(processInstanceId,loanId);
-            } //success part end
-        });
-    }, 1000);
+                });
+            }
+            else
+            {
+                 commentsHtml += 'No Comments';
+                 console.log("no comments");
+            }
+            $('#profile-feed-1').html(commentsHtml);
+        } //success part end
+    });
 }
 
 
 function getGroupComments(processInstanceId, loanId) {
-    console.log("getGroupComments called");
-    //console.log(processInstanceId);
-    //console.log(loanId);
     var commentsHtml = '';
     $('#profile-feed-2').html('');
     $("#ajax_loader2").show();
-
-    window.setTimeout(function() {
-        console.log("getGroupCommentsDelay");
-        $.ajax({
-            url: '/getGroupComments/' + processInstanceId + '/' + loanId,
-            dataType: 'json',
-            timeout: 60000,
-            beforeSend: function() {
-             $("#ajax_loader2").show();
-            },
-            complete: function() {
-               $("#ajax_loader2").hide();
-            },
-            error: function(xhr,status,error){
-                console.log("Error Group Comment: ",xhr,status,error);
-                commentsHtml = 'Unexpected error in group comments. Try again later';
-                $('#profile-feed-2').html(commentsHtml);
-                //$.alert("Unexpected error in group comments. Try again later");
-            },
-            success: function(data) {
-                console.log("Success Group Comment");
-                //console.log(data);
-                var jsondata = data;
-                if(jsondata.data[0]){
-
-                    if (jsondata.data[0].comments.length>0) {
-                        var groupName = jsondata.data[0].groupName;
-                        var appGroupId = jsondata.data[0].appGroupId;
-                        var groupId = jsondata.data[0].groupId;
-                        commentsHtml += '<div style="font-size:12px; font-weight:bold;color:darkslategrey;"><i class="fa fa-user fa-3" aria-hidden="true"></i> &nbsp<span style="font-size:13px;color:darkblue; align:center"><b>' + groupName + '</b></span> </div>';
-
-                        $.each(jsondata.data[0].comments, function(key, value) {
-                            // console.log(value);
-                            if (value.comments != "") {
-                                commentsHtml += '' +
-                                '<div class="profile-activity clearfix"><div><span style="font-weight:bold; font-size:11px;color:#981b1b;"><b>' +
-                                    '' + value.userName + '</b>:</span> ' +
-                                    '<span style="color:black;,font-size:8px; "><b>' + value.taskName + '<b></span>' +
-                                    '<span style="font-style:italic;"><br>' +
-                                    '<i class="fa fa-comments" style="color:darkslategrey;" aria-hidden="true"></i>&nbsp<B>' + value.comments +
-                                    '</b></span> <div class="time"><i class="ace-icon fa fa-clock-o bigger-110"></i><span > &nbsp&nbsp' +
-                                    value.validatedDate + '</span></div></div></div>';
-                            }
-                        });
-                    }
+    $.ajax({
+        url: '/getGroupComments/' + processInstanceId + '/' + loanId,
+        dataType: 'json',
+        beforeSend: function() {
+         $("#ajax_loader2").show();
+        },
+        complete: function() {
+           $("#ajax_loader2").hide();
+        },
+        error: function(xhr,status,error){
+            console.log("Error Group Comment: ",xhr,status,error);
+            commentsHtml = 'Unexpected error in group comments. Try again later';
+            $('#profile-feed-2').html(commentsHtml);
+        },
+        success: function(data) {
+            var jsondata = data;
+            if(jsondata.data[0]){
+                if (jsondata.data[0].comments.length>0) {
+                    var groupName = jsondata.data[0].groupName;
+                    var appGroupId = jsondata.data[0].appGroupId;
+                    var groupId = jsondata.data[0].groupId;
+                    commentsHtml += '<div style="font-size:12px; font-weight:bold;color:darkslategrey;"><i class="fa fa-user fa-3" aria-hidden="true"></i> &nbsp<span style="font-size:13px;color:darkblue; align:center"><b>' + groupName + '</b></span> </div>';
+                    $.each(jsondata.data[0].comments, function(key, value) {
+                        if (value.comments != "") {
+                            commentsHtml += '' +
+                            '<div class="profile-activity clearfix"><div><span style="font-weight:bold; font-size:11px;color:#981b1b;"><b>' +
+                                '' + value.userName + '</b>:</span> ' +
+                                '<span style="color:black;,font-size:8px; "><b>' + value.taskName + '<b></span>' +
+                                '<span style="font-style:italic;"><br>' +
+                                '<i class="fa fa-comments" style="color:darkslategrey;" aria-hidden="true"></i>&nbsp<B>' + value.comments +
+                                '</b></span> <div class="time"><i class="ace-icon fa fa-clock-o bigger-110"></i><span > &nbsp&nbsp' +
+                                value.validatedDate + '</span></div></div></div>';
+                        }
+                    });
                 }
-                else
-                {
-                     commentsHtml += 'No Comments';
-                     console.log("no comments");
-                }
-
-                $('#profile-feed-2').html(commentsHtml);
-
-            } //success part end
-        });
-    }, 1000);
+            }
+            else
+            {
+                 commentsHtml += 'No Comments';
+                 console.log("no comments");
+            }
+            $('#profile-feed-2').html(commentsHtml);
+        } //success part end
+    });
 }
 function loadNextMem(){
     getGroupData(groupId,loanId);

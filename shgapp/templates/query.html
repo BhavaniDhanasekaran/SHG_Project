@@ -1,133 +1,66 @@
-
 <div id="mySidenav" class="sidenav">
     <div class="table-header">
-        <button type="button" class="closebtn" onClick="closeNav()" data-dismiss="modal" aria-hidden="true">
+        <button type="button" class="closebtn" onClick="closeNav()"
+            data-dismiss="modal" aria-hidden="true">
         <span class="white">&times;</span>
         </button>
         Queries
     </div>
     <div class="modal-body" style="padding:1px;">
-
-          
-
         <!--- query resolution started -->
         <div class="widget-box transparent">
             <div class="widget-body">
                 <div class="widget-main padding-8">
                     <div  class="profile-feed">
-                         
-
-                    <!--according Menu start-->
-
-
-          <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-
-        <div class="panel panel-custom-horrible-red" >
-            <div class="panel-heading" role="tab" id="headingOne">
-                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" 
-                    aria-expanded="true"
-                     aria-controls="collapseOne">
-                        <i class="more-less glyphicon glyphicon-plus"></i>
-                        Member 
-                    </a>
-                </h2>
-            </div>
-
-
-            <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                <div class="panel-body">
-                     <div id="profile-feed-1">
-
-
-                         <div id='ajax_loader' style=" display: none;">
-                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <img src="/static/images/ajax-loader.gif" id='ajax_loader' ></img>
-                         </div>
-
-
-
-
-
-
-                     </div>
-                     
-
-                </div>
-            </div>
-        </div>
-
-        <div class="panel panel-custom-horrible-red" >
-            <div class="panel-heading" role="tab" id="headingTwo">
-               
-    
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        <i class="more-less glyphicon glyphicon-plus"></i>
-                        Group 
-                    </a>
-               
-            </div>
-
-
-            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                <div class="panel-body">
-
-                  <div id="profile-feed-2">
-
-
-
-                         <div id='ajax_loader2' style=" display: none;">
-                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <img src="/static/images/ajax-loader.gif" id='ajax_loader' ></img>
-                         </div>
-                     
-
-
-
-
-
-                     </div>
-                    
-                </div>
-            </div>
-        </div>
-
-         <!--br>
-        <div align="center">
-          <span style="font-size:20px;cursor:pointer" >
-            <button onclick="reloadComments()" class="btn danger"
-                    data-target="#right-menu" data-toggle="modal" type="button">
-              Load Comments
-            </button>
-          </span>
-        </div>
-        <br-->
-
-    </div><!-- panel-group -->
-
-
-
-
-
-
-
-
-
-                    <!---according Menu Ends-->
-
-
-
-
-
-
-           
-
-
-
-
-
-
-
-
+                        <!--according Menu start-->
+                        <div class="panel-group" id="accordion" role="tablist"
+                            aria-multiselectable="true">
+                            <div class="panel panel-custom-horrible-red" >
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <a class="collapsed" role="button" data-toggle="collapse"
+                                    data-parent="#accordion" href="#collapseOne"
+                                    aria-expanded="true"
+                                    aria-controls="collapseOne">
+                                    <i class="more-less glyphicon glyphicon-plus"></i>
+                                    Member
+                                    </a>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse collapse"
+                                    role="tabpanel" aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <div id='ajax_loader1' style=" display: none;">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <img src="/static/images/ajax-loader.gif"></img>
+                                        </div>
+                                        <div id="profile-feed-1">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-custom-horrible-red" >
+                                <div class="panel-heading" role="tab" id="headingTwo">
+                                    <a class="collapsed" role="button"
+                                        data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"
+                                        aria-expanded="false" aria-controls="collapseTwo">
+                                    <i class="more-less glyphicon glyphicon-plus"></i>
+                                    Group
+                                    </a>
+                                </div>
+                                <div id="collapseTwo" class="panel-collapse collapse"
+                                    role="tabpanel" aria-labelledby="headingTwo">
+                                    <div class="panel-body">
+                                        <div id='ajax_loader2' style=" display: none;">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <img src="/static/images/ajax-loader.gif" ></img>
+                                        </div>
+                                        <div id="profile-feed-2">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- panel-group -->
+                        <!---according Menu Ends--><br>
                     </div>
                 </div>
             </div>
@@ -135,24 +68,17 @@
     </div>
 </div>
 </div>
-
- 
-   
-
 {% block javascript %}
 <script>
-  function toggleIcon(e) {
-    $(e.target)
-        .prev('.panel-heading')
-        .find(".more-less")
-        .toggleClass('glyphicon-plus glyphicon-minus');
-}
-$('.panel-group').on('hidden.bs.collapse', toggleIcon);
-$('.panel-group').on('shown.bs.collapse', toggleIcon);
-    
-    
+    function toggleIcon(e) {
+      $(e.target)
+          .prev('.panel-heading')
+          .find(".more-less")
+          .toggleClass('glyphicon-plus glyphicon-minus');
+    }
+    $('.panel-group').on('hidden.bs.collapse', toggleIcon);
+    $('.panel-group').on('shown.bs.collapse', toggleIcon);
+
+
 </script>
-
 {% endblock  %}
-
-
