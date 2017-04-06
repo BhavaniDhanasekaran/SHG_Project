@@ -1226,9 +1226,9 @@ function updateGroupMemberStatus() {
 }
 
 function getLoanDetails(groupId, loanId) {
-console.log("32444444444444444444444444444444444444");
-console.log(window.btoa(unescape(encodeURIComponent(groupId))));
-console.log(btoa(groupId));
+    var encrypted = CryptoJS.AES.encrypt(groupId, "abcdefg")
+    console.log(encrypted);
+
     $.ajax({
         url: '/getLoanDetails/' + groupId + '/' + loanId,
         dataType: 'json',
@@ -1941,11 +1941,13 @@ function getMemberComments(processInstanceId, loanId) {
     $.ajax({
         url: '/getMemberComments/' + processInstanceId + '/' + loanId,
         dataType: 'json',
-        beforeSend: function() {
+         beforeSend: function() {
             $("#ajax_loader1").show();
+            $("#widget-body-1").addClass("widget-box-overlay");
         },
         complete: function() {
             $("#ajax_loader1").hide();
+            $("#widget-body-1").removeClass("widget-box-overlay");
         },
         error: function(xhr,status,error){
             commentsHtml = 'Unexpected error in member comments. Try again later';
@@ -1983,7 +1985,6 @@ function getMemberComments(processInstanceId, loanId) {
             else
             {
                  commentsHtml += 'No Comments';
-                 console.log("no comments");
             }
             $('#profile-feed-1').html(commentsHtml);
         } //success part end
@@ -1999,13 +2000,14 @@ function getGroupComments(processInstanceId, loanId) {
         url: '/getGroupComments/' + processInstanceId + '/' + loanId,
         dataType: 'json',
         beforeSend: function() {
-         $("#ajax_loader2").show();
+          $("#ajax_loader2").show();
+          $("#widget-body-2").addClass("widget-box-overlay");
         },
         complete: function() {
            $("#ajax_loader2").hide();
+           $("#widget-body-2").removeClass("widget-box-overlay");
         },
         error: function(xhr,status,error){
-            console.log("Error Group Comment: ",xhr,status,error);
             commentsHtml = 'Unexpected error in group comments. Try again later';
             $('#profile-feed-2').html(commentsHtml);
         },
@@ -2034,7 +2036,6 @@ function getGroupComments(processInstanceId, loanId) {
             else
             {
                  commentsHtml += 'No Comments';
-                 console.log("no comments");
             }
             $('#profile-feed-2').html(commentsHtml);
         } //success part end
@@ -2179,7 +2180,11 @@ function clearImagePath(){
 
     }
 
-function reloadComments() {
-    getMemberComments(processInstanceId,loanId);
-    getGroupComments(processInstanceId,loanId);
+function reloadComments(id) {
+    if(id == 1){
+         getMemberComments(processInstanceId,loanId);
+    }
+    if(id == 2){
+        getGroupComments(processInstanceId,loanId);
+    }
 }

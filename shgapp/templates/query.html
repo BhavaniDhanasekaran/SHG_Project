@@ -8,50 +8,60 @@
     </div>
     <div class="modal-body" style="padding:1px;">
         <!--- query resolution started -->
-        <div class="widget-box transparent">
+        <div class="transparent">
             <div class="widget-body">
                 <div class="widget-main padding-8">
                     <div  class="profile-feed">
                         <!--according Menu start-->
                         <div class="panel-group" id="accordion" role="tablist"
                             aria-multiselectable="true">
-                            <div class="panel panel-custom-horrible-red" >
-                                <div class="panel-heading" role="tab" id="headingOne">
+                            <div class="panel panel-custom-horrible-red widget-box" id="widget-box-1" >
+                                <div class="panel-heading widget-header" role="tab" id="headingOne">
                                     <a class="collapsed" role="button" data-toggle="collapse"
                                     data-parent="#accordion" href="#collapseOne"
                                     aria-expanded="true"
                                     aria-controls="collapseOne">
                                     <i class="more-less glyphicon glyphicon-plus"></i>
                                     Member
-                                    </a>
+
+                                    </a><div class="widget-toolbar" style="position:static">
+                                    <a  href="#collapseOne" data-action="reload" class="collapsed" role="button"
+                                    data-parent="#accordion" aria-expanded="true" onclick="reloadComments(1);"
+                                    aria-controls="collapseOne"> <i style="color:white;" class="ace-icon fa fa-refresh"></i> </a></div>
                                 </div>
-                                <div id="collapseOne" class="panel-collapse collapse"
+                                <div id="collapseOne" class="widget-body panel-collapse collapse"
                                     role="tabpanel" aria-labelledby="headingOne">
                                     <div class="panel-body">
                                         <div id='ajax_loader1' style=" display: none;">
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <img src="/static/images/ajax-loader.gif"></img>
+                                            <img style="height:70px;width:90px;margin-left:10px" src="/static/images/ajax-loader.gif"></img>
                                         </div>
                                         <div id="profile-feed-1">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="panel panel-custom-horrible-red" >
-                                <div class="panel-heading" role="tab" id="headingTwo">
+                            <div class="panel panel-custom-horrible-red widget-box" id="widget-box-2" >
+                                <div class="panel-heading widget-header" role="tab" id="headingTwo">
                                     <a class="collapsed" role="button"
                                         data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"
                                         aria-expanded="false" aria-controls="collapseTwo">
                                     <i class="more-less glyphicon glyphicon-plus"></i>
                                     Group
                                     </a>
+                                    <div class="widget-toolbar" style="position:static">
+                                        <a  href="#collapseTwo" data-action="reload" class="collapsed" role="button"
+                                        data-parent="#accordion" aria-expanded="true" onclick="reloadComments(2);"
+                                        aria-controls="collapseTwo"> <i style="color:white;" class="ace-icon fa fa-refresh"></i>
+                                        </a>
+                                    </div>
                                 </div>
-                                <div id="collapseTwo" class="panel-collapse collapse"
+                                <div id="collapseTwo" class="widget-body panel-collapse collapse"
                                     role="tabpanel" aria-labelledby="headingTwo">
                                     <div class="panel-body">
                                         <div id='ajax_loader2' style=" display: none;">
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <img src="/static/images/ajax-loader.gif" ></img>
+                                            <img style="height:70px;width:90px;margin-left:10px" src="/static/images/ajax-loader.gif" ></img>
                                         </div>
                                         <div id="profile-feed-2">
                                         </div>

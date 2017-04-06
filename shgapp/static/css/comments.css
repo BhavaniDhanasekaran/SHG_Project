@@ -18,12 +18,13 @@ body {
 }
 
 .sidenav a {
-    padding: 0px 0px 0px 39px;
+    padding: 0px 0px 0px 0px;
     text-decoration: none;
     font-size: 25px;
     color: white;
-    display: block;
+    /*display: block;*/
     transition: 0.3s;
+    position:inherit;
 }
 
 .sidenav a:hover, .offcanvas a:focus{
