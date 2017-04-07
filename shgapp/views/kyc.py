@@ -47,6 +47,7 @@ def getIndMemberData(request,memberId,groupId,loanId,taskName):
     print "Inside getIndMemberData(request,memberId,groupId,taskName):"
     try:
         validationType = ''
+        validationLevel = ''
         username = request.session["userName"]
         userOfficeData = json.loads(request.session["userOfficeData"])
         groupName = userOfficeData["designation"]

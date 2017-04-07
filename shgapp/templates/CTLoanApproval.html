@@ -61,6 +61,7 @@
                       "insuranceAmount":  $row.find("td:eq(14)").text(),
                       "solarLight":  $row.find("td:eq(9) input[type='text']").val(),
                       "purpose":  $row.find("td:eq(16) :selected").val(),
+                      //"atldebt": $row.find("td:eq(18) input[type='text']").val(),
                       "atldebt": $row.find("td:eq(10)").text(),
                       "interest": $row.find("td:eq(19) input[type='text']").val(),
                       "prevMonthGroupBalance":  $row.find("td:eq(20) input[type='text']").val(),
@@ -146,38 +147,38 @@
                             <span class="editable" id="loanAmount" style="float:right"></span>
                         </div>
                     </div>
-                     <div class="profile-info-row">
+                     <div class="profile-info-row" style="color:red;font-weight:bold">
                          <div class="profile-info-name2"> Processing Fee  (INR):</div>
                              <div class="profile-info-value">
                                 <span class="editable" id="processingFee" style="float:right"></span>
                              </div>
                      </div>
-                    <div class="profile-info-row">
+                    <div class="profile-info-row" style="color:red;font-weight:bold">
                         <div class="profile-info-name2"> Service Tax (INR):</div>
                         <div class="profile-info-value">
                             <span class="editable" id="serviceTax" style="float:right"></span>
                         </div>
                     </div>
-                    <div class="profile-info-row">
+                    <div class="profile-info-row" style="color:red;font-weight:bold">
                         <div class="profile-info-name2"> Education Cess (INR):</div>
                         <div class="profile-info-value">
                             <span class="editable" id="educationCess" style="float:right"></span>
                         </div>
                     </div>
 
-                    <div class="profile-info-row">
+                    <div class="profile-info-row" style="color:red;font-weight:bold">
                         <div class="profile-info-name2"> AWB (INR):</div>
                         <div class="profile-info-value">
                             <span class="editable" id="awb" style="float:right"></span>
                         </div>
                     </div>
-                    <div class="profile-info-row">
+                    <div class="profile-info-row" style="color:red;font-weight:bold">
                         <div class="profile-info-name2"> Sundry Debt(ATL) (INR):</div>
                         <div class="profile-info-value">
-                            <span class="editable" id="sundryDebt" style="float:right"></span>
+                            <span class="editable" id="atldebt" style="float:right"></span>
                         </div>
                     </div>
-                    <div class="profile-info-row">
+                    <div class="profile-info-row" style="color:red;font-weight:bold">
                         <div class="profile-info-name2"> Insurance (INR):</div>
                         <div class="profile-info-value">
                             <span class="editable" id="insuranceAmount" style="float:right"></span>
@@ -238,13 +239,13 @@
                                                                             <th>Bank Name</th>
                                                                             <th>Prev loan Amnt</th>
                                                                             <th>Loan Amnt</th>
-                                                                            <th>AWB</th>
-                                                                            <th>Solar Light</th>
-                                                                            <th>ATL/ELL Sundry Debt</th>
-                                                                            <th>Processing Fee</th>
-                                                                            <th>Service Tax</th>
-                                                                            <th>Education Cess</th>
-                                                                            <th>Insurance</th>
+                                                                            <th style="color: red">AWB</th>
+                                                                            <th style="color: red">Solar Light</th>
+                                                                            <th style="color: red">ATL/ELL Sundry Debt</th>
+                                                                            <th style="color: red">Processing Fee</th>
+                                                                            <th style="color: red">Service Tax</th>
+                                                                            <th style="color: red">Education Cess</th>
+                                                                            <th style="color: red">Insurance</th>
                                                                             <th>Net Amount</th>
                                                                             <th>Purpose</th>
                                                                             <th>Drop Mem</th>

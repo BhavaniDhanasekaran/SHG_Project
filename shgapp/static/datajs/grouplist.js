@@ -119,26 +119,12 @@ function getGroupData(groupID, loanId) {
 }
 
 function getMemberDetails(memberId, groupId, loanId) {
-    clearImagePath();
+    clearMemberData();
+    document.getElementById("formMembers").reset();
+    $("#defaultDisplay").show();
+    $("#successPanel").hide();
     if(taskName == "KYC Check"){
-        $("#defaultDisplay").show();
-        $("#sucessDisplay").hide();
-        $("#msg1").hide();
-        $("#msg2").hide();
-        $("#msg3").hide();
-        $("#msg4").hide();
         tabControl();
-    }
-    else
-    {
-     $("#defaultDisplay").show();
-     $("#sucessDisplay").hide();
-    }
-
-
-
-    if (document.getElementById("comment")) {
-        document.getElementById("comment").value = "";
     }
     $.ajax({
         url: '/getIndMemberData/' + memberId + '/' + groupId + '/' + loanId+ '/' + taskName,
@@ -149,6 +135,8 @@ function getMemberDetails(memberId, groupId, loanId) {
         },
         complete: function() {
             $("#loading").hide();
+            getMemberFSRData(memberId);
+            getPaymentHistory("member",memberId,groupId);
         },
         success: function(data) {
             var memberData = data;
@@ -396,8 +384,7 @@ function getMemberDetails(memberId, groupId, loanId) {
             document.getElementById("loanId").innerHTML = loanId;
         }
     });
-    getMemberFSRData(memberId);
-    getPaymentHistory("member",memberId,groupId);
+
 }
 
 function updateMemValidationStatus(status) {
@@ -414,6 +401,7 @@ function updateMemValidationStatus(status) {
     var groupId = document.getElementById("groupId").innerHTML;
     var loanId = document.getElementById("loanId").innerHTML;
     var comment = document.getElementById("comment").value;
+    console.log(comment,"comment");
     var memStatus = document.getElementById("memberValStatus").innerHTML;
     var loanTypeId = document.getElementById("loanTypeId1").innerHTML;
     var commentCamunda = "";
@@ -483,20 +471,21 @@ function updateMemValidationStatus(status) {
     dataObj["taskId"] = taskId;
 
     var updateStatus = '';
+    var faIcon = '';
+    var fontColor = '';
     if (status == "Approved") {
+        faIcon = 'check-circle';
         updateStatus = " approved";
+        fontColor = "green";
     }
     if (status == "Rejected") {
+        faIcon = 'times-circle';
         updateStatus = " rejected";
-        if(taskName == "KYC Check"){
-             $("#msg1").hide();
-            $("#msg2").show();
-            $("#msg3").hide();
-        }
+        fontColor = "red";
     }
     if (status == "Rework") {
         updateStatus = " sent for rework";
-
+        fontColor = "darkgoldenrod";
     }
 
     $.ajax({
@@ -506,11 +495,6 @@ function updateMemValidationStatus(status) {
         beforeSend: function() {
             triggerLoadFunc();
             $("#loading").show();
-            if(taskName == "KYC Check"){
-                $(".sucess").text("'"+ memberName +"'" + " has been " + updateStatus);
-                $("#defaultDisplay").hide();
-                $("#sucessDisplay").show();
-            }
         },
         complete: function() {
             triggerLoadFunc();
@@ -518,20 +502,9 @@ function updateMemValidationStatus(status) {
         },
         success: function(data) {
             if (data["code"] == "2029") {
-
-
-                if(taskName != "KYC Check"){
-                    $.alert({
-                    title: "'" + memberName + "'" + " has been " + updateStatus,
-                    confirmButton: 'Okay',
-                    confirm: function() {
-                        $("#groupMembersDropDown").html("");
-                        getGroupData(groupId, loanId);
-                    }
-                });
-                }
-
-
+                document.getElementById("validationMessage").innerHTML ='<span style="color:'+fontColor+' " class="bigger-50"> <i class="ace-icon fa fa-'+faIcon+' bigger-125"></i>&nbsp&nbsp'+"'"+ memberName +"'" + " has been " + updateStatus+'</span>';
+                $("#defaultDisplay").hide();
+                $("#successPanel").show();
                 if (status == "Approved") {
                     document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-success Approved";
                     document.getElementById("memberValStatus").innerHTML = "APP";
@@ -677,40 +650,26 @@ function submitKYCForm(status) {
     dataObj['memValData'] = memValData;
     dataObj['taskId'] = taskId;
     var updateStatus = '';
+    var faIcon = '';
+    var fontColor = '';
+
     if (status == "Rework") {
         updateStatus = " sent for Rework";
-        if( taskName == "KYC Check"){
-             $("#msg1").hide();
-            $("#msg2").hide();
-            $("#msg3").show();
-        }
-
-
+        faIcon = 'retweet';
+        fontColor = "darkgoldenrod";
     }
     if (status == "Approved") {
+        fontColor = "green";
         updateStatus = " approved";
-         if( taskName == "KYC Check"){
-        $("#msg1").show();
-        $("#msg2").hide();
-        $("#msg3").hide();
-    }
+        faIcon = 'check-circle';
     }
     if (status == "Rejected") {
         updateStatus = " rejected";
-
-        if( taskName == "KYC Check"){
-         $("#msg1").hide();
-         $("#msg2").show();
-        $("#msg3").hide();
-        }
-
+        fontColor = "red";
+        faIcon = 'times-circle';
     }
     if (status == "Rework" || status == "Rejected") {
         if (comment == "") {
-            if( taskName == "KYC Check"){
-                $("#defaultDisplay").show();
-                $("#sucessDisplay").hide();
-            }
             $.alert("Please input Comment!");
             return false;
         } else {
@@ -718,7 +677,6 @@ function submitKYCForm(status) {
             dataObj['message'] = commentCamunda;
         }
     }
-
 
     $.ajax({
         url: '/updateKYCDetails/',
@@ -734,22 +692,9 @@ function submitKYCForm(status) {
         },
         success: function(data) {
             if (data["code"] == "2024") {
-               if( taskName == "KYC Check"){
-               $(".sucess").text("'"+ name +"'" + " has been " + updateStatus);
+               document.getElementById("validationMessage").innerHTML ='<span style="color:'+fontColor+'" class="bigger-50"> <i class="ace-icon fa fa-'+faIcon+' bigger-125"></i>&nbsp&nbsp'+"'"+ name +"'" + " has been " + updateStatus+'</span>';
                $("#defaultDisplay").hide();
-                $("#sucessDisplay").show();
-               }
-
-              else{
-                 $.alert({
-                    title: "'" + name + "'" + " has been " + updateStatus,
-                    confirmButton: 'Okay',
-                    confirm: function() {
-                        $("#groupMembersDropDown").html("");
-                        getGroupData(groupId, loanId);
-                    }
-                });
-              }
+                $("#successPanel").show();
                 if (status == "Approved") {
                     document.getElementById(memberId).className = "list-group-item list-group-item-action list-group-item-success Approved";
                     document.getElementById("memberValStatus").innerHTML = "APP";
@@ -840,7 +785,11 @@ function checkForTaskCompletion() {
                 },
                 success: function(data) {
                     if (data == "Successful") {
-                        window.location = '/assignedTaskList/';
+                        document.getElementById("gStatus").innerHTML = '<h3  class="lighter smaller">Task has been completed successfully!  <i class="ace-icon glyphicon glyphicon-thumbs-up bigger-100"></i> </h3>';
+                        document.getElementById("taskValBtn").innerHTML = '<a href="/assignedTaskList/" class="btn btn-primary"> <i class="glyphicon glyphicon-user"></i> Go to My Tasks </a>'
+                        $("#defaultDisplay").hide();
+                        $("#successPanel").show();
+                       // window.location = '/assignedTaskList/';
                     }
                 },
                 data: JSON.stringify(dataObj)
@@ -882,8 +831,6 @@ function taskUpdate(status) {
         comment = document.getElementById("comment").value;
         dataObj["message"] = comment;
     }
-    // console.log(dataObj);
-    //return false;
     $.ajax({
         url: '/updateTask/',
         dataType: 'json',
@@ -897,18 +844,10 @@ function taskUpdate(status) {
         },
         success: function(data) {
             if (data == "Successful") {
-
-                if(taskName == "KYC Check"){
-                    $("#group1").hide();
-                    $("#group2").show();
+                    document.getElementById("gStatus").innerHTML = '<h3  class="lighter smaller">Task has been completed successfully!  <i class="ace-icon glyphicon glyphicon-thumbs-up bigger-100"></i> </h3>';
+                    document.getElementById("taskValBtn").innerHTML = '<a href="/assignedTaskList/" class="btn btn-primary"> <i class="glyphicon glyphicon-user"></i> Go to My Tasks </a>'
                     $("#defaultDisplay").hide();
-                    $("#sucessDisplay").show();
-                }
-                else{
-                    $.alert("Member and Group Validation Completed!!");
-                    window.location = '/assignedTaskList/';
-                }
-
+                    $("#successPanel").show();
             } else {
                 $.alert("Failed due to some Issue . Please try after sometime or contact your Administrator");
             }
@@ -1226,9 +1165,6 @@ function updateGroupMemberStatus() {
 }
 
 function getLoanDetails(groupId, loanId) {
-    var encrypted = CryptoJS.AES.encrypt(groupId, "abcdefg")
-    console.log(encrypted);
-
     $.ajax({
         url: '/getLoanDetails/' + groupId + '/' + loanId,
         dataType: 'json',
@@ -1275,11 +1211,14 @@ function getLoanDetails(groupId, loanId) {
                 for (var i = 0; i < creditData.data.loanMemberDetails.length; i++) {
                     var creditObj = creditData["data"]["loanMemberDetails"][i];
                     var newMem = "";
+                    var tdColor = '';
                     //  console.log(creditObj);
                     if (creditObj["newMember"] == true) {
+                        tdColor = "green";
                         newMem = "Yes";
                     }
                     if (creditObj["newMember"] == false) {
+                        tdColor = "red";
                         newMem = "No";
                     }
                     if(creditObj["atlDebt"] == null){
@@ -1288,7 +1227,7 @@ function getLoanDetails(groupId, loanId) {
                     htmlContent += '<tr>'
                         +
                         '<td>' + creditObj["sequenceNumber"] + '</td><td>' +
-                        creditObj["appMemId"] + '</td><td>' +
+                        creditObj["appMemId"] + '</td><td style="font-weight:bold;color:'+tdColor+'">' +
                         newMem + '</td><td>' +
                         creditObj["memberName"] + '</td><td>' +
                         creditObj["sbAccountNo"] + '</td><td>' +
@@ -1871,6 +1810,8 @@ function updateGroupValStatus(status) {
             },
             success: function(data) {
                 if (data == "Successful") {
+
+
                     $.alert("Group Validation completed Successfully");
                     window.location = '/assignedTaskList/';
                 }
@@ -2042,6 +1983,8 @@ function getGroupComments(processInstanceId, loanId) {
     });
 }
 function loadNextMem(){
+    clearMemberData();
+    document.getElementById("formMembers").reset();
     getGroupData(groupId,loanId);
 }
 
@@ -2148,37 +2091,64 @@ function getForeClosureInfo(){
 
 
 }
-function clearImagePath(){
-       $("#ADDRESSPROOF_docPath").css("display", "none");
-       $("#ADDRESSPROOF_docPath").attr("src","");
+function clearMemberData() {
+   $("#ADDRESSPROOF_docPath").css("display", "none");
+   $("#ADDRESSPROOF_docPath").attr("src","");
 
-       $("#ADDRESSPROOF_docPath").attr("data-original", "");
-       $("#ADDRESSPROOF_2_docPath").css("display", "none");
-       $("#ADDRESSPROOF_2_docPath").attr("src","");
+   $("#ADDRESSPROOF_docPath").attr("data-original", "");
+   $("#ADDRESSPROOF_2_docPath").css("display", "none");
+   $("#ADDRESSPROOF_2_docPath").attr("src","");
 
-       $("#ADDRESSPROOF_2_docPath").attr("data-original", "");
-       $("#SBACCOUNTPASSBOOK_docPath").css("display", "none");
-       $("#SBACCOUNTPASSBOOK_docPath").attr("src","");
+   $("#ADDRESSPROOF_2_docPath").attr("data-original", "");
+   $("#SBACCOUNTPASSBOOK_docPath").css("display", "none");
+   $("#SBACCOUNTPASSBOOK_docPath").attr("src","");
 
-       $("#SBACCOUNTPASSBOOK_docPath").attr("data-original", "");
-       $("#IDPROOF_2_docPath").css("display", "none");
-       $("#IDPROOF_2_docPath").attr("src","");
+   $("#SBACCOUNTPASSBOOK_docPath").attr("data-original", "");
+   $("#IDPROOF_2_docPath").css("display", "none");
+   $("#IDPROOF_2_docPath").attr("src","");
 
-       $("#IDPROOF_2_docPath").attr("data-original", "");
-       $("#MEMBERPHOTO_docPath").css("display", "none");
-       $("#MEMBERPHOTO_docPath").attr("src","");
+   $("#IDPROOF_2_docPath").attr("data-original", "");
+   $("#MEMBERPHOTO_docPath").css("display", "none");
+   $("#MEMBERPHOTO_docPath").attr("src","");
 
-       $("#MEMBERPHOTO_docPath").attr("data-original", "");
-       $("#IDPROOF_docPath").css("display", "none");
-       $("#IDPROOF_docPath").attr("src","");
+   $("#MEMBERPHOTO_docPath").attr("data-original", "");
+   $("#IDPROOF_docPath").css("display", "none");
+   $("#IDPROOF_docPath").attr("src","");
 
-       $("#IDPROOF_docPath").attr("data-original","");
-       $("#OverLapReport_docPath").css("display", "none");
-       $("#OverLapReport_docPath").attr("src","");
+   $("#IDPROOF_docPath").attr("data-original","");
+   $("#OverLapReport_docPath").css("display", "none");
+   $("#OverLapReport_docPath").attr("src","");
 
-       $("#OverLapReport_docPath").attr("data-original", "");
+   $("#OverLapReport_docPath").attr("data-original", "");
 
+    if (document.getElementById("memberName2")) {
+        document.getElementById("memberName2").innerHTML = "";
     }
+    if (document.getElementById("appMemberId_top")) {
+        document.getElementById("appMemberId_top").innerHTML = "";
+    }
+    if (document.getElementById("appMemberId")) {
+        document.getElementById("appMemberId").innerHTML = "";
+    }
+    if (document.getElementById("dedupeStatus")) {
+        document.getElementById("dedupeStatus").innerHTML = "";
+    }
+    if (document.getElementById("CBStatus")) {
+        document.getElementById("CBStatus").innerHTML = "";
+    }
+    if (document.getElementById("roleName")) {
+        document.getElementById("roleName").innerHTML = "";
+    }
+    if (document.getElementById("memberId")) {
+        document.getElementById("memberId").innerHTML = "";
+    }
+    if (document.getElementById("memberValStatus")) {
+        document.getElementById("memberValStatus").innerHTML = "";
+    }
+    if (document.getElementById("previousLoanMemberCycle")) {
+        document.getElementById("previousLoanMemberCycle").innerHTML = "";
+    }
+}
 
 function reloadComments(id) {
     if(id == 1){
