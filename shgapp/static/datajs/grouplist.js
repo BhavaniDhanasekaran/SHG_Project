@@ -76,7 +76,7 @@ function getGroupData(groupID, loanId) {
                             rewCount += 1;
                         }
                         if (document.getElementById("groupMembersDropDown")) {
-                            $("#groupMembersDropDown").append('<a id="' + memberId + '" onclick="getMemberDetails(' + memberId + ',' + groupId + ',' + loanId + ');" class="' + className + '" style="font-weight:bold;"> (' + groupData["data"]["groupMemDetail"][i]["sequenceNumber"] + ")  " + groupData["data"]["groupMemDetail"][i]["memberName"] + '</a>');
+                            $("#groupMembersDropDown").append('<a id="' + memberId + '" onclick="getMemberDetails(' + memberId + ',' + groupId + ',' + loanId + ');tabControl();" class="' + className + '" style="font-weight:bold;"> (' + groupData["data"]["groupMemDetail"][i]["sequenceNumber"] + ")  " + groupData["data"]["groupMemDetail"][i]["memberName"] + '</a>');
                         }
                         if (document.getElementById("groupName") && groupData["data"]["groupName"]) {
                             document.getElementById("groupName").innerHTML = groupData["data"]["groupName"];
@@ -97,7 +97,7 @@ function getGroupData(groupID, loanId) {
                     updateMembersCount();
                     var totalCount = approvedCount + rejectedCount;
                     if (membersCount == totalCount) {
-                        $("#operationsDivIdQuery").css("display", "none");
+                        $("#operationsDivId").css("display", "none");
                         $("#groupApproveBtnIdQuery").css("display", "block");
                     }
                     if (activeMembersArr[0]) {
@@ -119,13 +119,12 @@ function getGroupData(groupID, loanId) {
 }
 
 function getMemberDetails(memberId, groupId, loanId) {
+    $("#operationsDivId").hide();
+    $(".spanClearClass").text('');
     clearMemberData();
     document.getElementById("formMembers").reset();
     $("#defaultDisplay").show();
     $("#successPanel").hide();
-    if(taskName == "KYC Check"){
-        tabControl();
-    }
     $.ajax({
         url: '/getIndMemberData/' + memberId + '/' + groupId + '/' + loanId+ '/' + taskName,
         dataType: 'json',
@@ -135,6 +134,9 @@ function getMemberDetails(memberId, groupId, loanId) {
         },
         complete: function() {
             $("#loading").hide();
+            if(document.getElementById("penCount").innerHTML != 0){
+                $("#operationsDivId").show();
+            }
             getMemberFSRData(memberId);
             getPaymentHistory("member",memberId,groupId);
         },
@@ -734,6 +736,12 @@ function checkForTaskCompletion() {
             processStatus = "raiseQuery";
             taskUpdate(processStatus);
         }
+        if(pendingCount >= 1){
+            if(document.getElementById("gStatus") && document.getElementById("taskValBtn")){
+                 document.getElementById("gStatus").innerHTML = '<h3  class="lighter smaller">Task has not been completed yet!   <i class="ace-icon glyphicon glyphicon-thumbs-down bigger-125"></i> </h3>';
+                 document.getElementById("taskValBtn").innerHTML = '<a href="#" onclick="loadNextMem();" class="btn btn-primary"> <i class="ace-icon fa fa-arrow-right"></i> Next Member </a>';
+            }
+        }
         if (totalCount == membersCount && reworkCount == 0 && pendingCount == 0) {
             if (group == "CreditTeam") {
                 processStatus = "CBApproved";
@@ -771,6 +779,7 @@ function checkForTaskCompletion() {
         }
         dataObj["taskId"] = taskId;
         if (membersCount == (approvedCount + rejectedCount) && pendingCount == 0) {
+            document.getElementById("gStatus").innerHTML = '';
             $.ajax({
                 url: '/updateTask/',
                 dataType: 'json',
@@ -785,16 +794,19 @@ function checkForTaskCompletion() {
                 },
                 success: function(data) {
                     if (data == "Successful") {
-                        document.getElementById("gStatus").innerHTML = '<h3  class="lighter smaller">Task has been completed successfully!  <i class="ace-icon glyphicon glyphicon-thumbs-up bigger-100"></i> </h3>';
+                        document.getElementById("gStatus").innerHTML = '<h3  class="lighter smaller">Task has been completed successfully!  <i class="ace-icon glyphicon glyphicon-thumbs-up bigger-150"></i> </h3>';
                         document.getElementById("taskValBtn").innerHTML = '<a href="/assignedTaskList/" class="btn btn-primary"> <i class="glyphicon glyphicon-user"></i> Go to My Tasks </a>'
                         $("#defaultDisplay").hide();
                         $("#successPanel").show();
-                       // window.location = '/assignedTaskList/';
+                        // window.location = '/assignedTaskList/';
                     }
                 },
                 data: JSON.stringify(dataObj)
             });
-        } else {
+        }
+        else{
+            document.getElementById("gStatus").innerHTML = '<h3  class="lighter smaller">Task has not been completed yet!   <i class="ace-icon glyphicon glyphicon-thumbs-down bigger-125"></i> </h3>';
+            document.getElementById("taskValBtn").innerHTML = '<a href="#" onclick="loadNextMem();" class="btn btn-primary"> <i class="ace-icon fa fa-arrow-right"></i> Next Member </a>';
             return false;
         }
     }
@@ -802,6 +814,7 @@ function checkForTaskCompletion() {
 }
 
 function taskUpdate(status) {
+    console.log('dddd111111111111111111111111d');
     var comment = '';
     var processupdate;
     if (group == "DataSupportTeam") {
@@ -844,7 +857,7 @@ function taskUpdate(status) {
         },
         success: function(data) {
             if (data == "Successful") {
-                    document.getElementById("gStatus").innerHTML = '<h3  class="lighter smaller">Task has been completed successfully!  <i class="ace-icon glyphicon glyphicon-thumbs-up bigger-100"></i> </h3>';
+                    document.getElementById("gStatus").innerHTML = '<h3  class="lighter smaller">Task has been completed successfully!  <i class="ace-icon glyphicon glyphicon-thumbs-up bigger-150"></i> </h3>';
                     document.getElementById("taskValBtn").innerHTML = '<a href="/assignedTaskList/" class="btn btn-primary"> <i class="glyphicon glyphicon-user"></i> Go to My Tasks </a>'
                     $("#defaultDisplay").hide();
                     $("#successPanel").show();
@@ -880,10 +893,13 @@ function creditHistory(loanId) {
                                 docId = documentObj[j]["docId"];
                                 docBtn = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + docId + "," + "width=200,height=100" + ');"+>View</button>';
                             }
+                            else{
+                                docBtn = '<button type="button" class="btn btn-info btn-md btn-danger"+>View</button>';
+                            }
                         }
-                    } else {
+                    }
+                    else {
                         docBtn = '<button type="button" class="btn btn-info btn-md btn-danger"+>View</button>';
-
                     }
                     htmlContent += '<tr><td>' + docBtn + ' </td>' +
                         '<td>' + creditObj["appMemberId"] + '</td><td>' +
@@ -1156,6 +1172,7 @@ function updateGroupMemberStatus() {
             },
             success: function(data) {
                 if (data.code == '2024') {
+
                     $.alert("Member roles have been updated successfully");
                     return "Success";
                 }
@@ -1478,7 +1495,7 @@ function approveLoan(updateloanData) {
             $("#loading").hide();
         },
         success: function(data) {
-            if (data.code == "2032") {
+            if (data.code == "2043") {
                 $.alert("Loan has been approved");
                 var loanAccNumber = data["data"]["loanAccountNumber"];
                 window.location.href = "/loanAccNo/" + loanAccNumber + '/' + appGroupId + '/' + loanTypeName + '/' + groupName;
@@ -1718,11 +1735,29 @@ function updateGroupValStatus(status) {
         comment = document.getElementById("comment").value;
     }
     var loanTypeId = document.getElementById("loanTypeId1").innerHTML;
+    var groupName = '';
+    if(document.getElementById("groupName")){
+        groupName = document.getElementById("groupName").innerHTML;
+    }
+     if(document.getElementById("groupName_groupRole")){
+        groupName = document.getElementById("groupName_groupRole").innerHTML;
+    }
+    var fontColor = '';
+    var fontIcon = '';
+    var updateStatus = '';
     if (status == "Rejected") {
+        fontIcon = 'times-circle';
+        updateStatus = "rejected";
+        fontColor = "darkred";
         if (comment == "") {
             $.alert("Please input comment");
             return false;
         }
+    }
+    if(status == "Approved"){
+        fontColor = "green";
+        updateStatus = "approved";
+        fontIcon = 'check-circle';
     }
     if (group == "DataSupportTeam") {
         validationType = "PEN";
@@ -1792,7 +1827,6 @@ function updateGroupValStatus(status) {
 
         dataObj["groupValData"] = groupValData;
         dataObj["taskId"] = taskId;
-       // console.log(dataObj);
         if (comment != "") {
             dataObj["message"] = comment;
         }
@@ -1810,10 +1844,12 @@ function updateGroupValStatus(status) {
             },
             success: function(data) {
                 if (data == "Successful") {
-
-
-                    $.alert("Group Validation completed Successfully");
-                    window.location = '/assignedTaskList/';
+                     $("#validationMessage").addClass("center");
+                     document.getElementById("validationMessage").innerHTML ='<span style="color:'+fontColor+'" " class="center bigger-50"> &nbsp&nbsp'+"'"+ groupName +"'" + " has been "+updateStatus+" successfully"+'</span>';
+                     document.getElementById("gStatus").innerHTML = '<h4 class="center" ><span style="color:'+fontColor+'" " class="center bigger-50"><i class="ace-icon fa fa-'+fontIcon+' bigger-250"></i></span></h4>';
+                     document.getElementById("taskValBtn").innerHTML = '<a href="/assignedTaskList/" class="btn btn-primary"> <i class="glyphicon glyphicon-user"></i> Go to My Tasks </a>';
+                     $("#successPanel").show();
+                     $("#defaultDisplay").hide();
                 }
             },
             data: JSON.stringify(dataObj)
@@ -1983,6 +2019,7 @@ function getGroupComments(processInstanceId, loanId) {
     });
 }
 function loadNextMem(){
+    $('.spanClearClass').text('');
     clearMemberData();
     document.getElementById("formMembers").reset();
     getGroupData(groupId,loanId);
@@ -2120,34 +2157,6 @@ function clearMemberData() {
    $("#OverLapReport_docPath").attr("src","");
 
    $("#OverLapReport_docPath").attr("data-original", "");
-
-    if (document.getElementById("memberName2")) {
-        document.getElementById("memberName2").innerHTML = "";
-    }
-    if (document.getElementById("appMemberId_top")) {
-        document.getElementById("appMemberId_top").innerHTML = "";
-    }
-    if (document.getElementById("appMemberId")) {
-        document.getElementById("appMemberId").innerHTML = "";
-    }
-    if (document.getElementById("dedupeStatus")) {
-        document.getElementById("dedupeStatus").innerHTML = "";
-    }
-    if (document.getElementById("CBStatus")) {
-        document.getElementById("CBStatus").innerHTML = "";
-    }
-    if (document.getElementById("roleName")) {
-        document.getElementById("roleName").innerHTML = "";
-    }
-    if (document.getElementById("memberId")) {
-        document.getElementById("memberId").innerHTML = "";
-    }
-    if (document.getElementById("memberValStatus")) {
-        document.getElementById("memberValStatus").innerHTML = "";
-    }
-    if (document.getElementById("previousLoanMemberCycle")) {
-        document.getElementById("previousLoanMemberCycle").innerHTML = "";
-    }
 }
 
 function reloadComments(id) {

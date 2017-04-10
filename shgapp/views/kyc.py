@@ -253,12 +253,10 @@ def approveLoan(request):
         if request.method == "POST":
             formData = json.loads(request.body)
             bodyData = formData["loanData"]
-            print "bodyDatabodyDatabodyDatabodyDatabodyDatabodyDatabodyData------------------------"
-            print json.dumps(bodyData)
             taskId = formData["taskId"]
             serialized_data = sscoreClient._urllib2_request('workflowEdit/loanValidation', bodyData,
                                                             requestType='POST')
-            if serialized_data["code"] == 2032 :
+            if serialized_data["code"] == 2043 :
                 processUpdate = { 'variables': { 'dispatchType': { 'value': "Cheque" } } }
                 taskComplete(request,processUpdate,taskId)
             return HttpResponse(json.dumps(serialized_data), content_type="application/json")

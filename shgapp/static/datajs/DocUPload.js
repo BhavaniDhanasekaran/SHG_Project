@@ -50,8 +50,11 @@ function loanDocument(loanTypeId) {
                                 '<span class="glyphicon glyphicon-edit"></span> Edit  </button></td></tr>';
                         }
                     }
+                    if ($.fn.DataTable.isDataTable( '#docments_table' ) ) {
+                        $("#docments_table").dataTable().fnDestroy();
+                    }
                     document.getElementById("records_table").innerHTML = docRow;
-                    loadDataTable("#documents_table");
+                    loadDataTable("#docments_table");
                     trigger();
                 }
             });

@@ -43,13 +43,36 @@
                 <span id="groupId" style="visibility:hidden;"></span>
                 <span id="loanTypeId1" style="visibility:hidden;"></span>
             </div>
+             <div class="row" id="successPanel" style="display:none;">
+            <div class="error-container">
+                <div class="well">
+                        <h2 id="validationMessage" class="grey lighter smaller">   </h2>
+
+                    <hr />
+                    <div id="gStatus">
+                        <!--h3  class="lighter bigger">Task has not been completed yet!  <i class="ace-icon glyphicon glyphicon-thumbs-down bigger-125"></i> </h3-->
+                    </div>
+                    <div class="space"></div>
+
+                    <hr />
+                    <div class="space"></div>
+                    <div class="center" id="taskValBtn">
+                        <!--a href="javascript:history.back()" class="btn btn-grey"> <i class="ace-icon fa fa-arrow-left"></i> Go Back </a-->
+                        <!--a href="#" onclick="loadNextMem();" class="btn btn-primary"> <i class="ace-icon fa fa-arrow-right"></i> Next Member </a-->
+                    </div>
+                </div>
+            </div>
+            <!-- PAGE CONTENT ENDS -->
+    </div>
             <div class="panel-body-danger">
                 <!--2row panel body start-->
+                <div id="defaultDisplay">
                 <div class="tabbable">
                     <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
                         <li class="active">
                             <a data-toggle="tab" href="#home4">Group Detail</a>
                         </li>
+                         <li><a data-toggle="tab" href="#memberDetails">Member Details</a></li>
                         <li>
                             <a data-toggle="tab" href="#profile4">SHG Credit History</a>
                         </li>
@@ -66,6 +89,30 @@
                                     Comments
                                 </button>
                             </span>
+                        </div>
+                         <div id="memberDetails" class="tab-pane">
+                            <div class="page-content1">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <!-- PAGE CONTENT BEGINS -->
+                                        <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
+                                            <div class="widget-box widget-color-blue" id="widget-box-2">
+
+                                                <div class="widget-body">
+                                                    <div class="widget-main no-padding">
+                                                        <table class="table table-striped table-bordered table-hover" id="groupMemberDetails">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.span -->
+                                    </div>
+                                    <!-- /.row -->
+                                    <!-- PAGE CONTENT ENDS -->
+                                </div>
+                                <!-- /.col -->
+                            </div>
                         </div>
                         <div id="home4" class="tab-pane in active">
                             <!-- form start-->
@@ -296,6 +343,7 @@
                     </div>
                     <!-- TAB END-->
                 </div>
+        </div>
                 <!--2row panel body end-->
             </div>
         </div>

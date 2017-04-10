@@ -535,7 +535,7 @@
                                                 </div>
                                             </div>
                                             <div></div>
-                                            {% if taskName == "Proposal scrutiny"%}
+                                            {% if taskName == "Proposal scrutiny" or taskName == "BM Reply" %}
                                             <div id="operationsDivId" class="col-md-4 text-center .btn-block">
                                                 <button type="button"  class="btn btn-danger btn-md " id="myBtn2" onclick="submitKYCForm('Rework');">Rework</button>
                                                 <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCForm('Approved');">Approve</button>
@@ -543,11 +543,11 @@
                                             </div>
                                             {% endif %}
                                             {% if taskName == "BM Reply" %}
-                                            <div id="operationsDivIdQuery" class="col-md-4 text-center .btn-block">
+                                            <!--div id="operationsDivIdQuery" class="col-md-4 text-center .btn-block">
                                                 <button type="button"  class="btn btn-danger btn-md " id="myBtn2" onclick="submitKYCForm('Rework');">Rework</button>
                                                 <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCForm('Approved');">Approve</button>
                                                 <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="updateMemValidationStatus('Rejected');">Reject</button>
-                                            </div>
+                                            </div-->
                                             <div id="groupApproveBtnIdQuery" class="col-md-4 text-center .btn-block" style="display:none;">
                                                 <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="updateGroupValStatus('Approved');">Approve Group</button>
                                             </div>

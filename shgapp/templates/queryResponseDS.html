@@ -19,78 +19,12 @@
         loadGroupRoles(groupId, loanId, taskName) ;
         taskCount();
         $('textarea.limited').inputlimiter({
-      remText: '%n character%s remaining...',
-      limitText: 'max allowed : %n.'
-    });
+          remText: '%n character%s remaining...',
+          limitText: 'max allowed : %n.'
+        });
     });
 
 </script>
-<style>
-    .info-display {
-    margin: 8px 8px;
-    }
-    .message {
-    width: 50%;
-    margin: 0 auto;
-    padding: 19px;
-    margin: 0 auto;
-    background-color: #FFFFFF;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 16px;
-    }
-    .error {
-    background-color: rgba(217, 80, 80, 0.2);
-    border-top-right-radius: 31px;
-    border-right-color: #CC3333; /* Side Effect Colors */
-    border-left-color: #CC3333; /* Side Effect Colors */
-    border: 1px solid #CC3333;
-    border-right-width: 19px;
-    border-left-width: 19px;
-    }
-    .error strong {
-    color:  #FF3333;
-    }
-    .warning {
-    border-right-color: #FF9933;
-    border-bottom-right-radius: 31px;
-    background-color: rgba(240, 173, 78, 0.2);
-    border-right-color: #FF9933; /* Side Effect Colors */
-    border-left-color: #FF9933; /* Side Effect Colors */
-    border: 1px solid #FF9933;
-    border-right-width: 19px;
-    border-left-width: 19px;
-    }
-    .warning strong {
-    color: #FF9900;
-    }
-    .info {
-    border-right-color: #5bc0de;
-    border-bottom-right-radius: 31px;
-    border-top-right-radius: 31px;
-    background-color: rgba(91, 192, 222, 0.2);
-    border-right-color: #5bc0de; /* Side Effect Colors */
-    border-left-color: #5bc0de; /* Side Effect Colors */
-    border: 1px solid #5bc0de;
-    border-right-width: 19px;
-    border-left-width: 19px;
-    }
-    .info strong {
-    color: #5bc0de;
-    }
-    .success {
-    border-right-color: #2b542c;
-    border-radius: 31px;
-    background-color: rgba(43, 84, 44, 0.2);
-    border-right-color: #2b542c; /* Side Effect Colors */
-    border-left-color: #2b542c; /* Side Effect Colors */
-    border: 1px solid #2b542c;
-    border-right-width: 19px;
-    border-left-width: 19px;
-    }
-    .success strong {
-    color: #2b542c;
-    }
-</style>
 </div>
 {% endblock %}
 <!-- PAGE CONTENT BEGINS -->
@@ -117,8 +51,8 @@
                         <span id="groupName"></span> &nbsp; &nbsp;
                         (<span id="appGroupId"></span>) &nbsp;
                         &nbsp;&nbsp; &nbsp;
-                        <span id="memberName2"></span>
-                        (<span id="appMemberId_top"></span>)
+                        <span class ="spanClearClass" id="memberName2"></span>
+                        (<span class ="spanClearClass" id="appMemberId_top"></span>)
                         <span id="groupId" style="visibility:hidden;"></span>
                         <span id="loanTypeId1"
                             style="visibility:hidden;"></span>
@@ -146,7 +80,7 @@
 
             <hr />
             <div id="gStatus">
-                <h3  class="lighter bigger">Task has not been completed yet!  <i class="ace-icon glyphicon glyphicon-thumbs-down bigger-125"></i> </h3>
+                <!--h3  class="lighter bigger">Task has not been completed yet!  <i class="ace-icon glyphicon glyphicon-thumbs-down bigger-125"></i> </h3-->
             </div>
             <div class="space"></div>
 
@@ -154,7 +88,7 @@
             <div class="space"></div>
             <div class="center" id="taskValBtn">
                 <!--a href="javascript:history.back()" class="btn btn-grey"> <i class="ace-icon fa fa-arrow-left"></i> Go Back </a-->
-                <a href="#" onclick="loadNextMem();" class="btn btn-primary"> <i class="ace-icon fa fa-arrow-right"></i> Next Member </a>
+                <!--a href="#" onclick="loadNextMem();" class="btn btn-primary"> <i class="ace-icon fa fa-arrow-right"></i> Next Member </a-->
             </div>
         </div>
     </div>
@@ -162,7 +96,7 @@
 </div>
                 <div class="panel-body-danger">
 
-                    <div id="defaultDisplay"  style="display:none;" >
+                    <div id="defaultDisplay"  style="display:block;" >
                         <!--2row panel body start-->
                         <div class="tabbable">
                             <ul class="nav nav-tabs padding-12
@@ -206,7 +140,7 @@
                                             <div class="col-md-12">
                                                 <label class="label
                                                     label-info arrowed-right arrowed-in  glyphicon-bookmark">
-                                                Member ID :<span
+                                                Member ID :<span class ="spanClearClass"
                                                     id="appMemberId"></span></label>
                                                 <label class="label
                                                     label-info arrowed-right arrowed-in  glyphicon-bookmark">
@@ -214,19 +148,19 @@
                                                     id="loanId"></span></label>
                                                 <label class="label
                                                     label-info arrowed-right arrowed-in  glyphicon-bookmark">
-                                                De-dup Status:<span
+                                                De-dup Status:<span class ="spanClearClass"
                                                     id="dedupeStatus"></span></label>
                                                 <label class="label
                                                     label-info arrowed-right arrowed-in  glyphicon-bookmark">
-                                                CB Status:<span
+                                                CB Status:<span class ="spanClearClass"
                                                     id="CBStatus"></span></label>
                                                 <label class="label
                                                     label-danger arrowed-in  glyphicon-bookmark">
-                                                Role : <span
+                                                Role : <span class ="spanClearClass"
                                                     id="roleName"></span></label>
-                                                <span id="memberId"
+                                                <span class ="spanClearClass" id="memberId"
                                                     style="visibility:hidden;"></span>
-                                                <span id="memberValStatus"
+                                                <span class ="spanClearClass" id="memberValStatus"
                                                     style="visibility:hidden;"></span>
                                             </div>
                                             <!-- tabrow start-->
@@ -243,23 +177,19 @@
                                                         </div>
                                                         <div
                                                             class="profile-info-value">
-                                                            <span class="editable">
                                                             <span
-                                                                class="editable" id="sequenceNumber"></span>
-                                                            </span>
+                                                                class="editable spanClearClass" id="sequenceNumber"></span>
                                                         </div>
                                                     </div>
                                                     <div class="profile-info-row">
                                                         <div
                                                             id="memberName_label" class="profile-info-name">
-                                                            Name <font
-                                                                class="mandatory">*</font>
+                                                            Name <font class="mandatory">*</font>
                                                         </div>
                                                         <div
                                                             class="profile-info-value">
-                                                            <span class="editable">
                                                             <span
-                                                                class="editable" id="memberName"></span>
+                                                                class="editable  spanClearClass" id="memberName"></span>
                                                             </span>
                                                             <img src=""
                                                                 id="MEMBERPHOTO_docPath" class="img img-test"
@@ -275,10 +205,8 @@
                                                         </div>
                                                         <div
                                                             class="profile-info-value">
-                                                            <span class="editable">
                                                             <span
-                                                                class="editable" id="age"></span>
-                                                            </span>
+                                                                class="editable spanClearClass" id="age"></span>
                                                         </div>
                                                     </div>
                                                     <div class="profile-info-row">
@@ -290,9 +218,8 @@
                                                         </div>
                                                         <div
                                                             class="profile-info-value">
-                                                            <span class="editable">
                                                             <span
-                                                                class="editable" id="maritalStatusString"></span>
+                                                                class="editable spanClearClass" id="maritalStatusString"></span>
                                                         </div>
                                                     </div>
                                                     <div class="profile-info-row">
@@ -303,9 +230,8 @@
                                                         </div>
                                                         <div
                                                             class="profile-info-value">
-                                                            <span class="editable">
                                                             <span
-                                                                class="editable" id="husbandName"></span>
+                                                                class="editable spanClearClass" id="husbandName"></span>
                                                         </div>
                                                     </div>
                                                     <div class="profile-info-row">
@@ -317,7 +243,7 @@
                                                         <div
                                                             class="profile-info-value">
                                                             <span
-                                                                class="editable" id="fatherName"></span>
+                                                                class="editable spanClearClass" id="fatherName"></span>
                                                         </div>
                                                     </div>
                                                     <div class="profile-info-row">
@@ -327,7 +253,7 @@
                                                         <div
                                                             class="profile-info-value">
                                                             <span
-                                                                class="editable" id="address"></span>
+                                                                class="editable spanClearClass" id="address"></span>
                                                         </div>
                                                     </div>
                                                     <div class="profile-info-row">
@@ -337,7 +263,7 @@
                                                         <div
                                                             class="profile-info-value">
                                                             <span
-                                                                class="editable" id="villageName"></span>
+                                                                class="editable spanClearClass" id="villageName"></span>
                                                             <span
                                                                 style="visibility:hidden" id="villages"></span>
                                                         </div>
@@ -358,7 +284,7 @@
                                                         <div
                                                             class="profile-info-value">
                                                             <span
-                                                                class="editable" id="permanentAddress"></span>
+                                                                class="editable spanClearClass" id="permanentAddress"></span>
                                                         </div>
                                                     </div>
                                                     <div class="profile-info-row">
@@ -368,7 +294,7 @@
                                                         <div
                                                             class="profile-info-value">
                                                             <span
-                                                                class="editable" id="pincode"></span>
+                                                                class="editable spanClearClass" id="pincode"></span>
                                                         </div>
                                                     </div>
                                                     <div class="profile-info-row">
@@ -380,7 +306,7 @@
                                                         <div
                                                             class="profile-info-value">
                                                             <span
-                                                                class="editable" id="mobileNo"></span>
+                                                                class="editable spanClearClass" id="mobileNo"></span>
                                                         </div>
                                                     </div>
                                                     <div class="profile-info-row">
@@ -392,7 +318,7 @@
                                                         <div
                                                             class="profile-info-value">
                                                             <span
-                                                                class="editable" id="idProofValue"></span>
+                                                                class="editable spanClearClass" id="idProofValue"></span>
                                                             &nbsp;&nbsp;
                                                             <div
                                                                 id="idProof" style="display:inline-block;margin-top: 4px"
@@ -421,7 +347,7 @@
                                                         <div
                                                             class="profile-info-value">
                                                             <span
-                                                                class="editable" id="addressProofValue"></span>
+                                                                class="editable spanClearClass" id="addressProofValue"></span>
                                                             &nbsp;&nbsp;
                                                             <div id="idProof"
                                                                 style="display:inline-block;margin-top: 4px" class="idProof">
@@ -446,7 +372,7 @@
                                                         <div
                                                             class="profile-info-value">
                                                             <span
-                                                                class="editable" id="sbAccountNumber"></span>
+                                                                class="editable spanClearClass" id="sbAccountNumber"></span>
                                                             &nbsp;&nbsp;
                                                             <div
                                                                 style="display:inline-block;margin-top: 4px"
@@ -465,7 +391,7 @@
                                                         <div
                                                             class="profile-info-value">
                                                             <span
-                                                                class="editable" id="bankName"></span>
+                                                                class="editable spanClearClass" id="bankName"></span>
                                                             <span
                                                                 style="visibility:hidden"  id="bankId"></span>
                                                         </div>
@@ -487,7 +413,7 @@
                                                         <div
                                                             class="profile-info-value">
                                                             <span
-                                                                class="editable" id="sbAccountName"></span>
+                                                                class="editable spanClearClass" id="sbAccountName"></span>
                                                         </div>
                                                     </div>
                                                     <div class="profile-info-row">
@@ -496,53 +422,53 @@
                                                         <div
                                                             class="profile-info-value">
                                                             <span
-                                                                class="editable" id="branch"></span>
+                                                                class="editable spanClearClass" id="branch"></span>
                                                         </div>
                                                     </div>
                                                     <div class="profile-info-row">
                                                         <div
                                                             id="idProofTypeId_label" class="profile-info-name">Id Proof
-                                                            Type
+                                                            Type <font class="mandatory">*</font>
                                                         </div>
                                                         <div
                                                             class="profile-info-value">
                                                             <span
-                                                                class="editable" id="idProofTypeValue"></span>
+                                                                class="editable spanClearClass" id="idProofTypeValue"></span>
                                                             <span
                                                                 style="visibility:hidden" id="idProofTypeId"></span>
                                                         </div>
                                                     </div>
                                                     <div class="profile-info-row">
                                                         <div
-                                                            id="addressProofTypeId_label" class="profile-info-name">Address Proof
+                                                            id="addressProofTypeId_label" class="profile-info-name">Address Proof <font class="mandatory">*</font>
                                                         </div>
                                                         <div
                                                             class="profile-info-value">
                                                             <span
-                                                                class="editable" id="addressProofTypeValue"></span>
+                                                                class="editable spanClearClass" id="addressProofTypeValue"></span>
                                                             <span
                                                                 style="visibility:hidden" id="addressProofTypeId"></span>
                                                         </div>
                                                     </div>
                                                     <div class="profile-info-row">
                                                         <div
-                                                            id="loanAmount_label" class="profile-info-name"> Loan Amount
+                                                            id="loanAmount_label" class="profile-info-name"> Loan Amount <font class="mandatory">*</font>
                                                         </div>
                                                         <div
                                                             class="profile-info-value">
                                                             <span
-                                                                class="editable" id="loanAmount"></span>
+                                                                class="editable spanClearClass" id="loanAmount"></span>
                                                         </div>
                                                     </div>
                                                     <div class="profile-info-row">
                                                         <div
                                                             id="loanTypeValue_label" class="profile-info-name">Loan
-                                                            purpose
+                                                            purpose <font class="mandatory">*</font>
                                                         </div>
                                                         <div
                                                             class="profile-info-value">
                                                             <span
-                                                                class="editable" id="loanTypeName"></span>
+                                                                class="editable spanClearClass" id="loanTypeName"></span>
                                                             <span
                                                                 style="visibility:hidden" id="loanTypeValue">
                                                             </span>
@@ -556,7 +482,7 @@
                                                         <div
                                                             class="profile-info-value">
                                                             <span
-                                                                class="editable" id="previousLoanMemberCycle">
+                                                                class="editable spanClearClass" id="previousLoanMemberCycle">
                                                             </span>
                                                         </div>
                                                     </div>
@@ -583,7 +509,7 @@
                                                         <div
                                                             class="profile-info-value">
                                                             <span class="editable">
-                                                            <textarea class="form-control limited sample" maxlength="3000" rows="3" style="width:94%;" id="comment"></textarea>
+                                                            <textarea class="form-control limited sample spanClearClass" maxlength="3000" rows="3" style="width:94%;" id="comment"></textarea>
                                                             </span>
                                                         </div>
                                                     </div>

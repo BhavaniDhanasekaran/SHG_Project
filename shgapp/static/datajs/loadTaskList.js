@@ -112,9 +112,9 @@ function loadUnassignedTaskList(data){
         table = $('#taskListTable').DataTable( {
             "pageLength": 50
         } );
-        if(taskName == "Query Response" || taskName == "Proposal scrutiny" || taskName == "BM Reply"){
+      /*  if(taskName == "Query Response" || taskName == "Proposal scrutiny" || taskName == "BM Reply"){
         	 triggerLoadFunc();
-		}
+		}*/
  }
 
 function loadAssignedTaskList(){
