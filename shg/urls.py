@@ -14,6 +14,16 @@ index_urlpatterns = [
 ]
 urlpatterns = index_urlpatterns
 
+customError_urlpatterns = [
+    url(r'^bad_request/', customError.bad_request, name = 'bad_request'),
+    url(r'^permission_denied/', customError.permission_denied, name = 'permission_denied'),
+    url(r'^page_not_found/', customError.page_not_found, name = 'page_not_found'),
+    url(r'^server_error/', customError.server_error, name = 'server_error'),
+    url(r'^connection_timeout/', customError.connection_timeout, name = 'connection_timeout'),
+    url(r'^service_unavailable/', customError.service_unavailable, name = 'service_unavailable'),
+]
+urlpatterns += customError_urlpatterns
+
 auth_urlpatterns = [
     url(r'^signup/$', auth.signup, name='signup'),
     url(r'^signin/$', auth.signin, name='signin'),
@@ -29,7 +39,7 @@ task_urlpatterns = [
     url(r'^dstasklist/', task.dstasklist, name = 'dstasklist'),
     url(r'^dstasklistByName/(?P<taskName>[^/]+)', task.dstasklistByName, name = 'dstasklistByName'),
     url(r'^mytask/', task.mytask, name = 'mytask'),
-    url(r'^SHGForm/(?P<groupId>[^/]+)/(?P<loanId>[^/]+)/(?P<taskId>[^/]+)/(?P<processId>[^/]+)/(?P<taskName>[^/]+)/(?P<loanType>[^/]+)', task.SHGForm, name = 'SHGForm'),
+    url(r'^SHGForm/(?P<groupId>[^/]+)/(?P<loanId>[^/]+)/(?P<taskId>[^/]+)/(?P<processId>[^/]+)/(?P<taskName>[^/]+)/(?P<loanTypeName>[^/]+)/(?P<loanTypeId>[^/]+)', task.SHGForm, name = 'SHGForm'),
 
 ]
 urlpatterns += task_urlpatterns
@@ -55,6 +65,7 @@ kyc_urlpatterns = [
     url(r'^getGroupComments/(?P<processId>[^/]+)/(?P<loanId>[^/]+)', kyc.getGroupComments, name='getGroupComments'),
     url(r'^getLoanMemberPaymentHistory/(?P<memberId>[^/]+)/(?P<groupId>[^/]+)',kyc.getLoanMemberPaymentHistory, name = 'getLoanMemberPaymentHistory'),
     url(r'^getLoanGroupPaymentHistory/(?P<groupId>[^/]+)',kyc.getLoanGroupPaymentHistory, name = 'getLoanGroupPaymentHistory'),
+    url(r'^getATLForeClosureData/',kyc.getATLForeClosureData, name = 'getATLForeClosureData'),
 
 ]
 urlpatterns += kyc_urlpatterns

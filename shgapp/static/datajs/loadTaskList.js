@@ -1,5 +1,31 @@
 var monthDict = {"01":"Jan","02":"Feb","03":"Mar","04":"Apr","05":"May","06":"Jun","07":"Jul","08":"Aug","09":"Sep","10":"Oct","11":"Nov","12":"Dec"};
 
+$.ajaxSetup({
+    cache : false,
+    statusCode: {
+        400: function(data) {
+           $.alert("Bad Request !!");
+        },
+        404: function(data) {
+           window.location = '/page_not_found/';
+        },
+        500: function(data) {
+           window.location = '/server_error/';
+        },
+        403: function(data) {
+           window.location = '/permission_denied/';
+        },
+        504: function(data) {
+           window.location = '/connection_timeout/';
+        },
+        503: function(data){
+           window.location = '/service_unavailable/';
+        }
+    }
+});
+
+
+
 function loadUnassignedTaskList(data){
 	var groupTaskdata = data;
 	console.log(groupTaskdata);
@@ -143,7 +169,8 @@ function loadAssignedTaskList(){
 				obj["shgId"] = '<a class="tdViewData">'+customerData["appGroupId"]+'</a>';
 				obj["shgName"] = '<a class="tdViewData">'+customerData["groupName"]+'</a>';
 				obj["memberCount"] = '<a class="tdViewData">'+memberCount+'</a>';
-				obj["groupLoanId"] = obj["groupId"]+"_"+obj["loanId"]+"_"+myTaskdata[key]["name"]+"_"+obj["taskId"]+"_"+obj["processInstanceId"]+"_"+myTaskdata[key]["loanTypeName"];
+				//obj["groupLoanId"] = obj["groupId"]+"_"+obj["loanId"]+"_"+myTaskdata[key]["name"]+"_"+obj["taskId"]+"_"+obj["processInstanceId"]+"_"+myTaskdata[key]["loanTypeName"];
+				obj["groupLoanId"] = obj["groupId"]+"_"+obj["loanId"]+"_"+myTaskdata[key]["name"]+"_"+obj["taskId"]+"_"+obj["processInstanceId"]+"_"+myTaskdata[key]["loanTypeName"]+"_"+customerData["loanTypeId"];
 				obj["clusterName"] ='<a class="tdViewData">'+customerData["clusterName"]+'</a>';
 				obj["centerName"] ='<a class="tdViewData">'+customerData["centerName"]+'</a>';
 				obj["regionName"] ='<a class="tdViewData">'+customerData["regionName"]+'</a>';
@@ -205,8 +232,9 @@ $(document).ready(function (){
 		taskName =  groupLoanIDSplit[2];
 		taskId =  groupLoanIDSplit[3];
 		processInstanceId =  groupLoanIDSplit[4];
-		loanType =  groupLoanIDSplit[5];
-		window.location = '/SHGForm/'+groupID+'/'+loanID+'/'+taskId+'/'+processInstanceId+'/'+taskName+'/'+loanType;
+		loanTypeName =  groupLoanIDSplit[5];
+		loanTypeId =  groupLoanIDSplit[6];
+		window.location = '/SHGForm/'+groupID+'/'+loanID+'/'+taskId+'/'+processInstanceId+'/'+taskName+'/'+loanTypeName+'/'+loanTypeId;
 	});
 	$('.paginate_button').click(function() {
 		triggerLoadFunc();
@@ -233,8 +261,9 @@ function triggerLoadFunc(){
             taskName =  groupLoanIDSplit[2];
             taskId =  groupLoanIDSplit[3];
             processInstanceId =  groupLoanIDSplit[4];
-            loanType =  groupLoanIDSplit[5];
-		window.location = '/SHGForm/'+groupID+'/'+loanID+'/'+taskId+'/'+processInstanceId+'/'+taskName+'/'+loanType;
+            loanTypeName =  groupLoanIDSplit[5];
+		    loanTypeId =  groupLoanIDSplit[6];
+		    window.location = '/SHGForm/'+groupID+'/'+loanID+'/'+taskId+'/'+processInstanceId+'/'+taskName+'/'+loanTypeName+'/'+loanTypeId;
 	});
 }
 

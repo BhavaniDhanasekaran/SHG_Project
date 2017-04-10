@@ -51,6 +51,7 @@ function loanDocument(loanTypeId) {
                         }
                     }
                     document.getElementById("records_table").innerHTML = docRow;
+                    loadDataTable("#documents_table");
                     trigger();
                 }
             });

@@ -47,7 +47,7 @@ def getIndMemberData(request,memberId,groupId,loanId,taskName):
     print "Inside getIndMemberData(request,memberId,groupId,taskName):"
     try:
         validationType = ''
-        print taskName
+        validationLevel = ''
         username = request.session["userName"]
         userOfficeData = json.loads(request.session["userOfficeData"])
         groupName = userOfficeData["designation"]
@@ -118,10 +118,8 @@ def updateKYCDetails(request):
         if request.method == "POST":
             formData  = json.loads(request.body)
             bodyDataUpdation =  formData["formData"]
-            print bodyDataUpdation
 
             bodymemberValidation =  formData["memValData"]
-            print bodymemberValidation
             taskId = formData["taskId"]
 
             dataUpdateResponse = sscoreClient._urllib2_request('workflowEdit/updateMemberGroupLoan', bodyDataUpdation,
@@ -214,8 +212,6 @@ def getLoanDetails(request, groupId, loanId):
         bodyData = {"groupId": str(groupId), "loanId": str(loanId), "entityType": "LOAN", "validationType": "POST"}
         serialized_data = sscoreClient._urllib2_request('workflowDetailView/workflowLoanDetail', bodyData,
                                                         requestType='POST')
-        print "serialized_data"
-        print serialized_data
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting getLoanDetails')
@@ -228,10 +224,7 @@ def dropMemberDetail(request):
         if request.method == "POST":
             formData = json.loads(request.body)
             bodyData = formData["uploadData"]
-            print  bodyData
             serialized_data = sscoreClient._urllib2_request('workflowEdit/dropMember', bodyData, requestType='POST')
-            print "serialized_data editurl"
-            print serialized_data
             return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('An expected error occurred while  dropMemberDetail.')
@@ -244,11 +237,10 @@ def updateloanDetail(request):
         if request.method == "POST":
             formData = json.loads(request.body)
             bodyData = formData["uploadData"]
-            print  bodyData
+            print "bodyData"
+            print json.dumps(bodyData)
             serialized_data = sscoreClient._urllib2_request('workflowEdit/updateMemberLoan', bodyData,
                                                             requestType='POST')
-            print "serialized_data"
-            print serialized_data
             return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('An expected error occurred while updateloanDetail.')
@@ -261,12 +253,11 @@ def approveLoan(request):
         if request.method == "POST":
             formData = json.loads(request.body)
             bodyData = formData["loanData"]
+            print "bodyDatabodyDatabodyDatabodyDatabodyDatabodyDatabodyData------------------------"
+            print json.dumps(bodyData)
             taskId = formData["taskId"]
-            print  bodyData
             serialized_data = sscoreClient._urllib2_request('workflowEdit/loanValidation', bodyData,
                                                             requestType='POST')
-            print "serialized_data"
-            print serialized_data
             if serialized_data["code"] == 2032 :
                 processUpdate = { 'variables': { 'dispatchType': { 'value': "Cheque" } } }
                 taskComplete(request,processUpdate,taskId)
@@ -277,8 +268,6 @@ def approveLoan(request):
 #@decryption_required
 @session_required
 def loanAccNo(request,loanAccNumber,appGroupId,loanTypeName,groupName):
-    print loanAccNumber
-    print loanTypeName,appGroupId,groupName
     username = request.session["userName"]
     userOfficeData = json.loads(request.session["userOfficeData"])
     groupRole = userOfficeData["designation"]
@@ -306,8 +295,6 @@ def getMemberComments(request, processId, loanId):
         serialized_data = sscoreClient._urllib2_request('workflowDetailView/MemberComments', bodyData,
                                                         requestType='POST')
 
-        print "serialized_data"
-        print serialized_data
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting getMemberComments')
@@ -321,8 +308,6 @@ def getGroupComments(request, processId, loanId):
         serialized_data = sscoreClient._urllib2_request('workflowDetailView/GroupComments', bodyData,
                                                         requestType='POST')
 
-        print "serialized_data"
-        print serialized_data
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting getGroupComments')
@@ -348,3 +333,16 @@ def getLoanGroupPaymentHistory(request,groupId):
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting Loan group PaymentHistory.')
+
+@csrf_exempt
+@session_required
+def getATLForeClosureData(request):
+    print 'Inside getATLForeClosureData(request):'
+    try:
+        if request.method == "POST":
+            formData = json.loads(request.body)
+            bodyData = formData["foreClosureInput"]
+            serialized_data = sscoreClient._urllib2_request('workflowEdit/loanForeClosure/', bodyData, requestType='POST')
+            return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while getting ATL foreclosure info.')

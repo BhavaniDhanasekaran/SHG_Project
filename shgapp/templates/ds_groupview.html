@@ -139,69 +139,41 @@
                         <ul class="dropdown-menu scrollable-menu"
                             style=" height: auto;max-height: 500px; overflow-x: hidden;">
                             <div>
-                                <li data-toggle="tab" href="#home4" class="list-group" id="san_test"></li>
+                                <li data-toggle="tab" href="#home4" class="list-group" id="groupMembersDropDown"></li>
                             </div>
                         </ul>
                     </li>
                 </div>
+<div class="row" id="successPanel" style="display:none;">
+    <!-- PAGE CONTENT BEGINS -->
+    <div class="error-container">
+        <div class="well">
+                <h1 id="validationMessage" class="grey lighter smaller">   </h1>
+
+            <hr />
+            <div id="gStatus">
+                <h3  class="lighter bigger">Task has not been completed yet!  <i class="ace-icon glyphicon glyphicon-thumbs-down bigger-125"></i> </h3>
+            </div>
+            <div class="space"></div>
+
+            <hr />
+            <div class="space"></div>
+            <div class="center" id="taskValBtn">
+                <!--a href="javascript:history.back()" class="btn btn-grey"> <i class="ace-icon fa fa-arrow-left"></i> Go Back </a-->
+                <a href="#" onclick="loadNextMem();" class="btn btn-primary"> <i class="ace-icon fa fa-arrow-right"></i> Next Member </a>
+            </div>
+        </div>
+    </div>
+    <!-- PAGE CONTENT ENDS -->
+</div>
                 <div class="panel-body-danger">
 
 
-                      <div id="sucessDisplay" style="display:none;"  >
-                         <div class="row" id="msg1" style="display:none;">
-                            <div class="info-display" >
-                               <div class="message success" style="text-align: center;">
-                                  <strong>Approved - <span class="sucess"></span></strong>
-                               </div>
-                            </div>
-                         </div>
-                         <div class="row" id="msg2" style="display:none;">
-                            <div class="info-display">
-                               <div class="message error" style="text-align: center;">
-                                  <strong>Rejected - <span class="sucess"></span></strong>
-                               </div>
-                            </div>
-                         </div>
-                         <div class="row" id="msg3" style="display:none;">
-                            <div class="info-display">
-                               <div class="message warning" style="text-align: center;">
-                                  <strong>Rework- <span class="sucess"></span></strong>
-                               </div>
-                            </div>
-                         </div>
-                         <div class="row" id="group2" style="display:none;" >
-                            <div class="info-display" >
-                               <div class="message success">
-                                  <h2 align="center">
-                                  <i class="glyphicon glyphicon-thumbs-up"></i><strong>  KYC Task Completed Successfully
-                                  </strong>
-                                  <br>
-
-                                  <button type = "button"  onclick="window.location.href='/assignedTaskList/'" class = "btn btn-success btn-sm">
-                                  <span class = "glyphicon glyphicon-user"></span> Go to My Task
-                                  </button>
-                               </div>
-                            </div>
-                         </div>
-                         <div class="row"  id="group1" >
-                            <div class="info-display">
-                               <div class="message error">
-                                  <h4 align="center"> <i class="glyphicon glyphicon-thumbs-down"></i><strong> KYC Task Not Completed
-                                     </strong>
-                                     <br>
-                                     <button type = "button"  onclick="loadNextMem();" class = "btn btn-info btn-sm">
-                                     <i class="fa fa-users fa-1x" style="cursor:pointer"></i>Go to Next Member
-                                     </button>
-                                  </h4>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
 
 
 
 
-             <div id="defaultDisplay"  style="display:none;" >
+             <div id="defaultDisplay"  style="display:block;" >
                     <!--2row panel body start-->
                     <div class="tabbable">
                         <ul class="nav nav-tabs padding-12 tab-color-blue  background-blue" id="myTab4">
@@ -248,7 +220,7 @@
                                         <!-- tabrow  colmd-2 end-->
                                         <div class="col-md-4">
                                             <!-- tabrow  colmd-5 start-->
-                                            <form class="form-horizontal" role="form">
+                                            <form id="formMembers" class="form-horizontal" role="form">
                                             <div class="profile-user-info profile-user-info-striped">
                                                 <div class="profile-info-row">
                                                     <div id="sequenceNumber_label" class="profile-info-name">
@@ -462,7 +434,7 @@
                                    style="display:none;width: 20px; height: 21px;" data-original="">
 
 
-                          <img src=""  id="ADDRESSPROOF_2_docPath"  class="img img-test"
+                                    <img src=""  id="ADDRESSPROOF_2_docPath"  class="img img-test"
                                    style="display:none;width: 20px; height: 21px;" data-original="">
 
                                                         </div>
@@ -536,7 +508,7 @@
                                                 </div>
                                                 <div class="profile-info-row">
                                                     <div id="idProofTypeId_label" class="profile-info-name">Id Proof
-                                                        Type
+                                                        Type <font class="mandatory">*</font>
                                                     </div>
                                                     <div class="profile-info-value">
                                                         <select id="idProofTypeId" style="width:99%;"></select>
@@ -544,14 +516,14 @@
                                                 </div>
                                                 <div class="profile-info-row">
                                                     <div id="addressProofTypeId_label" class="profile-info-name">Address
-                                                        Proof
+                                                        Proof <font class="mandatory">*</font>
                                                     </div>
                                                     <div class="profile-info-value">
                                                         <select id="addressProofTypeId" style="width:99%;"> </select>
                                                     </div>
                                                 </div>
                                                 <div class="profile-info-row">
-                                                    <div id="loanAmount_label" class="profile-info-name"> Loan Amount
+                                                    <div id="loanAmount_label" class="profile-info-name"> Loan Amount <font class="mandatory">*</font>
                                                     </div>
                                                     <div class="profile-info-value">
                                                         <span class="editable">
@@ -562,7 +534,7 @@
                                                 </div>
                                                 <div class="profile-info-row">
                                                     <div id="loanTypeValue_label" class="profile-info-name">Loan
-                                                        purpose
+                                                        purpose <font class="mandatory">*</font>
                                                     </div>
                                                     <div class="profile-info-value">
                                                         <span class="editable">
@@ -596,9 +568,7 @@
                                                     </div>
                                                     <div class="profile-info-value">
                                                         <span class="editable">
-                                                        <textarea class="form-control limited sample"
-                                                            maxlength="3000" rows="3" id="comment">
-                                                        </textarea>
+                                                        <textarea class="form-control limited sample" maxlength="3000" rows="3" id="comment"></textarea>
                                                         </span>
                                                     </div>
                                                 </div>
@@ -640,6 +610,7 @@
                                     </div>
                                     <!--- tab final row end -->
                                 </section>
+                                </form>
                                 <!-- SECTION END -->
                             </div>
                             <!--form End-->
@@ -873,10 +844,10 @@
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
-                                                            <div id="nodata"
+                                                            <!--div id="nodata"
                                                                 style="display:none;font-weight:bold;margin:1%">No Data
                                                                 Available
-                                                            </div>
+                                                            </div-->
                                                         </div>
                                                     </div>
                                                 </div>
