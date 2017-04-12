@@ -2,28 +2,30 @@ var monthDict = {"01":"Jan","02":"Feb","03":"Mar","04":"Apr","05":"May","06":"Ju
 
 $.ajaxSetup({
     cache : false,
-    statusCode: {
-        400: function(data) {
-           $.alert("Bad Request !!");
-        },
-        404: function(data) {
-           window.location = '/page_not_found/';
-        },
-        500: function(data) {
-           window.location = '/server_error/';
-        },
-        403: function(data) {
+    error: function(xhr,status,error){
+        if (status == "timeout") {
+            window.location = '/connection_timeout/';
+        }
+        if(error == 400){
+            $.alert("Bad Request !!");
+        }
+        if(error == 404){
+            window.location = '/page_not_found/';
+        }
+        if(error == 500) {
+            window.location = '/server_error/';
+        }
+        if(error == 403) {
            window.location = '/permission_denied/';
-        },
-        504: function(data) {
-           window.location = '/connection_timeout/';
-        },
-        503: function(data){
-           window.location = '/service_unavailable/';
+        }
+        if(error == 522) {
+            window.location = '/connection_timeout/';
+        }
+        if(error == 503){
+            window.location = '/service_unavailable/';
         }
     }
 });
-
 
 
 function loadUnassignedTaskList(data){

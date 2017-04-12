@@ -12,10 +12,16 @@
         var userId = '{{ userId | escapejs }}';
         var taskName = '{{ taskName | escapejs }}';
         var taskId = '{{ taskId | escapejs }}';
-
-
+        var groupName = '{{ groupName | escapejs }}';
         var processInstanceId = '{{ processInstanceId | escapejs }}';
-
+        var loanTypeName = '{{ loanTypeName | escapejs }}';
+        var funder = '{{ funder | escapejs }}';
+        var successMsg ='{{ successMsg | escapejs }}';
+        var loanAccNo = '{{ loanAccNo | escapejs }}';
+        var newfunder = funder.split("Rs").join("&#8377;");
+        $(document).ready(function (){
+            document.getElementById("funder").innerHTML = newfunder;
+        });
     </script>
 
 {% endblock %}
@@ -24,9 +30,27 @@
     <!-- PAGE CONTENT BEGINS -->
     <div class="error-container">
         <div class="well">
-
+            {% if loanAccNo != "null" %}
             <h2 class="grey lighter smaller">
-                <span class="blue bigger-125"> Loan Account Number : {{ loanAccNo }}</span></h2>
+                <span style="color:green" class="bigger-125"> Loan Account Number : {{ loanAccNo }}</span></h2>
+            <hr />
+            {% endif %}
+            {% if successMsg == "False" %}
+                <h3 class="grey lighter smaller">
+                   <b><i><span style="color:#BE2625"  class="bigger-100">Fund Info :
+                        <span id="funder"></span>
+                    </span></i>
+                   </b>
+                </h3>
+            {% endif %}
+            {% if successMsg == "True" %}
+                <h3 class="grey lighter smaller">
+                    <b><span style="color:green" class="bigger-100">Fund Info :
+                        <span  id="funder"></span>
+                    </span></b>
+                </h3>
+            {% endif %}
+
             <hr />
             <h3 class="lighter smaller">Group Id : {{ appGroupId }} </h3>
             <h3 class="lighter smaller">Group Name : {{ groupName }}</h3>
@@ -34,10 +58,17 @@
             <div class="space"></div>
             <div class="space"></div>
             <div class="space"></div>
+            {% if successMsg == "True" %}
+                <div class="center">  <a href="/assignedTaskList/" class="btn btn-primary">
+                    Close </a>
+                </div>
+            {% endif %}
+            {% if successMsg == "False" %}
+                <div class="center">
+                    <a href="javascript:history.back()" class="btn btn-primary"><i class="ace-icon fa fa-arrow-left"></i> Go Back </a>
+                </div>
+            {% endif %}
 
-            <div class="center">  <a href="/assignedTaskList/" class="btn btn-primary">
-                Close </a>
-            </div>
         </div>
     </div>
     <!-- PAGE CONTENT ENDS -->

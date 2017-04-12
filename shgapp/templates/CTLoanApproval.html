@@ -147,38 +147,38 @@
                             <span class="editable" id="loanAmount" style="float:right"></span>
                         </div>
                     </div>
-                     <div class="profile-info-row" style="color:red;font-weight:bold">
+                     <div class="profile-info-row" style="color:#CD0000;font-weight:bold">
                          <div class="profile-info-name2"> Processing Fee  (INR):</div>
                              <div class="profile-info-value">
                                 <span class="editable" id="processingFee" style="float:right"></span>
                              </div>
                      </div>
-                    <div class="profile-info-row" style="color:red;font-weight:bold">
+                    <div class="profile-info-row" style="color:#CD0000;font-weight:bold">
                         <div class="profile-info-name2"> Service Tax (INR):</div>
                         <div class="profile-info-value">
                             <span class="editable" id="serviceTax" style="float:right"></span>
                         </div>
                     </div>
-                    <div class="profile-info-row" style="color:red;font-weight:bold">
+                    <div class="profile-info-row" style="color:#CD0000;font-weight:bold">
                         <div class="profile-info-name2"> Education Cess (INR):</div>
                         <div class="profile-info-value">
                             <span class="editable" id="educationCess" style="float:right"></span>
                         </div>
                     </div>
 
-                    <div class="profile-info-row" style="color:red;font-weight:bold">
+                    <div class="profile-info-row" style="color:#CD0000;font-weight:bold">
                         <div class="profile-info-name2"> AWB (INR):</div>
                         <div class="profile-info-value">
                             <span class="editable" id="awb" style="float:right"></span>
                         </div>
                     </div>
-                    <div class="profile-info-row" style="color:red;font-weight:bold">
+                    <div class="profile-info-row" style="color:#CD0000;font-weight:bold">
                         <div class="profile-info-name2"> Sundry Debt(ATL) (INR):</div>
                         <div class="profile-info-value">
                             <span class="editable" id="atldebt" style="float:right"></span>
                         </div>
                     </div>
-                    <div class="profile-info-row" style="color:red;font-weight:bold">
+                    <div class="profile-info-row" style="color:#CD0000;font-weight:bold">
                         <div class="profile-info-name2"> Insurance (INR):</div>
                         <div class="profile-info-value">
                             <span class="editable" id="insuranceAmount" style="float:right"></span>
@@ -200,8 +200,31 @@
 <div class="col-xs-12" >
     <!--2row Start col-10 start-->
     <div class="panel panel-default">
+        <div class="row" id="successPanel" style="display:none;">
+    <!-- PAGE CONTENT BEGINS -->
+    <div class="error-container">
+        <div class="well">
+                <h1 id="validationMessage" class="grey lighter smaller">   </h1>
+
+            <hr />
+            <div id="gStatus">
+                <h3  class="lighter bigger">Task has not been completed yet!  <i class="ace-icon glyphicon glyphicon-thumbs-down bigger-125"></i> </h3>
+            </div>
+            <div class="space"></div>
+
+            <hr />
+            <div class="space"></div>
+            <div class="center" id="taskValBtn">
+                <!--a href="javascript:history.back()" class="btn btn-grey"> <i class="ace-icon fa fa-arrow-left"></i> Go Back </a-->
+                <a href="#" onclick="loadNextMem();" class="btn btn-primary"> <i class="ace-icon fa fa-arrow-right"></i> Next Member </a>
+            </div>
+        </div>
+    </div>
+    <!-- PAGE CONTENT ENDS -->
+</div>
         <div class="panel-body-danger">
             <!--2row panel body start-->
+            <div id="defaultDisplay" style="display:block;">
             <div class="tabbable">
                 <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
                     <li class="active"><a data-toggle="tab" href="#upload">Member</a></li>
@@ -239,13 +262,13 @@
                                                                             <th>Bank Name</th>
                                                                             <th>Prev loan Amnt</th>
                                                                             <th>Loan Amnt</th>
-                                                                            <th style="color: red">AWB</th>
-                                                                            <th style="color: red">Solar Light</th>
-                                                                            <th style="color: red">ATL/ELL Sundry Debt</th>
-                                                                            <th style="color: red">Processing Fee</th>
-                                                                            <th style="color: red">Service Tax</th>
-                                                                            <th style="color: red">Education Cess</th>
-                                                                            <th style="color: red">Insurance</th>
+                                                                            <th style="color: #CD0000">AWB</th>
+                                                                            <th style="color: #CD0000">Solar Light</th>
+                                                                            <th style="color: #CD0000">ATL/ELL Sundry Debt</th>
+                                                                            <th style="color: #CD0000">Processing Fee</th>
+                                                                            <th style="color: #CD0000">Service Tax</th>
+                                                                            <th style="color: #CD0000">Education Cess</th>
+                                                                            <th style="color: #CD0000">Insurance</th>
                                                                             <th>Net Amount</th>
                                                                             <th>Purpose</th>
                                                                             <th>Drop Mem</th>
@@ -278,10 +301,19 @@
                                         <!-- /.col -->
                                     </div>
                                 </section><br/>
-                                <div class="col-md-offset-4">
+                                <div class="row vertical-center">
+                                    <div class="col-md-12">
+                                                <div class="form-group vertical-center">
+                                                    <label for="comment">Comment:</label>
+                                                    <textarea class="form-control" rows="3" id="comment"></textarea>
+                                                </div>
+                                    </div>
+                                </div>
+                                <div >
                                     <button type="button" class="btn btn-danger" id="drop" >Drop Members</button>
                                     <button type="button" class="btn btn-danger" onclick="updateLoanMembers();">Update Members</button>
                                     <button type="button" class="btn btn-danger" onclick="updateAndApproveLoan();">Approve Loan</button>
+                                    <button type="button" class="btn btn-danger" onclick="updateGroupValStatus('Rejected');">Reject Loan</button>
                                 </div>
                                 <br>
                             </div>
@@ -541,6 +573,7 @@
                 </div>
                 <!-- TAB END-->
 
+            </div>
             </div>
             <!--2row panel body end-->
         </div>

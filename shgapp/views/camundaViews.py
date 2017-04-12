@@ -530,7 +530,7 @@ def tasksCount(request):
 
         if groupName == "CMR" or groupName == "CLM" or groupName == "BM":
             tasksArr = ["Conduct BAT- Member approval in CRM","Upload loan documents in Web application",
-                           "Resolve Data Support Team Query","Add New Members","Print Loan Documents & FSR",
+                           "Resolve Data Support Team Query","Add New Members","Prepare Loan Documents",
                            "Resolve Credit Team Query"]
             for taskKey in tasksArr:
                 taskProList = {"unassigned": "true",

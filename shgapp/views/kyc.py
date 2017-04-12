@@ -7,8 +7,8 @@ from shgapp.utils.helper import Helper
 from shgapp.utils.shgexceptions import *
 from shgapp.views.camundaViews import taskComplete
 from shgapp.views.decorator import session_required,decryption_required
-import json
 
+import json
 
 helper = Helper()
 sscoreClient = SSCoreClient()
@@ -20,7 +20,7 @@ def getGroupData(request,groupID,loanId,taskName):
     print "Inside getGroupData(request):"
     try:
         username = request.session["userName"]
-        BMTasksArray = ["Conduct BAT- Member approval in CRM","Print Loan Documents & FSR","Upload loan documents in Web application","Add New Members"]
+        BMTasksArray = ["Conduct BAT- Member approval in CRM","Prepare Loan Documents","Upload loan documents in Web application","Add New Members"]
         rwrkTasksArr = ["Resolve Data Support Team Query","Resolve Credit Team Query"]
         userOfficeData = json.loads(request.session["userOfficeData"])
         groupName = userOfficeData["designation"]
@@ -256,6 +256,8 @@ def approveLoan(request):
             taskId = formData["taskId"]
             serialized_data = sscoreClient._urllib2_request('workflowEdit/loanValidation', bodyData,
                                                             requestType='POST')
+            print "serialized_data-------------------------------"
+            print serialized_data
             if serialized_data["code"] == 2043 :
                 processUpdate = { 'variables': { 'dispatchType': { 'value': "Cheque" } } }
                 taskComplete(request,processUpdate,taskId)
@@ -265,12 +267,14 @@ def approveLoan(request):
 
 #@decryption_required
 @session_required
-def loanAccNo(request,loanAccNumber,appGroupId,loanTypeName,groupName):
+def loanAccNo(request,loanAccNumber,appGroupId,loanTypeName,groupName,funder,successMsg):
     username = request.session["userName"]
+    print "funder"
+    print funder
     userOfficeData = json.loads(request.session["userOfficeData"])
     groupRole = userOfficeData["designation"]
     userId = request.session["userId"]
-    return render_to_response("loanAccNumber.html",{"user":username,"userId":userId,"group":groupRole,"groupName": groupName,"appGroupId" :appGroupId,"loanTypeName":loanTypeName,"loanAccNo":loanAccNumber})
+    return render_to_response("loanAccNumber.html",{"user":username,"successMsg":successMsg,"funder":json.dumps(funder),"userId":userId,"group":groupRole,"groupName": groupName,"appGroupId" :appGroupId,"loanTypeName":loanTypeName,"loanAccNo":loanAccNumber})
 
 
 #@decryption_required
@@ -344,3 +348,12 @@ def getATLForeClosureData(request):
             return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting ATL foreclosure info.')
+
+
+'''@session_required
+def loanAccNo(request,loanAccNumber,appGroupId,loanTypeName,groupName,funder):
+    username = request.session["userName"]
+    userOfficeData = json.loads(request.session["userOfficeData"])
+    groupRole = userOfficeData["designation"]
+    userId = request.session["userId"]
+    return render_to_response("loanAccNumber.html",{"user":username,"funder":funder,"userId":userId,"group":groupRole,"groupName": groupName,"appGroupId" :appGroupId,"loanTypeName":loanTypeName,"loanAccNo":loanAccNumber})'''

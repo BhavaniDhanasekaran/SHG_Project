@@ -5,6 +5,8 @@ handler400 = customError.bad_request
 handler403 = customError.permission_denied
 handler404 = customError.page_not_found
 handler500 = customError.server_error
+handler522 = customError.connection_timeout
+handler503 = customError.service_unavailable
 
 
 index_urlpatterns = [
@@ -59,7 +61,7 @@ kyc_urlpatterns = [
     url(r'^dropMemberDetail/', kyc.dropMemberDetail, name='dropMemberDetail'),
     url(r'^updateloanDetail/', kyc.updateloanDetail, name='updateloanDetail'),
     url(r'^approveLoan/', kyc.approveLoan, name='approveLoan'),
-    url(r'^loanAccNo/(?P<loanAccNumber>[^/]+)/(?P<appGroupId>[^/]+)/(?P<loanTypeName>[^/]+)/(?P<groupName>[^/]+)', kyc.loanAccNo, name='loanAccNo'),
+    url(r'^loanAccNo/(?P<loanAccNumber>[^/]+)/(?P<appGroupId>[^/]+)/(?P<loanTypeName>[^/]+)/(?P<groupName>[^/]+)/(?P<funder>[^/]+)/(?P<successMsg>[^/]+)', kyc.loanAccNo, name='loanAccNo'),
     url(r'^getMemberFSR/(?P<memberId>[^/]+)',kyc.getMemberFSR, name = 'getMemberFSR'),
     url(r'^getMemberComments/(?P<processId>[^/]+)/(?P<loanId>[^/]+)', kyc.getMemberComments, name='getMemberComments'),
     url(r'^getGroupComments/(?P<processId>[^/]+)/(?P<loanId>[^/]+)', kyc.getGroupComments, name='getGroupComments'),

@@ -32,7 +32,7 @@ def connection_timeout(request):
     userOfficeData = json.loads(request.session["userOfficeData"])
     groupName = userOfficeData["designation"]
     username = request.session["userName"]
-    return render(request, 'error/504.html', {"group":groupName,"user":username})
+    return render(request, 'error/522.html', {"group":groupName,"user":username})
 
 
 def service_unavailable(request):
