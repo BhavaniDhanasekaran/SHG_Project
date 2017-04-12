@@ -33,6 +33,7 @@ auth_urlpatterns = [
     url(r'^reset/$', auth.reset, name='reset'),
     url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', auth.reset_confirm, name='password_reset_confirm'),
     url(r'^success/$', auth.success, name='success'),
+    url(r'^browserError/$', auth.browserError, name='browserError'),
 ]
 
 urlpatterns += auth_urlpatterns

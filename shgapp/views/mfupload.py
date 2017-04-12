@@ -49,6 +49,7 @@ def ajax_progress_bar_upload(request):
             name = request.FILES[filename].name
             uploadtofilename = upload_to_filename(request.FILES[filename].name)
             ctype = mimetypes.guess_type(uploadtofilename)
+            file_size = file.size
             print 'name: ', name
             print 'upload_to_filename name: ', uploadtofilename
             print 'content type: ', mimetypes.guess_type(uploadtofilename)
@@ -56,7 +57,7 @@ def ajax_progress_bar_upload(request):
                 Key=settings.AWS_BUCKET_FOLDER_PATH + uploadtofilename,
                 Body=file,ContentType=ctype[0])
             print  'ProgressBarUploadView done - upload_to_filename', uploadtofilename
-            data = {'is_valid': True, 'name': uploadtofilename, 'url': settings.AWS_S3_BASE_URL + uploadtofilename}
+            data = {'is_valid': True, 'name': uploadtofilename, 'url': settings.AWS_S3_BASE_URL + uploadtofilename,'file_size':file_size}
     except Exception, e:
         print 'ajax_progress_bar_upload Exception e: ', e
         data = {'is_valid': False}

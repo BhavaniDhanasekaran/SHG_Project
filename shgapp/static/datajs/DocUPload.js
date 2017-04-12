@@ -28,24 +28,24 @@ function loanDocument(loanTypeId) {
                             if (key1 == (documentData[key]["documentName"].split("*")[0])) {
                                 countArray.push(parseInt(key) + 1);
                                 docRow += '<tr> <td>' + (parseInt(key) + 1) + '</td><td>' + documentData[key]["documentName"] + ' </td>' +
-                                    '<td><input type = "file" name = "' + documentData[key]["documentName"] + '" id = "' + documentData[key]["documentId"] + '" style="display: none;" /></input>' +
+                                    '<td><input type = "file"   accept="application/pdf" name = "' + documentData[key]["documentName"] + '" id = "' + documentData[key]["documentId"] + '" style="display: none;" /></input>' +
                                     '<span><button type="button" style="display:none;" class="btn btn-primary js-upload-photos" id = "' + documentData[key]["documentId"] + '_1' + '" name="' + documentData[key]["documentName"] + '_' + documentData[key]["documentId"] + '"></span>' +
                                     '<span class="glyphicon glyphicon-cloud-upload"></span> Upload  </button>' +
                                     '<span><button type="button"  onclick="window.open(' + "'" + docURLDict[key1].split("*")[0] + "'" +","+documentData[key]["documentId"]+","+"width=200,height=100" +').focus();" class="btn btn-danger" id = "' + documentData[key]["documentId"] + '_2' + '" name="' + documentData[key]["documentName"] + '_' + documentData[key]["documentId"] + '"></span>' +
                                     '<span class="glyphicon glyphicon-cloud-upload"></span> View  </button>' +
-                                    '<input type = "file" id="' + documentData[key]["documentId"] + '_Edit' + '" style="display: none;" /></input>' +
+                                    '<input type = "file"  accept="application/pdf"  id="' + documentData[key]["documentId"] + '_Edit' + '" style="display: none;" /></input>' +
                                     '<span>   <button type="button"  class="btn btn-success js-upload-photos2" id = "' + documentData[key]["documentId"] + '_1' + '" name="' + docURLDict[key1].split("*")[1] + '"></span>' +
                                     '<span class="glyphicon glyphicon-edit"></span> Edit  </button></td></tr> ';
                             }
                         }
                         if ($.inArray(parseInt(key) + 1, countArray) == -1) {
                             docRow += '<tr> <td>' + (parseInt(key) + 1) + '</td><td>' + documentData[key]["documentName"] + '</td>' +
-                                '<td><input type = "file" name = "' + documentData[key]["documentName"] + '" id = "' + documentData[key]["documentId"] + '" style="display: none;" /></input>' +
+                                '<td><input type = "file"   accept="application/pdf" name = "' + documentData[key]["documentName"] + '" id = "' + documentData[key]["documentId"] + '" style="display: none;" /></input>' +
                                 '<span><button type="button" class="btn btn-primary js-upload-photos" id = "' + documentData[key]["documentId"] + '_1' + '" name="' + documentData[key]["documentName"] + '_' + documentData[key]["documentId"] + '"></span>' +
                                 '<span class="glyphicon glyphicon-cloud-upload"></span> Upload  </button>' +
                                 '<span><button type="button" style="display:none;" class="btn btn-danger" id = "' + documentData[key]["documentId"] + '_2' + '" name="' + documentData[key]["documentName"] + '_' + documentData[key]["documentId"] + '"></span>' +
                                 '<span class="glyphicon glyphicon-cloud-upload"></span> View  </button> ' +
-                                '<input type = "file" id="' + documentData[key]["documentId"] + '_Edit' + '" style="display: none;" /></input>' +
+                                '<input type = "file"   accept="application/pdf" id="' + documentData[key]["documentId"] + '_Edit' + '" style="display: none;" /></input>' +
                                 '<span><button type="button"   style="display: none;"  class="btn btn-success js-upload-photos2" id = "' + documentData[key]["documentId"] + '_3' + '" name=""></span>' +
                                 '<span class="glyphicon glyphicon-edit"></span> Edit  </button></td></tr>';
                         }
@@ -123,7 +123,9 @@ function uploaddoc(fileid, docName, groupId) {
                 var newfileName = docName + '*' + fileid;
                 var oldfileName = docName;
                 var s3url = data.result.url;
-                UpdateUrl(loanId,groupId, oldfileName, s3url, fileid);
+                var file_size = data.result.file_size;
+                UpdateUrl(loanId,groupId, oldfileName, s3url, fileid,file_size);
+               // UpdateUrl(loanId,groupId, oldfileName, s3url, fileid);
                 $("#gallery tbody").prepend(
                     "<tr><td><a href='" + data.result.url + "'>" + data.result.name + "</a></td> <td><a href='" + data.result.url + "'>" + "delete" + "</a></td></tr>"
                 )
@@ -132,13 +134,13 @@ function uploaddoc(fileid, docName, groupId) {
     });
 }
 
-function UpdateUrl(loanId,groupId, oldfileName, s3url, fileid) {
+function UpdateUrl(loanId,groupId, oldfileName, s3url, fileid,file_size) {
     var dataObj = {};
     var uploadData = {
         "groupId": String(groupId),
         "loanId" : String(loanId),
         "name": String(oldfileName),
-        "docSize": "0",
+        "docSize": file_size,
         "userId": userId,
         "docPathServer": String(s3url)
     }
@@ -183,7 +185,9 @@ function Editdoc(UniqueId, newdoceditId) {
             if (data.result.is_valid) {
                 var groupId = document.getElementById("groupId").innerHTML;
                 var s3url = data.result.url;
-                EditUrl(loanTypeId,groupId, UniqueId, s3url, newdoceditId,loanId);
+                var file_size = data.result.file_size;
+                EditUrl(loanTypeId,groupId, UniqueId, s3url, newdoceditId,loanId, file_size);
+                //EditUrl(loanTypeId,groupId, UniqueId, s3url, newdoceditId,loanId);
                 $("#gallery tbody").prepend(
                     "<tr><td><a href='" + data.result.url + "'>" + data.result.name + "</a></td> <td><a href='" + data.result.url + "'>" + "delete" + "</a></td></tr>"
                 )
@@ -192,12 +196,12 @@ function Editdoc(UniqueId, newdoceditId) {
     });
 }
 
-function EditUrl(loanTypeId,groupId, UniqueId, s3url, newdoceditId,loanId) {
+function EditUrl(loanTypeId,groupId, UniqueId, s3url, newdoceditId,loanId,file_size) {
     var dataObj2 = {};
     var uploadData = {
         "loanId": String(loanId),
         "id": String(UniqueId),
-        "docSize": "0",
+        "docSize": file_size,
         "userId": userId,
         "docPathServer": String(s3url)
     }

@@ -1,0 +1,233 @@
+
+
+{% load staticfiles %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title>404 Error Page </title>
+
+    <meta name="description" content="404 Error Page" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+        <link rel="stylesheet" href="{% static  'font-awesome/4.5.0/css/font-awesome.min.css' %}" />
+        <!-- page specific plugin styles -->
+        <!-- text fonts -->
+        <link rel="stylesheet" href="{% static 'css/fonts.googleapis.com.css' %}" />
+        <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="{% static 'css/ace.min.css' %}" class="ace-main-stylesheet" 
+    id="main-ace-style" />
+      
+
+  <script type="text/javascript">
+  
+var nVer = navigator.appVersion;
+var nAgt = navigator.userAgent;
+var browserName  = navigator.appName;
+var fullVersion  = ''+parseFloat(navigator.appVersion); 
+var majorVersion = parseInt(navigator.appVersion,10);
+var nameOffset,verOffset,ix;
+
+// In Opera, the true version is after "Opera" or after "Version"
+if ((verOffset=nAgt.indexOf("Opera"))!=-1) {
+ browserName = "Opera";
+ fullVersion = nAgt.substring(verOffset+6);
+ if ((verOffset=nAgt.indexOf("Version"))!=-1) 
+   fullVersion = nAgt.substring(verOffset+8);
+}
+// In MSIE, the true version is after "MSIE" in userAgent
+else if ((verOffset=nAgt.indexOf("MSIE"))!=-1) {
+ browserName = "Microsoft Internet Explorer";
+ fullVersion = nAgt.substring(verOffset+5);
+}
+// In Chrome, the true version is after "Chrome" 
+else if ((verOffset=nAgt.indexOf("Chrome"))!=-1) {
+ browserName = "Chrome";
+ fullVersion = nAgt.substring(verOffset+7);
+}
+// In Safari, the true version is after "Safari" or after "Version" 
+else if ((verOffset=nAgt.indexOf("Safari"))!=-1) {
+ browserName = "Safari";
+ fullVersion = nAgt.substring(verOffset+7);
+ if ((verOffset=nAgt.indexOf("Version"))!=-1) 
+   fullVersion = nAgt.substring(verOffset+8);
+}
+// In Firefox, the true version is after "Firefox" 
+else if ((verOffset=nAgt.indexOf("Firefox"))!=-1) {
+ browserName = "Firefox";
+ fullVersion = nAgt.substring(verOffset+8);
+}
+// In most other browsers, "name/version" is at the end of userAgent 
+else if ( (nameOffset=nAgt.lastIndexOf(' ')+1) < 
+          (verOffset=nAgt.lastIndexOf('/')) ) 
+{
+ browserName = nAgt.substring(nameOffset,verOffset);
+ fullVersion = nAgt.substring(verOffset+1);
+ if (browserName.toLowerCase()==browserName.toUpperCase()) {
+  browserName = navigator.appName;
+ }
+}
+// trim the fullVersion string at semicolon/space if present
+if ((ix=fullVersion.indexOf(";"))!=-1)
+   fullVersion=fullVersion.substring(0,ix);
+if ((ix=fullVersion.indexOf(" "))!=-1)
+   fullVersion=fullVersion.substring(0,ix);
+
+majorVersion = parseInt(''+fullVersion,10);
+if (isNaN(majorVersion)) {
+ fullVersion  = ''+parseFloat(navigator.appVersion); 
+ majorVersion = parseInt(navigator.appVersion,10);
+}
+
+
+
+
+
+if(browserName!="Chrome"){
+      //window.location = "../broswerError";
+//window.location = "../broswerError";
+     // window.location = "http://example.com/foo.php?option=500";
+}
+
+
+
+
+
+
+
+
+
+
+  
+  </script>
+
+
+
+  
+ 
+    
+
+<script>
+$(document).ready(function(){
+
+        $("#browser").html(browserName);  
+        $("#version").html(fullVersion);     
+        
+});
+</script>   
+
+
+
+
+  
+  </head>
+
+  <body class="no-skin">
+  
+
+    <div class="main-container ace-save-state" id="main-container">
+      <div class="main-content">
+        <div class="main-content-inner">
+          <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+        
+
+      
+          </div>
+
+          <div class="page-content">
+            <div class="ace-settings-container" id="ace-settings-container">
+              
+
+            
+            </div><!-- /.ace-settings-container -->
+
+            <div class="row">
+              <div class="col-xs-12">
+                <!-- PAGE CONTENT BEGINS -->
+
+                <div class="error-container">
+                  <div class="well">
+                    <h1 class="grey lighter smaller">
+                      <span class="blue bigger-125">
+                        <i class="ace-icon fa fa-sitemap"></i>
+                        909
+                      </span>
+                      Browser  Not Supported
+                    </h1>
+
+                    <hr />
+                    <h3 class="lighter smaller">Please Use Chrome Broswer version 57.0 /Fire Fox Browser 53.0</h3>
+                    
+
+                    <div>
+                      <form class="form-search">
+                      
+                      
+                      </form>
+
+                      <div class="space"></div>
+                      <h4 class="smaller">Your Browser Information:</h4>
+
+                      <ul class="list-unstyled spaced inline bigger-110 margin-15">
+                        <li>
+                          <i class="ace-icon fa fa-hand-o-right blue"></i>
+                          Browser Name:<span id="browser" >
+                            
+                          </span>
+                    
+                        </li>
+
+                        <li>
+                          <i class="ace-icon fa fa-hand-o-right blue"></i>
+                          Browser Version:<span id="version" ></span>
+                        </li>
+
+                        
+                      </ul>
+                    </div>
+
+                    <hr />
+                    <div class="space"></div>
+
+                  </div>
+                </div>
+
+                <!-- PAGE CONTENT ENDS -->
+              </div><!-- /.col -->
+            </div><!-- /.row -->
+          </div><!-- /.page-content -->
+        </div>
+      </div><!-- /.main-content -->
+
+      <div class="footer">
+        <div class="footer-inner">
+          <div class="footer-content">
+            <span class="bigger-120">
+              <span class="blue bolder">Madura Application © 2016-2017</span>
+              
+            </span>
+
+            &nbsp; &nbsp;
+          
+          </div>
+        </div>
+      </div>
+
+      <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+        <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+      </a>
+    </div><!-- /.main-container -->
+
+    <!-- basic scripts -->
+
+
+  </body>
+</html>
+

@@ -42,7 +42,6 @@ function getGroupData(groupID, loanId) {
         url: '/getGroupData/' + groupID + '/' + loanId + '/'+taskName,
         dataType: 'json',
         beforeSend: function() {
-            triggerLoadFunc();
             $("#loading").show();
         },
         complete: function() {
@@ -132,7 +131,6 @@ function getMemberDetails(memberId, groupId, loanId) {
         url: '/getIndMemberData/' + memberId + '/' + groupId + '/' + loanId+ '/' + taskName,
         dataType: 'json',
         beforeSend: function() {
-            triggerLoadFunc();
             $("#loading").show();
         },
         complete: function() {
@@ -498,7 +496,6 @@ function updateMemValidationStatus(status) {
         type: 'post',
         dataType: 'json',
         beforeSend: function() {
-            triggerLoadFunc();
             $("#loading").show();
         },
         complete: function() {
@@ -688,7 +685,6 @@ function submitKYCForm(status) {
         type: 'post',
         dataType: 'json',
         beforeSend: function() {
-            triggerLoadFunc();
             $("#loading").show();
         },
         complete: function() {
@@ -788,7 +784,6 @@ function checkForTaskCompletion() {
                 dataType: 'json',
                 type: "post",
                 beforeSend: function() {
-                    triggerLoadFunc();
                     $("#loading").show();
                 },
                 complete: function() {
@@ -852,7 +847,6 @@ function taskUpdate(status) {
         dataType: 'json',
         type: "post",
         beforeSend: function() {
-            triggerLoadFunc();
             $("#loading").show();
         },
         complete: function() {
@@ -975,7 +969,7 @@ function loadGroupRoles(groupId, loanId, taskName) {
     var dataObj = {};
     var validationType = '';
     if (group == "CMR" || group == "CLM" || group == "BM") {
-        if (taskName == "Prepare Loan Documents" || taskName == "Add New Members") {
+        if (taskName == "Prepare Loan Documents" || taskName == "Print Loan Documents & FSR" || taskName == "Add New Members") {
             validationType = "PEN"
         }
         if (taskName == "Upload loan documents in Web application") {
@@ -1028,7 +1022,6 @@ function updateTask(status) {
         dataType: 'json',
         type: "post",
         beforeSend: function() {
-            triggerLoadFunc();
             $("#loading").show();
         },
         complete: function() {
@@ -1166,7 +1159,6 @@ function updateGroupMemberStatus() {
             async : false,
             type: "post",
             beforeSend: function() {
-                triggerLoadFunc();
                 $("#loading").show();
             },
             complete: function() {
@@ -1824,7 +1816,7 @@ function updateGroupValStatus(status) {
             validationType = "CLMAPPROVAL";
             showConfirmBox(status);
         }
-        if (taskName == "Prepare Loan Documents") {
+        if (taskName == "Prepare Loan Documents" || taskName == "Print Loan Documents & FSR" ) {
             validationType = "PRE";
             if (!document.getElementById("Animator").value || !document.getElementById("repm1").value || !document.getElementById("repm2").value) {
                 $.alert("Please update group roles before task completion!");
@@ -1918,7 +1910,6 @@ function updateGroupValStatus(status) {
             dataType: 'json',
             type: "POST",
             beforeSend: function() {
-                triggerLoadFunc();
                 $("#loading").show();
             },
             complete: function() {

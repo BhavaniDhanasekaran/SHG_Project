@@ -10,12 +10,6 @@ def session_required(func):
             request.session['loginTime'] = datetime.datetime.now()
             if 'loginTime' in request.session:
                 timeDiff = (current_datetime - request.session['loginTime']).seconds
-                print "timeDiff"
-                print timeDiff
-                print "request.session['loginTime']"
-                print request.session['loginTime']
-                print "current_datetime"
-                print current_datetime
                 if timeDiff > django_settings.SESSION_IDLE_TIMEOUT:
                     request.session.flush()
                     return render(request, 'auth/signin.html')

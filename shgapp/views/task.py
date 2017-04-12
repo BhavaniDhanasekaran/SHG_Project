@@ -47,7 +47,7 @@ def SHGForm(request,groupId,loanId,taskId,processId,taskName,loanTypeName,loanTy
             "Upload loan documents in Web application"	: "BMUploadDocs.html",
             "Resolve Data Support Team Query"			: "queryResponseDS.html",
             "Add New Members"					        : "BMAddNewMember.html",
-            #"Print Loan Documents & FSR"			    : "BMAddNewMember.html",
+            "Print Loan Documents & FSR"			    : "BMAddNewMember.html",
             "Prepare Loan Documents"			        : "BMAddNewMember.html",
             "Approve or Reject Group"                   : "RmGroupApproval.html",
             "Proposal scrutiny"                         : "proposalScrutiny.html",

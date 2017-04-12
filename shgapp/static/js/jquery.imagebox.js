@@ -1,10 +1,15 @@
 (function($){
+   var  rotateDeg = 0;
   $.fn.imageBox = function(options){
+    
     var options = $.extend({
       objClicked: '.img',      
       rotateDirection: 'right' 
     }, options);   
     var obj = this, objClicked = options.objClicked, fileName = options.fileName, list_images = [];
+    //var rotateDeg=0;
+   
+ 
 
     initHtml(obj);
     initCss(obj);
@@ -30,17 +35,22 @@
       }else{
         $('.modal-title').text($(fileName).text());
       }
-      $('#img-preview').html('<img src="'+ _url +'" width="500px" height="350px" class="image-box" style="cursor: move;"></img>')
+      $('#img-preview').html('<img src="'+ _url +'" width="350px" height="350px" class="image-box" style="cursor: move;"></img>')
       $('#img-preview').attr({'current': current});
       $(obj).find('#unbind-pos').modal('show');
+
+      rotateDeg = 0; 
+       _url ="";
+      
     });
 
     btnCtrlImgEvent(options, list_images);
   };
 
-  var rotateDeg = 0;
+  
 
   function initHtml(obj){
+
     var div = $('<div id="unbind-pos" class="modal fade" data-backdrop="false" data-modal="false" style="display:none;" aria-hidden="true"></div>'); 
     div.append('<div class="modal-dialog">' +
                   '<div class="modal-content">'+
@@ -55,6 +65,8 @@
                                 '<span class="btn-sm btn-primary zoom-in">Zoom In</span>&nbsp;'+
                                 '<span class="btn-sm btn-primary zoom-out">Zoom Out</span>&nbsp;'+
                                 '<span class="btn-sm btn-primary rotate">Rotate</span>&nbsp;'+
+                                '<span role="prev" class="btn-sm  btn-primary switch">Prev</span>&nbsp;'+
+                                '<span role="next" class="btn-sm  btn-primary switch">Next</span>'+
                             '</div>'+
                         '</div>'+
                        
@@ -67,7 +79,7 @@
 
   function initCss(obj){
     $(obj).find('#img-preview').css({
-      'height': '350px',
+      'height': 'auto',
       'width': 'auto',
       'overflow': 'auto',
       'text-align': 'center'
@@ -91,7 +103,7 @@
 
 
   function btnCtrlImgEvent(options, list_images){
-
+    
     zoomIn();
     zoomOut();
     dragImage();
@@ -150,17 +162,22 @@
 
 
   function rotateImage(options){
-        var  rotateDeg = 0;
+            
+      
     $('.rotate').click(function() {
 
+
       if(options.rotateDirection == 'right'){
+
         rotateDeg += 90;
+       
         if(rotateDeg == 360){
           rotateDeg = 0;
         }
       }
       if(options.rotateDirection == 'left'){
         rotateDeg -= 90;
+        
         if(rotateDeg == -360){
           rotateDeg = 0;
         }

@@ -103,15 +103,16 @@
     <!--second col-xs3 strat-->
     <div class="panel panel-default">
         <div class="panel-heading"><span id="loanTypeName"></span> - <span id="groupName1"></span>  &nbsp&nbsp&nbsp( <span id="appGroupId"></span> )<span id="groupId" style="visibility:hidden;"></span>
-        <span id="loanTypeId1" style="visibility:hidden;"></span> </div>
+        <span id="loanTypeId1" style="visibility:hidden;"></span>
+        <span style="font-size:20px;cursor:pointer" onclick="toggleNav();" onclick="myFunction(this)">
+                        <button id="commentsBtn" style="float:right;margin-top:-3px;margin-right:-6px"
+                                    class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn"
+                                    data-target="#right-menu" data-toggle="modal" type="button">
+                            <i class="fa fa-comment fa-1x" style="cursor:pointer" aria-hidden="true"></i>
+                        </button>
+                    </span></div>
         <div class="panel-body">
-        <div align="right" title="Comments">
-                <span style="font-size:20px;cursor:pointer" onclick="toggleNav();" onclick="myFunction(this)">
-                    <button id="commentsBtn" style="float:right;margin-top:-54px;margin-right:-15px" class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn" data-target="#right-menu" data-toggle="modal"  type="button">
-                        Comments
-                    </button>
-                </span>
-            </div>
+
             <div class="col-md-5">
                 <div class="profile-user-info profile-user-info-striped">
                     <div class="profile-info-row">

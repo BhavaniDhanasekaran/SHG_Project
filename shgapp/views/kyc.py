@@ -20,7 +20,7 @@ def getGroupData(request,groupID,loanId,taskName):
     print "Inside getGroupData(request):"
     try:
         username = request.session["userName"]
-        BMTasksArray = ["Conduct BAT- Member approval in CRM","Prepare Loan Documents","Upload loan documents in Web application","Add New Members"]
+        BMTasksArray = ["Conduct BAT- Member approval in CRM","Print Loan Documents & FSR","Prepare Loan Documents","Upload loan documents in Web application","Add New Members"]
         rwrkTasksArr = ["Resolve Data Support Team Query","Resolve Credit Team Query"]
         userOfficeData = json.loads(request.session["userOfficeData"])
         groupName = userOfficeData["designation"]

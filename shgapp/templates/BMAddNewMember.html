@@ -28,7 +28,16 @@
     <!--2row Start col-10 start-->
     <div class="panel panel-default">
         <div class="panel-heading"><span id="groupName_groupRole"></span>  &nbsp&nbsp&nbsp( <span id="appGroupId1"></span> )<span id="groupId" style="visibility:hidden;"></span>
-         <span id="loanTypeId1" style="visibility:hidden;"></span></div>
+         <span id="loanTypeId1" style="visibility:hidden;"></span>
+            <span style="font-size:20px;cursor:pointer" onclick="toggleNav();" onclick="myFunction(this)">
+                        <button id="commentsBtn" style="float:right;margin-top:-3px;margin-right:-6px"
+                                    class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn"
+                                    data-target="#right-menu" data-toggle="modal" type="button">
+                            <i class="fa fa-comment fa-1x" style="cursor:pointer" aria-hidden="true"></i>
+                        </button>
+                    </span>
+
+        </div>
         <div class="row" id="successPanel" style="display:none;">
             <div class="error-container">
                 <div class="well">
@@ -50,6 +59,7 @@
             </div>
             <!-- PAGE CONTENT ENDS -->
     </div>
+
         <div class="panel-body-danger">
             <!--2row panel body start-->
             <div id="defaultDisplay">
@@ -59,13 +69,13 @@
                      <li><a data-toggle="tab" href="#memberDetails">Member Details</a></li>
                 </ul>
                 <div class="tab-content">
-                    <div align="right" title="Comments">
+                    <!--div align="right" title="Comments">
                             <span style="font-size:20px;cursor:pointer" onclick="toggleNav();" onclick="myFunction(this)">
                                 <button id="commentsBtn" style="float:right;margin-top:-55px;margin-right:-11px" class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn" data-target="#right-menu" data-toggle="modal"  type="button">
                                     Comments
                                 </button>
                             </span>
-                        </div>
+                        </div-->
                     <div id="memberDetails" class="tab-pane">
                             <div class="page-content1">
                                 <div class="row">
