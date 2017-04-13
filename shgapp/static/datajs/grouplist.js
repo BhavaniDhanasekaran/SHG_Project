@@ -484,7 +484,7 @@ function updateMemValidationStatus(status) {
     if (status == "Rejected") {
         faIcon = 'times-circle';
         updateStatus = " rejected";
-        fontColor = "red";
+        fontColor = "darkred";
     }
     if (status == "Rework") {
         updateStatus = " sent for rework";
@@ -667,7 +667,7 @@ function submitKYCForm(status) {
     }
     if (status == "Rejected") {
         updateStatus = " rejected";
-        fontColor = "red";
+        fontColor = "darkred";
         faIcon = 'times-circle';
     }
     if (status == "Rework" || status == "Rejected") {
@@ -1917,8 +1917,8 @@ function updateGroupValStatus(status) {
             success: function(data) {
                 if (data == "Successful") {
                      $("#validationMessage").addClass("center");
-                     document.getElementById("validationMessage").innerHTML ='<span style="color:'+fontColor+'" " class="center bigger-50"> &nbsp&nbsp'+"'"+ groupName +"'" + " has been "+updateStatus+" successfully"+'</span>';
-                     document.getElementById("gStatus").innerHTML = '<h4 class="center" ><span style="color:'+fontColor+'" " class="center bigger-50"><i class="ace-icon fa fa-'+fontIcon+' bigger-250"></i></span></h4>';
+                     document.getElementById("validationMessage").innerHTML ='<span style="color:'+fontColor+'" " class="center bigger-50"><i class="ace-icon fa fa-'+fontIcon+' bigger-125"></i> &nbsp&nbsp'+"'"+ groupName +"'" + " has been "+updateStatus+'</span>';
+                     document.getElementById("gStatus").innerHTML = '<h3  class="lighter smaller">Task has been completed successfully!  <i class="ace-icon glyphicon glyphicon-thumbs-up bigger-150"></i> </h3>';
                      document.getElementById("taskValBtn").innerHTML = '<a href="/assignedTaskList/" class="btn btn-primary"> <i class="glyphicon glyphicon-user"></i> Go to My Tasks </a>';
                      $("#successPanel").show();
                      $("#defaultDisplay").hide();
