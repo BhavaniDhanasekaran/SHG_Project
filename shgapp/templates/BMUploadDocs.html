@@ -20,6 +20,10 @@
         loanDocument(loanTypeId);
         loadGroupRoles(groupId,loanId,taskName);
         $("#loading").hide();
+        $('textarea.limited').inputlimiter({
+          remText: '%n character%s remaining...',
+          limitText: 'max allowed : %n.'
+        });
     });
 </script>
 {% endblock %}

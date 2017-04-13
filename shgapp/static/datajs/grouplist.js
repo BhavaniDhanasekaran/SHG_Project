@@ -1109,7 +1109,7 @@ function documentView(groupId) {
                 $.each(groupDocData.data, function(key, value) {
                     var tr = $('<tr></tr>');
                     current++;
-                    $('<td>' + current + '</td><td>' + value.documentName + '</td><td> <button type="button" class="btn btn-danger" id = "' + value.docId + '" onclick="window.open(' + "'" + value.documentPath + "'" + "," + value.docId + "," + "width=200,height=100" + ');"><span class="glyphicon glyphicon-cloud-upload"></span> View  </button></td> ').appendTo(tr);
+                    $('<td>' + current + '</td><td>' + value.documentName + '</td><td> <button type="button" class="btn btn-danger" id = "' + value.docId + '" onclick="window.open(' + "'" + value.documentPath + "'" + "," + value.docId + "," + "width=600,height=550" + ');"><span class="glyphicon glyphicon-cloud-upload"></span> View  </button></td> ').appendTo(tr);
                     tr.appendTo('#docments_table');
                 });
             } else {
@@ -1824,9 +1824,8 @@ function updateGroupValStatus(status) {
             } else {
                 var resp = updateGroupMemberStatus().done(function(result) { if(result.code == 2024)
                 {
-                    $( ".confirmBtn" ).click(function() {
-                           showConfirmBox(status);
-                     });
+                    $( ".confirmBtn" ).click();
+                    showConfirmBox(status);
                 }
                 }).fail(function() {  flag = 0; });
             }
@@ -1861,9 +1860,8 @@ function updateGroupValStatus(status) {
             }
             else {
                 var resp = updateGroupMemberStatus().done(function(result) { if(result.code == 2024){
-                      $( ".confirmBtn" ).click(function() {
-                           showConfirmBox(status);
-                        });
+                       $( ".confirmBtn" ).click();
+                       showConfirmBox(status);
                 }  }).fail(function() {  flag = 0; });
             }
         }

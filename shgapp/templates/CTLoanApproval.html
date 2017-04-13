@@ -26,6 +26,10 @@
         documentView(loanId);
         getLoanDetails(groupId,loanId);
         getPaymentHistory("group",0,groupId);
+        $('textarea.limited').inputlimiter({
+          remText: '%n character%s remaining...',
+          limitText: 'max allowed : %n.'
+        });
 
     });
 </script>
@@ -306,7 +310,7 @@
                                     <div class="col-md-12">
                                                 <div class="form-group vertical-center">
                                                     <label for="comment">Comment:</label>
-                                                    <textarea class="form-control" rows="3" id="comment"></textarea>
+                                                    <textarea class="form-control limited sample" rows="3" id="comment"></textarea>
                                                 </div>
                                     </div>
                                 </div>
