@@ -131,6 +131,13 @@
                             </div>
                         </ul>
                     </li>
+                    <span style="font-size:20px;cursor:pointer" onclick="toggleNav();" onclick="myFunction(this)">
+                        <button id="commentsBtn" style="float:right;margin-top:-55px;margin-right:-7px"
+                                    class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn"
+                                    data-target="#right-menu" data-toggle="modal" type="button">
+                            <i class="fa fa-comment fa-1x" style="cursor:pointer" aria-hidden="true"></i>
+                        </button>
+                    </span>
                 </div>
                 <div class="row" id="successPanel" style="display:none;">
     <!-- PAGE CONTENT BEGINS -->
@@ -156,7 +163,7 @@
 </div>
                 <div class="panel-body-danger">
 
-                    <div id="defaultDisplay"  style="display:none;" >
+                    <div id="defaultDisplay"  style="display:block;" >
                         <!--2row panel body start-->
                         <div class="tabbable">
                             <ul class="nav nav-tabs padding-12 tab-color-blue  background-blue" id="myTab4">
@@ -171,16 +178,7 @@
                                 <li id="tab7"><a data-toggle="tab" href="#Location">Location</a></li>
                             </ul>
                             <div class="tab-content">
-                                <div align="right" title="Comments">
-                                    <span style="font-size:20px;cursor:pointer" onclick="toggleNav();"
-                                        onclick="myFunction(this)">
-                                    <button id="commentsBtn" style="float:right;margin-top:-55px;margin-right:-11px"
-                                        class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn"
-                                        data-target="#right-menu" data-toggle="modal" type="button">
-                                    Comments
-                                    </button>
-                                    </span>
-                                </div>
+
                                 <div id="home4" class="tab-pane in active">
                                     <!-- form start-->
                                     <section>
@@ -535,7 +533,7 @@
                                                 </div>
                                             </div>
                                             <div></div>
-                                            {% if taskName == "Proposal scrutiny"%}
+                                            {% if taskName == "Proposal scrutiny" or taskName == "BM Reply" %}
                                             <div id="operationsDivId" class="col-md-4 text-center .btn-block">
                                                 <button type="button"  class="btn btn-danger btn-md " id="myBtn2" onclick="submitKYCForm('Rework');">Rework</button>
                                                 <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCForm('Approved');">Approve</button>
@@ -543,11 +541,11 @@
                                             </div>
                                             {% endif %}
                                             {% if taskName == "BM Reply" %}
-                                            <div id="operationsDivIdQuery" class="col-md-4 text-center .btn-block">
+                                            <!--div id="operationsDivIdQuery" class="col-md-4 text-center .btn-block">
                                                 <button type="button"  class="btn btn-danger btn-md " id="myBtn2" onclick="submitKYCForm('Rework');">Rework</button>
                                                 <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="submitKYCForm('Approved');">Approve</button>
                                                 <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="updateMemValidationStatus('Rejected');">Reject</button>
-                                            </div>
+                                            </div-->
                                             <div id="groupApproveBtnIdQuery" class="col-md-4 text-center .btn-block" style="display:none;">
                                                 <button type="button" class="btn btn-danger btn-md" id="myBtn2" onclick="updateGroupValStatus('Approved');">Approve Group</button>
                                             </div>

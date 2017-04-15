@@ -6,7 +6,8 @@ from django.http import HttpResponseRedirect
 def session_required(func):
     def checkLastLogin(request, *args, **kwargs):
         if 'userName' in request.session:
-            current_datetime = datetime.datetime.now()
+            current_datetime = datetime.datetime.now() + datetime.timedelta(seconds=django_settings.SESSION_IDLE_TIMEOUT)
+            request.session['loginTime'] = datetime.datetime.now()
             if 'loginTime' in request.session:
                 timeDiff = (current_datetime - request.session['loginTime']).seconds
                 if timeDiff > django_settings.SESSION_IDLE_TIMEOUT:
@@ -15,6 +16,7 @@ def session_required(func):
             if not request.is_ajax():
                 request.session['loginTime'] = current_datetime
         else:
+            request.session.flush()
             return HttpResponseRedirect('/signin/')    
         
         return func(request, *args, **kwargs)

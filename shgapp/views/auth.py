@@ -131,3 +131,6 @@ def reset_confirm(request, uidb64=None, token=None):
 def success(request):
   return render(request, 'auth/success.html')
 
+def browserError(request):
+  return render(request, 'auth/browserError.html')
+

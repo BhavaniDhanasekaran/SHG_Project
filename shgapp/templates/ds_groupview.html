@@ -29,82 +29,6 @@
 </script>
 
 
-<style>
-    .info-display {
-      margin: 8px 8px;
-    }
-
-    .message {
-      width: 50%;
-      margin: 0 auto;
-      padding: 19px;
-      margin: 0 auto;
-      background-color: #FFFFFF;
-      font-family: 'Open Sans', sans-serif;
-      font-size: 16px;
-    }
-
-    .error {
-      background-color: rgba(217, 80, 80, 0.2);
-      border-top-right-radius: 31px;
-      border-right-color: #CC3333; /* Side Effect Colors */
-      border-left-color: #CC3333; /* Side Effect Colors */
-      border: 1px solid #CC3333;
-      border-right-width: 19px;
-      border-left-width: 19px;
-    }
-    .error strong {
-      color:  #FF3333;
-    }
-
-    .warning {
-      border-right-color: #FF9933;
-      border-bottom-right-radius: 31px;
-      background-color: rgba(240, 173, 78, 0.2);
-      border-right-color: #FF9933; /* Side Effect Colors */
-      border-left-color: #FF9933; /* Side Effect Colors */
-      border: 1px solid #FF9933;
-      border-right-width: 19px;
-      border-left-width: 19px;
-    }
-    .warning strong {
-      color: #FF9900;
-    }
-
-    .info {
-      border-right-color: #5bc0de;
-      border-bottom-right-radius: 31px;
-      border-top-right-radius: 31px;
-      background-color: rgba(91, 192, 222, 0.2);
-      border-right-color: #5bc0de; /* Side Effect Colors */
-      border-left-color: #5bc0de; /* Side Effect Colors */
-      border: 1px solid #5bc0de;
-      border-right-width: 19px;
-      border-left-width: 19px;
-    }
-    .info strong {
-      color: #5bc0de;
-    }
-
-    .success {
-      border-right-color: #2b542c;
-      border-radius: 31px;
-      background-color: rgba(43, 84, 44, 0.2);
-      border-right-color: #2b542c; /* Side Effect Colors */
-      border-left-color: #2b542c; /* Side Effect Colors */
-      border: 1px solid #2b542c;
-      border-right-width: 19px;
-      border-left-width: 19px;
-    }
-    .success strong {
-      color: #2b542c;
-    }
-</style>
-
-
-
-
-
 </div>
 {% endblock %}
 <!-- PAGE CONTENT BEGINS -->
@@ -126,8 +50,8 @@
                         </label>
                         <span id="groupName"></span> &nbsp; &nbsp;
                         (<span id="appGroupId"></span>) &nbsp; &nbsp;&nbsp; &nbsp;
-                        <span id="memberName2"></span>
-                        (<span id="appMemberId_top"></span>)
+                        <span class ="spanClearClass" id="memberName2"></span>
+                        (<span class ="spanClearClass" id="appMemberId_top"></span>)
                         <span id="groupId" style="visibility:hidden;"></span>
                         <span id="loanTypeId1" style="visibility:hidden;"></span>
                         <br>
@@ -142,7 +66,18 @@
                                 <li data-toggle="tab" href="#home4" class="list-group" id="groupMembersDropDown"></li>
                             </div>
                         </ul>
+
                     </li>
+
+                    <span style="font-size:20px;cursor:pointer" onclick="toggleNav();" onclick="myFunction(this)">
+                        <button id="commentsBtn" style="float:right;margin-top:-55px;margin-right:-7px"
+                                    class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn"
+                                    data-target="#right-menu" data-toggle="modal" type="button">
+                            <i class="fa fa-comment fa-1x" style="cursor:pointer" aria-hidden="true"></i>
+                        </button>
+                    </span>
+
+
                 </div>
 <div class="row" id="successPanel" style="display:none;">
     <!-- PAGE CONTENT BEGINS -->
@@ -152,7 +87,7 @@
 
             <hr />
             <div id="gStatus">
-                <h3  class="lighter bigger">Task has not been completed yet!  <i class="ace-icon glyphicon glyphicon-thumbs-down bigger-125"></i> </h3>
+                <!--h3  class="lighter bigger">Task has not been completed yet!  <i class="ace-icon glyphicon glyphicon-thumbs-down bigger-125"></i> </h3-->
             </div>
             <div class="space"></div>
 
@@ -160,7 +95,7 @@
             <div class="space"></div>
             <div class="center" id="taskValBtn">
                 <!--a href="javascript:history.back()" class="btn btn-grey"> <i class="ace-icon fa fa-arrow-left"></i> Go Back </a-->
-                <a href="#" onclick="loadNextMem();" class="btn btn-primary"> <i class="ace-icon fa fa-arrow-right"></i> Next Member </a>
+                <!--a href="#" onclick="loadNextMem();" class="btn btn-primary"> <i class="ace-icon fa fa-arrow-right"></i> Next Member </a-->
             </div>
         </div>
     </div>
@@ -188,33 +123,24 @@
 
                         </ul>
                         <div class="tab-content">
-                            <div align="right" title="Comments">
-                                <span style="font-size:20px;cursor:pointer" onclick="toggleNav();"
-                                    onclick="myFunction(this)">
-                                <button id="commentsBtn" style="float:right;margin-top:-55px;margin-right:-11px"
-                                    class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn"
-                                    data-target="#right-menu" data-toggle="modal" type="button">
-                                Comments
-                                </button>
-                                </span>
-                            </div>
+
                             <div id="home4" class="tab-pane in active">
                                 <!-- form start-->
                                 <section>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">
-                                            Member ID :<span id="appMemberId"></span></label>
+                                            Member ID :<span class ="spanClearClass" id="appMemberId"></span></label>
                                             <label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">
                                             Loan ID :<span id="loanId"></span></label>
                                             <label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">
-                                            De-dup Status:<span id="dedupeStatus"></span></label>
+                                            De-dup Status:<span class ="spanClearClass" id="dedupeStatus"></span></label>
                                             <label class="label label-info arrowed-right arrowed-in  glyphicon-bookmark">
-                                            CB Status:<span id="CBStatus"></span></label>
+                                            CB Status:<span class ="spanClearClass" id="CBStatus"></span></label>
                                             <label class="label label-danger arrowed-in  glyphicon-bookmark">
-                                            Role : <span id="roleName"></span></label>
-                                            <span id="memberId" style="visibility:hidden;"></span>
-                                            <span id="memberValStatus" style="visibility:hidden;"></span>
+                                            Role : <span class ="spanClearClass" id="roleName"></span></label>
+                                            <span class ="spanClearClass" id="memberId" style="visibility:hidden;"></span>
+                                            <span class ="spanClearClass" id="memberValStatus" style="visibility:hidden;"></span>
                                         </div>
                                         <!-- tabrow start-->
                                         <!-- tabrow  colmd-2 end-->
@@ -575,8 +501,8 @@
                                             </div>
                                         </div>
                                         <div></div>
-                                        {% if taskName == "KYC Check"%}
-                                        <div id="operationsDivId" class="col-md-4 text-center .btn-block">
+                                        {% if taskName == "KYC Check" or taskName == "Query Response" %}
+                                        <div id="operationsDivId" style="display:none" class="col-md-4 text-center .btn-block">
                                             <button type="button" class="btn btn-danger btn-md " id="myBtn2"
                                                 onclick="submitKYCForm('Rework');">Rework
                                             </button>
@@ -589,7 +515,7 @@
                                         </div>
                                         {% endif %}
                                         {% if taskName == "Query Response" %}
-                                        <div id="operationsDivIdQuery" class="col-md-4 text-center .btn-block">
+                                        <!--div id="operationsDivIdQuery" class="col-md-4 text-center .btn-block">
                                             <button type="button" class="btn btn-danger btn-md " id="myBtn2"
                                                 onclick="submitKYCForm('Rework');">Rework
                                             </button>
@@ -599,7 +525,7 @@
                                             <button type="button" class="btn btn-danger btn-md" id="myBtn2"
                                                 onclick="updateMemValidationStatus('Rejected');">Reject
                                             </button>
-                                        </div>
+                                        </div-->
                                         <div id="groupApproveBtnIdQuery" class="col-md-4 text-center .btn-block"
                                             style="display:none;">
                                             <button type="button" class="btn btn-danger btn-md" id="myBtn2"
@@ -706,8 +632,7 @@
                                         </div>
                                         <div class="row-centered">
                                             <div class="col-md-12"> &nbsp;&nbsp;
-                                                <button type="button" style="margin-top:10px;"
-                                                    class="btn btn-danger btn-md"
+                                                <button type="button" style="margin-top:10px;"  class="btn btn-danger btn-md"
                                                     onclick="updateGroupMemberStatus();">Update
                                                 </button>
                                             </div>
