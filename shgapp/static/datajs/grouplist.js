@@ -217,7 +217,7 @@ function getMemberDetails(memberId, groupId, loanId) {
                              docId = memberDocumentDetails[j]["docId"];
                         }
                     }
-                    memberOverlapLink = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + "'MemberOverlapWin'" + "," + "'left=30,top=50,width=600,height=550'"+');">View</button>';
+                    memberOverlapLink = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + "'MemberOverlapWin'" + "," + "'left=30,top=50,width=200vw,height=100vh'"+');">View</button>';
                     if ($.fn.DataTable.isDataTable( '#creditLoadData' ) ) {
                         $("#creditLoadData").dataTable().fnDestroy();
                     }
@@ -272,7 +272,7 @@ function getMemberDetails(memberId, groupId, loanId) {
                     var documentObj = memberData["data"]["memberDocumentDetails"];
                     $.each(documentObj, function(key, value) {
                         if (value.documentType == "OVERLAPREPORT") {
-                            $("#OVERLAPREPORT_docPath").attr('onClick', 'window.open(' + "'" + value.documentPath + "'" + "," + value.docId + "," + "width=100,height=100" + ').focus();');
+                            $("#OVERLAPREPORT_docPath").attr('onClick', 'window.open(' + "'" + value.documentPath + "'" + "," + value.docId + "," + "width=200vw,height=100vh" + ').focus();');
                         } else if (value.documentType == "ADDRESSPROOF") {
                             $("#ADDRESSPROOF_docPath").css("display", "inline-block");
                             $("#ADDRESSPROOF_docPath").attr("src", value.documentPath);
@@ -888,7 +888,7 @@ function creditHistory(loanId) {
                             if (documentObj[j]["documentType"] == "OVERLAPREPORT") {
                                 docPath = documentObj[j]["documentPath"];
                                 docId = documentObj[j]["docId"];
-                                docBtn = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + docId + "," + "width=200,height=100" + ');"+>View</button>';
+                                docBtn = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + docId + "," + "width=200vw,height=100vh" + ');"+>View</button>';
                             }
                             else{
                                 docBtn = '<button type="button" class="btn btn-info btn-md btn-danger"+>View</button>';
@@ -1478,7 +1478,7 @@ function approveLoan(updateloanData){
     };
     dataObj["loanData"] = loanData;
     dataObj["taskId"] = taskId;
-
+    //return false;
     $.ajax({
         url: '/approveLoan/',
         dataType: 'json',
@@ -1493,18 +1493,27 @@ function approveLoan(updateloanData){
         success: function(data) {
             if (data.code == "2043") {
                 $.alert("Loan has been approved");
-                var loanAccNumber = data["data"]["loanAccountNumber"];
-                var funder =  data["data"]["funderResultMgs"];
-                var successMsg = data["data"]["successMgs"];
-                funder = funder.split("&#8377;").join("Rs");
-                window.location.href = "/loanAccNo/" + loanAccNumber + '/' + appGroupId + '/' + loanTypeName + '/' + groupName+'/'+funder+'/'+successMsg;
+                $("#defaultDisplay").hide();
+                $("#loanDetailsId").hide();
+                $("#loanAccNoPanelId").show();
+                document.getElementById("loanGroupId").innerHTML = appGroupId;
+                document.getElementById("loanGroupName").innerHTML = groupName;
+                document.getElementById("loanGroupType").innerHTML = loanTypeName;
+                document.getElementById("loanAccountNumberId").innerHTML = '<span style="color:green" class="bigger-125"> Loan Account Number : '+data["data"]["loanAccountNumber"]+'</span>';
+                //document.getElementById("funder").innerHTML = '<b><i><span style="color:green"  class="bigger-100">Fund Info : '+data["data"]["funderResultMgs"].split("&#8377;").join("Rs")+'</span></i></b>';
+                document.getElementById("funder").innerHTML = '<b><i><span style="color:green"  class="bigger-100">Fund Info : '+data["data"]["funderResultMgs"]+'</span></i></b>';
+                document.getElementById("resultBtnId").innerHTML = '<a href="/assignedTaskList/" class="btn btn-primary"> <i class="glyphicon glyphicon-user"></i> Go to My Tasks </a>';
             }
             if (data.code == "2034") {
-                var loanAccNumber = data["data"]["loanAccountNumber"];
-                var funder =  data["data"]["funderResultMgs"];
-                funder = funder.split("&#8377;").join("Rs");
-                var successMsg = data["data"]["successMgs"];
-                window.location.href = "/loanAccNo/" + loanAccNumber + '/' + appGroupId + '/' + loanTypeName + '/' + groupName+'/'+funder+'/'+successMsg;
+                $("#defaultDisplay").hide();
+                $("#loanDetailsId").hide();
+                $("#loanAccNoPanelId").show();
+                document.getElementById("loanGroupId").innerHTML = appGroupId;
+                document.getElementById("loanGroupName").innerHTML = groupName;
+                document.getElementById("loanGroupType").innerHTML = loanTypeName;
+                document.getElementById("loanAccountNumberId").innerHTML = '<span style="color:#BE2625" class="bigger-125"> Loan has not been approved yet <i class="ace-icon glyphicon glyphicon-thumbs-down bigger-125"></i></span>';
+                document.getElementById("funder").innerHTML = '<b><i><span style="color:#BE2625"  class="bigger-100">Fund Info : '+data["data"]["funderResultMgs"]+'</span></i></b>';
+                document.getElementById("resultBtnId").innerHTML = '<a href="javascript:history.back()" class="btn btn-primary"><i class="ace-icon fa fa-arrow-left"></i> Go Back </a>';
             }
         },
         data: JSON.stringify(dataObj)

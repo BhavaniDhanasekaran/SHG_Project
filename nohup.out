@@ -1,0 +1,86 @@
+[17/Apr/2017 12:32:40] "GET /assignedTaskList/ HTTP/1.1" 200 42364
+[17/Apr/2017 12:32:40] "GET /static/js/ace.min.js?v=1492412549.59 HTTP/1.1" 200 92124
+[17/Apr/2017 12:32:40] "GET /static/js/bootstrap.min.js?v=1492412549.59 HTTP/1.1" 200 36868
+[17/Apr/2017 12:32:40] "GET /static/js/jquery-confirm.js?v=1492412549.59 HTTP/1.1" 200 22450
+[17/Apr/2017 12:32:40] "GET /static/js/jquery.imagebox.js?v=1492412549.59 HTTP/1.1" 200 6897
+[17/Apr/2017 12:32:40] "GET /static/datajs/loadTaskList.js?v=1492412549.59 HTTP/1.1" 200 17290
+[17/Apr/2017 12:32:40] "GET /static/js/jquery-ui.min.js?v=1492412549.59 HTTP/1.1" 200 240333
+[17/Apr/2017 12:32:40] "GET /static/js/ace-elements.min.js?v=1492412549.59 HTTP/1.1" 200 62856
+[17/Apr/2017 12:32:40] "GET /static/datajs/grouplist.js?v=1492412549.59 HTTP/1.1" 200 99647
+[17/Apr/2017 12:32:40] "GET /static/images/favicon.ico HTTP/1.1" 200 1406
+[17/Apr/2017 12:32:40] "GET /tasksCount/?_=1492412554423 HTTP/1.1" 200 121
+[17/Apr/2017 12:32:40] "GET /tasksCount/?_=1492412554422 HTTP/1.1" 200 121
+Performing system checks...
+
+CamundaClient __init__
+CamundaClient self.host http://192.168.10.88:8086/engine-rest/
+SSCoreClient __init__
+SSCoreClient self.host http://192.168.10.71:8085/sangamam-core/
+CamundaClient __init__
+CamundaClient self.host http://192.168.10.88:8086/engine-rest/
+SSCoreClient __init__
+SSCoreClient self.host http://192.168.10.71:8085/sangamam-core/
+SSCoreClient __init__
+SSCoreClient self.host http://192.168.10.71:8085/sangamam-core/
+SSCoreClient __init__
+SSCoreClient self.host http://192.168.10.71:8085/sangamam-core/
+CamundaClient __init__
+CamundaClient self.host http://192.168.10.88:8086/engine-rest/
+s3 resource:  s3.ServiceResource()
+System check identified no issues (0 silenced).
+April 17, 2017 - 12:32:29
+Django version 1.10, using settings 'shg.settings'
+Starting development server at http://0.0.0.0:9000/
+Quit the server with CONTROL-C.
+Entering assignedTaskList(request): view
+CamundaClient _urllib2_request GET:  http://192.168.10.88:8086/engine-rest/task?&assignee=veni@mmfl.in
+_urllib2_parse_response getcode 200:  200
+CamundaClient _urllib2_request POST:  http://192.168.10.88:8086/engine-rest/variable-instance
+_urllib2_parse_response getcode 200:  200
+CamundaClient _urllib2_request POST:  http://192.168.10.88:8086/engine-rest/variable-instance?deserializeValues=false
+_urllib2_parse_response getcode 200:  200
+CamundaClient _urllib2_request POST:  http://192.168.10.88:8086/engine-rest/variable-instance?deserializeValues=true
+_urllib2_parse_response getcode 200:  200
+Exiting assignedTaskList(request): view
+Entering tasksCount( request ): view
+CamundaClient _urllib2_request POST:  http://192.168.10.88:8086/engine-rest/task
+_urllib2_parse_response getcode 200:  200
+CamundaClient _urllib2_request POST:  http://192.168.10.88:8086/engine-rest/task
+_urllib2_parse_response getcode 200:  200
+CamundaClient _urllib2_request POST:  http://192.168.10.88:8086/engine-rest/task/count
+_urllib2_parse_response getcode 200:  200
+CamundaClient _urllib2_request POST:  http://192.168.10.88:8086/engine-rest/task/count
+_urllib2_parse_response getcode 200:  200
+CamundaClient _urllib2_request POST:  http://192.168.10.88:8086/engine-rest/task/count
+_urllib2_parse_response getcode 200:  200
+CamundaClient _urllib2_request POST:  http://192.168.10.88:8086/engine-rest/task/count
+_urllib2_parse_response getcode 200:  200
+Entering tasksCount( request ): view
+CamundaClient _urllib2_request POST:  http://192.168.10.88:8086/engine-rest/task
+_urllib2_parse_response getcode 200:  200
+CamundaClient _urllib2_request POST:  http://192.168.10.88:8086/engine-rest/task
+_urllib2_parse_response getcode 200:  200
+CamundaClient _urllib2_request POST:  http://192.168.10.88:8086/engine-rest/task/count
+_urllib2_parse_response getcode 200:  200
+CamundaClient _urllib2_request POST:  http://192.168.10.88:8086/engine-rest/task/count
+_urllib2_parse_response getcode 200:  200
+CamundaClient _urllib2_request POST:  http://192.168.10.88:8086/engine-rest/task/count
+_urllib2_parse_response getcode 200:  200
+CamundaClient _urllib2_request POST:  http://192.168.10.88:8086/engine-rest/task/count
+_urllib2_parse_response getcode 200:  200
+tasksCount::::::::::::
+{"Task": {"Approve Loan": 0, "myTasks": 5, "Proposal scrutiny": 1, "Prepare & print chq through BPM": 36, "BM Reply": 0}}
+Exiting tasksCount( request ): view
+tasksCount::::::::::::
+{"Task": {"Approve Loan": 0, "myTasks": 5, "Proposal scrutiny": 1, "Prepare & print chq through BPM": 36, "BM Reply": 0}}
+Exiting tasksCount( request ): view
+Entering assignedTaskList(request): view
+CamundaClient _urllib2_request GET:  http://192.168.10.88:8086/engine-rest/task?&assignee=veni@mmfl.in
+_urllib2_parse_response getcode 200:  200
+CamundaClient _urllib2_request POST:  http://192.168.10.88:8086/engine-rest/variable-instance
+_urllib2_parse_response getcode 200:  200
+CamundaClient _urllib2_request POST:  http://192.168.10.88:8086/engine-rest/variable-instance?deserializeValues=false
+_urllib2_parse_response getcode 200:  200
+CamundaClient _urllib2_request POST:  http://192.168.10.88:8086/engine-rest/variable-instance?dese[17/Apr/2017 12:32:42] "GET /assignedTaskList/ HTTP/1.1" 200 42364
+[17/Apr/2017 12:32:42] "GET /tasksCount/?_=1492412556640 HTTP/1.1" 200 121
+[17/Apr/2017 12:32:42] "GET /tasksCount/?_=1492412556641 HTTP/1.1" 200 121
