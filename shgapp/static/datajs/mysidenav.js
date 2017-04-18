@@ -9,6 +9,7 @@ function closeNav() {
     document.getElementById("mySidenav").style.width = "0px";
     document.getElementById("main").style.marginRight= "0px";
     document.body.style.backgroundColor = "white";
+    $(" .footer .footer-inner .footer-content").css("right", "12px");
 }
 
 function toggleNav() {
@@ -20,5 +21,6 @@ function toggleNav() {
         getMemberComments(processInstanceId,loanId);
         getGroupComments(processInstanceId,loanId);
     }
+    $(" .footer .footer-inner .footer-content").css("right", "270px");
 
 }

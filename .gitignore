@@ -2,6 +2,7 @@
 /.git
 /.idea
 /.komodotools
+*.out
 *.komodoproject
 *.pyc
 *~

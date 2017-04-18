@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block javascript %}
+<script src="/static/datajs/grouplist.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/loadTaskList.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/mysidenav.js?v={{JS_VERSION}}"></script>
+<script>
+var groupId = '{{ groupId | escapejs }}';
+    var loanId = '{{ loanId | escapejs }}';
+    var taskId = '{{ taskId | escapejs }}';
+    var taskName = '{{ taskName | escapejs }}';
+    var group = '{{ group | escapejs }}';
+    var userId = '{{ userId | escapejs }}';
+    var loanType = '{{ loanType | escapejs }}';
+    var loanTypeId = '{{ loanTypeId | escapejs }}';
+    var processInstanceId = '{{ processInstanceId | escapejs }}';
+    var userName = '{{ user | escapejs }}';
+    $(document).ready(function (){
+        $("#commentSpanId").css("display","inline-block");
+        taskCount();
+    });
+</script>
+{% endblock %}
+{% block content %}
+<div class="row" id="main">
+    <div class="col-lg-12" >
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span id="groupName_groupRole"></span>
+                &nbsp&nbsp&nbsp( <span id="appGroupId1"></span> )
+                <span id="groupId" style="visibility:hidden;"></span>
+                <span id="loanTypeId1" style="visibility:hidden;"></span>
+
+            </div>
+            <div class="row" id="successPanel" style="display:none;">
+                <div class="error-container">
+                    <div class="well">
+                            <h2 id="validationMessage" class="grey center lighter smaller">   </h2>
+                        <hr />
+                        <div id="gStatus"></div>
+                        <div class="space"></div>
+                        <hr />
+                        <div class="space"></div>
+                        <div class="center" id="taskValBtn"></div>
+                    </div>
+                </div>
+            </div>
+             <div class="panel-body" >
+                <div class="col-md-5">
+                    <div class="profile-info-row">
+                        <b><div class="profile-info-name2"> Loan Account No. </div></b>
+                        <div class="profile-info-value">
+                            <input maxlength=14 class="editable" id="loanAccountNumber">&nbsp&nbsp&nbsp&nbsp&nbsp
+                            <button type="button" class="btn btn-danger" onclick="generateLOS();" >Generate LOS</button>
+                        </div>
+                    </div>
+                </div>
+             </div>
+            <div class="panel-body-danger">
+                <div id="defaultDisplay">
+                    <div class="tabbable">
+                        <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
+                            <li id="tab1" class="active">
+                                <a data-toggle="tab" href="#memberDetails">Disburse Docs</a>
+                            </li>
+
+                        </ul>
+                        <div class="tab-content">
+                             <div id="memberDetails" class="tab-pane in active">
+                            <div class="page-content1">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <!-- PAGE CONTENT BEGINS -->
+                                        <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
+                                            <div class="widget-box widget-color-blue" id="widget-box-2">
+
+                                                <div class="widget-body">
+                                                    <div class="widget-main no-padding">
+                                                        <table class="table table-striped table-bordered table-hover">
+                                                            <thead class="thin-border-bottom">
+                                                                <tr>
+                                                                    <th> S.No</th>
+                                                                    <th>App Mem Id</th>
+                                                                    <th>New Mem</th>
+                                                                    <th>Name</th>
+                                                                    <th>SB A/C Number</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.span -->
+                                    </div>
+                                    <!-- /.row -->
+                                    <!-- PAGE CONTENT ENDS -->
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                        </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'query.html' %}
+    {% endblock content %}

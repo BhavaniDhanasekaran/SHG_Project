@@ -68,7 +68,7 @@ kyc_urlpatterns = [
     url(r'^getGroupComments/(?P<processId>[^/]+)/(?P<loanId>[^/]+)', kyc.getGroupComments, name='getGroupComments'),
     url(r'^getLoanMemberPaymentHistory/(?P<memberId>[^/]+)/(?P<groupId>[^/]+)',kyc.getLoanMemberPaymentHistory, name = 'getLoanMemberPaymentHistory'),
     url(r'^getLoanGroupPaymentHistory/(?P<groupId>[^/]+)',kyc.getLoanGroupPaymentHistory, name = 'getLoanGroupPaymentHistory'),
-    url(r'^getATLForeClosureData/',kyc.getATLForeClosureData, name = 'getATLForeClosureData'),
+    url(r'^generateLOS/',kyc.generateLOS, name = 'generateLOS'),
 
 ]
 urlpatterns += kyc_urlpatterns
