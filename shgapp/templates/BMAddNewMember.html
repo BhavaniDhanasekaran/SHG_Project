@@ -15,6 +15,7 @@
     var processInstanceId = '{{ processInstanceId | escapejs }}';
     
     $(document).ready(function(){
+        $("#commentSpanId").css("display","inline-block");
         loadGroupRoles(groupId,loanId,taskName);
         $('textarea.limited').inputlimiter({
             remText: '%n character%s remaining...',
@@ -31,16 +32,12 @@
             ( <span id="appGroupId1"></span> )
             <span id="groupId" style="visibility:hidden;"></span>
             <span id="loanTypeId1" style="visibility:hidden;"></span>
-            <span style="font-size:20px;cursor:pointer" onclick="toggleNav();">
-                <button id="commentsBtn" style="float:right;margin-top:-3px;margin-right:-6px" class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn" data-target="#right-menu" data-toggle="modal" type="button">
-                    <i class="fa fa-comment fa-1x" style="cursor:pointer" aria-hidden="true"></i>
-                </button>
-            </span>
+
         </div>
         <div class="row" id="successPanel" style="display:none;">
             <div class="error-container">
                 <div class="well">
-                    <h2 id="validationMessage" class="grey lighter smaller">   </h2> <hr />
+                    <h2 id="validationMessage" class="grey center lighter smaller">   </h2> <hr />
                     <div id="gStatus"> </div>
                     <div class="space"></div> <hr />
                     <div class="space"></div>
@@ -182,6 +179,10 @@
                                             <button onclick="updateTask('Approved');" class="btn btn-danger" type="button">
                                             <i class="ace-icon fa fa-check bigger-110"></i>
                                             Approve
+                                            </button>
+                                            <button onclick="updateGroupValStatus('Rejected');" class="btn btn-danger" type="button">
+                                                <i class="ace-icon fa fa-close bigger-110"></i>
+                                                Reject
                                             </button>
                                         {% endif %}
                                     </div>

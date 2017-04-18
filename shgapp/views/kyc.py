@@ -35,7 +35,7 @@ def getGroupData(request,groupID,loanId,taskName):
             validationLevel = "CREDITTEAM"
         if groupName == "RM" or groupName == "rm":
             validationLevel = "BM"
-        bodyData = {"groupId": groupID, "validationLevel":validationLevel}
+        bodyData = {"groupId": groupID, "validationLevel":validationLevel, "loanId":loanId}
         groupMembersData = sscoreClient._urllib2_request('workflowDetailView/getallmembers', bodyData, requestType='POST')
         return HttpResponse(json.dumps(groupMembersData), content_type="application/json")
     except ShgInvalidRequest, e:
@@ -335,25 +335,3 @@ def getLoanGroupPaymentHistory(request,groupId):
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting Loan group PaymentHistory.')
-
-@csrf_exempt
-@session_required
-def getATLForeClosureData(request):
-    print 'Inside getATLForeClosureData(request):'
-    try:
-        if request.method == "POST":
-            formData = json.loads(request.body)
-            bodyData = formData["foreClosureInput"]
-            serialized_data = sscoreClient._urllib2_request('workflowEdit/loanForeClosure/', bodyData, requestType='POST')
-            return HttpResponse(json.dumps(serialized_data), content_type="application/json")
-    except ShgInvalidRequest, e:
-        return helper.bad_request('Unexpected error occurred while getting ATL foreclosure info.')
-
-
-'''@session_required
-def loanAccNo(request,loanAccNumber,appGroupId,loanTypeName,groupName,funder):
-    username = request.session["userName"]
-    userOfficeData = json.loads(request.session["userOfficeData"])
-    groupRole = userOfficeData["designation"]
-    userId = request.session["userId"]
-    return render_to_response("loanAccNumber.html",{"user":username,"funder":funder,"userId":userId,"group":groupRole,"groupName": groupName,"appGroupId" :appGroupId,"loanTypeName":loanTypeName,"loanAccNo":loanAccNumber})'''

@@ -17,6 +17,7 @@
     var loanTypeId = '{{ loanTypeId | escapejs }}';
     var processInstanceId = '{{ processInstanceId | escapejs }}';
     $(document).ready(function (){
+        $("#commentSpanId").css("display","inline-block");
         loanDocument(loanTypeId);
         loadGroupRoles(groupId,loanId,taskName);
         $("#loading").hide();
@@ -26,25 +27,19 @@
 {% endblock %}
 {% block content %}
 <div class="row" id="main">
-    <div class="col-lg-12" >
+    <div class="col-lg-12 col-sm-12 col-xs-12" >
         <div class="panel panel-default">
             <div class="panel-heading">
                 <span id="groupName_groupRole"></span>
                 &nbsp&nbsp&nbsp( <span id="appGroupId1"></span> )
                 <span id="groupId" style="visibility:hidden;"></span>
                 <span id="loanTypeId1" style="visibility:hidden;"></span>
-                <span style="font-size:20px;cursor:pointer" onclick="toggleNav();" onclick="myFunction(this)">
-                        <button id="commentsBtn" style="float:right;margin-top:-3px;margin-right:-6px"
-                                    class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn"
-                                    data-target="#right-menu" data-toggle="modal" type="button">
-                            <i class="fa fa-comment fa-1x" style="cursor:pointer" aria-hidden="true"></i>
-                        </button>
-                    </span>
+
             </div>
             <div class="row" id="successPanel" style="display:none;">
                 <div class="error-container">
                     <div class="well">
-                            <h2 id="validationMessage" class="grey lighter smaller">   </h2>
+                            <h2 id="validationMessage" class="grey center lighter smaller">   </h2>
                         <hr />
                         <div id="gStatus"></div>
                         <div class="space"></div>

@@ -208,17 +208,25 @@
             // data.submit() returns a Promise object and allows to attach additional
             // handlers using jQuery's Deferred callbacks:
             // data.submit().done(func).fail(func).always(func);
-            add: function (e, data) {
-                if (e.isDefaultPrevented()) {
-                    return false;
-                }
-                if (data.autoUpload || (data.autoUpload !== false &&
-                        $(this).fileupload('option', 'autoUpload'))) {
-                    data.process().done(function () {
+
+
+
+             add: function (e, data) {
+                    var goUpload = true;
+                    var uploadFile = data.files[0];
+                    if (!(/\.(pdf)$/i).test(uploadFile.name)) {
+                        alert('You must select an PDF file only')
+                        goUpload = false;
+                    }
+                    if (uploadFile.size > 20000000) { // 2mb
+                          alert('Please upload a smaller image, max size is 20 MB')
+
+                        goUpload = false;
+                    }
+                    if (goUpload == true) {
                         data.submit();
-                    });
-                }
-            },
+                    }
+    },
 
             // Other callbacks:
 

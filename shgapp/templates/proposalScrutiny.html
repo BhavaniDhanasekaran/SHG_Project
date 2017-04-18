@@ -14,6 +14,7 @@
     var taskName = '{{ taskName | escapejs }}';
     var processInstanceId = '{{ processInstanceId | escapejs }}';
     $(document).ready(function (){
+        $("#commentSpanId").css("display","inline-block");
         $(".main").imageBox();
         $("#unbind-pos").draggable();
         getGroupData(groupId,loanId);
@@ -27,72 +28,7 @@
     });
 
 </script>
-<style>
-    .info-display {
-    margin: 8px 8px;
-    }
-    .message {
-    width: 50%;
-    margin: 0 auto;
-    padding: 19px;
-    margin: 0 auto;
-    background-color: #FFFFFF;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 16px;
-    }
-    .error {
-    background-color: rgba(217, 80, 80, 0.2);
-    border-top-right-radius: 31px;
-    border-right-color: #CC3333; /* Side Effect Colors */
-    border-left-color: #CC3333; /* Side Effect Colors */
-    border: 1px solid #CC3333;
-    border-right-width: 19px;
-    border-left-width: 19px;
-    }
-    .error strong {
-    color:  #FF3333;
-    }
-    .warning {
-    border-right-color: #FF9933;
-    border-bottom-right-radius: 31px;
-    background-color: rgba(240, 173, 78, 0.2);
-    border-right-color: #FF9933; /* Side Effect Colors */
-    border-left-color: #FF9933; /* Side Effect Colors */
-    border: 1px solid #FF9933;
-    border-right-width: 19px;
-    border-left-width: 19px;
-    }
-    .warning strong {
-    color: #FF9900;
-    }
-    .info {
-    border-right-color: #5bc0de;
-    border-bottom-right-radius: 31px;
-    border-top-right-radius: 31px;
-    background-color: rgba(91, 192, 222, 0.2);
-    border-right-color: #5bc0de; /* Side Effect Colors */
-    border-left-color: #5bc0de; /* Side Effect Colors */
-    border: 1px solid #5bc0de;
-    border-right-width: 19px;
-    border-left-width: 19px;
-    }
-    .info strong {
-    color: #5bc0de;
-    }
-    .success {
-    border-right-color: #2b542c;
-    border-radius: 31px;
-    background-color: rgba(43, 84, 44, 0.2);
-    border-right-color: #2b542c; /* Side Effect Colors */
-    border-left-color: #2b542c; /* Side Effect Colors */
-    border: 1px solid #2b542c;
-    border-right-width: 19px;
-    border-left-width: 19px;
-    }
-    .success strong {
-    color: #2b542c;
-    }
-</style>
+
 </div>
 {% endblock %}
 <!-- PAGE CONTENT BEGINS -->
@@ -101,7 +37,7 @@
     <div class="main">
         <!--2row Start-->
         <!--2row Start col2 End-->
-        <div class="col-xs-12 pricing-box">
+        <div class="col-lg-12 col-sm-12 col-xs-12 pricing-box">
             <!--2row Start col-10 start-->
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -131,19 +67,13 @@
                             </div>
                         </ul>
                     </li>
-                    <span style="font-size:20px;cursor:pointer" onclick="toggleNav();" onclick="myFunction(this)">
-                        <button id="commentsBtn" style="float:right;margin-top:-55px;margin-right:-7px"
-                                    class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn"
-                                    data-target="#right-menu" data-toggle="modal" type="button">
-                            <i class="fa fa-comment fa-1x" style="cursor:pointer" aria-hidden="true"></i>
-                        </button>
-                    </span>
+
                 </div>
                 <div class="row" id="successPanel" style="display:none;">
     <!-- PAGE CONTENT BEGINS -->
     <div class="error-container">
         <div class="well">
-                <h1 id="validationMessage" class="grey lighter smaller">   </h1>
+                <h1 id="validationMessage" class="grey center lighter smaller">   </h1>
 
             <hr />
             <div id="gStatus">

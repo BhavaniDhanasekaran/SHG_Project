@@ -49,6 +49,13 @@
             <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="{% url 'hello' %}">Home </a> </li>
             <li> <i class="ace-icon"> </i> <span>{{ taskName }} </span> </li>
         </ul>
+        <span id="commentSpanId" style="float:right;font-size:20px;cursor:pointer;display:none;" onclick="toggleNav();">
+            <button id="commentsBtn" style="float:right;margin-top:3px;"
+                        class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn"
+                        data-target="#right-menu" data-toggle="modal" type="button">
+                <i class="fa fa-comment fa-1x" style="cursor:pointer" aria-hidden="true"></i>
+            </button>
+        </span>
 
         <!-- /.breadcrumb -->
     </div>
@@ -127,7 +134,7 @@
 
         <li class="">
             <a href="#" onclick="redirectToTaskPage('Prepare Loan Documents');">
-                <i class="menu-icon glyphicon glyphicon-print "></i>
+                <i class="menu-icon fa fa-file"></i>
                 <span class="menu-text"> Prepare Loan Docs
                     <span id="Prepare_Loan_Documents" class="badge badge-danger">0</span>
                 </span>
@@ -152,6 +159,13 @@
                 {% endif %}
             </span> </li>
         </ul>
+        <span id="commentSpanId" style="float:right;font-size:20px;cursor:pointer;display:none;" onclick="toggleNav();">
+            <button id="commentsBtn" style="float:right;margin-top:3px;"
+                        class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn"
+                        data-target="#right-menu" data-toggle="modal" type="button">
+                <i class="fa fa-comment fa-1x" style="cursor:pointer" aria-hidden="true"></i>
+            </button>
+        </span>
 
         <!-- /.breadcrumb -->
     </div>
@@ -199,6 +213,13 @@
             <li> <i class="ace-icon"> </i> <span>{{ taskName }}  </span> </li>
 
         </ul>
+        <span id="commentSpanId" style="float:right;font-size:20px;cursor:pointer;display:none;" onclick="toggleNav();">
+            <button id="commentsBtn" style="float:right;margin-top:3px;"
+                        class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn"
+                        data-target="#right-menu" data-toggle="modal" type="button">
+                <i class="fa fa-comment fa-1x" style="cursor:pointer" aria-hidden="true"></i>
+            </button>
+        </span>
         <!-- /.breadcrumb -->
     </div>
     <!-- end of RM login menu -->
@@ -278,7 +299,16 @@
 
         </ul>
         <!-- /.breadcrumb -->
+         <span id="commentSpanId" style="float:right;font-size:20px;cursor:pointer;display:none;" onclick="toggleNav();">
+            <button id="commentsBtn" style="float:right;margin-top:3px;"
+                        class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn"
+                        data-target="#right-menu" data-toggle="modal" type="button">
+                <i class="fa fa-comment fa-1x" style="cursor:pointer" aria-hidden="true"></i>
+            </button>
+        </span>
+
     </div>
+
     <!-- side bar end -->
     <!-- END of CT login menu -->
 {% endif %}
