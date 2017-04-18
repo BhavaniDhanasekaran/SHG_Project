@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="{% static  'font-awesome/4.5.0/css/font-awesome.min.css' %}" />
         <link rel="stylesheet" href="{% static 'css/fonts.googleapis.com.css' %}" />
         <link rel="stylesheet" href="{% static 'css/ace.min.css' %}" class="ace-main-stylesheet" id="main-ace-style" />
+        <link rel="stylesheet" href="{% static 'css/bootstrap-datepicker3.min.css' %}" />
         <!--[if lte IE 9]>
         <link rel="stylesheet" href="{% static 'css/ace-part2.min.css'  %}" class="ace-main-stylesheet"/>
         <![endif]-->
@@ -32,6 +33,7 @@
         <script src="{% static 'js/dataTables.fixedHeader.min.js' %}"></script>
         <script src="{% static 'js/fnPagingInfo.js' %}"></script>
         <script src="/static/js/bootstrap.min.js?v={{JS_VERSION}}"></script>
+        <script src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
         <script src="/static/js/jquery-confirm.js?v={{JS_VERSION}}"></script>
         <script src="/static/js/ace-elements.min.js?v={{JS_VERSION}}"></script>
         <script src="/static/js/ace.min.js?v={{JS_VERSION}}"></script>
@@ -51,6 +53,7 @@
         <script src="{% static 'js/moment.min.js' %}"></script>
         <script src="{% static 'js/jquery.inputlimiter.min.js' %}"></script>
         <script src="{% static 'js/jquery.alphanumeric.js' %}"></script>
+
 
         {% block javascript %}
         {% endblock %}

@@ -2264,26 +2264,3 @@ function reloadComments(id) {
         getGroupComments(processInstanceId,loanId);
     }
 }
-
-function generateLOS(){
-    var loanAccNo = document.getElementById("loanAccountNumber").value;
-    var dataObj = {};
-    var losGenerationData = {
-        "loanAccountNumber" : loanAccNo,
-        "userId"    : userId,
-        "userName" : userName,
-        "officeId":  0,
-        "officeTypeId": 0
-    };
-    dataObj["losData"] = losGenerationData;
-    $.ajax({
-        url: '/generateLOS/',
-        dataType: 'json',
-        type : "POST",
-        success: function(data) {
-            console.log(data);
-        },
-        data: JSON.stringify(dataObj)
-    });
-
-}

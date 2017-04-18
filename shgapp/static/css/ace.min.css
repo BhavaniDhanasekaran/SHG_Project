@@ -8400,6 +8400,7 @@ textarea.autosize-transition {
     -webkit-transition-duration: "height 0.2s";
     transition-duration: "height 0.2s"
 }
+/*
 .limiterBox {
     border: 1px solid #222;
     border-top: none;
@@ -8424,7 +8425,34 @@ textarea.autosize-transition {
     border-color: transparent transparent #333;
     border-style: solid;
     border-width: 0 8px 8px
+}*/
+
+.limiterBox {
+    border: 1px solid #222;
+    border-top: none;
+    background-color: #333;
+    padding: 3px 6px;
+    font-size: 13px;
+    color: #FFF;
+    margin-top: -80px
 }
+.limiterBox:after {
+    display: none
+}
+.limiterBox:before {
+    display: block;
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    top: 25px;
+    left: 50%;
+    margin-left: -5px;
+    border-color: transparent transparent #333;
+    border-style: solid;
+    border-width: 0 8px 8px
+}
+
 select option,
 select.form-control option {
     padding: 3px 4px 5px

@@ -335,22 +335,3 @@ def getLoanGroupPaymentHistory(request,groupId):
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting Loan group PaymentHistory.')
-
-@csrf_exempt
-@session_required
-def generateLOS(request):
-    print 'Inside generateLOS(request):'
-    try:
-        if request.method == "POST":
-            formData = json.loads(request.body)
-            bodyData = formData["losData"]
-            if 'userOfficeData' in request.session:
-                userData = json.loads(request.session["userOfficeData"])
-                bodyData["officeTypeId"] =userData["officeTypeId"]
-                bodyData["officeId"] = userData["officeId"]
-            return False
-            serialized_data = sscoreClient._urllib2_request('losDoc/generate', bodyData,
-                                                            requestType='POST')
-            return HttpResponse(json.dumps(serialized_data), content_type="application/json")
-    except ShgInvalidRequest, e:
-        return helper.bad_request('Unexpected error occurred while generating LOS.')
