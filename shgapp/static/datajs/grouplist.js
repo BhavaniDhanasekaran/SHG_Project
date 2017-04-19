@@ -239,7 +239,7 @@ function getMemberDetails(memberId, groupId, loanId) {
                         "aoColumns": [
                             { "mData": "remarks", "sTitle": "OverLap Report",
                                 "mRender": function(data, type, full) {
-                                return memberOverlapLink;
+                                    return memberOverlapLink;
                                 }
                             },
                             { "mData": "s_product_type", "sTitle": "Product"},
@@ -312,37 +312,7 @@ function getMemberDetails(memberId, groupId, loanId) {
                         }
                     });
                 }
-                /*if (memberData["data"]["memberDocumentDetails"]) {
-                    if (memberData["data"]["memberDocumentDetails"][0]) {
-                        var memberDocumentsArray = memberData["data"]["memberDocumentDetails"];
 
-                        for (var key in memberDocumentsArray) {
-                            if ($.inArray(memberDocumentsArray[key]["documentType"], imgFiles) != -1) {
-                                if (memberDocumentsArray[key]["documentType"]) {
-                                    if (memberDocumentsArray[key]["documentType"] == "OVERLAPREPORT") {
-                                        $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr('onClick', 'window.open(' + "'" + memberDocumentsArray[key]["documentPath"] + "'" + "," + memberDocumentsArray[key]["docId"] + "," + "width=100,height=100" + ').focus();');
-                                    }
-                                    if (memberDocumentsArray[key]["documentPath"].indexOf("Not%20uploaded") != -1) {
-                                        /*if (memberDocumentsArray[key]["documentType"] == "MEMBERPHOTO") {
-                                            $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", "/static/images/naveen.jpg");
-                                        }
-                                        else {*/
-                                            //$("#" + memberDocumentsArray[key]["documentType"] + "_docPath").css("display", "none");
-                                      //  }
-                                   /* } else {
-                                        $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").css("display", "inline-block");
-                                        if (memberDocumentsArray[key]["documentType"] != "OVERLAPREPORT") {
-                                            $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").addClass("img img-test");
-                                        }
-                                        $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", memberDocumentsArray[key]["documentPath"]);
-                                        $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("data-url", memberDocumentsArray[key]["documentPath"]);
-                                        $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("data-original", memberDocumentsArray[key]["documentPath"]);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }*/
                 if(document.getElementById("previousLoanMemberCycle")){
                     var tagname = document.getElementById("previousLoanMemberCycle").tagName;
                     if (tagname == "INPUT"){
@@ -1219,6 +1189,7 @@ function getLoanDetails(groupId, loanId) {
                     });
                 }
             });
+
             if (creditData.data) {
                 //   console.log(creditData.data);
                 for (var i = 0; i < creditData.data.loanMemberDetails.length; i++) {
@@ -1307,7 +1278,10 @@ function getLoanDetails(groupId, loanId) {
                 console.log("ATLATLATLATLATLATLATLATLATLATLATLATLATL")
                 getForeClosureInfo();
             }*/
-        }
+        },
+         error: function(xhr,status,error){
+            $.alert(error);
+        },
     });
 }
 
@@ -2263,4 +2237,126 @@ function reloadComments(id) {
     if(id == 2){
         getGroupComments(processInstanceId,loanId);
     }
+}
+
+function generateLOS(){
+    var loanAccNo = document.getElementById("loanAccountNumber").value;
+    var dataObj = {};
+    var losGenerationData = {
+        "loanAccountNo" : loanAccNo,
+        "userId"    : userId,
+        "userName" : userName,
+        "officeId":  0,
+        "officeTypeId": 0
+    };
+    dataObj["losData"] = losGenerationData;
+    $.ajax({
+        url: '/generateLOS/',
+        dataType: 'json',
+        type : "POST",
+        contentType: "application/json; charset=utf-8",
+        beforeSend: function() {
+            $("#loading").show();
+        },
+        complete: function() {
+            $("#loading").hide();
+        },
+        success: function(data) {
+            var sampleArr = base64ToArrayBuffer(data["data"]["fileContent"]);
+            saveByteArray(data["data"]["fileName"], sampleArr);
+        },
+        error: function(xhr,status,error){
+            $.alert(error);
+        },
+        data: JSON.stringify(dataObj)
+    });
+
+}
+function base64ToArrayBuffer(base64) {
+    var binaryString = window.atob(base64);
+    var binaryLen = binaryString.length;
+    var bytes = new Uint8Array(binaryLen);
+    for (var i = 0; i < binaryLen; i++) {
+       var ascii = binaryString.charCodeAt(i);
+       bytes[i] = ascii;
+    }
+    return bytes;
+ }
+ function saveByteArray(reportName, byte) {
+    var blob = new Blob([byte]);
+    var link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    var fileName = reportName;
+    link.download = fileName;
+    link.click();
+};
+
+
+
+function loadDisburseDocData(){
+    var disbDocData;
+    $.ajax({
+        url : '/disburseDocsData/'+loanId,
+        async: false,
+        dataType: 'json',
+        success: function(data){
+           disbDocData =  data["data"];
+        }
+    });
+	var html = '<tr>';
+	var innerHTMLBank = '';
+	var selectOptValArray = [];
+	    $.ajax({
+            url	:  '/masterDataBank/',
+            async: false,
+            type	: 'post',
+            dataType: 'json',
+            success	: function (bankData) {
+                if(bankData["data"][0]){
+                    keyValueMasterBankArray = bankData["data"].sort(function(a, b){ var a1= a.bankName, b1= b.bankName;    if(a1== b1) return 0;    return a1> b1? 1: -1; })
+                    innerHTMLBank += '<option value="null" > Select Bank </option>';
+                    for(var i = 0; i < Object.keys(keyValueMasterBankArray).length ; i++){
+                            innerHTMLBank += '<option value="'+keyValueMasterBankArray[i].bankCode+'">'+keyValueMasterBankArray[i].bankCode+'</option>'
+                    }
+                }
+            }
+	    });
+
+    var innerHTMLModeOfPayment = '<option value="null" > Select Payment Mode</option>'+
+                                 '<option value="Cheque"> Cheque </option>'+
+                                 '<option value="Fund Transfer"> Fund Transfer </option>'+
+                                 '<option value="Prepaid Card"> Prepaid Card </option>';
+
+    var innerHTMLMemAvailLoan = '<option value="null" > Select</option>'+
+                                 '<option value="true"> Yes </option>'+
+                                 '<option value="false"> No </option>';
+
+	for(var key in disbDocData){
+        var obj = {};
+        obj[disbDocData[key]["appMemberId"]+"_modeOfPayment"] = disbDocData[key]["modeOfPayment"];
+        obj[disbDocData[key]["appMemberId"]+"_bank"] = disbDocData[key]["bank"];
+        obj[disbDocData[key]["appMemberId"]+"_memberAvailedLoan"] = disbDocData[key]["memberAvailedLoan"];
+        selectOptValArray.push(obj);
+        if(disbDocData[key]["chequeNo"] == null){
+            disbDocData[key]["chequeNo"] = ''
+        }
+
+        html+= '<td>'+disbDocData[key]["appMemberId"]+'</td>'+
+        '<td>'+disbDocData[key]["memberName"]+'</td>'+
+        '<td>'+disbDocData[key]["idProofValue"]+'</td>'+
+        '<td>'+disbDocData[key]["addressProofValue"]+'</td>'+
+        '<td><select id="'+disbDocData[key]["appMemberId"]+"_modeOfPayment"+'">'+innerHTMLModeOfPayment+'</select></td>'+
+        '<td><select id="'+disbDocData[key]["appMemberId"]+"_bank"+'">'+innerHTMLBank+'</select></td>'+
+        '<td><input type="text" value='+disbDocData[key]["chequeNo"]+'></input></td>'+
+        '<td>'+disbDocData[key]["amount"]+'</td>'+
+        '<td><select id="'+disbDocData[key]["appMemberId"]+"_memberAvailedLoan"+'">'+innerHTMLMemAvailLoan+'</select></td></tr>';
+	}
+    document.getElementById("disburseDocBodyData").innerHTML = html;
+    console.log(selectOptValArray);
+    for(var data in selectOptValArray){
+        for(var key in selectOptValArray[data]){
+            document.getElementById(key).value = selectOptValArray[data][key];
+        }
+    }
+    loadDataTable("#disburseDocData");
 }
