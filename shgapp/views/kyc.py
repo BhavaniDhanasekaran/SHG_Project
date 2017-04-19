@@ -365,3 +365,20 @@ def disburseDocsData(request,loanId):
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting disburse doc details')
+
+@csrf_exempt
+@session_required
+def updateDisburseMemberData(request):
+    print 'Inside updateDisburseMemberData(request):'
+    try:
+        if request.method == "POST":
+            formData = json.loads(request.body)
+            bodyData = formData["cheqData"]
+            serialized_data = sscoreClient._urllib2_request('ChequeDisbursement/SaveDisbursementDetails', bodyData,
+                                                        requestType='POST')
+            return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while updating disburse doc details')
+
+
+

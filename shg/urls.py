@@ -70,6 +70,7 @@ kyc_urlpatterns = [
     url(r'^getLoanGroupPaymentHistory/(?P<groupId>[^/]+)',kyc.getLoanGroupPaymentHistory, name = 'getLoanGroupPaymentHistory'),
     url(r'^generateLOS/',kyc.generateLOS, name = 'generateLOS'),
     url(r'^disburseDocsData/(?P<loanId>[^/]+)', kyc.disburseDocsData, name='disburseDocsData'),
+    url(r'^updateDisburseMemberData/',kyc.updateDisburseMemberData, name = 'updateDisburseMemberData'),
 
 
 ]

@@ -1,29 +1,26 @@
 var monthDict = {"01":"Jan","02":"Feb","03":"Mar","04":"Apr","05":"May","06":"Jun","07":"Jul","08":"Aug","09":"Sep","10":"Oct","11":"Nov","12":"Dec"};
 
-$.ajaxSetup({
-    cache : false,
-    error: function(xhr,status,error){
-        if (status == "timeout") {
+$(document).ajaxError(function(e, xhr, settings, exception) {
+    if(exception == "timeout") {
             window.location = '/connection_timeout/';
-        }
-        if(error == 400){
-            $.alert("Bad Request !!");
-        }
-        if(error == 404){
-            window.location = '/page_not_found/';
-        }
-        if(error == 500) {
-            window.location = '/server_error/';
-        }
-        if(error == 403) {
-           window.location = '/permission_denied/';
-        }
-        if(error == 522) {
-            window.location = '/connection_timeout/';
-        }
-        if(error == 503){
-            window.location = '/service_unavailable/';
-        }
+    }
+    if(xhr.status == 400){
+        $.alert("Bad Request !!");
+    }
+    if(xhr.status == 404){
+        window.location = '/page_not_found/';
+    }
+    if(xhr.status == 500) {
+        window.location = '/server_error/';
+    }
+    if(xhr.status == 403) {
+        window.location = '/permission_denied/';
+    }
+    if(xhr.status == 522) {
+        window.location = '/connection_timeout/';
+    }
+    if(xhr.status == 503){
+        window.location = '/service_unavailable/';
     }
 });
 
@@ -83,7 +80,7 @@ function loadUnassignedTaskList(data){
 		dataArray.push(obj);
 
 	}
-	var table = $('#taskListTable').dataTable({
+	var table = $('#').dataTable({
             data: dataArray,
 	    "pageLength": 50,
             rowId: "groupLoanId",

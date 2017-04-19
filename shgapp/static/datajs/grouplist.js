@@ -1,7 +1,7 @@
 var validationFields = ["memberName", "sequenceNumber", "age", "husbandName", "maritalStatus", "fatherName", "address", "villageName", "idProofValue", "addressProofValue", "sbAccountNumber", "bankId", "sbAccountName",
     "permanentAddress", "pincode", "villages", "mobileNo", "idProofTypeId", "addressProofTypeId", "loanAmount", "loanTypeValue"
 ];
-
+/*
 $.ajaxSetup({
     cache : false,
     error: function(xhr,status,error){
@@ -27,6 +27,30 @@ $.ajaxSetup({
             window.location = '/service_unavailable/';
         }
     }
+});*/
+
+$(document).ajaxError(function(e, xhr, settings, exception) {
+    if (exception == "timeout") {
+            window.location = '/connection_timeout/';
+        }
+        if(xhr.status == 400){
+            $.alert("Bad Request !!");
+        }
+        if(xhr.status == 404){
+            window.location = '/page_not_found/';
+        }
+        if(xhr.status == 500) {
+            window.location = '/server_error/';
+        }
+        if(xhr.status == 403) {
+           window.location = '/permission_denied/';
+        }
+        if(xhr.status == 522) {
+            window.location = '/connection_timeout/';
+        }
+        if(xhr.status == 503){
+            window.location = '/service_unavailable/';
+        }
 });
 
 //var loanTypeId = loanTypeId;
@@ -491,9 +515,6 @@ function updateMemValidationStatus(status) {
                     document.getElementById("memberValStatus").innerHTML = "RWRK";
                 }
                 updateMembersCount();
-                //getHistComments(processInstanceId);
-                //getMemberComments(processInstanceId,loanId);
-                //getGroupComments(processInstanceId,loanId);
                 checkForTaskCompletion();
             }
         },
@@ -1279,9 +1300,6 @@ function getLoanDetails(groupId, loanId) {
                 getForeClosureInfo();
             }*/
         },
-         error: function(xhr,status,error){
-            $.alert(error);
-        },
     });
 }
 
@@ -2057,10 +2075,6 @@ function getGroupComments(processInstanceId, loanId) {
            $("#ajax_loader2").hide();
            $("#widget-body-2").removeClass("widget-box-overlay");
         },
-        error: function(xhr,status,error){
-            commentsHtml = 'Unexpected error in group comments. Try again later';
-            $('#profile-feed-2').html(commentsHtml);
-        },
         success: function(data) {
             var jsondata = data;
             console.log("jsondata",jsondata);
@@ -2150,55 +2164,6 @@ function getPaymentHistory(key,memberId,groupId){
     });
 }
 
-
-function getForeClosureInfo(){
-    var rows = [];
-    $('table.paymentTable tr').not('thead tr').each(function(i, n){
-        var $row = $(n);
-        if($row.find("td:eq(28) input[type='text']").val() != "null"){
-            rows.push({
-              "memberId":   $row.find("td:eq(17) input[type='checkbox']").val(),
-              "atldebt": $row.find("td:eq(18) input[type='text']").val(),
-              "interest": $row.find("td:eq(19) input[type='text']").val(),
-              "prevMonthGroupBalance":  $row.find("td:eq(20) input[type='text']").val(),
-              "currentMonthCollection": $row.find("td:eq(21) input[type='text']").val(),
-              "currentMonthOutstanding":  $row.find("td:eq(22) input[type='text']").val(),
-              "prevLoanGroupAmount": $row.find("td:eq(23) input[type='text']").val(),
-              "sumOldActiveMembersAmount": $row.find("td:eq(24) input[type='text']").val(),
-              "memberLoanAmount":  $row.find("td:eq(25) input[type='text']").val(),
-              //"loanTypeId": $row.find("td:eq(27) input[type='text']").val()
-              "loanTypeId": loanTypeId
-        });
-        }
-    });
-    var atlLoanId;
-    var atlAccNo;
-    if(rows[0]){
-        atlLoanId = document.getElementById("atlLoanId_"+rows[0]["memberId"]).value;
-        atlAccNo = document.getElementById("atlAccNo_"+rows[0]["memberId"]).value;
-    }
-    var dataObj = {};
-    var foreClosureInput = {
-    "userId": userId,
-    "groupId": groupId,
-    "loanId": loanId,
-    "atlLoanId": atlLoanId,
-    "atlAccNo": atlAccNo,
-    "memberLoanDetails": eval(JSON.stringify(rows))
-    };
-    dataObj["foreClosureInput"]  = foreClosureInput;
-    $.ajax({
-        url: '/getATLForeClosureData/',
-        dataType: 'json',
-        type : "POST",
-        success: function(data) {
-            console.log(data);
-        },
-        data: JSON.stringify(dataObj)
-    });
-
-
-}
 function clearMemberData() {
    $("#ADDRESSPROOF_docPath").css("display", "none");
    $("#ADDRESSPROOF_docPath").attr("src","");
@@ -2265,9 +2230,6 @@ function generateLOS(){
             var sampleArr = base64ToArrayBuffer(data["data"]["fileContent"]);
             saveByteArray(data["data"]["fileName"], sampleArr);
         },
-        error: function(xhr,status,error){
-            $.alert(error);
-        },
         data: JSON.stringify(dataObj)
     });
 
@@ -2300,63 +2262,143 @@ function loadDisburseDocData(){
         async: false,
         dataType: 'json',
         success: function(data){
-           disbDocData =  data["data"];
+            if(data["data"][0]){
+                disbDocData =  data["data"];
+            }
         }
     });
 	var html = '<tr>';
 	var innerHTMLBank = '';
 	var selectOptValArray = [];
-	    $.ajax({
-            url	:  '/masterDataBank/',
-            async: false,
-            type	: 'post',
-            dataType: 'json',
-            success	: function (bankData) {
-                if(bankData["data"][0]){
-                    keyValueMasterBankArray = bankData["data"].sort(function(a, b){ var a1= a.bankName, b1= b.bankName;    if(a1== b1) return 0;    return a1> b1? 1: -1; })
-                    innerHTMLBank += '<option value="null" > Select Bank </option>';
-                    for(var i = 0; i < Object.keys(keyValueMasterBankArray).length ; i++){
-                            innerHTMLBank += '<option value="'+keyValueMasterBankArray[i].bankCode+'">'+keyValueMasterBankArray[i].bankCode+'</option>'
-                    }
+    $.ajax({
+        url	:  '/masterDataBank/',
+        async: false,
+        type	: 'post',
+        dataType: 'json',
+        success	: function (bankData) {
+            if(bankData["data"][0]){
+                keyValueMasterBankArray = bankData["data"].sort(function(a, b){ var a1= a.bankName, b1= b.bankName;    if(a1== b1) return 0;    return a1> b1? 1: -1; })
+                innerHTMLBank += '<option value="null" > Select Bank </option>';
+                for(var i = 0; i < Object.keys(keyValueMasterBankArray).length ; i++){
+                        innerHTMLBank += '<option value="'+keyValueMasterBankArray[i].bankCode+'">'+keyValueMasterBankArray[i].bankCode+'</option>'
                 }
             }
-	    });
-
-    var innerHTMLModeOfPayment = '<option value="null" > Select Payment Mode</option>'+
-                                 '<option value="Cheque"> Cheque </option>'+
-                                 '<option value="Fund Transfer"> Fund Transfer </option>'+
-                                 '<option value="Prepaid Card"> Prepaid Card </option>';
-
-    var innerHTMLMemAvailLoan = '<option value="null" > Select</option>'+
-                                 '<option value="true"> Yes </option>'+
-                                 '<option value="false"> No </option>';
-
-	for(var key in disbDocData){
-        var obj = {};
-        obj[disbDocData[key]["appMemberId"]+"_modeOfPayment"] = disbDocData[key]["modeOfPayment"];
-        obj[disbDocData[key]["appMemberId"]+"_bank"] = disbDocData[key]["bank"];
-        obj[disbDocData[key]["appMemberId"]+"_memberAvailedLoan"] = disbDocData[key]["memberAvailedLoan"];
-        selectOptValArray.push(obj);
-        if(disbDocData[key]["chequeNo"] == null){
-            disbDocData[key]["chequeNo"] = ''
         }
+    });
 
-        html+= '<td>'+disbDocData[key]["appMemberId"]+'</td>'+
-        '<td>'+disbDocData[key]["memberName"]+'</td>'+
-        '<td>'+disbDocData[key]["idProofValue"]+'</td>'+
-        '<td>'+disbDocData[key]["addressProofValue"]+'</td>'+
-        '<td><select id="'+disbDocData[key]["appMemberId"]+"_modeOfPayment"+'">'+innerHTMLModeOfPayment+'</select></td>'+
-        '<td><select id="'+disbDocData[key]["appMemberId"]+"_bank"+'">'+innerHTMLBank+'</select></td>'+
-        '<td><input type="text" value='+disbDocData[key]["chequeNo"]+'></input></td>'+
-        '<td>'+disbDocData[key]["amount"]+'</td>'+
-        '<td><select id="'+disbDocData[key]["appMemberId"]+"_memberAvailedLoan"+'">'+innerHTMLMemAvailLoan+'</select></td></tr>';
-	}
-    document.getElementById("disburseDocBodyData").innerHTML = html;
-    console.log(selectOptValArray);
-    for(var data in selectOptValArray){
-        for(var key in selectOptValArray[data]){
-            document.getElementById(key).value = selectOptValArray[data][key];
+    var innerHTMLModeOfPayment = '<option value="null" > Select Payment Mode</option><option value="Cheque"> Cheque </option>'+
+                                 '<option value="Fund Transfer"> Fund Transfer </option><option value="Prepaid Card"> Prepaid Card </option>';
+
+    var innerHTMLMemAvailLoan = '<option value="null" > Select</option><option value="true"> Yes </option><option value="false"> No </option>';
+    console.log(disbDocData);
+
+    if(disbDocData && disbDocData[0]){
+        for(var key in disbDocData){
+            var obj = {};
+            memberIdArray.push(disbDocData[key]["appMemberId"]);
+            obj[disbDocData[key]["appMemberId"]+"_modeOfPayment"] = disbDocData[key]["modeOfPayment"];
+            obj[disbDocData[key]["appMemberId"]+"_bank"] = disbDocData[key]["bank"];
+            obj[disbDocData[key]["appMemberId"]+"_memberAvailedLoan"] = disbDocData[key]["memberAvailedLoan"];
+            selectOptValArray.push(obj);
+            if(disbDocData[key]["chequeNo"] == null){
+                disbDocData[key]["chequeNo"] = ''
+            }
+            html+= '<td>'+disbDocData[key]["appMemberId"]+'&nbsp<input id="'+disbDocData[key]["memberId"]+'" type="text" style="display:none;" value="'+disbDocData[key]["memberId"]+'"></td>'+
+            '<td>'+disbDocData[key]["memberName"]+'</td>'+
+            '<td>'+disbDocData[key]["idProofValue"]+'</td>'+
+            '<td>'+disbDocData[key]["addressProofValue"]+'</td>'+
+            '<td><select id="'+disbDocData[key]["appMemberId"]+"_modeOfPayment"+'">'+innerHTMLModeOfPayment+'</select></td>'+
+            '<td><select id="'+disbDocData[key]["appMemberId"]+"_bank"+'">'+innerHTMLBank+'</select></td>'+
+            '<td><input id="'+disbDocData[key]["appMemberId"]+"_chequeNo"+'" type="text" value='+disbDocData[key]["chequeNo"]+'></input></td>'+
+            '<td>'+disbDocData[key]["amount"]+'</td>'+
+            '<td><select id="'+disbDocData[key]["appMemberId"]+"_memberAvailedLoan"+'">'+innerHTMLMemAvailLoan+'</select></td></tr>';
+        }
+        document.getElementById("disburseDocBodyData").innerHTML = html;
+        for(var data in selectOptValArray){
+            for(var key in selectOptValArray[data]){
+                document.getElementById(key).value = selectOptValArray[data][key];
+            }
+        }
+        loadDataTable("#disburseDocData");
+    }
+}
+
+
+function updateChequeInfo(){
+    $(".setBGColor").css("border","1px solid #D5D5D5");
+    $("#disburseDocData td").removeClass("setBGColor");
+    var flag = 0;
+    var disbursementDate = document.getElementById("dateOfDisbursement").value;
+    if(disbursementDate == ""){
+        $.alert("Please select Date of Disbursement!");
+        return false;
+    }
+    var formFields = ["bank","modeOfPayment","chequeNo","memberAvailedLoan"];
+    for(var i in memberIdArray){
+        for(var j in formFields){
+            var domElemId = memberIdArray[i]+"_"+formFields[j];
+            if(document.getElementById(domElemId)){
+                if(document.getElementById(domElemId).value == "" || document.getElementById(domElemId).value == "null"){
+                    $("#"+domElemId).addClass("setBGColor");
+                    flag = 1
+                }
+            }
         }
     }
-    loadDataTable("#disburseDocData");
+
+    if(flag == 1){
+        $(".setBGColor").css("border","2px solid #f0ad4e");
+        $(".setBGColor").css("color","black");
+        $.alert("Highlighted fields cannot be empty")
+        return false;
+    }
+
+    return false;
+    var updateCheqData=convertChequeDataToJson();
+
+
+
+    var dataObj = {};
+    dataObj["cheqData"] = eval(updateCheqData);
+    $.ajax({
+        url: '/updateDisburseMemberData/',
+        dataType: 'json',
+        type : "POST",
+        beforeSend: function() {
+            $("#loading").show();
+        },
+        complete: function() {
+            $("#loading").hide();
+        },
+        success: function(data) {
+            console.log(data);
+            if(data.code == "12001"){
+                $.alert("Cheque details updated successfully");
+                $("#disburseDocData").dataTable().fnDestroy();
+                loadDisburseDocData();
+            }
+        },
+        data: JSON.stringify(dataObj)
+    });
+
+
+}
+function convertChequeDataToJson(){
+    var rows = [];
+    var disbursementDate = document.getElementById("dateOfDisbursement").value;
+    disbursementDateSplit = disbursementDate.split("/");
+    disbursementDate = disbursementDateSplit[2]+"-"+disbursementDateSplit[0]+"-"+disbursementDateSplit[1];
+    $('table.disburseDocData tr').not('thead tr').each(function(i, n){
+        var $row = $(n);
+        rows.push({
+            "loanId" : loanId,
+            "memberId": $row.find("td:eq(0) input[type='text']").val(),
+            "modeOfPayment":  $row.find("td:eq(4) :selected").val(),
+            "bank":  $row.find("td:eq(5) :selected").val(),
+            "memberAvailedLoan":  $row.find("td:eq(8) :selected").val(),
+            "chequeNumber": $row.find("td:eq(6) input[type='text']").val(),
+            "dos" : disbursementDate
+        });
+    });
+    return JSON.stringify(rows);
 }
