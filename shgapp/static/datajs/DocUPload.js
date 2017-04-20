@@ -8,8 +8,10 @@ function loanDocument(loanTypeId) {
     $.ajax({
         url: '/DocumentView/' + loanId,
         dataType: 'json',
+        async:false,
         success: function(data) {
             docUploadedDict = data["data"];
+            uploadedDocsCount = docUploadedDict.length;
             for (var key in docUploadedDict) {
                 var docId = docUploadedDict[key]["documentName"].split("*")[1];
                 var docName = docUploadedDict[key]["documentName"].split("*")[0];
@@ -19,8 +21,10 @@ function loanDocument(loanTypeId) {
             $.ajax({
                 url: '/loanDocument/' + loanTypeId,
                 dataType: 'json',
+                async : false,
                 success: function(data) {
                     var documentData = data["data"];
+                    totLoanDocCount = documentData.length;
                     var docRow = '';
                     var countArray = [];
                     for (var key in documentData) {

@@ -20,7 +20,7 @@ def getGroupData(request,groupID,loanId,taskName):
     print "Inside getGroupData(request):"
     try:
         username = request.session["userName"]
-        BMTasksArray = ["Conduct BAT- Member approval in CRM","Print Loan Documents & FSR","Prepare Loan Documents","Upload loan documents in Web application","Add New Members"]
+        BMTasksArray = ["Generate repayment chart","Upload disbursement docs","Conduct BAT- Member approval in CRM","Print Loan Documents & FSR","Prepare Loan Documents","Upload loan documents in Web application","Add New Members"]
         rwrkTasksArr = ["Resolve Data Support Team Query","Resolve Credit Team Query"]
         userOfficeData = json.loads(request.session["userOfficeData"])
         groupName = userOfficeData["designation"]
@@ -374,7 +374,7 @@ def updateDisburseMemberData(request):
         if request.method == "POST":
             formData = json.loads(request.body)
             bodyData = formData["cheqData"]
-            serialized_data = sscoreClient._urllib2_request('ChequeDisbursement/SaveDisbursementDetails', bodyData,
+            serialized_data = sscoreClient._urllib2_request('ChequeDisbursement/SaveOrUpdateMemberDetails', bodyData,
                                                         requestType='POST')
             return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:

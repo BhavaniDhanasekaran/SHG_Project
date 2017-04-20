@@ -15,10 +15,10 @@
     initCss(obj);
 
     $(objClicked).on('click', function(){
-    	  var _url = $(this).attr('data-original'), current = 0;
+          var _url = $(this).attr('data-original'), current = 0;
       //var _url = $(this).data("url"), current = 0;
       console.log(_url);
-    
+
       if(list_images.length > 0){
         list_images.length = 0;
       }
@@ -39,19 +39,19 @@
       $('#img-preview').attr({'current': current});
       $(obj).find('#unbind-pos').modal('show');
 
-      rotateDeg = 0; 
+      rotateDeg = 0;
        _url ="";
-      
+
     });
 
     btnCtrlImgEvent(options, list_images);
   };
 
-  
+
 
   function initHtml(obj){
 
-    var div = $('<div id="unbind-pos" class="modal fade" data-backdrop="false" data-modal="false" style="display:none;" aria-hidden="true"></div>'); 
+    var div = $('<div id="unbind-pos" class="modal fade" data-backdrop="false" data-modal="false" style="display:none;" aria-hidden="true"></div>');
     div.append('<div class="modal-dialog">' +
                   '<div class="modal-content">'+
                         '<div class="modal-header">'+
@@ -69,17 +69,17 @@
                                 '<span role="next" class="btn-sm  btn-primary switch">Next</span>'+
                             '</div>'+
                         '</div>'+
-                       
+
                   '</div>'+
                 '</div>');
     $(obj).append(div);
-    
+
   };
 
 
   function initCss(obj){
     $(obj).find('#img-preview').css({
-      'height': 'auto',
+      'height': '350px',
       'width': 'auto',
       'overflow': 'auto',
       'text-align': 'center'
@@ -103,7 +103,7 @@
 
 
   function btnCtrlImgEvent(options, list_images){
-    
+
     zoomIn();
     zoomOut();
     dragImage();
@@ -124,7 +124,7 @@
     });
   };
 
- 
+
   function zoomOut(){
     $('.zoom-out').click(function(){
       var imageHeight = $('#img-preview img').height();
@@ -154,7 +154,7 @@
       });
 
       $(document).on('mouseup', function(){
-        $(document).off("mousemove");     
+        $(document).off("mousemove");
       });
       return false;
     });
@@ -162,22 +162,25 @@
 
 
   function rotateImage(options){
-            
-      
+
+
+
     $('.rotate').click(function() {
+
+
 
 
       if(options.rotateDirection == 'right'){
 
         rotateDeg += 90;
-       
+
         if(rotateDeg == 360){
           rotateDeg = 0;
         }
       }
       if(options.rotateDirection == 'left'){
         rotateDeg -= 90;
-        
+
         if(rotateDeg == -360){
           rotateDeg = 0;
         }
@@ -190,10 +193,12 @@
         '-ms-transform': 'rotate('+ rotateDeg +'deg)'
       });
     });
+  //  console.log("--rotateImage--"+rotateDeg);
   };
 
   //????
   function switchImage(list_images){
+
     var $modal = $('#unbind-pos');
     $('#unbind-pos').on('click', '.switch', function(){
       var _list_images = list_images, _self = this, _role = $(_self).attr('role');
@@ -219,6 +224,15 @@
       _index = _new_current - 1;
       $modal.find('#img-preview').attr({'current': _new_current});
       $modal.find('#img-preview img').attr({'src': _list_images[_index]});
+      rotateDeg = 0;
+      //console.log("--rotateImage--"+rotateDeg);
+      $('#img-preview img').css({
+        'transform': 'rotate('+ rotateDeg +'deg)',
+        '-webkit-transform': 'rotate('+ rotateDeg +'deg)',
+        '-moz-transform':'rotate('+ rotateDeg +'deg)',
+        '-o-transform': 'rotate('+ rotateDeg +'deg)',
+        '-ms-transform': 'rotate('+ rotateDeg +'deg)'
+      });
     });
   };
 

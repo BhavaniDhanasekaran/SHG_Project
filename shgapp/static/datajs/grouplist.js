@@ -961,7 +961,7 @@ function loadGroupRoles(groupId, loanId, taskName) {
     var dataObj = {};
     var validationType = '';
     if (group == "CMR" || group == "CLM" || group == "BM") {
-        if (taskName == "Prepare Loan Documents" || taskName == "Print Loan Documents & FSR" || taskName == "Add New Members") {
+        if (taskName == "Prepare Loan Documents" || taskName == "Print Loan Documents & FSR" || taskName == "Add New Members" || taskName == "Upload disbursement docs") {
             validationType = "PEN"
         }
         if (taskName == "Upload loan documents in Web application") {
@@ -1007,7 +1007,9 @@ function loadGroupRoles(groupId, loanId, taskName) {
 
 function updateTask(status) {
     var dataObj = {};
+    var groupName = document.getElementById("groupName_groupRole").innerHTML;
     dataObj["taskId"] = taskId;
+    console.log(groupName);
     dataObj["processUpdate"] = {};
     $.ajax({
         url: '/updateTask/',
@@ -1021,8 +1023,13 @@ function updateTask(status) {
         },
         success: function(data) {
             if (data == "Successful") {
-                $.alert("Group Updation completed!!");
-                window.location = '/assignedTaskList/';
+                $("#validationMessage").addClass("center");
+                 document.getElementById("validationMessage").innerHTML ='<span style="color:green" " class="bigger-50"><i class="ace-icon fa fa-check-circle bigger-125"></i> &nbsp&nbsp'+"'"+ groupName +"'" + " has been approved"+'</span>';
+                 document.getElementById("gStatus").innerHTML = '<h3  class="lighter center smaller">Task has been completed successfully!  <i class="ace-icon glyphicon glyphicon-thumbs-up bigger-150"></i> </h3>';
+                 document.getElementById("taskValBtn").innerHTML = '<a href="/assignedTaskList/" class="btn btn-primary"> <i class="glyphicon glyphicon-user"></i> Go to My Tasks </a>';
+                 $("#successPanel").show();
+                 $("#defaultDisplay").hide();
+                 $("#defaultDisplay1").hide();
             } else {
                 $.alert("Failed due to some Issue . Please try after sometime or contact your Administrator");
             }
@@ -2294,8 +2301,16 @@ function loadDisburseDocData(){
 
     if(disbDocData && disbDocData[0]){
         for(var key in disbDocData){
+            console.log(disbDocData[0]["oldDos"]);
+            if(disbDocData[0]["oldDos"] == "" || disbDocData[0]["oldDos"] == null){
+                $("#prevDate").hide();
+            }
+            else{
+                $("#prevDate").show();
+                document.getElementById("oldDos").innerHTML = disbDocData[0]["oldDos"];
+            }
             var obj = {};
-            memberIdArray.push(disbDocData[key]["appMemberId"]);
+            totalMemberIdArray.push(disbDocData[key]["appMemberId"]+"_memberAvailedLoan");
             obj[disbDocData[key]["appMemberId"]+"_modeOfPayment"] = disbDocData[key]["modeOfPayment"];
             obj[disbDocData[key]["appMemberId"]+"_bank"] = disbDocData[key]["bank"];
             obj[disbDocData[key]["appMemberId"]+"_memberAvailedLoan"] = disbDocData[key]["memberAvailedLoan"];
@@ -2309,7 +2324,7 @@ function loadDisburseDocData(){
             '<td>'+disbDocData[key]["addressProofValue"]+'</td>'+
             '<td><select id="'+disbDocData[key]["appMemberId"]+"_modeOfPayment"+'">'+innerHTMLModeOfPayment+'</select></td>'+
             '<td><select id="'+disbDocData[key]["appMemberId"]+"_bank"+'">'+innerHTMLBank+'</select></td>'+
-            '<td><input id="'+disbDocData[key]["appMemberId"]+"_chequeNo"+'" type="text" value='+disbDocData[key]["chequeNo"]+'></input></td>'+
+            '<td><input id="'+disbDocData[key]["appMemberId"]+"_chequeNo"+'" type="text"  maxlength=30 class="sample1" value='+disbDocData[key]["chequeNo"]+'></input></td>'+
             '<td>'+disbDocData[key]["amount"]+'</td>'+
             '<td><select id="'+disbDocData[key]["appMemberId"]+"_memberAvailedLoan"+'">'+innerHTMLMemAvailLoan+'</select></td></tr>';
         }
@@ -2323,44 +2338,77 @@ function loadDisburseDocData(){
     }
 }
 
-
 function updateChequeInfo(){
     $(".setBGColor").css("border","1px solid #D5D5D5");
     $("#disburseDocData td").removeClass("setBGColor");
     var flag = 0;
     var disbursementDate = document.getElementById("dateOfDisbursement").value;
     if(disbursementDate == ""){
+        $("#dateOfDisbursementDiv").css("border","1px solid #CD0000");
         $.alert("Please select Date of Disbursement!");
         return false;
     }
+    else{
+        $("#dateOfDisbursementDiv").css("border","0px solid #D5D5D5");
+    }
+    memberAvailedLoanFalseArr = [];
+    for(var i in totalMemberIdArray){
+
+        if(document.getElementById(totalMemberIdArray[i])){
+            if(document.getElementById(totalMemberIdArray[i]).value == "" || document.getElementById(totalMemberIdArray[i]).value == "null"){
+                $("#"+totalMemberIdArray[i]).addClass("setBGColor");
+                flag = 1;
+            }
+            else{
+                $("#"+totalMemberIdArray[i]).removeClass("setBGColor");
+            }
+            if(document.getElementById(totalMemberIdArray[i]).value == "true"){
+                memberAvailedLoanArray.push(totalMemberIdArray[i].split("_")[0]);
+            }
+            else{
+                memberAvailedLoanFalseArr.push(totalMemberIdArray[i].split("_")[0]);
+            }
+        }
+    }
+
+    console.log(    memberAvailedLoanFalseArr);
+    console.log(    memberAvailedLoanArray);
     var formFields = ["bank","modeOfPayment","chequeNo","memberAvailedLoan"];
-    for(var i in memberIdArray){
+    for(var i in memberAvailedLoanArray){
         for(var j in formFields){
-            var domElemId = memberIdArray[i]+"_"+formFields[j];
+            var domElemId = memberAvailedLoanArray[i]+"_"+formFields[j];
             if(document.getElementById(domElemId)){
                 if(document.getElementById(domElemId).value == "" || document.getElementById(domElemId).value == "null"){
                     $("#"+domElemId).addClass("setBGColor");
                     flag = 1
                 }
+                else{
+                     $("#"+domElemId).removeClass("setBGColor");
+                }
+            }
+        }
+    }
+    for(var i in memberAvailedLoanFalseArr){
+        for(var j in formFields){
+            var domElemId = memberAvailedLoanFalseArr[i]+"_"+formFields[j];
+            if(document.getElementById(domElemId)){
+                $("#"+domElemId).removeClass("setBGColor");
+                $("#"+domElemId).css("border","1px solid #D5D5D5");
+                $("#"+domElemId).css("color","black");
             }
         }
     }
 
     if(flag == 1){
-        $(".setBGColor").css("border","2px solid #f0ad4e");
+        $(".setBGColor").css("border","1px solid #CD0000");
         $(".setBGColor").css("color","black");
         $.alert("Highlighted fields cannot be empty")
         return false;
     }
-
-    return false;
     var updateCheqData=convertChequeDataToJson();
-
-
-
     var dataObj = {};
     dataObj["cheqData"] = eval(updateCheqData);
-    $.ajax({
+    return $.ajax({
         url: '/updateDisburseMemberData/',
         dataType: 'json',
         type : "POST",
@@ -2371,7 +2419,6 @@ function updateChequeInfo(){
             $("#loading").hide();
         },
         success: function(data) {
-            console.log(data);
             if(data.code == "12001"){
                 $.alert("Cheque details updated successfully");
                 $("#disburseDocData").dataTable().fnDestroy();
@@ -2401,4 +2448,32 @@ function convertChequeDataToJson(){
         });
     });
     return JSON.stringify(rows);
+}
+
+
+function approveDisburseDocs(){
+    var flag = 0;
+    if(totLoanDocCount != uploadedDocsCount){
+        $.alert("Please upload all the documents before approving.");
+        $('.tabbable a[href="#upload"]').tab('show');
+        return false;
+    }else{
+        updateChequeInfo().done(function(result) { if(result.code == 12001)
+        {
+            $( ".confirmBtn" ).click();
+            $.confirm({
+            title: 'Do you really want to approve the group?',
+            confirmButton: 'Yes',
+            cancelButton: 'No',
+            confirm: function(){
+                 updateTask("Approved");
+            },
+            cancel: function(){
+            }
+        });
+
+        }
+        }).fail(function() {  flag = 0; });
+    }
+
 }

@@ -54,7 +54,9 @@ def SHGForm(request,groupId,loanId,taskId,processId,taskName,loanTypeName,loanTy
             "BM Reply"                                  : "proposalScrutiny.html",
             "Resolve Credit Team Query"                 : "queryResponseDS.html",
             "Approve Loan"                              : "CTLoanApproval.html",
-            "Prepare & print chq through BPM"           : "disburseDocs.html"
+            "Upload disbursement docs"                  : "disburseDocs.html",
+            "Generate repayment chart"                  : "generateRepaymentChart.html"
+            #"Prepare & print chq through BPM"           : "generateRepaymentChart.html"
         }
         return render(request, templateName[taskName], {"userId":userId,"loanType" :loanTypeName,"loanTypeId":loanTypeId, "groupId": groupId,"loanId":loanId,"processInstanceId" :processId, "taskId" : taskId,"taskName":taskName,"group":groupName,"user":username})
     except ShgInvalidRequest, e:

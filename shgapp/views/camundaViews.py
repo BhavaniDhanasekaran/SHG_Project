@@ -531,7 +531,7 @@ def tasksCount(request):
         if groupName == "CMR" or groupName == "CLM" or groupName == "BM":
             tasksArr = ["Conduct BAT- Member approval in CRM","Upload loan documents in Web application",
                            "Resolve Data Support Team Query","Add New Members","Print Loan Documents & FSR","Prepare Loan Documents",
-                           "Resolve Credit Team Query"]
+                           "Resolve Credit Team Query","Generate repayment chart"]
             for taskKey in tasksArr:
                 taskProList = {"unassigned": "true",
                                "processVariables": [{"name": "clusterId", "operator": "eq", "value": officeId}],
@@ -560,7 +560,7 @@ def tasksCount(request):
 
             taskCount["Proposal scrutiny"] = PSTaskCount["count"] - BMReplyCount["count"]
             taskCount["BM Reply"] = BMReplyCount["count"]
-            tasksArr = ["Approve Loan","Prepare & print chq through BPM"]
+            tasksArr = ["Approve Loan","Confirm disbursemen"]
             for taskKey in tasksArr:
                 taskProList = {"unassigned": "true",
                                "name": taskKey}

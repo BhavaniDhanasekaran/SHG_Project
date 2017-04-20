@@ -30,8 +30,6 @@ function loadUnassignedTaskList(data){
 	console.log(groupTaskdata);
 	var dataArray = [];
 	$("#loading").hide();
-
-
 	for(var key in groupTaskdata){
 		var obj={};
 		if(groupTaskdata[key]["name"]  && groupTaskdata[key]["created"]){
@@ -73,16 +71,14 @@ function loadUnassignedTaskList(data){
 				obj["groupFormationDate"] =grpFormDt[2]+"-"+grpFormDt[1]+"-"+grpFormDt[0];
 
 			}
-		obj["claim"] = '<button type="submit" onclick="claimconfirmBox('+"'"+obj["taskId"]+"'"+",'"+obj["shgName"]+"'"+');" class="btn btn-danger btn-md button">Claim</button>';
-
-
+		    obj["claim"] = '<button type="submit" onclick="claimconfirmBox('+"'"+obj["taskId"]+"'"+",'"+obj["shgName"]+"'"+');" class="btn btn-danger btn-md button">Claim</button>';
 		}
 		dataArray.push(obj);
 
 	}
-	var table = $('#').dataTable({
+	var table = $('#taskListTable').dataTable({
             data: dataArray,
-	    "pageLength": 50,
+	        "pageLength": 50,
             rowId: "groupLoanId",
             destroy: true,
             "bProcessing": true,

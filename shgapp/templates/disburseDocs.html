@@ -18,9 +18,13 @@
     var loanTypeId = '{{ loanTypeId | escapejs }}';
     var processInstanceId = '{{ processInstanceId | escapejs }}';
     var userName = '{{ user | escapejs }}';
-    var memberIdArray = [];
+    var totalMemberIdArray = [];
+    var memberAvailedLoanArray = [];
+    var totLoanDocCount;
+    var uploadedDocsCount;
     $(document).ready(function (){
         loadDisburseDocData();
+        loadGroupRoles(groupId, loanId, taskName);
         $("#commentSpanId").css("display","inline-block");
         loanDocument(2);
         taskCount();
@@ -59,31 +63,30 @@
                     </div>
                 </div>
             </div>
-            <div class="panel-body" >
-                <div class="col-sm-12 col-lg-6 col-md-6 col-xs-12">
-                    <div class="profile-info-row">
-                        <b><div class="profile-info-name2"> Loan Account No. </div></b>
-                        <div class="profile-info-value">
-                            <input maxlength=14  style="font-weight: bold;" class="editable" id="loanAccountNumber" autofocus>
-                            <button type="button" class="btn btn-danger" onclick="generateLOS();" >Generate LOS</button>
-                        </div>
-                    </div>
-                </div>
+            <div class="panel-body" id="defaultDisplay1" >
                 <div class="col-sm-12 col-lg-6 col-md-6 col-xs-12">
                     <div class="profile-info-row">
                         <b><div class="profile-info-name"  style="width: 148px"> Date of Disbursement </div></b>
                         <div class="profile-info-value">
                             <div class="col-xs-8 col-sm-11">
-                                <div class="input-group date">
+                                <div class="input-group date" id="dateOfDisbursementDiv">
                                     <input class="form-control date-picker" id="dateOfDisbursement" data-date-format="yyyy-mm-dd" />
-                                        <span class="input-group-addon">
-                                            <i class="fa fa-calendar bigger-110"></i>
-                                        </span>
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar bigger-110"></i>
+                                    </span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                 <div class="col-sm-12 col-lg-6 col-md-6 col-xs-12" id="prevDate" style="display:none;">
+                     <div class="profile-info-row">
+                          <b><div class="profile-info-name" style="width:145px;"> Prev selected Date</div>
+                         <div class="profile-info-value">
+                             <span class="editable" id="oldDos"></span>
+                         </div></b>
+                     </div>
+                 </div>
             </div>
             <div class="panel-body-danger">
                 <div id="defaultDisplay">
@@ -138,8 +141,9 @@
                                     </div>
                                 </div>
                                 <div style="margin-left:10px;">
-                                    <button type="button" class="btn btn-danger" onclick="updateChequeInfo();">Update</button>&nbsp
-                                    <button type="button" class="btn btn-danger">Approve</button>
+                                    <button type="button" class="btn btn-danger updateBtn" onclick="updateChequeInfo();">Update</button>&nbsp
+
+                                    <button type="button" class="btn btn-danger" onclick="approveDisburseDocs();">Approve</button>
                                 </div>
                             </div>
                             <div id="upload" class="tab-pane">

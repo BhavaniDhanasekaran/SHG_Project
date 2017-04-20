@@ -215,11 +215,11 @@
                     var goUpload = true;
                     var uploadFile = data.files[0];
                     if (!(/\.(pdf)$/i).test(uploadFile.name)) {
-                        alert('You must select an PDF file only')
+                        $.alert('You must select PDF file only')
                         goUpload = false;
                     }
                     if (uploadFile.size > 20000000) { // 2mb
-                          alert('Please upload a smaller image, max size is 20 MB')
+                          $.alert('Please upload a smaller image, max size is 20 MB')
 
                         goUpload = false;
                     }
