@@ -248,6 +248,65 @@ def KYCCheck(request,dateFrom,dateTo):
     print "Exiting KYCCheck(request,dateFrom,dateTo): view"
     return render_to_response( 'ds-tasklist.html', {"dateFrom": dateFrom,"userId":userId,"dateTo":dateTo,"group" :groupName,"user":username,"taskName":"KYC Check"})
 
+
+#@decryption_required
+@session_required
+def confirmDisburseRwrk(request):
+    print "Entering confirmDisburseRwrk(request): view"
+    username = request.session["userName"]
+    userOfficeData = json.loads(request.session["userOfficeData"])
+    groupName = userOfficeData["designation"]
+    userId = request.session["userId"]
+    taskProVarList = []
+    processInstancesArr = []
+    QRTaskDict 	= {}
+    QRTaskData	= []
+    proInstArrFalse = []
+    proInstArrTrue = []
+
+    grp_body_cont ={}
+    if groupName == "CLM" or groupName == "BM" or groupName == "CMR":
+        grp_body_cont = {"unassigned": "true", "candidateGroup": "CLM",
+                         "processVariables": [{"name": "disbursement", "operator": "eq", "value": "rework"}]}
+    QRTaskList	  = camundaClient._request('task', grp_body_cont, requestType='POST')
+
+    print "QRTaskList"
+    print QRTaskList
+
+    for data in QRTaskList:
+        processInstancesArr.append(data["processInstanceId"])
+        QRTaskDict[data["processInstanceId"]] = data
+
+    bodyData = {"processInstanceIdIn": processInstancesArr, "variableName": "groupstatus"}
+    groupStatusList = camundaClient._urllib2_request('variable-instance', bodyData, requestType='POST')
+    for data in groupStatusList:
+        if data["value"] == "false":
+            proInstArrFalse.append(data["processInstanceId"])
+        else:
+            proInstArrTrue.append(data["processInstanceId"])
+
+    taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false',
+                                                     {"processInstanceIdIn": proInstArrFalse},
+                                                     requestType='POST')
+    taskProVarList.append(taskProVarList1)
+    taskProVarList2 = camundaClient._urllib2_request('variable-instance?deserializeValues=true',
+                                                     {"processInstanceIdIn": proInstArrTrue},
+                                                     requestType='POST')
+    taskProVarList.append(taskProVarList2)
+
+    for key in range(len(taskProVarList)):
+        for data in taskProVarList[key]:
+            if data["processInstanceId"] in QRTaskDict:
+                QRTaskDict[data["processInstanceId"]][data["name"] ] = data["value"]
+
+    for key in QRTaskDict:
+        if groupName == "CreditTeam":
+            if  QRTaskDict[key]["name"] == "Upload disbursement docs":
+                QRTaskDict[key]["name"] = "Resolve Disb Query"
+            QRTaskData.append(QRTaskDict[key])
+    return HttpResponse(json.dumps(QRTaskData), content_type="application/json")
+
+
 #@decryption_required
 @session_required
 def queryRespTaskList(request):
@@ -381,7 +440,11 @@ def proposalScrutinyTaskList(request):
     proInstArrFalse = []
     proInstArrTrue = []
 
-    bodyData = { "unassigned" : "true", "candidateGroup" : "CreditTeam", "name" : "Proposal scrutiny" }
+    if groupName == "CreditTeam":
+        bodyData = { "unassigned" : "true", "candidateGroup" : "CreditTeam", "name" : "Proposal scrutiny" }
+
+    if groupName == "CLM" or groupName == "BM" or groupName == "CMR":
+        bodyData = {"unassigned": "true", "candidateGroup": "CLM", "name": "Upload disbursement docs"}
 
     proposalScrutinyList		= camundaClient._urllib2_request('task', bodyData, requestType='POST')
 
@@ -389,9 +452,13 @@ def proposalScrutinyTaskList(request):
         processInstancesArr.append(data["processInstanceId"])
         proposalScrutinyDict[data["processInstanceId"]] = data
 
+    print "processInstancesArr-----------------------------------------------------------------------------------"
+    print processInstancesArr
     bodyData = { "processInstanceIdIn": processInstancesArr, "variableName" : "groupstatus"}
     groupStatusList = camundaClient._urllib2_request('variable-instance', bodyData, requestType='POST')
 
+    print "groupStatusList--------------------------------------------------------------------------------------"
+    print groupStatusList
     for data in groupStatusList:
         if data["value"] == "false":
             proInstArrFalse.append(data["processInstanceId"])
@@ -411,10 +478,14 @@ def proposalScrutinyTaskList(request):
             print data
             if data["processInstanceId"] in proposalScrutinyDict:
                 proposalScrutinyDict[data["processInstanceId"]][data["name"] ] = data["value"]
-            if data["name"] == "chekcbrespdate":
-                if data["value"] == "resolved":
-                    processInstancesQRArr.append(data["processInstanceId"])
-
+            if groupName == "CreditTeam":
+                if data["name"] == "chekcbrespdate":
+                    if data["value"] == "resolved":
+                        processInstancesQRArr.append(data["processInstanceId"])
+            if groupName == "CLM" or groupName == "BM" or groupName == "CMR":
+                if data["name"] == "disbursement":
+                    if data["value"] == "rework":
+                        processInstancesQRArr.append(data["processInstanceId"])
 
     for key in proposalScrutinyDict:
         if key not in processInstancesQRArr:
@@ -531,13 +602,21 @@ def tasksCount(request):
         if groupName == "CMR" or groupName == "CLM" or groupName == "BM":
             tasksArr = ["Conduct BAT- Member approval in CRM","Upload loan documents in Web application",
                            "Resolve Data Support Team Query","Add New Members","Print Loan Documents & FSR","Prepare Loan Documents",
-                           "Resolve Credit Team Query","Generate repayment chart"]
+                           "Resolve Credit Team Query","Generate repayment chart","Upload disbursement docs"]
             for taskKey in tasksArr:
                 taskProList = {"unassigned": "true",
                                "processVariables": [{"name": "clusterId", "operator": "eq", "value": officeId}],
                                "name": taskKey}
                 BMTaskCount = camundaClient._urllib2_request('task/count', taskProList, requestType='POST')
                 taskCount[taskKey] = BMTaskCount["count"]
+            uploadDisbDocList = {"unassigned": "true",
+                                 "processVariables": [
+                                     {"name": "disbursement", "value": "rework", "operator": "eq"}],
+                                 "name": "Upload disbursement docs"}
+            UDDTaskcount = camundaClient._urllib2_request('task/count', uploadDisbDocList, requestType='POST')
+
+            taskCount["Resolve Disb Query"] = UDDTaskcount["count"]
+            taskCount["Upload disbursement docs"] = taskCount["Upload disbursement docs"] - UDDTaskcount["count"]
             taskCount["Prepare Loan Documents"] = taskCount["Print Loan Documents & FSR"] + taskCount["Prepare Loan Documents"]
 
         if groupName == "RM" or groupName == "rm":
@@ -580,3 +659,126 @@ def tasksCount(request):
 
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred.')
+
+
+
+@session_required
+def confDisburseQueryResponse(request):
+    print "Entering confDisburseQueryResponse(request): view"
+    username = request.session["userName"]
+    userOfficeData = json.loads(request.session["userOfficeData"])
+    groupName = userOfficeData["designation"]
+    userId = request.session["userId"]
+    taskProVarList = []
+    processInstancesArr = []
+    QRTaskDict 	= {}
+    QRTaskData	= []
+    proInstArrFalse = []
+    proInstArrTrue = []
+
+    grp_body_cont ={}
+    if groupName == "CreditTeam":
+        grp_body_cont = {"unassigned": "true", "candidateGroup": "CreditTeam",
+                         "processVariables": [{"name": "disbursement", "operator": "eq", "value": "resolved"}]}
+    QRTaskList	  = camundaClient._request('task', grp_body_cont, requestType='POST')
+
+    print "QRTaskList"
+    print QRTaskList
+
+    for data in QRTaskList:
+        processInstancesArr.append(data["processInstanceId"])
+        QRTaskDict[data["processInstanceId"]] = data
+
+    bodyData = {"processInstanceIdIn": processInstancesArr, "variableName": "groupstatus"}
+    groupStatusList = camundaClient._urllib2_request('variable-instance', bodyData, requestType='POST')
+    for data in groupStatusList:
+        if data["value"] == "false":
+            proInstArrFalse.append(data["processInstanceId"])
+        else:
+            proInstArrTrue.append(data["processInstanceId"])
+
+    taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false',
+                                                     {"processInstanceIdIn": proInstArrFalse},
+                                                     requestType='POST')
+    taskProVarList.append(taskProVarList1)
+    taskProVarList2 = camundaClient._urllib2_request('variable-instance?deserializeValues=true',
+                                                     {"processInstanceIdIn": proInstArrTrue},
+                                                     requestType='POST')
+    taskProVarList.append(taskProVarList2)
+
+    for key in range(len(taskProVarList)):
+        for data in taskProVarList[key]:
+            if data["processInstanceId"] in QRTaskDict:
+                QRTaskDict[data["processInstanceId"]][data["name"] ] = data["value"]
+
+    for key in QRTaskDict:
+        if groupName == "CreditTeam":
+            if  QRTaskDict[key]["name"] == "Upload disbursement docs":
+                QRTaskDict[key]["name"] = "Confirm Disbursement Query Response"
+            QRTaskData.append(QRTaskDict[key])
+    return HttpResponse(json.dumps(QRTaskData), content_type="application/json")
+
+
+
+#@decryption_required
+@session_required
+def confirmDisbursement(request):
+    print "Entering confirmDisbursement(request): view "
+    username = request.session["userName"]
+    userOfficeData = json.loads(request.session["userOfficeData"])
+    groupName = userOfficeData["designation"]
+    userId = request.session["userId"]
+    processInstancesQRArr = []
+    processInstancesArr = []
+    proposalScrutinyDict 	= {}
+    proposalScrutinyData	= []
+    taskProVarList = []
+    proInstArrFalse = []
+    proInstArrTrue = []
+
+    if groupName == "CreditTeam":
+        bodyData = { "unassigned" : "true", "candidateGroup" : "CreditTeam", "name" : "Confirm disbursemen" }
+
+    proposalScrutinyList		= camundaClient._urllib2_request('task', bodyData, requestType='POST')
+
+    for data in proposalScrutinyList:
+        processInstancesArr.append(data["processInstanceId"])
+        proposalScrutinyDict[data["processInstanceId"]] = data
+
+    print "processInstancesArr-----------------------------------------------------------------------------------"
+    print processInstancesArr
+    bodyData = { "processInstanceIdIn": processInstancesArr, "variableName" : "groupstatus"}
+    groupStatusList = camundaClient._urllib2_request('variable-instance', bodyData, requestType='POST')
+
+    print "groupStatusList--------------------------------------------------------------------------------------"
+    print groupStatusList
+    for data in groupStatusList:
+        if data["value"] == "false":
+            proInstArrFalse.append(data["processInstanceId"])
+        else:
+            proInstArrTrue.append(data["processInstanceId"])
+
+    taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false', {"processInstanceIdIn":proInstArrFalse},
+                                                    requestType='POST')
+    taskProVarList.append(taskProVarList1)
+    taskProVarList2 = camundaClient._urllib2_request('variable-instance?deserializeValues=true',
+                                                     {"processInstanceIdIn": proInstArrTrue},
+                                                     requestType='POST')
+    taskProVarList.append(taskProVarList2)
+
+    for key in range(len(taskProVarList)):
+        for data in taskProVarList[key]:
+            print data
+            if data["processInstanceId"] in proposalScrutinyDict:
+                proposalScrutinyDict[data["processInstanceId"]][data["name"] ] = data["value"]
+            if groupName == "CreditTeam":
+                if data["name"] == "disbursement":
+                    if data["value"] == "resolved":
+                        processInstancesQRArr.append(data["processInstanceId"])
+
+    for key in proposalScrutinyDict:
+        if key not in processInstancesQRArr:
+            proposalScrutinyData.append(proposalScrutinyDict[key])
+
+    print "Exiting confirmDisbursement(request): view "
+    return HttpResponse(json.dumps(proposalScrutinyData), content_type="application/json")

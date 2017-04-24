@@ -23,10 +23,10 @@
     var totLoanDocCount;
     var uploadedDocsCount;
     $(document).ready(function (){
-        loadDisburseDocData();
+        loadDisburseDocDataRead();
         loadGroupRoles(groupId, loanId, taskName);
         $("#commentSpanId").css("display","inline-block");
-        loanDocument(2);
+        documentView(loanId);
         taskCount();
         $('.date-picker').datepicker({
             autoclose: true,
@@ -65,29 +65,15 @@
                 </div>
             </div>
             <div class="panel-body" id="defaultDisplay1" >
-                <div class="col-sm-12 col-lg-6 col-md-6 col-xs-12">
-                    <div class="profile-info-row">
-                        <b><div class="profile-info-name"  style="width: 148px"> Date of Disbursement </div></b>
+                <div class="col-md-5">
+                    <b><div class="profile-info-row">
+                        <div class="profile-info-name2"> Date of Disbursement : </div>
                         <div class="profile-info-value">
-                            <div class="col-xs-8 col-sm-11">
-                                <div class="input-group date" id="dateOfDisbursementDiv">
-                                    <input class="form-control date-picker" id="dateOfDisbursement" data-date-format="yyyy-mm-dd" />
-                                    <span class="input-group-addon">
-                                        <i class="fa fa-calendar bigger-110"></i>
-                                    </span>
-                                </div>
-                            </div>
+                            <span class="editable" id="dateOfDisbursement"></span>
                         </div>
-                    </div>
+                    </div></b>
                 </div>
-                 <div class="col-sm-12 col-lg-6 col-md-6 col-xs-12" id="prevDate" style="display:none;">
-                     <div class="profile-info-row">
-                          <b><div class="profile-info-name" style="width:145px;"> Prev selected Date</div>
-                         <div class="profile-info-value">
-                             <span class="editable" id="oldDos"></span>
-                         </div></b>
-                     </div>
-                 </div>
+
             </div>
             <div class="panel-body-danger">
                 <div id="defaultDisplay">
@@ -121,6 +107,7 @@
                                                                         <th>Instrument Number</th>
                                                                         <th>Amount</th>
                                                                         <th>Member Availed Loan</th>
+                                                                        <th style="display:none;">Member Id</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody id="disburseDocBodyData">
@@ -142,13 +129,9 @@
                                     </div>
                                 </div>
                                 <div style="margin-left:10px;">
-                                    <button type="button" class="btn btn-danger updateBtn" onclick="updateChequeInfo();">Update</button>&nbsp
-                                    {% if taskName == "Upload disbursement docs" %}
-                                        <button type="button" class="btn btn-danger" onclick="approveDisburseDocs('send');">Approve</button>
-                                    {% endif %}
-                                    {% if taskName == "Resolve Confirm Disbursement Query" %}
-                                        <button type="button" class="btn btn-danger" onclick="approveDisburseDocs('resolved');">Resolve</button>
-                                    {% endif %}
+                                    <button type="button" class="btn btn-danger" onclick="completeTask('rework');">Rework</button>&nbsp
+
+                                    <button type="button" class="btn btn-danger" onclick="confirmLoan('Approved');">Approve</button>
                                 </div>
                             </div>
                             <div id="upload" class="tab-pane">

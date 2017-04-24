@@ -469,8 +469,17 @@ function getTaskList(taskName){
     if(taskName == "Query Response" || taskName == "BM Reply"){
         url = '/queryRespTaskList/';
     }
-    if(taskName == "Proposal scrutiny"){
+    if(taskName == "Proposal scrutiny" || taskName == "Upload disbursement docs"){
         url = '/proposalScrutinyTaskList/';
+    }
+    if(taskName == "Resolve Confirm Disbursement Query"){
+        url = '/disburseDocsRwrk/';
+    }
+    if(taskName == "Confirm Disbursement Query Response"){
+        url = '/confDisburseQueryResponse/';
+    }
+    if(taskName == "Confirm disbursemen"){
+        url = '/confirmDisbursement/';
     }
     $.ajax({
 	    url: url,

@@ -380,5 +380,23 @@ def updateDisburseMemberData(request):
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while updating disburse doc details')
 
+@csrf_exempt
+@session_required
+def confirmChqDisbursement(request):
+    print 'Inside confirmChqDisbursement(request):'
+    try:
+        if request.method == "POST":
+            formData = json.loads(request.body)
+            bodyData = formData["cheqData"]
+            processUpdate = formData["processUpdate"]
+            print "processUpdate"
+            print processUpdate
+            serialized_data = sscoreClient._urllib2_request('ChequeDisbursement/MemberCancellation', bodyData,
+                                                            requestType='POST')
+            if serialized_data["code"] == 12002:
+                taskComplete(request, processUpdate, taskId)
+            return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while confirming disbursement')
 
 

@@ -71,6 +71,8 @@ kyc_urlpatterns = [
     url(r'^generateLOS/',kyc.generateLOS, name = 'generateLOS'),
     url(r'^disburseDocsData/(?P<loanId>[^/]+)', kyc.disburseDocsData, name='disburseDocsData'),
     url(r'^updateDisburseMemberData/',kyc.updateDisburseMemberData, name = 'updateDisburseMemberData'),
+    url(r'^confirmChqDisbursement/',kyc.confirmChqDisbursement, name = 'confirmChqDisbursement'),
+
 
 
 ]
@@ -101,6 +103,10 @@ camundaViews_urlpatterns = [
     url(r'^taskComplete/(?P<taskId>[^/]+)',camundaViews.taskComplete, name = 'taskComplete'),
     url(r'^getHistoryComments/(?P<processId>[^/]+)',camundaViews.getHistoryComments, name = 'getHistoryComments'),
     url(r'^proposalScrutinyTaskList/',camundaViews.proposalScrutinyTaskList, name = 'proposalScrutinyTaskList'),
+    url(r'^confirmDisburseRwrk/',camundaViews.confirmDisburseRwrk, name = 'confirmDisburseRwrk'),
+    url(r'^confDisburseQueryResponse/',camundaViews.confDisburseQueryResponse, name = 'confDisburseQueryResponse'),
+    url(r'^confirmDisbursement/',camundaViews.confirmDisbursement, name = 'confirmDisbursement'),
+
 ]
 urlpatterns += camundaViews_urlpatterns
 
