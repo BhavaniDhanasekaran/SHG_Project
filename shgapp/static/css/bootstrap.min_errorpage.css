@@ -1613,7 +1613,8 @@ pre code {
 }
 .row {
     margin-left: -12px;
-    margin-right: -12px
+    margin-right: -12px;
+    margin-bottom: -24px;
 }
 .col-lg-1,
 .col-lg-10,
