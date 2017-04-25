@@ -2597,13 +2597,18 @@ function confirmLoan(status){
 
 function completeTask(status){
     var statusUpdate = '';
-    if(status == "rework"){
-        statusUpdate = "sent for rework";
-    }
-
-
-    var dataObj = {};
     var groupName = document.getElementById("groupName_groupRole").innerHTML;
+    if(status == "rework"){
+        statusUpdate = "'"+groupName+"'"+'  has been sent for rework';
+    }
+    if(status == "send"){
+        statusUpdate = "'"+groupName+"'"+' has been approved';
+    }
+    if(status == "resolved"){
+        statusUpdate = groupName+"'s query"+'  has been resolved';
+    }
+    var dataObj = {};
+
     dataObj["taskId"] = taskId;
     dataObj["processUpdate"] = { 'variables': { 'disbursement': {   'value': status     },     }     };
 
@@ -2620,19 +2625,17 @@ function completeTask(status){
         success: function(data) {
             if (data == "Successful") {
                 $("#validationMessage").addClass("center");
-                 document.getElementById("validationMessage").innerHTML ='<span style="color:green" " class="bigger-50"><i class="ace-icon fa fa-check-circle bigger-125"></i> &nbsp&nbsp'+"'"+ groupName +"'" + " has been "+statusUpdate+'</span>';
-                 document.getElementById("gStatus").innerHTML = '<h3  class="lighter center smaller">Task has been completed successfully!  <i class="ace-icon glyphicon glyphicon-thumbs-up bigger-150"></i> </h3>';
-                 document.getElementById("taskValBtn").innerHTML = '<a href="/assignedTaskList/" class="btn btn-primary"> <i class="glyphicon glyphicon-user"></i> Go to My Tasks </a>';
-                 $("#successPanel").show();
-                 $("#defaultDisplay").hide();
-                 $("#defaultDisplay1").hide();
+                document.getElementById("validationMessage").innerHTML ='<span style="color:green" " class="bigger-50"><i class="ace-icon fa fa-check-circle bigger-125"></i> &nbsp&nbsp'+statusUpdate+'</span>';
+                document.getElementById("gStatus").innerHTML = '<h3  class="lighter center smaller">Task has been completed successfully!  <i class="ace-icon glyphicon glyphicon-thumbs-up bigger-150"></i> </h3>';
+                document.getElementById("taskValBtn").innerHTML = '<a href="/assignedTaskList/" class="btn btn-primary"> <i class="glyphicon glyphicon-user"></i> Go to My Tasks </a>';
+                $("#successPanel").show();
+                $("#defaultDisplay").hide();
+                $("#defaultDisplay1").hide();
             } else {
                 $.alert("Failed due to some Issue . Please try after sometime or contact your Administrator");
             }
         },
         data: JSON.stringify(dataObj)
     });
-
-
 }
 
