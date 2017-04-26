@@ -411,3 +411,19 @@ def chkTaskState(request,taskId):
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return HttpResponse(json.dumps({"message":"No matching task with id "+taskId}), content_type="application/json")
+        
+        
+        
+@session_required
+def LoanActiveMemberCount(request,loanId):
+    print 'Inside LoanActiveMemberCount(request):'
+    try:
+        bodyData = {"loanId": str(loanId)}
+        serialized_data = sscoreClient._urllib2_request('workflowDetailView/LoanActiveMemberCount', bodyData,
+                                                        requestType='POST')
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while getting LoanActiveMemberCount ')
+        
+        
+        

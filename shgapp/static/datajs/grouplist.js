@@ -1005,6 +1005,8 @@ function loadGroupRoles(groupId, loanId, taskName) {
 }
 
 
+
+
 function updateTask(status) {
     var dataObj = {};
     var groupName = document.getElementById("groupName_groupRole").innerHTML;
@@ -1840,9 +1842,54 @@ function updateGroupValStatus(status) {
         if(taskName == "Add New Members"){
             if(status == "Approved"){
                 proStatus = "bmapproved";
-                showConfirmBox(status);
+                $.ajax({
+                    url : '/LoanActiveMemberCount/'+loanId,
+                    async: false,
+                    dataType: 'json',
+                    success: function(data){
+                        var jsondata=data;
+                        var ActiveMembercount=jsondata.data.loanActiveMemberCount;
+
+
+                          if( (ActiveMembercount<10)  && (loanTypeId=="1" ||  loanTypeId=="2") )
+                {
+                    var AddMember= 10- ActiveMembercount;
+                    
+                    $.alert('You Need Add  ' + AddMember + ' More Member,To Approve this Group');
+                    return false;
+        
+
+
+
+                }
+
+                else
+                {
+                    
+                    $.confirm({
+                        title: 'Do you really want to approve the group?',
+                        confirmButton: 'Yes',
+                        cancelButton: 'No',
+                        confirm: function(){
+                            completeTask("Approved");
+                        },
+                        cancel: function(){
+                        }
+                    });
+                    
+
+                }
+
+                   
+                    }
+                });
+
+
+              
+                
             }
             if(status == "Rejected"){
+                validationType = "CLMAPPROVAL";
                 proStatus = "bmrejected";
                 showConfirmBox(status);
             }
@@ -2410,7 +2457,6 @@ function updateChequeInfo(){
     var updateCheqData=convertChequeDataToJson();
     var dataObj = {};
     dataObj["cheqData"] = eval(updateCheqData);
-console.log(dataObj);
     return $.ajax({
         url: '/updateDisburseMemberData/',
         dataType: 'json',
@@ -2544,7 +2590,6 @@ function loadDisburseDocDataRead(){
 }
 
 function confirmLoan(status){
-    var groupName = document.getElementById("groupName_groupRole").innerHTML;
     $.confirm({
             title: 'Do you really want to approve the group?',
             confirmButton: 'Yes',
@@ -2570,7 +2615,6 @@ function confirmLoan(status){
 
                 var dataObj = {};
                 dataObj["cheqData"] = eval(JSON.stringify(rows));
-		  dataObj["taskId"] = taskId;
                 dataObj["processUpdate"] = { 'variables': { 'disbursement': {   'value': status     },     }     };
                 console.log(dataObj);
                 $.ajax({
@@ -2601,6 +2645,20 @@ function confirmLoan(status){
 }
 
 function completeTask(status){
+    var flag =0;
+
+    if(taskName == "Add New Members"){
+        var statusUpdate = '';
+        var groupName = document.getElementById("groupName_groupRole").innerHTML;
+            statusUpdate = "'"+groupName+"'"+'  has been approved';
+        var dataObj = {};
+        dataObj["taskId"] = taskId;
+        dataObj["processUpdate"] = { 'variables': { 'groupinstance': {   'value': "bmapproved"     },     }     };
+        flag =1;
+    }
+    else{
+
+
     var statusUpdate = '';
     var groupName = document.getElementById("groupName_groupRole").innerHTML;
     if(status == "rework"){
@@ -2616,8 +2674,11 @@ function completeTask(status){
 
     dataObj["taskId"] = taskId;
     dataObj["processUpdate"] = { 'variables': { 'disbursement': {   'value': status     },     }     };
-
-    $.ajax({
+    flag =1;
+    }   
+    if(flag == 1){
+        
+         $.ajax({
         url: '/updateTask/',
         dataType: 'json',
         type: "post",
@@ -2642,5 +2703,9 @@ function completeTask(status){
         },
         data: JSON.stringify(dataObj)
     });
+    }
+   
 }
+
+
 
