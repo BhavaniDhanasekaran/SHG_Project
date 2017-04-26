@@ -72,8 +72,7 @@ kyc_urlpatterns = [
     url(r'^disburseDocsData/(?P<loanId>[^/]+)', kyc.disburseDocsData, name='disburseDocsData'),
     url(r'^updateDisburseMemberData/',kyc.updateDisburseMemberData, name = 'updateDisburseMemberData'),
     url(r'^confirmChqDisbursement/',kyc.confirmChqDisbursement, name = 'confirmChqDisbursement'),
-
-
+    url(r'^getLoanAccNo/(?P<processId>[^/]+)',kyc.getLoanAccNo, name = 'getLoanAccNo'),
 
 ]
 urlpatterns += kyc_urlpatterns
