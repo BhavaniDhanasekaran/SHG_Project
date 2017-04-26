@@ -131,6 +131,26 @@ function loadAssignedTaskList(){
 					myTaskdata[key]["name"] = myTaskdata[key]["name"];
                 }
 			}
+			if(myTaskdata[key]["disbursement"]){
+				if(myTaskdata[key]["disbursement"] == "rework"){
+					obj["taskName"] = '<a class="tdViewData">'+'Resolve Confirm Disbursement Query'+'</a>';
+					myTaskdata[key]["name"] = 'Resolve Confirm Disbursement Query';
+				}
+				else{
+				    obj["taskName"] = '<a class="tdViewData">'+myTaskdata[key]["name"]+'</a>';
+					myTaskdata[key]["name"] = myTaskdata[key]["name"];
+                }
+			}
+			if(myTaskdata[key]["disbursement"]){
+				if(myTaskdata[key]["disbursement"] == "resolved"){
+					obj["taskName"] = '<a class="tdViewData">'+'Confirm Disbursement Query Response'+'</a>';
+					myTaskdata[key]["name"] = 'Confirm Disbursement Query Response';
+				}
+				else{
+				    obj["taskName"] = '<a class="tdViewData">'+myTaskdata[key]["name"]+'</a>';
+					myTaskdata[key]["name"] = myTaskdata[key]["name"];
+                }
+			}
 			else{
 				obj["taskName"] = '<a class="tdViewData">'+myTaskdata[key]["name"]+'</a>';
 			}
@@ -473,12 +493,13 @@ function getTaskList(taskName){
         url = '/proposalScrutinyTaskList/';
     }
     if(taskName == "Resolve Confirm Disbursement Query"){
-        url = '/disburseDocsRwrk/';
+	console.log("SDFSDFDSFDSFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+        url = '/confirmDisburseRwrk/';
     }
     if(taskName == "Confirm Disbursement Query Response"){
         url = '/confDisburseQueryResponse/';
     }
-    if(taskName == "Confirm disbursemen"){
+    if(taskName == "Confirm disbursement"){
         url = '/confirmDisbursement/';
     }
     $.ajax({

@@ -56,7 +56,7 @@ def SHGForm(request,groupId,loanId,taskId,processId,taskName,loanTypeName,loanTy
             "Approve Loan"                              : "CTLoanApproval.html",
             "Upload disbursement docs"                  : "disburseDocs.html",
             "Generate repayment chart"                  : "generateRepaymentChart.html",
-            "Confirm disbursemen"                       : "disburseDocsRead.html",
+            "Confirm disbursement"                       : "disburseDocsRead.html",
             "Resolve Confirm Disbursement Query"        : "disburseDocs.html",
             "Confirm Disbursement Query Response"       : "disburseDocsRead.html"
 

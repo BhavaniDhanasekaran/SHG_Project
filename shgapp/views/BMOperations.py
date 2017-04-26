@@ -31,18 +31,17 @@ def getTasksByTaskName(request,taskName):
                              "processVariables": [{"name": "regionId", "operator": "eq", "value": officeId}]}
 
         if groupName == "CLM" or groupName == "BM" or groupName == "CMR":
-            if taskName == "Prepare Loan Documents" or  taskName == "Print Loan Documents & FSR" :
-                grp_body_cont = {"unassigned": "true", "taskDefinitionKey": "Task_1e69sid",
-                                 "candidateGroup": "CLM",
-                                 "processVariables": [{"name": "clusterId", "operator": "eq", "value": officeId}]}
-            else:
-                grp_body_cont = {"unassigned": "true", "name": taskName,
-                                 "candidateGroup": "CLM",
-                                 "processVariables": [{"name": "clusterId", "operator": "eq", "value": officeId}] }
+            grp_body_cont = {"unassigned": "true", "name": taskName,
+                             "candidateGroup": "CLM",
+                             "processVariables": [{"name": "clusterId", "operator": "eq", "value": officeId}] }
         if groupName == "CreditTeam":
             grp_body_cont 	   = { "unassigned" : "true" , "name" : taskName, "candidateGroup" : str(groupName)}
 
+        print "grp_body_cont"
+        print grp_body_cont
         groupTaskList	  = camundaClient._urllib2_request('task?firstResult=0', grp_body_cont, requestType='POST')
+        print "groupTaskList"
+        print  groupTaskList
         for data in groupTaskList:
             processInstancesArr.append(data["processInstanceId"])
             groupTaskDict[data["processInstanceId"]] = data

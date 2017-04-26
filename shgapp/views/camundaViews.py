@@ -300,9 +300,9 @@ def confirmDisburseRwrk(request):
                 QRTaskDict[data["processInstanceId"]][data["name"] ] = data["value"]
 
     for key in QRTaskDict:
-        if groupName == "CreditTeam":
+        if groupName == "CLM" or groupName == "BM" or groupName == "CMR":
             if  QRTaskDict[key]["name"] == "Upload disbursement docs":
-                QRTaskDict[key]["name"] = "Resolve Disb Query"
+                QRTaskDict[key]["name"] = "Resolve Confirm Disbursement Query"
             QRTaskData.append(QRTaskDict[key])
     return HttpResponse(json.dumps(QRTaskData), content_type="application/json")
 
@@ -601,7 +601,7 @@ def tasksCount(request):
 
         if groupName == "CMR" or groupName == "CLM" or groupName == "BM":
             tasksArr = ["Conduct BAT- Member approval in CRM","Upload loan documents in Web application",
-                           "Resolve Data Support Team Query","Add New Members","Print Loan Documents & FSR","Prepare Loan Documents",
+                           "Resolve Data Support Team Query","Add New Members","Prepare Loan Documents",
                            "Resolve Credit Team Query","Generate repayment chart","Upload disbursement docs"]
             for taskKey in tasksArr:
                 taskProList = {"unassigned": "true",
@@ -613,11 +613,14 @@ def tasksCount(request):
                                  "processVariables": [
                                      {"name": "disbursement", "value": "rework", "operator": "eq"}],
                                  "name": "Upload disbursement docs"}
+            print "uploadDisbDocList"
+            print uploadDisbDocList
             UDDTaskcount = camundaClient._urllib2_request('task/count', uploadDisbDocList, requestType='POST')
-
-            taskCount["Resolve Disb Query"] = UDDTaskcount["count"]
+            print "UDDTaskcount"
+            print UDDTaskcount
+            taskCount["Resolve Confirm Disbursement Query"] = UDDTaskcount["count"]
             taskCount["Upload disbursement docs"] = taskCount["Upload disbursement docs"] - UDDTaskcount["count"]
-            taskCount["Prepare Loan Documents"] = taskCount["Print Loan Documents & FSR"] + taskCount["Prepare Loan Documents"]
+            #taskCount["Prepare Loan Documents"] = taskCount["Print Loan Documents & FSR"] + taskCount["Prepare Loan Documents"]
 
         if groupName == "RM" or groupName == "rm":
             taskProList = {"unassigned": "true",
@@ -639,7 +642,20 @@ def tasksCount(request):
 
             taskCount["Proposal scrutiny"] = PSTaskCount["count"] - BMReplyCount["count"]
             taskCount["BM Reply"] = BMReplyCount["count"]
-            tasksArr = ["Approve Loan","Confirm disbursemen"]
+
+            confDisbProVarList = {"unassigned": "true",
+                                      "name": "Confirm disbursement"}
+            CDTaskCount = camundaClient._urllib2_request('task/count', confDisbProVarList, requestType='POST')
+
+            CDRProVarList = {"unassigned": "true",
+                                 "processVariables": [
+                                     {"name": "disbursement", "value": "resolved", "operator": "eq"}],
+                                 "name": "Confirm disbursement"}
+            CDRCount = camundaClient._urllib2_request('task/count', CDRProVarList, requestType='POST')
+
+            taskCount["Confirm disbursement"] = CDTaskCount["count"] - CDRCount["count"]
+            taskCount["Confirm Disbursement Query Response"] = CDRCount["count"]
+            tasksArr = ["Approve Loan"]
             for taskKey in tasksArr:
                 taskProList = {"unassigned": "true",
                                "name": taskKey}
@@ -713,7 +729,7 @@ def confDisburseQueryResponse(request):
 
     for key in QRTaskDict:
         if groupName == "CreditTeam":
-            if  QRTaskDict[key]["name"] == "Upload disbursement docs":
+            if  QRTaskDict[key]["name"] == "Confirm disbursement":
                 QRTaskDict[key]["name"] = "Confirm Disbursement Query Response"
             QRTaskData.append(QRTaskDict[key])
     return HttpResponse(json.dumps(QRTaskData), content_type="application/json")
@@ -737,7 +753,7 @@ def confirmDisbursement(request):
     proInstArrTrue = []
 
     if groupName == "CreditTeam":
-        bodyData = { "unassigned" : "true", "candidateGroup" : "CreditTeam", "name" : "Confirm disbursemen" }
+        bodyData = { "unassigned" : "true", "candidateGroup" : "CreditTeam", "name" : "Confirm disbursement" }
 
     proposalScrutinyList		= camundaClient._urllib2_request('task', bodyData, requestType='POST')
 

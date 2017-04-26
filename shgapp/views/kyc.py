@@ -20,8 +20,8 @@ def getGroupData(request,groupID,loanId,taskName):
     print "Inside getGroupData(request):"
     try:
         username = request.session["userName"]
-        BMTasksArray = ["Generate repayment chart","Upload disbursement docs","Conduct BAT- Member approval in CRM","Print Loan Documents & FSR","Prepare Loan Documents","Upload loan documents in Web application","Add New Members"]
-        rwrkTasksArr = ["Resolve Data Support Team Query","Resolve Credit Team Query"]
+        BMTasksArray = ["Generate repayment chart","Upload disbursement docs","Conduct BAT- Member approval in CRM","Prepare Loan Documents","Upload loan documents in Web application","Add New Members"]
+        rwrkTasksArr = ["Resolve Data Support Team Query","Resolve Credit Team Query","Resolve Confirm Disbursement Query"]
         userOfficeData = json.loads(request.session["userOfficeData"])
         groupName = userOfficeData["designation"]
         if groupName== "CMR" or groupName == "CLM" or groupName == "BM":
@@ -259,7 +259,7 @@ def approveLoan(request):
             print "serialized_data-------------------------------"
             print serialized_data
             if serialized_data["code"] == 2043 :
-                processUpdate = { 'variables': { 'dispatchType': { 'value': "Cheque" } } }
+                processUpdate = { 'variables': { 'dispatchType': { 'value': "Cheque" }, 'groupinstance': {'value': "creditapproved" } } }
                 taskComplete(request,processUpdate,taskId)
             return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
@@ -388,6 +388,7 @@ def confirmChqDisbursement(request):
         if request.method == "POST":
             formData = json.loads(request.body)
             bodyData = formData["cheqData"]
+            taskId = formData["taskId"]
             processUpdate = formData["processUpdate"]
             print "processUpdate"
             print processUpdate
@@ -400,3 +401,13 @@ def confirmChqDisbursement(request):
         return helper.bad_request('Unexpected error occurred while confirming disbursement')
 
 
+@session_required
+def chkTaskState(request,taskId):
+    print 'Inside chkTaskState(request):'
+    try:
+        serialized_data = camundaClient._urllib2_request('task/'+taskId,{},requestType='GET')
+        print "serialized_data"
+        print serialized_data
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return HttpResponse(json.dumps({"message":"No matching task with id "+taskId}), content_type="application/json")

@@ -2307,7 +2307,9 @@ function loadDisburseDocData(){
             }
             else{
                 $("#prevDate").show();
-                document.getElementById("oldDos").innerHTML = disbDocData[0]["oldDos"];
+                var dateSplit = disbDocData[0]["oldDos"].split(" ")[0];
+                dateSplit = dateSplit.split("-");
+                document.getElementById("oldDos").innerHTML = dateSplit[2]+"-"+dateSplit[1]+"-"+dateSplit[0];
             }
             var obj = {};
             totalMemberIdArray.push(disbDocData[key]["appMemberId"]+"_memberAvailedLoan");
@@ -2408,6 +2410,7 @@ function updateChequeInfo(){
     var updateCheqData=convertChequeDataToJson();
     var dataObj = {};
     dataObj["cheqData"] = eval(updateCheqData);
+console.log(dataObj);
     return $.ajax({
         url: '/updateDisburseMemberData/',
         dataType: 'json',
@@ -2541,6 +2544,7 @@ function loadDisburseDocDataRead(){
 }
 
 function confirmLoan(status){
+    var groupName = document.getElementById("groupName_groupRole").innerHTML;
     $.confirm({
             title: 'Do you really want to approve the group?',
             confirmButton: 'Yes',
@@ -2566,6 +2570,7 @@ function confirmLoan(status){
 
                 var dataObj = {};
                 dataObj["cheqData"] = eval(JSON.stringify(rows));
+		  dataObj["taskId"] = taskId;
                 dataObj["processUpdate"] = { 'variables': { 'disbursement': {   'value': status     },     }     };
                 console.log(dataObj);
                 $.ajax({
