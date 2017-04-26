@@ -15,12 +15,13 @@
             taskList = JSON.parse(taskList);
         }
         $(document).ready(function(){
-            if(taskName != "Query Response" && taskName != "KYC Check" && taskName != "Proposal scrutiny" && taskName != "" && taskName != "BM Reply"){
-                    getTasksByTaskName(taskName);
+            console.log("taskName",taskName);
+            if(taskName != "Query Response" && taskName != "Confirm disbursement" && taskName != "Confirm Disbursement Query Response" && taskName != "Upload disbursement docs" && taskName != "Resolve Confirm Disbursement Query" && taskName != "KYC Check" && taskName != "Proposal scrutiny" && taskName != "BM Reply"){
+	         console.log(taskName );
+		  getTasksByTaskName(taskName);
             }
             else{
-                getTaskList(taskName);
-            }
+                getTaskList(taskName);            }
             taskCount();
             loadUnassignedTaskList(taskList);
 

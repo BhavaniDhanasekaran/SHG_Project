@@ -1,29 +1,26 @@
 var monthDict = {"01":"Jan","02":"Feb","03":"Mar","04":"Apr","05":"May","06":"Jun","07":"Jul","08":"Aug","09":"Sep","10":"Oct","11":"Nov","12":"Dec"};
 
-$.ajaxSetup({
-    cache : false,
-    error: function(xhr,status,error){
-        if (status == "timeout") {
+$(document).ajaxError(function(e, xhr, settings, exception) {
+    if(exception == "timeout") {
             window.location = '/connection_timeout/';
-        }
-        if(error == 400){
-            $.alert("Bad Request !!");
-        }
-        if(error == 404){
-            window.location = '/page_not_found/';
-        }
-        if(error == 500) {
-            window.location = '/server_error/';
-        }
-        if(error == 403) {
-           window.location = '/permission_denied/';
-        }
-        if(error == 522) {
-            window.location = '/connection_timeout/';
-        }
-        if(error == 503){
-            window.location = '/service_unavailable/';
-        }
+    }
+    if(xhr.status == 400){
+        $.alert("Bad Request !!");
+    }
+    if(xhr.status == 404){
+        window.location = '/page_not_found/';
+    }
+    if(xhr.status == 500) {
+        window.location = '/server_error/';
+    }
+    if(xhr.status == 403) {
+        window.location = '/permission_denied/';
+    }
+    if(xhr.status == 522) {
+        window.location = '/connection_timeout/';
+    }
+    if(xhr.status == 503){
+        window.location = '/service_unavailable/';
     }
 });
 
@@ -33,8 +30,6 @@ function loadUnassignedTaskList(data){
 	console.log(groupTaskdata);
 	var dataArray = [];
 	$("#loading").hide();
-
-
 	for(var key in groupTaskdata){
 		var obj={};
 		if(groupTaskdata[key]["name"]  && groupTaskdata[key]["created"]){
@@ -76,16 +71,14 @@ function loadUnassignedTaskList(data){
 				obj["groupFormationDate"] =grpFormDt[2]+"-"+grpFormDt[1]+"-"+grpFormDt[0];
 
 			}
-		obj["claim"] = '<button type="submit" onclick="claimconfirmBox('+"'"+obj["taskId"]+"'"+",'"+obj["shgName"]+"'"+');" class="btn btn-danger btn-md button">Claim</button>';
-
-
+		    obj["claim"] = '<button type="submit" onclick="claimconfirmBox('+"'"+obj["taskId"]+"'"+",'"+obj["shgName"]+"'"+');" class="btn btn-danger btn-md button">Claim</button>';
 		}
 		dataArray.push(obj);
 
 	}
 	var table = $('#taskListTable').dataTable({
             data: dataArray,
-	    "pageLength": 50,
+	        "pageLength": 50,
             rowId: "groupLoanId",
             destroy: true,
             "bProcessing": true,
@@ -132,6 +125,26 @@ function loadAssignedTaskList(){
 				if(myTaskdata[key]["chekcbrespdate"] == "resolved"){
 					obj["taskName"] = '<a class="tdViewData">'+'BM Reply'+'</a>';
 					myTaskdata[key]["name"] = 'BM Reply';
+				}
+				else{
+				    obj["taskName"] = '<a class="tdViewData">'+myTaskdata[key]["name"]+'</a>';
+					myTaskdata[key]["name"] = myTaskdata[key]["name"];
+                }
+			}
+			if(myTaskdata[key]["disbursement"]){
+				if(myTaskdata[key]["disbursement"] == "rework"){
+					obj["taskName"] = '<a class="tdViewData">'+'Resolve Confirm Disbursement Query'+'</a>';
+					myTaskdata[key]["name"] = 'Resolve Confirm Disbursement Query';
+				}
+				else{
+				    obj["taskName"] = '<a class="tdViewData">'+myTaskdata[key]["name"]+'</a>';
+					myTaskdata[key]["name"] = myTaskdata[key]["name"];
+                }
+			}
+			if(myTaskdata[key]["disbursement"]){
+				if(myTaskdata[key]["disbursement"] == "resolved"){
+					obj["taskName"] = '<a class="tdViewData">'+'Confirm Disbursement Query Response'+'</a>';
+					myTaskdata[key]["name"] = 'Confirm Disbursement Query Response';
 				}
 				else{
 				    obj["taskName"] = '<a class="tdViewData">'+myTaskdata[key]["name"]+'</a>';
@@ -476,8 +489,18 @@ function getTaskList(taskName){
     if(taskName == "Query Response" || taskName == "BM Reply"){
         url = '/queryRespTaskList/';
     }
-    if(taskName == "Proposal scrutiny"){
+    if(taskName == "Proposal scrutiny" || taskName == "Upload disbursement docs"){
         url = '/proposalScrutinyTaskList/';
+    }
+    if(taskName == "Resolve Confirm Disbursement Query"){
+	console.log("SDFSDFDSFDSFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+        url = '/confirmDisburseRwrk/';
+    }
+    if(taskName == "Confirm Disbursement Query Response"){
+        url = '/confDisburseQueryResponse/';
+    }
+    if(taskName == "Confirm disbursement"){
+        url = '/confirmDisbursement/';
     }
     $.ajax({
 	    url: url,

@@ -120,6 +120,15 @@
             </a>
             <b class="arrow"></b>
         </li>
+        <li class="">
+            <a href="#" onclick="tasklistRedirect('Resolve Confirm Disbursement Query');">
+                <i class="menu-icon glyphicon glyphicon-share-alt"></i>
+                <span class="menu-text"> Resolve Disb Query
+                    <span id="Resolve_Confirm_Disbursement_Query" class="badge badge-danger">0</span>
+                </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
 
 
         <li class="">
@@ -137,6 +146,24 @@
                 <i class="menu-icon fa fa-file"></i>
                 <span class="menu-text"> Prepare Loan Docs
                     <span id="Prepare_Loan_Documents" class="badge badge-danger">0</span>
+                </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+        <li class="">
+            <a href="#" onclick="redirectToTaskPage('Generate repayment chart');">
+                <i class="menu-icon fa fa-file"></i>
+                <span class="menu-text"> Generate LOS
+                    <span id="Generate_repayment_chart" class="badge badge-danger">0</span>
+                </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+         <li class="">
+            <a href="#" onclick="tasklistRedirect('Upload disbursement docs');">
+                <i class="menu-icon glyphicon glyphicon-cloud-upload"></i>
+                <span class="menu-text"> Upload Disb Docs
+                    <span id="Upload_disbursement_docs" class="badge badge-danger">0</span>
                 </span>
             </a>
             <b class="arrow"></b>
@@ -277,10 +304,19 @@
         </li>
 
         <li class="">
-            <a href="#" onclick="redirectToTaskPage('Prepare & print chq through BPM');">
-                <i class="menu-icon glyphicon glyphicon-print "></i>
-                <span class="menu-text"> Prep & Print Chq
-                    <span id="Prepare_&_print_chq_through_BPM" class="badge badge-danger">0</span>
+            <a href="#" onclick="tasklistRedirect('Confirm disbursement');">
+                <i class="menu-icon glyphicon glyphicon-ok-sign"></i>
+                <span class="menu-text"> Conf Disbursement
+                    <span id="Confirm_disbursement" class="badge badge-danger">0</span>
+                </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+        <li class="">
+            <a href="#" onclick="tasklistRedirect('Confirm Disbursement Query Response');">
+                <i class="menu-icon glyphicon glyphicon-ok-sign"></i>
+                <span class="menu-text">ConfDisb QueryRes
+                    <span id="Confirm_Disbursement_Query_Response" class="badge badge-danger">0</span>
                 </span>
             </a>
             <b class="arrow"></b>
