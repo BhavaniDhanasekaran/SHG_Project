@@ -17,6 +17,7 @@
     var loanType = '{{ loanType | escapejs }}';
     $(document).ready(function(){
         $("#commentSpanId").css("display","inline-block");
+	 getLoanAccountNumber();
         loadGroupRoles(groupId,loanId,taskName);
         $('textarea.limited').inputlimiter({
             remText: '%n character%s remaining...',

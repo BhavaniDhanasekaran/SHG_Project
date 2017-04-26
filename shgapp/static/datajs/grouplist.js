@@ -2281,8 +2281,15 @@ function generateLOS(){
             $("#loading").hide();
         },
         success: function(data) {
-            var sampleArr = base64ToArrayBuffer(data["data"]["fileContent"]);
-            saveByteArray(data["data"]["fileName"], sampleArr);
+            if(data["code"] == "11000"){
+                if( data["data"]["fileContent"]){
+                    var sampleArr = base64ToArrayBuffer(data["data"]["fileContent"]);
+                    saveByteArray(data["data"]["fileName"], sampleArr);
+                }
+            }
+            if(data["code"] == "11001"){
+                $.alert(data["message"]);
+            }
         },
         data: JSON.stringify(dataObj)
     });
@@ -2348,7 +2355,6 @@ function loadDisburseDocData(){
 
     if(disbDocData && disbDocData[0]){
         for(var key in disbDocData){
-            console.log(disbDocData[0]["oldDos"]);
             if(disbDocData[0]["oldDos"] == "" || disbDocData[0]["oldDos"] == null){
                 $("#prevDate").hide();
             }
@@ -2433,6 +2439,8 @@ function updateChequeInfo(){
                 }
                 else{
                      $("#"+domElemId).removeClass("setBGColor");
+			flag = 0;
+
                 }
             }
         }
@@ -2444,6 +2452,7 @@ function updateChequeInfo(){
                 $("#"+domElemId).removeClass("setBGColor");
                 $("#"+domElemId).css("border","1px solid #D5D5D5");
                 $("#"+domElemId).css("color","black");
+		  flag = 0;
             }
         }
     }
@@ -2457,6 +2466,10 @@ function updateChequeInfo(){
     var updateCheqData=convertChequeDataToJson();
     var dataObj = {};
     dataObj["cheqData"] = eval(updateCheqData);
+
+
+    console.log(dataObj);
+
     return $.ajax({
         url: '/updateDisburseMemberData/',
         dataType: 'json',
@@ -2708,4 +2721,13 @@ function completeTask(status){
 }
 
 
+function getLoanAccountNumber(){
+    $.ajax({
+        url: '/getLoanAccNo/'+processInstanceId,
+        dataType: 'json',
+        success: function(data) {
+            document.getElementById("loanAccountNumber").value = data["loanAccNo"];
+        }
+    });
+}
 

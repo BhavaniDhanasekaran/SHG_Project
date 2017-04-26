@@ -259,7 +259,11 @@ def approveLoan(request):
             print "serialized_data-------------------------------"
             print serialized_data
             if serialized_data["code"] == 2043 :
-                processUpdate = { 'variables': { 'dispatchType': { 'value': "Cheque" }, 'groupinstance': {'value': "creditapproved" } } }
+                processUpdate = { 'variables': { 'dispatchType' : { 'value': "Cheque" },
+                                                 'groupinstance': {'value': "creditapproved" },
+                                                 'loanAccNo'    : {'value': serialized_data["data"]["loanAccountNumber"] }
+                                                }
+                                }
                 taskComplete(request,processUpdate,taskId)
             return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
@@ -427,3 +431,17 @@ def LoanActiveMemberCount(request,loanId):
         
         
         
+
+
+
+def getLoanAccNo(request,processId):
+    print 'Inside getLoanAccNo(request,processId):'
+    try:
+        bodyData = { "variableName": "loanAccNo", "processInstanceIdIn": [processId]  }
+        serialized_data = camundaClient._urllib2_request('variable-instance', bodyData, requestType='POST')
+        print "serialized_data"
+        print serialized_data[0]["value"]
+        return HttpResponse(json.dumps({"loanAccNo": serialized_data[0]["value"]}), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while getting loanaccount number')
+
