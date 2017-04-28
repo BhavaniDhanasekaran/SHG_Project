@@ -15,7 +15,18 @@
     <link rel="stylesheet" href="/static/css/ace.min.css" />
     <link rel="stylesheet" href="/static/css/ace-rtl.min.css" /> <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
     <script src="{% static 'js/ace-extra.min.js' %}"></script>
-    </script>
+        <script src="{% static 'js/bowser.js' %}"></script>
+<script type="text/javascript">
+
+if ((bowser.name == "Chrome" && bowser.version >= 55) || (bowser.name == "Firefox" && bowser.version>= 50)) {
+}
+else
+{
+  window.location = "../browserError";
+}
+
+
+  </script>
     </head>
     <!-- Header start -->
     <!--body class="no-skin">
@@ -31,12 +42,10 @@
     </div>
     </div>
     {% block javascript %} {% endblock %}
-    <script type="text/javascript">
-    if('ontouchstart' in document.documentElement) document.write("<script src='{% static 'js/jquery.mobile.custom.min.js' %}>"+"<"+"/script>");
 
-    </script>
-    <script src="{% static 'js/bootstrap.min.js'  %}"></script>
-        <script src="{% static 'js/ace-elements.min.js'  %}"></script>
-        <script src="{% static 'js/ace.min.js'  %}"></script>
+    <script src="/static/js/bootstrap.min.js?v={{JS_VERSION}}"></script>
+        <script src="/static/js/ace-elements.min.js?v={{JS_VERSION}}"></script>
+        <script src="/static/js/ace.min.js?v={{JS_VERSION}}"></script>
         </body>
         </html>
+

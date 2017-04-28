@@ -1,13 +1,13 @@
-var validationFields = ["memberName","age","husbandName","fatherName","address","villageName","idProofValue","addressProofValue","sbAccountNumber","bankId","sbAccountName",
+var validationFields = ["memberName","age","sequenceNumber", "husbandName","maritalStatus","fatherName","address","villageName","idProofValue","addressProofValue","sbAccountNumber","bankId","sbAccountName",
 			"permanentAddress","pincode","villages","mobileNo","idProofTypeId","addressProofTypeId","loanAmount","loanTypeValue"];
 
 var loanTypeDict = {
-   "PLL" : "1",
-   "ATL" : "2",
-   "VVL" : "532",
-   "VV2" : "534",
-   "RVL" : "537",
-   "BDL" : "538"
+    "PLL": "1",
+    "ATL": "2",
+    "VVL": "532",
+    "VV2": "534",
+    "RVL": "537",
+    "BDL": "538"
 };
 
 
@@ -34,11 +34,14 @@ function areasUnderPincode(){
 						$('#villages').append('<option value="'+pincodeData["data"][i]["villageId"]+'">'+pincodeData["data"][i]["villageName"]+'</option>');
 					}
 				}
+				else{
+				    $.alert("No areas available under this pincode!");
+				}
 			}	
 		});
 	}
 	else{
-		alert("Please enter valid Pincode");
+		$.alert("Please enter valid Pincode");
 	}
 		
 }
@@ -90,7 +93,7 @@ function setSelectOptionInForm(){
 			$.each($('#idProofTypeId option'), function(key, optionElement) {
 	   			 var curText = $(optionElement).text();
 		 		 $(this).attr('title', curText);
-				 var lengthToShortenTo = Math.round(parseInt('350px', 10) / 9.4);
+				 var lengthToShortenTo = Math.round(parseInt('265px', 10) / 9.4);
 		    		 if (curText.length > lengthToShortenTo) {
 					$(this).text(curText.substring(0,lengthToShortenTo)+'...');
 	    			 }
@@ -115,7 +118,7 @@ function setSelectOptionInForm(){
 			$.each($('#addressProofTypeId option'), function(key, optionElement) {
 	   			 var curText = $(optionElement).text();
 		 		 $(this).attr('title', curText);
-				 var lengthToShortenTo = Math.round(parseInt('350px', 10) / 9.4);
+				 var lengthToShortenTo = Math.round(parseInt('265px', 10) / 9.4);
 		    		 if (curText.length > lengthToShortenTo) {
 					$(this).text(curText.substring(0,lengthToShortenTo)+'...');
 	    			 }
@@ -137,12 +140,12 @@ function setSelectOptionInForm(){
 				$('#loanTypeValue').append('<option value="'+keyValueloanPurposeArray[i].id+'">'+keyValueloanPurposeArray[i].name+'</option>');
 			}	
 
-			$.each($('#loanPurpose option'), function(key, optionElement) {
+			$.each($('#loanTypeValue option'), function(key, optionElement) {
 	   			 var curText = $(optionElement).text();
 		 		 $(this).attr('title', curText);
-				 var lengthToShortenTo = Math.round(parseInt('350px', 10) / 9.4);
+				 var lengthToShortenTo = Math.round(parseInt('265px', 10) / 9.4);
 		    		 if (curText.length > lengthToShortenTo) {
-					$(this).text(curText.substring(0,lengthToShortenTo)+'...');
+						 $(this).text(curText.substring(0,lengthToShortenTo)+'...');
 	    			 }
 			});
 			// Show full name in tooltip after choosing an option

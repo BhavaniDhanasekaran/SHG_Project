@@ -7,7 +7,7 @@ body {
     height: 100%;
     width: 0;
     position: fixed;
-    z-index: 1;
+    /*z-index: 1;*/
     top: 45px;
     right: 0;
     background-color: #fff;
@@ -18,12 +18,13 @@ body {
 }
 
 .sidenav a {
-    padding: 8px 8px 8px 32px;
+    padding: 0px 0px 0px 0px;
     text-decoration: none;
     font-size: 25px;
-    color: #818181;
-    display: block;
-    transition: 0.3s
+    color: white;
+    /*display: block;*/
+    transition: 0.3s;
+    position:inherit;
 }
 
 .sidenav a:hover, .offcanvas a:focus{
@@ -53,4 +54,3 @@ body {
 .sidenav a {
 font-size: 15px;
 }
-

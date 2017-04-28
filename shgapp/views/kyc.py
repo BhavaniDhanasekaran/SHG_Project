@@ -1,170 +1,142 @@
-from django.shortcuts import render,render_to_response,reverse
-from django.views.decorators import csrf
-from   django.views.decorators.csrf  import csrf_protect, csrf_exempt
-from django.http import HttpResponseRedirect,HttpResponse,JsonResponse
-from django.conf import settings as django_settings
+from django.shortcuts import render_to_response,reverse
+from   django.views.decorators.csrf  import csrf_exempt
+from django.http import HttpResponse
 from shgapp.utils.sscoreclient import SSCoreClient
 from shgapp.utils.camundaclient import CamundaClient
 from shgapp.utils.helper import Helper
 from shgapp.utils.shgexceptions import *
+from shgapp.views.camundaViews import taskComplete
+from shgapp.views.decorator import session_required,decryption_required
+
 import json
-import urllib2
-import requests
 
 helper = Helper()
 sscoreClient = SSCoreClient()
 camundaClient = CamundaClient()
 
-@csrf_exempt
-def dsgroupview(request,groupID,loanID,taskId,processInstanceId):
-    username = request.user
-    print processInstanceId
-    Grp = request.user.groups.all()
-    groups = request.user.groups.values_list('name',flat=True)
-    print "grp:"
-    print groups[0]
-    return render_to_response( 'ds_groupview.html', {"groupId": groupID,"loanId":loanID,"processInstanceId" :processInstanceId, "taskId" : taskId,"group":groups[0],"user":username})
-
-
-def dsgroupview2(request):
-    print "Inside dsgroupview2(request):"
-    username = request.user
-    Grp = request.user.groups.all()
-    groups = request.user.groups.values_list('name',flat=True)
-    print "grp:"
-    print groups[0]
-    return render_to_response('ds_groupview.html',{"group":groups[0],"user":username})
-
-def groupViewQuery2(request,groupID,loanID,taskId,processInstanceId):
-    username = request.user
-    Grp = request.user.groups.all()
-    groups = request.user.groups.values_list('name',flat=True)
-    print "grp:"
-    print groups[0]
-    return render_to_response( 'queryResponseDS.html', {"groupId": groupID,"loanId":loanID,"processInstanceId" :processInstanceId, "taskId" : taskId,"group":groups[0],"user":username})
-
-def groupViewQuery(request):
-    username = request.user
-    Grp = request.user.groups.all()
-    groups = request.user.groups.values_list('name',flat=True)
-    print "grp:"
-    print groups[0]
-    return render(request, 'queryResponseDS.html',{"group":groups[0],"user":username})
-
-
-def getGroupData(request,groupID):
+#@decryption_required
+@session_required
+def getGroupData(request,groupID,loanId,taskName):
     print "Inside getGroupData(request):"
     try:
-        username = request.user
-        Grp = request.user.groups.all()
-        url = ''
-        groups = request.user.groups.values_list('name', flat=True)
-        if groups[0] == "CLM_BM" or groups[0] == "CLM":
-            validationLevel = "BM"
-        if groups[0] == "DataSupportTeam":
+        username = request.session["userName"]
+        BMTasksArray = ["Generate repayment chart","Upload disbursement docs","Conduct BAT- Member approval in CRM","Prepare Loan Documents","Upload loan documents in Web application","Add New Members"]
+        rwrkTasksArr = ["Resolve Data Support Team Query","Resolve Credit Team Query","Resolve Confirm Disbursement Query"]
+        userOfficeData = json.loads(request.session["userOfficeData"])
+        groupName = userOfficeData["designation"]
+        if groupName== "CMR" or groupName == "CLM" or groupName == "BM":
+            if taskName in rwrkTasksArr:
+                validationLevel = "RWRK"
+            if taskName in BMTasksArray:
+                validationLevel = "BM"
+        if groupName == "DataSupportTeam":
             validationLevel = "KYC"
-        bodyData = {"groupId": groupID, "validationLevel":validationLevel}
-        print "bodyData"
-        print bodyData
+        if groupName == "CreditTeam":
+            validationLevel = "CREDITTEAM"
+        if groupName == "RM" or groupName == "rm":
+            validationLevel = "BM"
+        bodyData = {"groupId": groupID, "validationLevel":validationLevel, "loanId":loanId}
         groupMembersData = sscoreClient._urllib2_request('workflowDetailView/getallmembers', bodyData, requestType='POST')
-        print "groupMembersData"
-        print groupMembersData
         return HttpResponse(json.dumps(groupMembersData), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while searching group.')
 
-def getIndMemberData(request,memberId,groupId,loanId):
-    print "Inside getIndMemberData(request,memberId,groupId):"
+#@decryption_required
+@session_required
+def getIndMemberData(request,memberId,groupId,loanId,taskName):
+    print "Inside getIndMemberData(request,memberId,groupId,taskName):"
     try:
-        username = request.user
-        Grp = request.user.groups.all()
-        groups = request.user.groups.values_list('name',flat=True)
-        groupName = groups[0]
+        validationType = ''
+        validationLevel = ''
+        username = request.session["userName"]
+        userOfficeData = json.loads(request.session["userOfficeData"])
+        groupName = userOfficeData["designation"]
         if groupName == "DataSupportTeam":
-            validationType = "PEN"
+            validationType = "PRE"
             validationLevel = "KYC"
-        if groupName == "CLM_BM" or groupName == "CLM":
-            validationType = "POST"
-            validationLevel = "BM"
+        if groupName == "CMR" or groupName == "CLM" or groupName == "BM":
+            if taskName == "Resolve Data Support Team Query":
+                validationLevel = "RWRK"
+                validationType = "POSTKYC"
+            if taskName == "Conduct BAT- Member approval in CRM":
+                validationLevel = "BM"
+                validationType = "POSTKYC"
+            if taskName == "Resolve Credit Team Query":
+                validationLevel = "RWRK"
+                validationType = "POST"
+        if groupName == "CreditTeam":
+            if taskName == "Proposal scrutiny" or taskName == "BM Reply":
+                validationLevel = "CREDITTEAM"
+                validationType = "CLM"
         bodyData = { "groupId": str(groupId), "memberId":str(memberId),  "loanId": str(loanId), "validationLevel" : validationLevel, "entityType": "MEMBER","validationType": validationType, "userId": "1996" }
         IndMemberData = sscoreClient._urllib2_request('workflowDetailView/workflowMemberDetail/', bodyData, requestType='POST')
-        print "IndMemberData"
-        print IndMemberData
         return HttpResponse(json.dumps(IndMemberData), content_type="application/json")
 
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while searching group members.')
 
-
+#@decryption_required
 @csrf_exempt
+@session_required
 def getPinCodeDetails(request,pincode):
     print "Inside getPinCodeDetails(request,pincode):"
     try:
         serialized_data = sscoreClient._urllib2_request('Master/VillageByPincode/'+str(pincode),{},requestType='GET')
-        print "serialized_data"
-        print serialized_data
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting areas under this pincode.')
 
 
-def creditHistory(request,groupId):
-    print "Inside creditHistory(request,groupid):"
+#@decryption_required
+@session_required
+def creditHistoryGroup(request,loanId):
+    loanId = loanId
+    print 'Inside creditHistoryGroup(request,loanId):'
     try:
-        bodyData = { "groupId" : str(groupId)}
-        serialized_data = sscoreClient._urllib2_request('workflowDetailView/CreditEnquiry', bodyData ,requestType='POST')
-        print "serialized_data"
-        print serialized_data
+        bodyData = { "loanId" : str(loanId)}
+        serialized_data = sscoreClient._urllib2_request('workflowDetailView/GroupCreditInquiry', bodyData ,requestType='POST')
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting Credit History.')
 
-def DocumentView(request,groupId):
-    print "Inside DocumentView(request,groupid):"
+#@decryption_required
+@session_required
+def DocumentView(request,loanId):
+    print "Inside DocumentView(request,loanId):"
     try:
-        bodyData = { "groupId" : str(groupId)}
-        serialized_data = sscoreClient._urllib2_request('workflowDetailView/GroupDocument', bodyData ,requestType='POST')
+        bodyData = { "loanId" : str(loanId)}
+        serialized_data = sscoreClient._urllib2_request('workflowDetailView/LoanGroupDocument', bodyData ,requestType='POST')
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('An expected error occurred while getting Documents')
 
 @csrf_exempt
+@session_required
 def updateKYCDetails(request):
     print "Inside updateKYCDetails(request):"
     try:
         if request.method == "POST":
             formData  = json.loads(request.body)
             bodyDataUpdation =  formData["formData"]
-            print "bodyDataUpdation"
-            print bodyDataUpdation
+
             bodymemberValidation =  formData["memValData"]
             taskId = formData["taskId"]
-            print "bodymemberValidation"
-            print bodymemberValidation
-            print "bodyDataUpdation"
-            print bodyDataUpdation
 
+            dataUpdateResponse = sscoreClient._urllib2_request('workflowEdit/updateMemberGroupLoan', bodyDataUpdation,
+                                                               requestType='POST')
             memberValResponse = sscoreClient._urllib2_request('workflowEdit/memberValidation',bodymemberValidation,requestType='POST')
-            print "memberValResponse"
-            print memberValResponse["data"]
 
             if memberValResponse["data"]["status"] != "fail":
                 if formData.has_key("message"):
                     message = {"message" : formData["message"]}
-                    print "message"
-                    print message
                     commentUpdate = camundaClient._urllib2_request('task/'+taskId+'/comment/create',message,requestType='POST')
-                    print "commentUpdate"
-                    print commentUpdate
-                dataUpdateResponse = sscoreClient._urllib2_request('workflowEdit/updateMemberGroupLoan',bodyDataUpdation,requestType='POST')
-                print "dataUpdateResponse"
-                print dataUpdateResponse
                 return HttpResponse(json.dumps(dataUpdateResponse), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while updating the KYC details.')
 
 
 @csrf_exempt
+@session_required
 def updateMemValidationStatus(request):
     print "Inside updateMemValidationStatus(request):"
     try:
@@ -174,32 +146,26 @@ def updateMemValidationStatus(request):
             taskId = formData["taskId"]
 
             memberValResponse = sscoreClient._urllib2_request('workflowEdit/memberValidation',bodymemberValidation,requestType='POST')
-            print "memberValResponse"
             if formData.has_key("message"):
                 message = {"message" : formData["message"]}
-                print "message"
-                print message
                 commentUpdate = camundaClient._urllib2_request('task/'+taskId+'/comment/create',message,requestType='POST')
-                print "commentUpdate"
-                print commentUpdate
             validationResponse =  memberValResponse
             return HttpResponse(json.dumps(validationResponse), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while updating the KYC details.')
 
-
+@session_required
 def creditHistory(request,groupId):
     print "Inside creditHistory(request,groupid):"
     try:
         bodyData = { "groupId" : str(groupId)}
         serialized_data = sscoreClient._urllib2_request('workflowDetailView/CreditEnquiry', bodyData ,requestType='POST')
-        print "serialized_data"
-        print  serialized_data
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting Credit History.')
 
 @csrf_exempt
+@session_required
 def updateUrl(request):
     print "Inside updateUrl(request):"
     try:
@@ -207,26 +173,24 @@ def updateUrl(request):
             formData  = json.loads(request.body)
             bodyData = formData["uploadData"]
             serialized_data = sscoreClient._urllib2_request('UploadDocument/add', bodyData ,requestType='POST')
-            print "serialized_data"
-            print serialized_data
             return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('An expected error occurred while Updating Url details.')
 
-
+#@decryption_required
 @csrf_exempt
+@session_required
 def loanDocument(request,loanTypeId):
     print "Inside getloanDocument(request,loanTypeId):"
     try:
         serialized_data = sscoreClient._urllib2_request('Master/LoanDocuments/'+str(loanTypeId),{},requestType='GET')
-        print "serialized_data"
-        print serialized_data
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         return helper.bad_request('Unexpected error occurred while getting loanDocument details.')
 
 
 @csrf_exempt
+@session_required
 def editUrl(request):
     print "Inside editUrl(request):"
     try:
@@ -234,17 +198,250 @@ def editUrl(request):
             formData  = json.loads(request.body)
             bodyData = formData["uploadData"]
             serialized_data = sscoreClient._urllib2_request('UploadDocument/update', bodyData,requestType='POST')
-            print "serialized_data editurl"
-            print serialized_data
             return HttpResponse(json.dumps(serialized_data),content_type="application/json")
     except ShgInvalidRequest, e:
-        return helper.bad_request('An expected error occurred while Editing Url details.')      
-	
+        return helper.bad_request('An expected error occurred while Editing Url details.')
+
+
+#@decryption_required
+@csrf_exempt
+@session_required
+def getLoanDetails(request, groupId, loanId):
+    print 'Inside getLoanDetails(request,groupId,loanId):'
+    try:
+        bodyData = {"groupId": str(groupId), "loanId": str(loanId), "entityType": "LOAN", "validationType": "POST"}
+        serialized_data = sscoreClient._urllib2_request('workflowDetailView/workflowLoanDetail', bodyData,
+                                                        requestType='POST')
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while getting getLoanDetails')
+
+@csrf_exempt
+@session_required
+def dropMemberDetail(request):
+    print "Inside dropMemberDetail(request):"
+    try:
+        if request.method == "POST":
+            formData = json.loads(request.body)
+            bodyData = formData["uploadData"]
+            serialized_data = sscoreClient._urllib2_request('workflowEdit/dropMember', bodyData, requestType='POST')
+            return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('An expected error occurred while  dropMemberDetail.')
+
+@csrf_exempt
+@session_required
+def updateloanDetail(request):
+    print "Inside updateloanDetail(request):"
+    try:
+        if request.method == "POST":
+            formData = json.loads(request.body)
+            bodyData = formData["uploadData"]
+            print "bodyData"
+            print json.dumps(bodyData)
+            serialized_data = sscoreClient._urllib2_request('workflowEdit/updateMemberLoan', bodyData,
+                                                            requestType='POST')
+            return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('An expected error occurred while updateloanDetail.')
+
+@csrf_exempt
+@session_required
+def approveLoan(request):
+    print "Inside approveLoan(request): "
+    try:
+        if request.method == "POST":
+            formData = json.loads(request.body)
+            bodyData = formData["loanData"]
+            taskId = formData["taskId"]
+            serialized_data = sscoreClient._urllib2_request('workflowEdit/loanValidation', bodyData,
+                                                            requestType='POST')
+            print "serialized_data-------------------------------"
+            print serialized_data
+            if serialized_data["code"] == 2043 :
+                processUpdate = { 'variables': { 'dispatchType' : { 'value': "Cheque" },
+                                                 'groupinstance': {'value': "creditapproved" },
+                                                 'loanAccNo'    : {'value': serialized_data["data"]["loanAccountNumber"] }
+                                                }
+                                }
+                taskComplete(request,processUpdate,taskId)
+            return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('An expected error occurred while approving loan.')
+
+#@decryption_required
+@session_required
+def loanAccNo(request,loanAccNumber,appGroupId,loanTypeName,groupName,funder,successMsg):
+    username = request.session["userName"]
+    print "funder"
+    print funder
+    userOfficeData = json.loads(request.session["userOfficeData"])
+    groupRole = userOfficeData["designation"]
+    userId = request.session["userId"]
+    return render_to_response("loanAccNumber.html",{"user":username,"successMsg":successMsg,"funder":json.dumps(funder),"userId":userId,"group":groupRole,"groupName": groupName,"appGroupId" :appGroupId,"loanTypeName":loanTypeName,"loanAccNo":loanAccNumber})
+
+
+#@decryption_required
+@session_required
+def getMemberFSR(request,memberId):
+    print 'Inside MemberFSR(request,memberId):'
+    try:
+        bodyData = { "memberId" : str(memberId)}
+        serialized_data = sscoreClient._urllib2_request('workflowDetailView/MemberFsr', bodyData ,requestType='POST')
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while getting Member FSR.')
+
+
+@session_required
+def getMemberComments(request, processId, loanId):
+    print 'Inside getLoanDetails(request,processId,loanId):'
+    try:
+        bodyData = {"processId": str(processId), "loanId": str(loanId)}
+        serialized_data = sscoreClient._urllib2_request('workflowDetailView/MemberComments', bodyData,
+                                                        requestType='POST')
+
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while getting getMemberComments')
+
+
+@session_required
+def getGroupComments(request, processId, loanId):
+    print 'Inside getGroupComments(request,processId,loanId):'
+    try:
+        bodyData = {"processId": str(processId), "loanId": str(loanId)}
+        serialized_data = sscoreClient._urllib2_request('workflowDetailView/GroupComments', bodyData,
+                                                        requestType='POST')
+
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while getting getGroupComments')
+
+@csrf_exempt
+@session_required
+def getLoanMemberPaymentHistory(request,memberId,groupId):
+    print 'Inside LoanMemberPaymentHistory(request,memberIds,groupId):'
+    try:
+        bodyData = { "memberIds" : [str(memberId)], "groupId" : str(groupId)}
+        serialized_data = sscoreClient._urllib2_request('workflowDetailView/LoanMemberPaymentHistory', bodyData ,requestType='POST')
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while getting Loan Member PaymentHistory.')
+
+@csrf_exempt
+@session_required
+def getLoanGroupPaymentHistory(request,groupId):
+    print 'Inside getLoanGroupPaymentHistory(request,memberIds,groupId):'
+    try:
+        bodyData = { "groupId" : str(groupId)}
+        serialized_data = sscoreClient._urllib2_request('workflowDetailView/AllMembersLoanPaymentHistory', bodyData ,requestType='POST')
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while getting Loan group PaymentHistory.')
+
+
+@csrf_exempt
+@session_required
+def generateLOS(request):
+    print 'Inside generateLOS(request):'
+    try:
+        if request.method == "POST":
+            formData = json.loads(request.body)
+            bodyData = formData["losData"]
+            if 'userOfficeData' in request.session:
+                userData = json.loads(request.session["userOfficeData"])
+                bodyData["officeTypeId"] =userData["officeTypeId"]
+                bodyData["officeId"] = userData["officeId"]
+            serialized_data = sscoreClient._urllib2_request('losDoc/generate', bodyData,
+                                                            requestType='POST')
+            return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while generating LOS.')
+
+@session_required
+def disburseDocsData(request,loanId):
+    print 'Inside disburseDocsData(request):'
+    try:
+        bodyData = {"loanId": str(loanId)}
+        serialized_data = sscoreClient._urllib2_request('ChequeDisbursement/MemberDetails', bodyData,
+                                                        requestType='POST')
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while getting disburse doc details')
+
+@csrf_exempt
+@session_required
+def updateDisburseMemberData(request):
+    print 'Inside updateDisburseMemberData(request):'
+    try:
+        if request.method == "POST":
+            formData = json.loads(request.body)
+            bodyData = formData["cheqData"]
+            serialized_data = sscoreClient._urllib2_request('ChequeDisbursement/SaveOrUpdateMemberDetails', bodyData,
+                                                        requestType='POST')
+            return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while updating disburse doc details')
+
+@csrf_exempt
+@session_required
+def confirmChqDisbursement(request):
+    print 'Inside confirmChqDisbursement(request):'
+    try:
+        if request.method == "POST":
+            formData = json.loads(request.body)
+            bodyData = formData["cheqData"]
+            taskId = formData["taskId"]
+            processUpdate = formData["processUpdate"]
+            print "processUpdate"
+            print processUpdate
+            serialized_data = sscoreClient._urllib2_request('ChequeDisbursement/MemberCancellation', bodyData,
+                                                            requestType='POST')
+            if serialized_data["code"] == 12002:
+                taskComplete(request, processUpdate, taskId)
+            return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while confirming disbursement')
+
+
+@session_required
+def chkTaskState(request,taskId):
+    print 'Inside chkTaskState(request):'
+    try:
+        serialized_data = camundaClient._urllib2_request('task/'+taskId,{},requestType='GET')
+        print "serialized_data"
+        print serialized_data
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return HttpResponse(json.dumps({"message":"No matching task with id "+taskId}), content_type="application/json")
+        
+        
+        
+@session_required
+def LoanActiveMemberCount(request,loanId):
+    print 'Inside LoanActiveMemberCount(request):'
+    try:
+        bodyData = {"loanId": str(loanId)}
+        serialized_data = sscoreClient._urllib2_request('workflowDetailView/LoanActiveMemberCount', bodyData,
+                                                        requestType='POST')
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while getting LoanActiveMemberCount ')
+        
+        
+        
 
 
 
-
-
-
-
+def getLoanAccNo(request,processId):
+    print 'Inside getLoanAccNo(request,processId):'
+    try:
+        bodyData = { "variableName": "loanAccNo", "processInstanceIdIn": [processId]  }
+        serialized_data = camundaClient._urllib2_request('variable-instance', bodyData, requestType='POST')
+        print "serialized_data"
+        print serialized_data[0]["value"]
+        return HttpResponse(json.dumps({"loanAccNo": serialized_data[0]["value"]}), content_type="application/json")
+    except ShgInvalidRequest, e:
+        return helper.bad_request('Unexpected error occurred while getting loanaccount number')
 

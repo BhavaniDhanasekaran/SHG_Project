@@ -2,15 +2,20 @@
 
 from django.core.urlresolvers import reverse
 from django.contrib import messages
-from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponseRedirect, HttpResponse
-from django.template import RequestContext
+from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from shgapp.utils.sscoreclient import SSCoreClient
+from shgapp.utils.helper import Helper
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.views import password_reset, password_reset_confirm
 from shgapp.forms import SignUpForm
-from django.template import RequestContext
+from django.views.decorators.csrf  import csrf_exempt
+import datetime
 
+import json
+helper = Helper()
+sscoreClient = SSCoreClient()
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -25,12 +30,57 @@ def signup(request):
             user = authenticate(username=username, password=password)
             login(request, user)
             messages.add_message(request, messages.SUCCESS, 'Your account were successfully created.')
-            #return HttpResponseRedirect('/' + username + '/')
             return HttpResponseRedirect('/')
     else:
         return render(request, 'auth/signup.html', { 'form': SignUpForm() })
 
+@csrf_exempt
 def signin(request):
+    print 'signin'
+    if 'userName' in request.session:
+        print 'authenticated'
+        return HttpResponseRedirect('/')
+    else:
+        print 'not authenticated'
+        if request.method == 'POST':
+            username = request.POST['username']
+            password = request.POST['password']
+
+            if username is not None:
+                bodyData = {"userName" : username, "password":password}
+                print "bodyDatadssdfsdfsd"
+                print bodyData
+                loginResponse = sscoreClient._urllib2_request('User/logIn', bodyData,
+                                                              requestType='POST')
+                print "loginResponse"
+                print loginResponse
+                if loginResponse["code"] == 5001:
+                    group = loginResponse["data"]["userOfficeDetails"]["designation"]
+                    userId = loginResponse["data"]["userId"]
+                    userName = loginResponse["data"]["userName"]
+                    request.session["userOfficeData"] = json.dumps(loginResponse["data"]["userOfficeDetails"])
+                    request.session["userName"] =  userName
+                    request.session["userId"] = userId
+                    request.session["userLogin"] = username
+                    request.session["loginTime"] = datetime.datetime.now()
+                    #return render(request, 'index.html', {"Message": "Successful login","group" : group, "userId" :userId,"user":userName})
+                    if 'next' in request.GET:
+                        return HttpResponseRedirect(request.GET['next'])
+                    else:
+                        return HttpResponseRedirect('/')
+                if loginResponse["code"] == 5002:
+                    message = loginResponse["data"]["logInStatus"]
+                    return render(request, 'auth/signin.html', {"Message": message})
+                else:
+                    return render(request, 'auth/signin.html', {"Message": "Invalid Username or Password. Try again."})
+            else:
+                messages.add_message(request, messages.ERROR, 'Username or password invalid.')
+                return render(request, 'auth/signin.html', {"Message" : "Invalid Username or Password. Try again."})
+        else:
+            return render(request, 'auth/signin.html')
+
+@csrf_exempt
+def signin_old(request):
     print 'signin'
     if request.user.is_authenticated():
         print 'authenticated'
@@ -41,9 +91,10 @@ def signin(request):
             username = request.POST['username']
             password = request.POST['password']
             user = authenticate(username=username, password=password)
-            
+
             if user is not None:
                 if user.is_active:
+                    request.session.set_expiry(request.session.get_expiry_age())
                     login(request, user)
                     if 'next' in request.GET:
                         return HttpResponseRedirect(request.GET['next'])
@@ -51,16 +102,20 @@ def signin(request):
                         return HttpResponseRedirect('/')
                 else:
                     messages.add_message(request, messages.ERROR, 'Your account is desactivated.')
-                    return render(request, 'auth/signin.html')
+                    return render(request, 'auth/signin.html', {"Message" : "Not an Active User"})
             else:
                 messages.add_message(request, messages.ERROR, 'Username or password invalid.')
-                return render(request, 'auth/signin.html')
+                return render(request, 'auth/signin.html', {"Message" : "Invalid Username or Password. Try again."})
         else:
             return render(request, 'auth/signin.html')
 
+
 def signout(request):
-    logout(request)
-    return HttpResponseRedirect('/')
+    request.session.flush()
+    '''for key in list(request.session.keys()):
+        print request.session[key]
+        del request.session[key]'''
+    return HttpResponseRedirect('/signin/')
 
 
 def reset(request):
@@ -75,3 +130,7 @@ def reset_confirm(request, uidb64=None, token=None):
 
 def success(request):
   return render(request, 'auth/success.html')
+
+def browserError(request):
+  return render(request, 'auth/browserError.html')
+

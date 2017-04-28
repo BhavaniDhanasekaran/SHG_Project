@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+
 {% block javascript %}
     <script>
         var group = '{{group | escapejs}}';
@@ -11,9 +12,11 @@
         });
 
     </script>
-    <script src="{% static 'datajs/loadTaskList.js' %}"></script>
+    <script src="/static/datajs/loadTaskList.js?v={{JS_VERSION}}"></script>
+
 {% endblock javascript %}
 <!-- PAGE CONTENT BEGINS -->
+
 {% block content %}
     {% if group == "DataSupportTeam" %}
         <!-- BOX1 BEGINS -->
@@ -23,10 +26,9 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="glyphicon glyphicon-edit fa-5x"></i>
+                                <i id="myTasks1"  class="fa-3x">0</i>
                             </div>
                             <div class="col-xs-9 text-right">
-                                <div id="myTasks1" class="huge"></div>
                                 <div>My Tasks!</div>
                             </div>
                         </div>
@@ -40,22 +42,19 @@
                     </a>
                 </div>
             </div>
-            <!-- BOX1 Ends -->
-            <!-- BOX2 BEGINS -->
             <div class="col-lg-3 col-md-6">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="glyphicon glyphicon-list-alt fa-5x"></i>
+                                <i id="KYC_Check1" class="fa-3x">0</i>
                             </div>
                             <div class="col-xs-9 text-right">
-                                <div id="KYC_Check1" class="huge"></div>
                                 <div>KYC Check</div>
                             </div>
                         </div>
                     </div>
-                    <a href="{% url 'KYCTaskList' %}">
+                    <a href="#" onclick="tasklistRedirect('KYC Check');">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -71,15 +70,14 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="glyphicon glyphicon-retweet fa-5x"></i>
+                                <i id="Query_Response1" class="fa-3x">0</i>
                             </div>
                             <div class="col-xs-9 text-right">
-                                <div id="Query_Response1" class="huge"></div>
                                 <div>Query Response!</div>
                             </div>
                         </div>
                     </div>
-                    <a href="#">
+                    <a href="#" onclick="tasklistRedirect('Query Response');">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -89,20 +87,18 @@
                 </div>
             </div>
         </div>
-        </div>
-        </div>
+
         <!-- BOX 4 ends -->
     {% endif %}
-    {% if group == "CLM_BM" or group == "CLM" %}
+    {% if group == "CMR" or group == "CLM" or group == "BM" %}
         <!-- BOX1 BEGINS -->
         <div class="row">
             <div class="col-lg-3 col-md-6">
                 <div class="panel panel-green">
                     <div class="panel-heading">
                         <div class="row">
-                            <div class="col-xs-3"> <i class="glyphicon glyphicon-edit fa-5x"></i> </div>
+                            <div class="col-xs-3"> <i id="myTasks1" class="fa-3x">0</i> </div>
                             <div class="col-xs-9 text-right">
-                                <div id="myTasks1" class="huge">0</div>
                                 <div>My Tasks</div>
                             </div>
                         </div>
@@ -115,15 +111,12 @@
                     </a>
                 </div>
             </div>
-            <!-- BOX1 Ends -->
-            <!-- BOX2 BEGINS -->
             <div class="col-lg-3 col-md-6">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <div class="row">
-                            <div class="col-xs-3"> <i class="glyphicon glyphicon-user fa-5x"></i> </div>
+                            <div class="col-xs-3"> <i id="Conduct_BAT-_Member_approval_in_CRM1" class="fa-3x">0</i> </div>
                             <div class="col-xs-9 text-right">
-                                <div id="Conduct_BAT-_Member_approval_in_CRM1"  class="huge">0</div>
                                 <div>BAT Approval</div>
                             </div>
                         </div>
@@ -142,9 +135,8 @@
                 <div class="panel panel-yellow">
                     <div class="panel-heading">
                         <div class="row">
-                            <div class="col-xs-3"> <i class="glyphicon glyphicon-cloud-upload fa-5x"></i> </div>
+                            <div class="col-xs-3"> <i id="Upload_loan_documents_in_Web_application1" class="fa-3x">0</i> </div>
                             <div class="col-xs-9 text-right">
-                                <div id="Upload_loan_documents_in_Web_application1"  class="huge">0</div>
                                 <div>Upload Documents</div>
                             </div>
                         </div>
@@ -163,10 +155,9 @@
                 <div class="panel panel-red">
                     <div class="panel-heading">
                         <div class="row">
-                            <div class="col-xs-3"> <i class="glyphicon glyphicon-share-alt fa-5x"></i> </div>
+                            <div class="col-xs-3"> <i id="Resolve_Data_Support_Team_Query1" class="fa-3x">0</i> </div>
                             <div class="col-xs-9 text-right">
-                                <div id="Resolve_Data_Support_Team_Query1" class="huge">0</div>
-                                <div>Query Raised</div>
+                                <div>Resolve Data Support Team Query</div>
                             </div>
                         </div>
                     </div>
@@ -179,12 +170,47 @@
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
+                <div class="panel panel-gray">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3"> <i id="Resolve_Credit_Team_Query1" class="fa-3x">0</i> </div>
+                            <div class="col-xs-9 text-right">
+                                <div>Resolve Credit Team Query</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" onclick="redirectToTaskPage('Resolve Credit Team Query');">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-gray">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3"> <i id="Resolve_Confirm_Disbursement_Query1" class="fa-3x">0</i> </div>
+                            <div class="col-xs-9 text-right">
+                                <div>Resolve Confirm Disbursement Query</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" onclick="tasklistRedirect('Resolve Confirm Disbursement Query');">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
                 <div class="panel panel-teal">
                     <div class="panel-heading">
                         <div class="row">
-                            <div class="col-xs-3"> <i class="glyphicon glyphicon-plus-sign fa-5x"></i> </div>
+                            <div class="col-xs-3"> <i id="Add_New_Members1" class="fa-3x">0</i> </div>
                             <div class="col-xs-9 text-right">
-                                <div id="Add_New_Members1" class="huge">0</div>
                                 <div>Add New Members</div>
                             </div>
                         </div>
@@ -197,18 +223,54 @@
                     </a>
                 </div>
             </div>
+
             <div class="col-lg-3 col-md-6">
                 <div class="panel panel-orange">
                     <div class="panel-heading">
                         <div class="row">
-                            <div class="col-xs-3"> <i class="glyphicon glyphicon-print fa-5x"></i> </div>
+                            <div class="col-xs-3"> <i id="Prepare_Loan_Documents1" class="fa-3x">0</i></div>
                             <div class="col-xs-9 text-right">
-                                <div id="Print_Loan_Documents_&_FSR1" class="huge">0</div>
-                                <div>Print Loan documents</div>
+                                <div>Prepare Loan documents</div>
                             </div>
                         </div>
                     </div>
-                    <a href="#" onclick="redirectToTaskPage('Print Loan Documents & FSR');">
+                    <a href="#" onclick="redirectToTaskPage('Prepare Loan Documents');">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3"> <i id="Generate_repayment_chart1" class="fa-3x">0</i></div>
+                            <div class="col-xs-9 text-right">
+                                <div>Generate repayment chart</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" onclick="redirectToTaskPage('Generate repayment chart');">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3"> <i id="Upload_disbursement_docs1" class="fa-3x">0</i></div>
+                            <div class="col-xs-9 text-right">
+                                <div>Upload Disbursement Docs</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" onclick="tasklistRedirect('Upload disbursement docs');">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                             <div class="clearfix"></div>
@@ -217,189 +279,9 @@
                 </div>
             </div>
         </div>
-        </div>
-        </div>
-        <!-- BOX 4 ends -->
-        <!--div class="row">
-            <div class="col-xs-12">
-                <!-- BOX5 BEGINS -->
-        <!--div class="row">
-            <div class="col-lg-3 col-md-6">
-                <div class="panel panel-green">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3"> <i class="fa fa-tasks fa-5x"></i> </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge">26</div>
-                                <div>Groups</div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="ds-datecount.html">
-                        <div class="panel-footer">
-                            <span class="pull-left">View Details</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
-                </div>
-            </div-->
-        <!-- BOX5 Ends -->
-        <!-- BOX6 Ends -->
-        <!--div class="col-lg-3 col-md-6">
-            <div class="panel panel-green">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-3"> <i class="fa fa-tasks fa-5x"></i> </div>
-                        <div class="col-xs-9 text-right">
-                            <div class="huge">26</div>
-                            <div>Generate Los </div>
-                        </div>
-                    </div>
-                </div>
-                <a href="ds-datecount.html">
-                    <div class="panel-footer">
-                        <span class="pull-left">View Details</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                        <div class="clearfix"></div>
-                    </div>
-                </a>
-            </div>
-        </div-->
-        <!-- BOX56 Ends -->
-        <!-- BOX57 start -->
-        <!--div class="col-lg-3 col-md-6">
-            <div class="panel panel-green">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-3"> <i class="fa fa-tasks fa-5x"></i> </div>
-                        <div class="col-xs-9 text-right">
-                            <div class="huge">26</div>
-                            <div>loans </div>
-                        </div>
-                    </div>
-                </div>
-                <a href="ds-datecount.html">
-                    <div class="panel-footer">
-                        <span class="pull-left">View Details</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                        <div class="clearfix"></div>
-                    </div>
-                </a>
-            </div>
-        </div-->
-        <!-- BOX57 start -->
-        <!--/div>
-        <div class="row">
-            <div class="col-xs-12">
-                <h3 class="header smaller lighter green">Pending Counts</h3>
-            </div>
-        </div-->
-        <!-- BOX1 BEGINS -->
-        <!--div class="row">
-            <div class="col-lg-3 col-md-6">
-                <div class="panel panel-green">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3"> <i class="fa fa-tasks fa-5x"></i> </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge">26</div>
-                                <div>Pending - Member Additon</div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="ds-datecount.html">
-                        <div class="panel-footer">
-                            <span class="pull-left">View Details</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
-                </div>
-            </div-->
-        <!-- BOX1 Ends -->
-        <!-- BOX2 BEGINS -->
-        <!--div class="col-lg-3 col-md-6">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-3"> <i class="fa fa-comments fa-5x"></i> </div>
-                        <div class="col-xs-9 text-right">
-                            <div class="huge">12</div>
-                            <div>Pending - CB and KYC Check</div>
-                        </div>
-                    </div>
-                </div>
-                <a href="#">
-                    <div class="panel-footer">
-                        <span class="pull-left">View Details</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                        <div class="clearfix"></div>
-                    </div>
-                </a>
-            </div>
-        </div-->
-        <!-- BOX2 BEGINS -->
-        <!-- BOX3 BEGINS -->
-        <!--div class="col-lg-3 col-md-6">
-            <div class="panel panel-yellow">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-3"> <i class="fa fa-shopping-cart fa-5x"></i> </div>
-                        <div class="col-xs-9 text-right">
-                            <div class="huge">2</div>
-                            <div>Pending- BAT</div>
-                        </div>
-                    </div>
-                </div>
-                <a href="#">
-                    <div class="panel-footer">
-                        <span class="pull-left">View Details</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                        <div class="clearfix"></div>
-                    </div>
-                </a>
-            </div>
-        </div-->
-        <!-- BOX3BEGINS -->
-        <!-- BOX3 BEGINS -->
-        <!--div class="col-lg-3 col-md-6">
-            <div class="panel panel-yellow">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-3"> <i class="fa fa-shopping-cart fa-5x"></i> </div>
-                        <div class="col-xs-9 text-right">
-                            <div class="huge">2</div>
-                            <div>Pending - RM Approval</div>
-                        </div>
-                    </div>
-                </div>
-                <a href="#">
-                    <div class="panel-footer">
-                        <span class="pull-left">View Details</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                        <div class="clearfix"></div>
-                    </div>
-                </a>
-            </div>
-        </div-->
-        <!-- BOX3BEGINS -->
-        <!--div class="row">
-            <div class="col-lg-3 col-md-6">
-                <div class="panel panel-green">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3"> <i class="fa fa-tasks fa-5x"></i> </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge">26</div>
-                                <div>Pending - Credit Team Approval</div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="ds-datecount.html">
-                        <div class="panel-footer">
-                            <span class="pull-left">View Details</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
-                </div>
-            </div-->
-        <!-- BOX3ENDS -->
+
     {% endif %}
-    {% if group == "RM" %}
+    {% if group == "RM" or  group == "rm" %}
         <!-- BOX1 BEGINS -->
         <div class="row">
             <div class="col-lg-3 col-md-6">
@@ -407,15 +289,14 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="glyphicon glyphicon-edit fa-5x"></i>
+                                <i id="myTasks1" class="fa-3x">0</i>
                             </div>
                             <div class="col-xs-9 text-right">
-                                <div class="huge">26</div>
                                 <div>My Tasks</div>
                             </div>
                         </div>
                     </div>
-                    <a href="{% url 'dcount' %}">
+                    <a href="{% url 'assignedTaskList' %}">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -424,22 +305,20 @@
                     </a>
                 </div>
             </div>
-            <!-- BOX1 Ends -->
-            <!-- BOX2 BEGINS -->
+
             <div class="col-lg-3 col-md-6">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="glyphicon glyphicon-check fa-5x"></i>
+                                <i id="Approve_or_Reject_Group1" class="fa-3x">0</i>
                             </div>
                             <div class="col-xs-9 text-right">
-                                <div class="huge">12</div>
-                                <div>Approve/Reject Groups</div>
+                                <div>Approve or Reject Group</div>
                             </div>
                         </div>
                     </div>
-                    <a href="#">
+                    <a href="#" onclick="redirectToTaskPage('Approve or Reject Group');">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -448,57 +327,8 @@
                     </a>
                 </div>
             </div>
-            <!-- BOX2 BEGINS -->
-            <!-- BOX3 BEGINS -->
-            <!--div class="col-lg-3 col-md-6">
-                <div class="panel panel-yellow">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-shopping-cart fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge">124</div>
-                                <div>Query Raised!</div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="#">
-                        <div class="panel-footer">
-                            <span class="pull-left">View Details</span>
-                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
-                </div>
-            </div-->
-            <!-- BOX3BEGINS -->
-            <!-- BOX 4BEGINS -->
-            <!--div class="col-lg-3 col-md-6">
-                <div class="panel panel-red">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-support fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge">13</div>
-                                <div>Completed Task</div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="#">
-                        <div class="panel-footer">
-                            <span class="pull-left">View Details</span>
-                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
-                </div>
-            </div-->
         </div>
-        </div>
-        </div>
+
         <!-- BOX 4 ends -->
     {% endif %}
     {% if group == "CreditTeam" %}
@@ -509,15 +339,14 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="glyphicon glyphicon-edit fa-5x"></i>
+                                <i id="myTasks1" class="fa-3x">0</i>
                             </div>
                             <div class="col-xs-9 text-right">
-                                <div class="huge">26</div>
                                 <div>My Tasks</div>
                             </div>
                         </div>
                     </div>
-                    <a href="#">
+                    <a href="{% url 'assignedTaskList' %}">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -526,22 +355,20 @@
                     </a>
                 </div>
             </div>
-            <!-- BOX1 Ends -->
-            <!-- BOX2 BEGINS -->
+
             <div class="col-lg-3 col-md-6">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="fa fa-support fa-5x"></i>
+                                <i id="Proposal_scrutiny1" class="fa-3x">0</i>
                             </div>
                             <div class="col-xs-9 text-right">
-                                <div class="huge">13</div>
-                                <div>Scrunity Task</div>
+                                <div>Proposal Scrutiny</div>
                             </div>
                         </div>
                     </div>
-                    <a href="#">
+                    <a href="#" onclick="tasklistRedirect('Proposal scrutiny');">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -555,15 +382,14 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="glyphicon glyphicon-share-alt fa-5x"></i>
+                                <i  id="Approve_Loan1"  class="fa-3x">0</i>
                             </div>
                             <div class="col-xs-9 text-right">
-                                <div class="huge">12</div>
-                                <div>Raise Query</div>
+                                <div>Approve Loan</div>
                             </div>
                         </div>
                     </div>
-                    <a href="#">
+                    <a href="#" onclick="redirectToTaskPage('Approve Loan');">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -579,15 +405,56 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="glyphicon glyphicon-retweet fa-5x"></i>
+                                <i id="BM_Reply1" class="fa-3x">0</i>
                             </div>
                             <div class="col-xs-9 text-right">
-                                <div class="huge">124</div>
-                                <div>Query Response</div>
+                                <div>BM Reply</div>
                             </div>
                         </div>
                     </div>
-                    <a href="#">
+                    <a href="#" onclick="tasklistRedirect('BM Reply');">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-gray">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i id="Confirm_disbursement1"  class="fa-3x">0</i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div>Confirm disbursement</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" onclick="tasklistRedirect('Confirm disbursement');">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+             <div class="col-lg-3 col-md-6">
+                <div class="panel panel-teal">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i id="Confirm_Disbursement_Query_Response1"  class="fa-3x">0</i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div>Confirm Disbursement Query Response</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" onclick="tasklistRedirect('Confirm Disbursement Query Response');">
                         <div class="panel-footer">
                             <span class="pull-left">View Details</span>
                             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -598,61 +465,7 @@
             </div>
             <!-- BOX3BEGINS -->
             <!-- BOX 4BEGINS -->
+        </div>
 
-
-        </div>
-        </div>
-        </div>
-        <!-- BOX 4 ends -->
-        <div class="row">
-        <div class="col-xs-12">
-        <!-- BOX5 BEGINS -->
-        <div class="row">
-            <div class="col-lg-3 col-md-6">
-                <div class="panel panel-teal">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="glyphicon glyphicon-remove-sign fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge">26</div>
-                                <div>Loan/Cheque Cancel</div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="ds-datecount.html">
-                        <div class="panel-footer">
-                            <span class="pull-left">View Details</span>
-                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <!-- BOX5 Ends -->
-            <div class="col-lg-3 col-md-6">
-                <div class="panel panel-orange">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="glyphicon glyphicon-file fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge">26</div>
-                                <div>Disbursed Doc</div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="ds-datecount.html">
-                        <div class="panel-footer">
-                            <span class="pull-left">View Details</span>
-                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
     {% endif %}
 {% endblock content %}

@@ -3,3 +3,5 @@ psycopg2
 urllib2
 requests
 Pillow
+boto3
+django-session-security

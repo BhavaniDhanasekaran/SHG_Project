@@ -1,30 +1,27 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block javascript %}
-    <script src="{% static 'datajs/loadTaskList.js' %}"></script>
-    <script src="{% static 'datajs/grouplist.js' %}"></script>
+    <script src="/static/datajs/loadTaskList.js?v={{JS_VERSION}}"></script>
+    <script src="/static/datajs/grouplist.js?v={{JS_VERSION}}"></script>
     <script>
         var taskList    = '{{ taskList | escapejs }}';
         var dateFrom = '{{ dateFrom | escapejs }}';
         var dateTo = '{{ dateTo | escapejs }}';
+        var userId = '{{ userId | escapejs }}';
         var taskName = '{{ taskName | escapejs }}';
         var group = '{{ group | escapejs }}';
 
-        console.log(taskName,group);
         if(taskList){
             taskList = JSON.parse(taskList);
         }
-        //groupTaskList = JSON.parse(groupTaskList);
         $(document).ready(function(){
-            if(dateFrom && dateTo){
-                KYCTasksGroupByDate(dateFrom,dateTo);
+            console.log("taskName",taskName);
+            if(taskName != "Query Response" && taskName != "Confirm disbursement" && taskName != "Confirm Disbursement Query Response" && taskName != "Upload disbursement docs" && taskName != "Resolve Confirm Disbursement Query" && taskName != "KYC Check" && taskName != "Proposal scrutiny" && taskName != "BM Reply"){
+	         console.log(taskName );
+		  getTasksByTaskName(taskName);
             }
-            if(taskName){
-                if(group == "CLM_BM" || group == "CLM"){
-                    getBMTasksByTaskName(taskName);
-
-                }
-            }
+            else{
+                getTaskList(taskName);            }
             taskCount();
             loadUnassignedTaskList(taskList);
 
@@ -39,7 +36,7 @@
         <div class="widget-header">
             <h5 class="widget-title bigger lighter">
                 <i class="ace-icon fa fa-table"></i>
-                Task List
+                Task List - <span id="taskName">{{ taskName }} </span>
             </h5>
             <div class="widget-toolbar widget-toolbar-light no-border">
                 <select id="simple-colorpicker-1" class="hide">
@@ -69,4 +66,8 @@
             </div>
         </div>
     </div>
+        </br>
+        </br>
+    </br>
+    </br>
 {% endblock content %}

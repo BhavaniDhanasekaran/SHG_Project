@@ -1,0 +1,95 @@
+{% load staticfiles %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta charset="utf-8" />
+        <title>404 Error Page </title>
+        <meta name="description" content="404 Error Page" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+        <!-- bootstrap & fontawesome -->
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+        <link rel="stylesheet" href="{% static  'font-awesome/4.5.0/css/font-awesome.min.css' %}" />
+        <!-- page specific plugin styles -->
+        <!-- text fonts -->
+        <link rel="stylesheet" href="{% static 'css/fonts.googleapis.com.css' %}" />
+        <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+        <script src="{% static 'js/bowser.js' %}"></script>
+        <!-- ace styles -->
+        <link rel="stylesheet" href="{% static 'css/ace.min.css' %}" class="ace-main-stylesheet"
+            id="main-ace-style" />
+        <script>
+            $(document).ready(function(){
+
+                    $("#browser").html(bowser.name);
+                    $("#version").html(bowser.version);
+
+            });
+        </script>
+    </head>
+    <body class="no-skin" style="background:#f5f5f5">
+        <div class="row">
+            <div class="col-xs-12">
+                <!-- PAGE CONTENT BEGINS -->
+                <div class="error-container">
+                    <div class="well" style="border:none;">
+                        <h1 class="grey lighter smaller">
+                            <span class="blue center bigger-150">
+                            OOPS !
+                            </span><br><br>
+                            <span class="blue bigger-125">
+                            <i class="ace-icon glyphicon glyphicon-globe"></i> Your browser is no longer supported
+                            </span>
+                        </h1>
+                        <hr />
+                        <div>
+                            <form class="form-search">
+                            </form>
+                            <div class="space"></div>
+                            <b>
+                                <h4 class="lighter">Your Browser Information:</h4>
+                            </b>
+                            <ul class="list-unstyled spaced inline bigger-110 margin-15">
+                                <li>
+                                    <h4 class="lighter">Browser Name : <font color="red" id="browser" ></font></h4>
+                                </li>
+                                <li>
+                                    <h4 class="lighter">Browser Version : <font color="red" id="version" ></font></h4>
+                                </li>
+                            </ul>
+                        </div>
+                        <b>
+                            <h3 class="lighter smaller">To use this site, please upgrade to the latest version of following browsers </h3>
+                        </b>
+
+                        <hr />
+                        <img style="cursor:none;" src="/static/images/chrome2.png">+55
+                        <img style="cursor:none;"  src="/static/images/firefox3.png">+50
+                        <div class="space"></div>
+                    </div>
+                </div>
+                <!-- PAGE CONTENT ENDS -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+        <div class="footer">
+            <div class="footer-inner">
+                <div class="footer-content">
+                    <span class="bigger-120">
+                   <span class="bolder">Madura Microfinance Ltd. © 2017 All rights reserved </span>&nbsp&nbsp<br>
+                    <span class="bolder" style="font-size:smaller">SHG-BPM Version-1</span>
+                     <span class="bolder" style="font-size:smaller">
+                    <img style ="cursor:auto" src="/static/images/chrome_icon.png"><span style="font-size:x-small">+55</span>
+                           <img style ="cursor:auto" src="/static/images/firefox_icon.png"><span style="font-size:x-small">+50</span>
+                    </span>
+                    &nbsp; &nbsp;
+                </div>
+            </div>
+        </div>
+
+        </div><!-- /.main-container -->
+        <!-- basic scripts -->
+    </body>
+</html>

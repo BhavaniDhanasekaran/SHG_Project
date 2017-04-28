@@ -1,22 +1,76 @@
 <div id="mySidenav" class="sidenav">
     <div class="table-header">
-        <button type="button" class="closebtn" onClick="closeNav()" data-dismiss="modal" aria-hidden="true">
+        <button type="button" class="closebtn" onClick="closeNav()"
+            data-dismiss="modal" aria-hidden="true">
         <span class="white">&times;</span>
         </button>
         Queries
     </div>
-    <div class="modal-body">
+    <div class="modal-body" style="padding:1px;">
         <!--- query resolution started -->
-        <div class="widget-box transparent">
-            <div class="widget-header widget-header-small">
-                <h4 class="widget-title blue smaller">
-                    <i class="ace-icon fa fa-rss orange"></i>
-                    Recent Queries
-                </h4>
-            </div>
+        <div class="transparent">
             <div class="widget-body">
                 <div class="widget-main padding-8">
-                    <div id="profile-feed-1" class="profile-feed">
+                    <div  class="profile-feed">
+                        <!--according Menu start-->
+                        <div class="panel-group" id="accordion" role="tablist"
+                            aria-multiselectable="true">
+                            <div class="panel panel-custom-horrible-red widget-box" id="widget-box-2" >
+                                <div class="panel-heading widget-header" role="tab" id="headingTwo">
+                                    <a class="collapsed" role="button"
+                                        data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"
+                                        aria-expanded="false" aria-controls="collapseTwo">
+                                    <i class="more-less glyphicon glyphicon-plus"></i>
+                                    Group
+                                    </a>
+                                    <div class="widget-toolbar" style="position:static">
+                                        <a  href="#collapseTwo" data-action="reload" class="collapsed" role="button"
+                                        data-parent="#accordion" aria-expanded="true" onclick="reloadComments(2);"
+                                        aria-controls="collapseTwo"> <i style="color:white;" class="ace-icon fa fa-refresh"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div id="collapseTwo" class="widget-body panel-collapse collapse"
+                                    role="tabpanel" aria-labelledby="headingTwo">
+                                    <div class="panel-body">
+                                        <div id='ajax_loader2' style=" display: none;">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <img style="height:70px;width:90px;margin-left:10px" src="/static/images/ajax-loader.gif" ></img>
+                                        </div>
+                                        <div id="profile-feed-2">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-custom-horrible-red widget-box" id="widget-box-1" >
+                                <div class="panel-heading widget-header" role="tab" id="headingOne">
+                                    <a class="collapsed" role="button" data-toggle="collapse"
+                                    data-parent="#accordion" href="#collapseOne"
+                                    aria-expanded="true"
+                                    aria-controls="collapseOne">
+                                    <i class="more-less glyphicon glyphicon-plus"></i>
+                                    Member
+
+                                    </a><div class="widget-toolbar" style="position:static">
+                                    <a  href="#collapseOne" data-action="reload" class="collapsed" role="button"
+                                    data-parent="#accordion" aria-expanded="true" onclick="reloadComments(1);"
+                                    aria-controls="collapseOne"> <i style="color:white;" class="ace-icon fa fa-refresh"></i> </a></div>
+                                </div>
+                                <div id="collapseOne" class="widget-body panel-collapse collapse"
+                                    role="tabpanel" aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <div id='ajax_loader1' style=" display: none;">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <img style="height:70px;width:90px;margin-left:10px" src="/static/images/ajax-loader.gif"></img>
+                                        </div>
+                                        <div id="profile-feed-1">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- panel-group -->
+                        <!---according Menu Ends--><br>
                     </div>
                 </div>
             </div>
@@ -25,25 +79,16 @@
 </div>
 </div>
 {% block javascript %}
-<script type="text/javascript">
-    jQuery(function($) {
-        $('.modal.aside').ace_aside();
-
-        $('#aside-inside-modal').addClass('aside').ace_aside({container: '#my-modal > .modal-dialog'});
-
-        $('#right-menu').modal('show')
-
-        $(document).one('ajaxloadstart.page', function(e) {
-            //in ajax mode, remove before leaving page
-            $('.modal.aside').remove();
-            $(window).off('.aside')
-        });
+<script>
+    function toggleIcon(e) {
+      $(e.target)
+          .prev('.panel-heading')
+          .find(".more-less")
+          .toggleClass('glyphicon-plus glyphicon-minus');
+    }
+    $('.panel-group').on('hidden.bs.collapse', toggleIcon);
+    $('.panel-group').on('shown.bs.collapse', toggleIcon);
 
 
-        //make content sliders resizable using jQuery UI (you should include jquery ui files)
-        //$('#right-menu > .modal-dialog').resizable({handles: "w", grid: [ 20, 0 ], minWidth: 200, maxWidth: 600});
-
-        $('#right-menu > .modal-dialog').css("width", "300");
-    })
 </script>
 {% endblock  %}

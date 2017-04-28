@@ -1,0 +1,96 @@
+{% load staticfiles %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta charset="utf-8" />
+        <title>Madura Micro Finance</title>
+        <link rel="icon" type="image/png" href="{% static 'images/favicon.ico' %}" />
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min_errorpage.css' %}" />
+
+        <link rel="stylesheet" href="{% static  'font-awesome/4.5.0/css/font-awesome.min.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/fonts.googleapis.com.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/ace.min.css' %}" class="ace-main-stylesheet" id="main-ace-style" />
+        <!--[if lte IE 9]>
+        <link rel="stylesheet" href="{% static 'css/ace-part2.min.css'  %}" class="ace-main-stylesheet"/>
+        <![endif]-->
+        <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css'  %}" />
+        <link rel="stylesheet" href="{% static 'css/ace-skins.min.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/ace-rtl.min.css'  %}" />
+        <link rel="stylesheet" href="{% static 'css/icon.min.css'  %}" />
+        <link rel="stylesheet" href="{% static 'css/responsible_table.css'  %}" />
+        <link rel="stylesheet" href="{% static 'css/comments.css'  %}" />
+        <link type="text/css" href="/static/css/jquery-confirm.css" rel="stylesheet"  />
+        <!--[if lte IE 9]>
+        <link rel="stylesheet" href="{% static 'css/ace-ie.min.css'  %}" />
+        <![endif]-->
+        <script src="/static/js/jquery-2.1.4.min.js?v={{JS_VERSION}}"></script>
+        <script src="/static/js/ace-extra.min.js?v={{JS_VERSION}}"></script>
+
+        <script src="/static/js/jquery-2.1.4.min.js?v={{JS_VERSION}}">    </script>
+
+        <script src="{% static 'js/datatables.min.js' %}"></script>
+        <script src="{% static 'js/dataTables.fixedHeader.min.js' %}"></script>
+        <script src="{% static 'js/fnPagingInfo.js' %}"></script>
+        <script src="{% static 'js/jquery.imagebox.js' %}"></script>
+        <script src="/static/js/bootstrap.min.js?v={{JS_VERSION}}"></script>
+        <script src="/static/js/jquery-confirm.js?v={{JS_VERSION}}"></script>
+        <script src="/static/js/ace-elements.min.js?v={{JS_VERSION}}"></script>
+        <script src="/static/js/ace.min.js?v={{JS_VERSION}}"></script>
+        <script src="/static/js/jquery-ui.min.js?v={{JS_VERSION}}"></script>
+        <script src="{% static 'js/jquery-file-upload/vendor/jquery.ui.widget.js' %}"></script>
+        <script src="{% static 'js/jquery-file-upload/jquery.iframe-transport.js' %}"></script>
+        <script src="{% static 'js/jquery-file-upload/jquery.fileupload.js' %}"></script>
+
+        <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+        <script src="{% static 'js/jquery.dataTables.bootstrap.min.js' %}"></script>
+        <script src="{% static 'js/dataTables.buttons.min.js' %}"></script>
+        <script src="{% static 'js/buttons.flash.min.js' %}"></script>
+        <script src="{% static 'js/buttons.html5.min.js' %}"></script>
+        <script src="{% static 'js/buttons.print.min.js' %}"></script>
+        <script src="{% static 'js/buttons.colVis.min.js' %}"></script>
+        <script src="{% static 'js/dataTables.select.min.js' %}"></script>
+        <script src="{% static 'js/moment.min.js' %}"></script>
+
+        {% block javascript %}
+        {% endblock %}
+        <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+        <!--[if lte IE 8]>
+        <script src="{% static 'js/html5shiv.min.js' %}"></script>
+        <script src="{% static 'js/respond.min.js' %}"></script>
+        <![endif]-->
+    </head>
+    <!-- Header start -->
+    <body class="no-skin">
+        <!-- side bar start -->
+        {% include 'header.html' %}
+        {% include 'sidebar.html' %}
+        <!-- body start  -->	
+        <div class="page-content">
+            <div class="row">
+                <div class="col-xs-12">
+                    {% block content %}
+                    {% endblock content %}
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+        <div class="popup" id="loading" style="display:none">
+        	<div class="loading">
+        		<img style="width:10%;margin-top:20%;" src="/static/images/madura_logo.gif">
+                <div style="padding-top:1%;">
+                    <label style="padding-top:1%;font-weight:bold;"></label>
+                </div>
+		</div>
+	</div>
+    {% include 'footer.html' %}
+    </div>
+    <!--[if !IE]> -->
+    <!-- inline scripts related to this page -->
+    </body>
+</html>

@@ -91,6 +91,12 @@ li.divider:before {
     margin: 0;
     padding: 8px 20px 24px
 }
+.page-content1 {
+    background-color: #FFF;
+    position: relative;
+    margin: 0;
+    /*padding: 8px 20px 24px*/
+}
 .page-header {
     margin: 0 0 12px;
     border-bottom: 1px dotted #E2E2E2;
@@ -5119,7 +5125,9 @@ fieldset[disabled] .btn:hover {
 .btn-primary.focus,
 .btn-primary:focus {
     background-color: #428BCA!important;
-    border-color: #428BCA
+    border-color: #428BCA;
+    cursor:pointer;
+
 }
 .btn-primary.focus:hover,
 .btn-primary:active:hover,
@@ -7074,7 +7082,7 @@ fieldset[disabled] .btn-white.btn-grey:hover {
 .label.arrowed,
 .label.arrowed-in {
     position: relative;
-    z-index: 1
+    /*z-index: 1*/
 }
 .label.arrowed-in:before,
 .label.arrowed:before {
@@ -7092,7 +7100,7 @@ fieldset[disabled] .btn-white.btn-grey:hover {
 .label.arrowed-in-right,
 .label.arrowed-right {
     position: relative;
-    z-index: 1
+    /*z-index: 1*/
 }
 .label.arrowed-in-right:after,
 .label.arrowed-right:after {
@@ -8392,6 +8400,7 @@ textarea.autosize-transition {
     -webkit-transition-duration: "height 0.2s";
     transition-duration: "height 0.2s"
 }
+/*
 .limiterBox {
     border: 1px solid #222;
     border-top: none;
@@ -8416,7 +8425,34 @@ textarea.autosize-transition {
     border-color: transparent transparent #333;
     border-style: solid;
     border-width: 0 8px 8px
+}*/
+
+.limiterBox {
+    border: 1px solid #222;
+    border-top: none;
+    background-color: #333;
+    padding: 3px 6px;
+    font-size: 13px;
+    color: #FFF;
+    margin-top: -80px
 }
+.limiterBox:after {
+    display: none
+}
+.limiterBox:before {
+    display: block;
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    top: 25px;
+    left: 50%;
+    margin-left: -5px;
+    border-color: transparent transparent #333;
+    border-style: solid;
+    border-width: 0 8px 8px
+}
+
 select option,
 select.form-control option {
     padding: 3px 4px 5px
@@ -9844,7 +9880,7 @@ textarea.input-transparent:focus {
     border-color: #C5D0DC #C5D0DC transparent;
     border-top: 2px solid #4C8FBD;
     background-color: #FFF;
-    z-index: 1;
+    /*z-index: 1;*/
     line-height: 18px;
     margin-top: -1px;
     box-shadow: 0 -2px 3px 0 rgba(0, 0, 0, .15)
@@ -10587,7 +10623,7 @@ tr.detail-row>td {
     filter: progid: DXImageTransform.Microsoft.gradient(enabled=false)
 }
 .widget-color-blue {
-    border-color: #f7953d  /*  previous color 307ECC */
+    /*border-color: #f7953d  /*  previous color 307ECC */
 }
 .widget-color-blue>.widget-header {
     background: #f7953d;    /*  previous color 307ECC */
@@ -18177,7 +18213,7 @@ input.typeahead.scrollable~.tt-menu {
     opacity: 1
 }
 .btn.btn-app.ace-settings-btn.btn-xs {
-    width: 142px
+    width: 50px
 }
 .ace-settings-box {
     display: block;
@@ -19264,3 +19300,36 @@ css
   opacity: 0.6;
 } 
 
+.panel-default > .panel-heading {
+  color: #00000;
+  background-color: #f7953d; /* D15B47 */
+  border-color: #ddd;
+  font-size:13px;
+  font-weight:bold;
+
+}
+
+.panel-custom-horrible-red {
+    border-color: #d12e2a;
+}
+.panel-custom-horrible-red > .panel-heading {
+    background: #d12e2a;
+
+}
+
+
+/*
+css
+*/
+.container{
+  text-align: center;
+}
+.container .img{
+  width: 500px;
+  height: 300px;
+  padding: 5px;
+}
+.container .img:hover, .container .img:hover{
+  cursor: pointer;
+  opacity: 0.6;
+}

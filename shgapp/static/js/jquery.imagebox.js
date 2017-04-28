@@ -1,19 +1,24 @@
-
 (function($){
+   var  rotateDeg = 0;
   $.fn.imageBox = function(options){
+    
     var options = $.extend({
       objClicked: '.img',      
       rotateDirection: 'right' 
     }, options);   
     var obj = this, objClicked = options.objClicked, fileName = options.fileName, list_images = [];
+    //var rotateDeg=0;
+   
+ 
 
     initHtml(obj);
     initCss(obj);
 
     $(objClicked).on('click', function(){
-      var _url = $(this).data("url"), current = 0;
+          var _url = $(this).attr('data-original'), current = 0;
+      //var _url = $(this).data("url"), current = 0;
       console.log(_url);
-    
+
       if(list_images.length > 0){
         list_images.length = 0;
       }
@@ -26,22 +31,27 @@
         list_images.push(_src);
       });
       if(typeof(fileName) == 'undefined'){
-        $('.modal-title').text('Image Preview');
+        $('.modal-title').text('Document Preview');
       }else{
         $('.modal-title').text($(fileName).text());
       }
-      $('#img-preview').html('<img src="'+ _url +'" width="500px" height="350px" class="image-box" style="cursor: move;"></img>')
+      $('#img-preview').html('<img src="'+ _url +'" width="350px" height="350px" class="image-box" style="cursor: move;"></img>')
       $('#img-preview').attr({'current': current});
       $(obj).find('#unbind-pos').modal('show');
+
+      rotateDeg = 0;
+       _url ="";
+
     });
 
     btnCtrlImgEvent(options, list_images);
   };
 
-  var rotateDeg = 0;
+
 
   function initHtml(obj){
-    var div = $('<div id="unbind-pos" class="modal fade" data-backdrop="false" data-modal="false" style="display:none;" aria-hidden="true"></div>'); 
+
+    var div = $('<div id="unbind-pos" class="modal fade" data-backdrop="false" data-modal="false" style="display:none;" aria-hidden="true"></div>');
     div.append('<div class="modal-dialog">' +
                   '<div class="modal-content">'+
                         '<div class="modal-header">'+
@@ -50,22 +60,20 @@
                         '</div>'+
                         '<div style="min-height: 350px;max-height: 500px;" class="modal-body">'+
                             '<div id="img-preview"></div>'+
+                             '<br>'+
                             '<div class="img-op">'+
-                                '<span class="btn btn-primary zoom-in">Zoom In</span>'+
-                                '<span class="btn btn-primary zoom-out">Zoom Out</span>'+
-                                '<span class="btn btn-primary rotate">Rotate</span>'+
-                                '<br>'+
-                                '<span role="prev" class="btn btn-primary switch">Prev</span>'+
-                                '<span role="next" class="btn btn-primary switch">Next</span>'+
+                                '<span class="btn-sm btn-primary zoom-in">Zoom In</span>&nbsp;'+
+                                '<span class="btn-sm btn-primary zoom-out">Zoom Out</span>&nbsp;'+
+                                '<span class="btn-sm btn-primary rotate">Rotate</span>&nbsp;'+
+                                '<span role="prev" class="btn-sm  btn-primary switch">Prev</span>&nbsp;'+
+                                '<span role="next" class="btn-sm  btn-primary switch">Next</span>'+
                             '</div>'+
                         '</div>'+
-                        '<div class="modal-footer">'+
-                            '<button data-dismiss="modal" class="btn btn-default" type="button">Close</button>'+
-                        '</div>'+
+
                   '</div>'+
                 '</div>');
     $(obj).append(div);
-    
+
   };
 
 
@@ -78,7 +86,8 @@
     });
     $(obj).find('.img-op').css({
       'margin-top': '5px',
-      'text-align': 'center'
+      'text-align': 'center',
+      'padding': 'inherit'
     });
     $(obj).find('.modal .modal-content .btn').css('border-radius', '0');
     $(obj).find('.img-op .btn').css({
@@ -115,7 +124,7 @@
     });
   };
 
- 
+
   function zoomOut(){
     $('.zoom-out').click(function(){
       var imageHeight = $('#img-preview img').height();
@@ -145,7 +154,7 @@
       });
 
       $(document).on('mouseup', function(){
-        $(document).off("mousemove");     
+        $(document).off("mousemove");
       });
       return false;
     });
@@ -153,15 +162,25 @@
 
 
   function rotateImage(options){
+
+
+
     $('.rotate').click(function() {
+
+
+
+
       if(options.rotateDirection == 'right'){
+
         rotateDeg += 90;
+
         if(rotateDeg == 360){
           rotateDeg = 0;
         }
       }
       if(options.rotateDirection == 'left'){
         rotateDeg -= 90;
+
         if(rotateDeg == -360){
           rotateDeg = 0;
         }
@@ -174,10 +193,12 @@
         '-ms-transform': 'rotate('+ rotateDeg +'deg)'
       });
     });
+  //  console.log("--rotateImage--"+rotateDeg);
   };
 
-  //图片切换
+  //????
   function switchImage(list_images){
+
     var $modal = $('#unbind-pos');
     $('#unbind-pos').on('click', '.switch', function(){
       var _list_images = list_images, _self = this, _role = $(_self).attr('role');
@@ -203,6 +224,15 @@
       _index = _new_current - 1;
       $modal.find('#img-preview').attr({'current': _new_current});
       $modal.find('#img-preview img').attr({'src': _list_images[_index]});
+      rotateDeg = 0;
+      //console.log("--rotateImage--"+rotateDeg);
+      $('#img-preview img').css({
+        'transform': 'rotate('+ rotateDeg +'deg)',
+        '-webkit-transform': 'rotate('+ rotateDeg +'deg)',
+        '-moz-transform':'rotate('+ rotateDeg +'deg)',
+        '-o-transform': 'rotate('+ rotateDeg +'deg)',
+        '-ms-transform': 'rotate('+ rotateDeg +'deg)'
+      });
     });
   };
 

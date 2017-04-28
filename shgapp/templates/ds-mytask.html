@@ -4,16 +4,18 @@
 
     <script>
         var myTaskList    = '{{ myTaskList | escapejs }}';
+        var taskName;
         //groupTaskList = JSON.parse(groupTaskList);
         $(document).ready(function(){
             taskCount();
             loadAssignedTaskList();
         });
     </script>
-    <script src="{% static 'datajs/loadTaskList.js' %}"></script>
-    <script src="{% static 'datajs/grouplist.js' %}"></script>
+    <script src="/static/datajs/loadTaskList.js?v={{JS_VERSION}}"></script>
+    <script src="/static/datajs/grouplist.js?v={{JS_VERSION}}"></script>
 {% endblock %}
 <!-- PAGE CONTENT BEGINS -->
+
 {% block content %}
 
     <div class="col-xs-12 col-sm-12 col-md-12 widget-container-col" id="widget-container-col-2">
@@ -21,7 +23,7 @@
             <div class="widget-header">
                 <h5 class="widget-title bigger lighter">
                     <i class="ace-icon fa fa-table"></i>
-                    Task List
+                    My Tasks
                 </h5>
                 <div class="widget-toolbar widget-toolbar-light no-border">
                     <select id="simple-colorpicker-1" class="hide">
