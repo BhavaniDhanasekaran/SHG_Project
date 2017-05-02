@@ -1,3 +1,4 @@
+
 from django.shortcuts import render_to_response, reverse
 from   django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
@@ -531,4 +532,3 @@ def getLoanAccNo(request, processId):
     except ShgInvalidRequest, e:
         errorLog.error("Exception raised inside getLoanAccNo(request, processId): %s" %e)
         return helper.bad_request('Unexpected error occurred while getting loanaccount number')
-

@@ -80,3 +80,4 @@ def SHGForm(request,groupId,loanId,taskId,processId,taskName,loanTypeName,loanTy
     except ShgInvalidRequest, e:
         errorLog.error("Exception raised inside SHGForm(request,groupId,loanId,taskId,processId,taskName,loanTypeName,loanTypeId):" + e)
         return helper.bad_request('Unexpected error occurred.')
+

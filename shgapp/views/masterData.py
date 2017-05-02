@@ -68,16 +68,3 @@ def masterLoanPurpose(request):
         errorLog.error("Exception raised in masterLoanPurpose(request):  %s" %e)        
         return helper.bad_request('An expected error occurred while getting loan purpose master.')
 
-
-
-
-
-
-
-
-
-
-
-
-
-

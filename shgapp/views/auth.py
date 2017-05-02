@@ -1,3 +1,4 @@
+
 # coding: utf-8
 
 from django.core.urlresolvers import reverse
@@ -150,4 +151,5 @@ def success(request):
 
 def browserError(request):
   return render(request, 'auth/browserError.html')
+
 

@@ -74,5 +74,3 @@ def ajax_progress_bar_upload(request):
     loggerInfo.info(data)
     loggerInfo.info('------------------Exiting ajax_progress_bar_upload(request):---------------------- ')
     return JsonResponse(data)
-
-

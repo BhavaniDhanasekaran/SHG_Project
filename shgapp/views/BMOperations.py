@@ -140,4 +140,3 @@ def updateGroupMemberStatus(request):
     except ShgInvalidRequest, e:
         errorLog.error("Exception raised inside updateGroupMemberStatus(request): %s" %e)
         return helper.bad_request('An expected error occurred while update Group Member Status details.')
-
