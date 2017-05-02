@@ -26,7 +26,8 @@
         loadDisburseDocData();
         loadGroupRoles(groupId, loanId, taskName);
         $("#commentSpanId").css("display","inline-block");
-        loanDocument(2);
+        
+         loanDocument(loanTypeId);
         taskCount();
         $('.date-picker').datepicker({
             autoclose: true,

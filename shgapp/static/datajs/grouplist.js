@@ -2283,7 +2283,8 @@ function generateLOS(){
                 }
             }
             if(data["code"] == "11001"){
-                $.alert(data["message"]);
+                //$.alert(data["message"]);
+                $.alert(data.data.message);
             }
         },
         data: JSON.stringify(dataObj)
