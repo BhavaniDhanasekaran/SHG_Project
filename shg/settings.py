@@ -3,6 +3,9 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+print "BASE_DIR"
+print BASE_DIR
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'j(eizq_b!dk+rse4!94x5$caj3dux31ks*xj8im(c&jpbkomud'
 
@@ -70,30 +73,7 @@ WSGI_APPLICATION = 'shg.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
-'''
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'shg_test_django',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'vvlmadura.cwxetrwsi128.ap-southeast-1.rds.amazonaws.com',
-        'PORT': '5432',
-    }
-}
 
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'shg3db',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
-}
-'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -104,6 +84,32 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+'''
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'shg_test_django',
+        'USER': 'postgres',
+        'PASSWORD': 'G6j88U2JYzcwpjPq',
+        'HOST': 'madurabpm.cwxetrwsi128.ap-southeast-1.rds.amazonaws.com',
+        'PORT': '5432',
+    }
+}
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'shgdb',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
+}
+
+'''
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -153,12 +159,14 @@ STATICFILES_DIRS = [
     '/var/www/static/',
 ]
 
-#CAMUNDA_BASE_URL = 'http://52.221.13.230:8086/engine-rest/'
-#SSCORE_BASE_URL = 'http://52.221.14.215:8085/sangamam-core/'
-#CAMUNDA_BASE_URL = 'http://192.168.1.28:8086/engine-rest/'
-#SSCORE_BASE_URL = 'http://192.168.1.71:8085/sangamam-core/'
 CAMUNDA_BASE_URL = 'http://13.228.10.151:8089/engine-rest/'
 SSCORE_BASE_URL = 'http://13.228.10.151:8086/sangamam-core/'
+
+#CAMUNDA_BASE_URL = 'http://52.221.13.230:8086/engine-rest/'
+#SSCORE_BASE_URL = 'http://52.221.14.215:8085/sangamam-core/'
+
+#CAMUNDA_BASE_URL = 'http://192.168.1.28:8086/engine-rest/'
+#SSCORE_BASE_URL = 'http://192.168.1.71:8085/sangamam-core/'
 
 AWS_ACCESS_KEY_ID='AKIAJKJDLQNPXRK4NJPQ'
 AWS_SECRET_ACCESS_KEY='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'
@@ -167,3 +175,95 @@ AWS_REGION_NAME='ap-southeast-1'
 AWS_BUCKET_NAME = 'testingdocuments.mmfl.in'
 AWS_BUCKET_FOLDER_PATH = 'media/doc_data/documents/'
 AWS_S3_BASE_URL='http://testingdocuments.mmfl.in.s3.amazonaws.com/media/doc_data/documents/'
+
+
+
+LOGGING = {
+    'version': 1,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+        },
+        'null': {
+            'class': 'logging.NullHandler',
+        },
+        'log_file':{
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR+'/Logs/', 'djangoEntireLog.log'),
+            'maxBytes': '5777216', # 5megabytes
+            'formatter': 'verbose'
+        },
+        'log_file1':{
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR+'/Logs/', 'djangoInfo.log'),
+            'maxBytes': '5777216', # 5megabytes
+            'formatter': 'verbose'
+        },
+        'log_file2':{
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR+'/Logs/', 'djangoError.log'),
+            'maxBytes': '5777216', # 5megabytes
+            'formatter': 'verbose'
+        },
+        
+        
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': True,
+            
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+        },
+        'django.request': {
+            'handlers': ['mail_admins','log_file2'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'django.security': {
+            'handlers': ['mail_admins','log_file2'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'shgapp.views': {
+            'handlers': ['console','log_file1'],
+         },
+        'dba': {
+            'handlers': ['console','log_file'],
+        },
+        'django': {
+            'handlers': ['console','log_file'],
+        },
+        'py.warnings': {
+            'handlers': ['console','log_file'],
+        },
+	 
+        
+    }
+}

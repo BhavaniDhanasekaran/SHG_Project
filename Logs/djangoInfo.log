@@ -1,0 +1,169 @@
+INFO 2017-05-02 15:03:20,345 auth 8375 140417278392064 -------------------------Entering signin(request):--------------------------
+INFO 2017-05-02 15:03:20,345 auth 8375 140417278392064 User not authenticated
+INFO 2017-05-02 15:03:22,107 auth 8375 140417286784768 -------------------------Entering signin(request):--------------------------
+INFO 2017-05-02 15:03:22,108 auth 8375 140417286784768 User not authenticated
+INFO 2017-05-02 15:03:22,108 auth 8375 140417286784768 username :suresh.m@mmfl.in
+INFO 2017-05-02 15:03:22,108 auth 8375 140417286784768 password :M@dura123
+INFO 2017-05-02 15:03:22,162 auth 8375 140417286784768 loginResponse
+INFO 2017-05-02 15:03:22,162 auth 8375 140417286784768 {u'status': 200, u'message': u'User logged in successful.', u'code': 5001, u'data': {u'userName': u'SURESH M', u'userOfficeDetails': {u'officeTypeCode': u'CO', u'officeTypeId': 1, u'designation': u'DataSupportTeam', u'officeName': u'CORPORATE', u'officeCode': u'CRP', u'officeId': 1, u'officeTypeName': u'Corporate Office'}, u'userId': 1711, u'logInStatus': u'Success', u'userActions': [u'Loan-View', u'Group-View', u'Member-View', u'WorkFlow-Groups-Processing', u'WorkFlow-Loans-Processing']}}
+INFO 2017-05-02 15:03:22,163 auth 8375 140417286784768 -------------------------Exiting signin(request):--------------------------
+INFO 2017-05-02 15:04:47,712 auth 8375 140417286784768 -------------------------Entering signin(request):--------------------------
+INFO 2017-05-02 15:04:47,712 auth 8375 140417286784768 User not authenticated
+INFO 2017-05-02 15:04:51,594 auth 8375 140417286784768 -------------------------Entering signin(request):--------------------------
+INFO 2017-05-02 15:04:51,595 auth 8375 140417286784768 User not authenticated
+INFO 2017-05-02 15:04:51,595 auth 8375 140417286784768 username :vivek.p@mmfl.in
+INFO 2017-05-02 15:04:51,595 auth 8375 140417286784768 password :M@dura123
+INFO 2017-05-02 15:04:51,610 auth 8375 140417286784768 loginResponse
+INFO 2017-05-02 15:04:51,610 auth 8375 140417286784768 {u'status': 200, u'message': u'User logged in successful.', u'code': 5001, u'data': {u'userName': u'Vivek P (MMFL 1293)', u'userOfficeDetails': {u'officeTypeCode': u'CLMO', u'officeTypeId': 3, u'designation': u'CLM', u'officeName': u'PATTUKKOTTAI', u'officeCode': u'BN167', u'officeId': 65, u'officeTypeName': u'Cluster Office'}, u'userId': 901445, u'logInStatus': u'Success', u'userActions': []}}
+INFO 2017-05-02 15:04:51,610 auth 8375 140417286784768 -------------------------Exiting signin(request):--------------------------
+INFO 2017-05-02 15:05:31,165 kyc 8375 140417311962880 ------------------Entering disburseDocsData(request, loanId):---------------------- 
+INFO 2017-05-02 15:05:31,185 kyc 8375 140417311962880 ------------------Exiting disburseDocsData(request, loanId):---------------------- 
+INFO 2017-05-02 15:05:32,023 kyc 8375 140417269999360 ------------------Entering DocumentView(request,loanId):-----------------
+INFO 2017-05-02 15:05:32,108 kyc 8375 140417269999360 ------------------Exiting DocumentView(request,loanId):-----------------
+INFO 2017-05-02 15:05:32,231 kyc 8375 140417286784768 ------------------Entering loanDocument(request,loanTypeId):-----------------
+INFO 2017-05-02 15:05:32,244 kyc 8375 140417286784768 ------------------Exiting loanDocument(request,loanTypeId):-----------------
+INFO 2017-05-02 15:07:05,065 kyc 8478 139902158927616 ------------------Entering disburseDocsData(request, loanId):---------------------- 
+INFO 2017-05-02 15:07:36,652 kyc 8478 139902158927616 --------------------Entering getGroupData(request):-------------------
+INFO 2017-05-02 15:07:36,666 kyc 8478 139902158927616 --------------------Exiting getGroupData(request):-------------------
+INFO 2017-05-02 15:08:54,492 kyc 8524 140404053784320 ------------------Entering disburseDocsData(request, loanId):---------------------- 
+INFO 2017-05-02 15:08:54,511 kyc 8524 140404053784320 ------------------Exiting disburseDocsData(request, loanId):---------------------- 
+INFO 2017-05-02 15:08:55,042 kyc 8524 140403806295808 ------------------Entering DocumentView(request,loanId):-----------------
+INFO 2017-05-02 15:08:55,082 kyc 8524 140403806295808 ------------------Exiting DocumentView(request,loanId):-----------------
+INFO 2017-05-02 15:08:55,208 kyc 8524 140404053784320 ------------------Entering loanDocument(request,loanTypeId):-----------------
+INFO 2017-05-02 15:08:55,213 kyc 8524 140404053784320 ------------------Exiting loanDocument(request,loanTypeId):-----------------
+INFO 2017-05-02 15:08:55,572 kyc 8524 140403823081216 --------------------Entering getGroupData(request):-------------------
+INFO 2017-05-02 15:08:55,580 kyc 8524 140403823081216 --------------------Exiting getGroupData(request):-------------------
+INFO 2017-05-02 15:48:17,003 mfupload 8701 140074351798016 ----s3Resource----
+INFO 2017-05-02 15:48:17,004 mfupload 8701 140074351798016 s3.ServiceResource()
+INFO 2017-05-02 16:02:29,286 auth 8701 140074240698112 -------------------------Entering signin(request):--------------------------
+INFO 2017-05-02 16:02:29,288 auth 8701 140074240698112 User not authenticated
+INFO 2017-05-02 16:04:31,012 mfupload 8932 140313040414464 ----s3Resource----
+INFO 2017-05-02 16:04:31,013 mfupload 8932 140313040414464 s3.ServiceResource()
+INFO 2017-05-02 16:04:36,221 mfupload 8942 139891711440640 ----s3Resource----
+INFO 2017-05-02 16:04:36,222 mfupload 8942 139891711440640 s3.ServiceResource()
+INFO 2017-05-02 16:04:41,231 auth 8932 140312922130176 -------------------------Entering signin(request):--------------------------
+INFO 2017-05-02 16:04:41,232 auth 8932 140312922130176 User not authenticated
+INFO 2017-05-02 16:04:44,885 auth 8932 140312689243904 -------------------------Entering signin(request):--------------------------
+INFO 2017-05-02 16:04:44,885 auth 8932 140312689243904 User not authenticated
+INFO 2017-05-02 16:04:44,885 auth 8932 140312689243904 username :vivek.p@mmfl.in
+INFO 2017-05-02 16:04:44,886 auth 8932 140312689243904 password :M@dura123
+INFO 2017-05-02 16:04:44,946 auth 8932 140312689243904 loginResponse
+INFO 2017-05-02 16:04:44,946 auth 8932 140312689243904 {u'status': 200, u'message': u'User logged in successful.', u'code': 5001, u'data': {u'userName': u'Vivek P (MMFL 1293)', u'userOfficeDetails': {u'officeTypeCode': u'CLMO', u'officeTypeId': 3, u'designation': u'CLM', u'officeName': u'PATTUKKOTTAI', u'officeCode': u'BN167', u'officeId': 65, u'officeTypeName': u'Cluster Office'}, u'userId': 901445, u'logInStatus': u'Success', u'userActions': []}}
+INFO 2017-05-02 16:04:44,947 auth 8932 140312689243904 -------------------------Exiting signin(request):--------------------------
+INFO 2017-05-02 16:04:47,232 camundaViews 8932 140312929998592 ------------------Entering tasksCount(request):---------------------- 
+INFO 2017-05-02 16:04:47,304 camundaViews 8932 140312929998592 ---uploadDisbDocList--- 
+INFO 2017-05-02 16:04:47,304 camundaViews 8932 140312929998592 {'unassigned': 'true', 'name': 'Upload disbursement docs', 'processVariables': [{'operator': 'eq', 'name': 'disbursement', 'value': 'rework'}]}
+INFO 2017-05-02 16:04:47,308 camundaViews 8932 140312929998592 ---UDDTaskcount--- 
+INFO 2017-05-02 16:04:47,308 camundaViews 8932 140312929998592 {u'count': 0}
+INFO 2017-05-02 16:04:47,308 camundaViews 8932 140312929998592 ---tasksCount--- 
+INFO 2017-05-02 16:04:47,308 camundaViews 8932 140312929998592 {"Task": {"Add New Members": 0, "Resolve Data Support Team Query": 0, "Resolve Confirm Disbursement Query": 0, "Generate repayment chart": 0, "Prepare Loan Documents": 0, "myTasks": 1, "Conduct BAT- Member approval in CRM": 0, "Upload disbursement docs": 0, "Upload loan documents in Web application": 0, "Resolve Credit Team Query": 0}}
+INFO 2017-05-02 16:04:47,308 camundaViews 8932 140312929998592 ---------------------Exiting tasksCount( request )-------------------- 
+INFO 2017-05-02 16:04:47,494 camundaViews 8932 140312929998592 ------------------Entering tasksCount(request):---------------------- 
+INFO 2017-05-02 16:04:47,528 camundaViews 8932 140312929998592 ---uploadDisbDocList--- 
+INFO 2017-05-02 16:04:47,529 camundaViews 8932 140312929998592 {'unassigned': 'true', 'name': 'Upload disbursement docs', 'processVariables': [{'operator': 'eq', 'name': 'disbursement', 'value': 'rework'}]}
+INFO 2017-05-02 16:04:47,532 camundaViews 8932 140312929998592 ---UDDTaskcount--- 
+INFO 2017-05-02 16:04:47,532 camundaViews 8932 140312929998592 {u'count': 0}
+INFO 2017-05-02 16:04:47,532 camundaViews 8932 140312929998592 ---tasksCount--- 
+INFO 2017-05-02 16:04:47,532 camundaViews 8932 140312929998592 {"Task": {"Add New Members": 0, "Resolve Data Support Team Query": 0, "Resolve Confirm Disbursement Query": 0, "Generate repayment chart": 0, "Prepare Loan Documents": 0, "myTasks": 1, "Conduct BAT- Member approval in CRM": 0, "Upload disbursement docs": 0, "Upload loan documents in Web application": 0, "Resolve Credit Team Query": 0}}
+INFO 2017-05-02 16:04:47,533 camundaViews 8932 140312929998592 ---------------------Exiting tasksCount( request )-------------------- 
+INFO 2017-05-02 16:04:52,326 camundaViews 8932 140312929998592 ------------------Entering assignedTaskList(request)---------------------- 
+INFO 2017-05-02 16:04:52,354 camundaViews 8932 140312929998592 ------------------Exiting assignedTaskList(request)---------------------- 
+INFO 2017-05-02 16:04:53,170 camundaViews 8932 140312929998592 ------------------Entering tasksCount(request):---------------------- 
+INFO 2017-05-02 16:04:53,206 camundaViews 8932 140312929998592 ---uploadDisbDocList--- 
+INFO 2017-05-02 16:04:53,207 camundaViews 8932 140312929998592 {'unassigned': 'true', 'name': 'Upload disbursement docs', 'processVariables': [{'operator': 'eq', 'name': 'disbursement', 'value': 'rework'}]}
+INFO 2017-05-02 16:04:53,210 camundaViews 8932 140312929998592 ---UDDTaskcount--- 
+INFO 2017-05-02 16:04:53,210 camundaViews 8932 140312929998592 {u'count': 0}
+INFO 2017-05-02 16:04:53,210 camundaViews 8932 140312929998592 ---tasksCount--- 
+INFO 2017-05-02 16:04:53,211 camundaViews 8932 140312929998592 {"Task": {"Add New Members": 0, "Resolve Data Support Team Query": 0, "Resolve Confirm Disbursement Query": 0, "Generate repayment chart": 0, "Prepare Loan Documents": 0, "myTasks": 1, "Conduct BAT- Member approval in CRM": 0, "Upload disbursement docs": 0, "Upload loan documents in Web application": 0, "Resolve Credit Team Query": 0}}
+INFO 2017-05-02 16:04:53,211 camundaViews 8932 140312929998592 ---------------------Exiting tasksCount( request )-------------------- 
+INFO 2017-05-02 16:04:53,320 camundaViews 8932 140312929998592 ------------------Entering tasksCount(request):---------------------- 
+INFO 2017-05-02 16:04:53,353 camundaViews 8932 140312929998592 ---uploadDisbDocList--- 
+INFO 2017-05-02 16:04:53,354 camundaViews 8932 140312929998592 {'unassigned': 'true', 'name': 'Upload disbursement docs', 'processVariables': [{'operator': 'eq', 'name': 'disbursement', 'value': 'rework'}]}
+INFO 2017-05-02 16:04:53,357 camundaViews 8932 140312929998592 ---UDDTaskcount--- 
+INFO 2017-05-02 16:04:53,357 camundaViews 8932 140312929998592 {u'count': 0}
+INFO 2017-05-02 16:04:53,357 camundaViews 8932 140312929998592 ---tasksCount--- 
+INFO 2017-05-02 16:04:53,357 camundaViews 8932 140312929998592 {"Task": {"Add New Members": 0, "Resolve Data Support Team Query": 0, "Resolve Confirm Disbursement Query": 0, "Generate repayment chart": 0, "Prepare Loan Documents": 0, "myTasks": 1, "Conduct BAT- Member approval in CRM": 0, "Upload disbursement docs": 0, "Upload loan documents in Web application": 0, "Resolve Credit Team Query": 0}}
+INFO 2017-05-02 16:04:53,358 camundaViews 8932 140312929998592 ---------------------Exiting tasksCount( request )-------------------- 
+INFO 2017-05-02 16:04:54,369 task 8932 140312929998592 ------------------Entering SHGForm(request,groupId,loanId,taskId,processId,taskName,loanTypeName,loanTypeId):---------------------- 
+INFO 2017-05-02 16:04:54,369 task 8932 140312929998592 ------------------Exiting SHGForm(request,groupId,loanId,taskId,processId,taskName,loanTypeName,loanTypeId):---------------------- 
+INFO 2017-05-02 16:04:54,761 kyc 8932 140312913737472 ------------------Entering disburseDocsData(request, loanId):---------------------- 
+INFO 2017-05-02 16:04:54,781 kyc 8932 140312913737472 ------------------Exiting disburseDocsData(request, loanId):---------------------- 
+INFO 2017-05-02 16:04:54,791 camundaViews 8932 140312689243904 ------------------Entering tasksCount(request):---------------------- 
+INFO 2017-05-02 16:04:54,824 camundaViews 8932 140312689243904 ---uploadDisbDocList--- 
+INFO 2017-05-02 16:04:54,824 camundaViews 8932 140312689243904 {'unassigned': 'true', 'name': 'Upload disbursement docs', 'processVariables': [{'operator': 'eq', 'name': 'disbursement', 'value': 'rework'}]}
+INFO 2017-05-02 16:04:54,828 camundaViews 8932 140312689243904 ---UDDTaskcount--- 
+INFO 2017-05-02 16:04:54,828 camundaViews 8932 140312689243904 {u'count': 0}
+INFO 2017-05-02 16:04:54,828 camundaViews 8932 140312689243904 ---tasksCount--- 
+INFO 2017-05-02 16:04:54,828 camundaViews 8932 140312689243904 {"Task": {"Add New Members": 0, "Resolve Data Support Team Query": 0, "Resolve Confirm Disbursement Query": 0, "Generate repayment chart": 0, "Prepare Loan Documents": 0, "myTasks": 1, "Conduct BAT- Member approval in CRM": 0, "Upload disbursement docs": 0, "Upload loan documents in Web application": 0, "Resolve Credit Team Query": 0}}
+INFO 2017-05-02 16:04:54,828 camundaViews 8932 140312689243904 ---------------------Exiting tasksCount( request )-------------------- 
+INFO 2017-05-02 16:04:54,899 masterData 8932 140312689243904 ------------------Entering masterDataBank(request):---------------------- 
+INFO 2017-05-02 16:04:54,908 masterData 8932 140312689243904 ------------------Exiting masterDataBank(request):---------------------- 
+INFO 2017-05-02 16:04:55,359 kyc 8932 140312689243904 ------------------Entering DocumentView(request,loanId):-----------------
+INFO 2017-05-02 16:04:55,375 BMOperations 8932 140312929998592 --------------------Entering groupRoleDetails(request):-------------------
+INFO 2017-05-02 16:04:55,431 BMOperations 8932 140312929998592 --------------------Exiting groupRoleDetails(request):-------------------
+INFO 2017-05-02 16:04:55,443 kyc 8932 140312689243904 ------------------Exiting DocumentView(request,loanId):-----------------
+INFO 2017-05-02 16:04:55,564 kyc 8932 140312689243904 ------------------Entering loanDocument(request,loanTypeId):-----------------
+INFO 2017-05-02 16:04:55,569 kyc 8932 140312689243904 ------------------Exiting loanDocument(request,loanTypeId):-----------------
+INFO 2017-05-02 16:04:55,700 camundaViews 8932 140312689243904 ------------------Entering tasksCount(request):---------------------- 
+INFO 2017-05-02 16:04:55,733 camundaViews 8932 140312689243904 ---uploadDisbDocList--- 
+INFO 2017-05-02 16:04:55,734 camundaViews 8932 140312689243904 {'unassigned': 'true', 'name': 'Upload disbursement docs', 'processVariables': [{'operator': 'eq', 'name': 'disbursement', 'value': 'rework'}]}
+INFO 2017-05-02 16:04:55,737 camundaViews 8932 140312689243904 ---UDDTaskcount--- 
+INFO 2017-05-02 16:04:55,737 camundaViews 8932 140312689243904 {u'count': 0}
+INFO 2017-05-02 16:04:55,737 camundaViews 8932 140312689243904 ---tasksCount--- 
+INFO 2017-05-02 16:04:55,737 camundaViews 8932 140312689243904 {"Task": {"Add New Members": 0, "Resolve Data Support Team Query": 0, "Resolve Confirm Disbursement Query": 0, "Generate repayment chart": 0, "Prepare Loan Documents": 0, "myTasks": 1, "Conduct BAT- Member approval in CRM": 0, "Upload disbursement docs": 0, "Upload loan documents in Web application": 0, "Resolve Credit Team Query": 0}}
+INFO 2017-05-02 16:04:55,737 camundaViews 8932 140312689243904 ---------------------Exiting tasksCount( request )-------------------- 
+INFO 2017-05-02 16:04:55,770 masterData 8932 140312689243904 ------------------Entering masterDataBank(request):---------------------- 
+INFO 2017-05-02 16:04:55,778 masterData 8932 140312689243904 ------------------Exiting masterDataBank(request):---------------------- 
+INFO 2017-05-02 16:04:55,791 masterData 8932 140312929998592 ------------------Entering masterIDProof(request):---------------------- 
+INFO 2017-05-02 16:04:55,795 masterData 8932 140312929998592 ------------------Exiting masterIDProof(request):---------------------- 
+INFO 2017-05-02 16:04:55,809 masterData 8932 140312913737472 ------------------Entering masterAddressProof(request):---------------------- 
+INFO 2017-05-02 16:04:55,813 masterData 8932 140312913737472 ------------------Exiting masterAddressProof(request):---------------------- 
+INFO 2017-05-02 16:04:55,823 masterData 8932 140312680851200 ------------------Entering masterLoanPurpose(request):---------------------- 
+INFO 2017-05-02 16:04:55,828 masterData 8932 140312680851200 ------------------Exiting masterLoanPurpose(request):---------------------- 
+INFO 2017-05-02 16:04:55,861 kyc 8932 140312905344768 --------------------Entering getGroupData(request):-------------------
+INFO 2017-05-02 16:04:55,869 kyc 8932 140312905344768 --------------------Exiting getGroupData(request):-------------------
+INFO 2017-05-02 16:07:26,741 mfupload 9033 140393926813440 ----s3Resource----
+INFO 2017-05-02 16:07:26,741 mfupload 9033 140393926813440 s3.ServiceResource()
+INFO 2017-05-02 16:09:03,413 mfupload 9077 140474284615424 ----s3Resource----
+INFO 2017-05-02 16:09:03,414 mfupload 9077 140474284615424 s3.ServiceResource()
+INFO 2017-05-02 16:09:04,001 task 9077 140474242193152 ------------------Entering SHGForm(request,groupId,loanId,taskId,processId,taskName,loanTypeName,loanTypeId):---------------------- 
+INFO 2017-05-02 16:09:04,002 task 9077 140474242193152 ------------------Exiting SHGForm(request,groupId,loanId,taskId,processId,taskName,loanTypeName,loanTypeId):---------------------- 
+INFO 2017-05-02 16:09:11,404 camundaViews 9077 140474233538304 ------------------Entering tasksCount(request):---------------------- 
+INFO 2017-05-02 16:09:11,443 camundaViews 9077 140474233538304 ---tasksCount--- {"Task": {"Add New Members": 0, "Resolve Data Support Team Query": 0, "Resolve Confirm Disbursement Query": 0, "Generate repayment chart": 0, "Prepare Loan Documents": 0, "myTasks": 1, "Conduct BAT- Member approval in CRM": 0, "Upload disbursement docs": 0, "Upload loan documents in Web application": 0, "Resolve Credit Team Query": 0}} 
+INFO 2017-05-02 16:09:11,444 camundaViews 9077 140474233538304 ---------------------Exiting tasksCount( request )-------------------- 
+INFO 2017-05-02 16:09:19,432 camundaViews 9077 140474233538304 ------------------Entering tasksCount(request):---------------------- 
+INFO 2017-05-02 16:09:19,469 camundaViews 9077 140474233538304 ---tasksCount--- {"Task": {"Add New Members": 0, "Resolve Data Support Team Query": 0, "Resolve Confirm Disbursement Query": 0, "Generate repayment chart": 0, "Prepare Loan Documents": 0, "myTasks": 1, "Conduct BAT- Member approval in CRM": 0, "Upload disbursement docs": 0, "Upload loan documents in Web application": 0, "Resolve Credit Team Query": 0}} 
+INFO 2017-05-02 16:09:19,469 camundaViews 9077 140474233538304 ---------------------Exiting tasksCount( request )-------------------- 
+INFO 2017-05-02 16:09:19,601 camundaViews 9077 140474018952960 ------------------Entering tasksCount(request):---------------------- 
+INFO 2017-05-02 16:09:19,644 camundaViews 9077 140474018952960 ---tasksCount--- {"Task": {"Add New Members": 0, "Resolve Data Support Team Query": 0, "Resolve Confirm Disbursement Query": 0, "Generate repayment chart": 0, "Prepare Loan Documents": 0, "myTasks": 1, "Conduct BAT- Member approval in CRM": 0, "Upload disbursement docs": 0, "Upload loan documents in Web application": 0, "Resolve Credit Team Query": 0}} 
+INFO 2017-05-02 16:09:19,644 camundaViews 9077 140474018952960 ---------------------Exiting tasksCount( request )-------------------- 
+INFO 2017-05-02 16:09:21,170 camundaViews 9077 140474018952960 ------------------Entering assignedTaskList(request)---------------------- 
+INFO 2017-05-02 16:09:21,202 camundaViews 9077 140474018952960 ------------------Exiting assignedTaskList(request)---------------------- 
+INFO 2017-05-02 16:09:21,828 camundaViews 9077 140474233538304 ------------------Entering tasksCount(request):---------------------- 
+INFO 2017-05-02 16:09:21,875 camundaViews 9077 140474233538304 ---tasksCount--- {"Task": {"Add New Members": 0, "Resolve Data Support Team Query": 0, "Resolve Confirm Disbursement Query": 0, "Generate repayment chart": 0, "Prepare Loan Documents": 0, "myTasks": 1, "Conduct BAT- Member approval in CRM": 0, "Upload disbursement docs": 0, "Upload loan documents in Web application": 0, "Resolve Credit Team Query": 0}} 
+INFO 2017-05-02 16:09:21,875 camundaViews 9077 140474233538304 ---------------------Exiting tasksCount( request )-------------------- 
+INFO 2017-05-02 16:09:22,022 camundaViews 9077 140474233538304 ------------------Entering tasksCount(request):---------------------- 
+INFO 2017-05-02 16:09:22,057 camundaViews 9077 140474233538304 ---tasksCount--- {"Task": {"Add New Members": 0, "Resolve Data Support Team Query": 0, "Resolve Confirm Disbursement Query": 0, "Generate repayment chart": 0, "Prepare Loan Documents": 0, "myTasks": 1, "Conduct BAT- Member approval in CRM": 0, "Upload disbursement docs": 0, "Upload loan documents in Web application": 0, "Resolve Credit Team Query": 0}} 
+INFO 2017-05-02 16:09:22,057 camundaViews 9077 140474233538304 ---------------------Exiting tasksCount( request )-------------------- 
+INFO 2017-05-02 16:18:22,394 camundaViews 9077 140474233538304 ------------------Entering assignedTaskList(request)---------------------- 
+INFO 2017-05-02 16:18:22,426 camundaViews 9077 140474233538304 ------------------Exiting assignedTaskList(request)---------------------- 
+INFO 2017-05-02 16:18:37,634 camundaViews 9077 140474233538304 ------------------Entering tasksCount(request):---------------------- 
+INFO 2017-05-02 16:18:37,670 camundaViews 9077 140474233538304 ---tasksCount--- {"Task": {"Add New Members": 0, "Resolve Data Support Team Query": 0, "Resolve Confirm Disbursement Query": 0, "Generate repayment chart": 0, "Prepare Loan Documents": 0, "myTasks": 1, "Conduct BAT- Member approval in CRM": 0, "Upload disbursement docs": 0, "Upload loan documents in Web application": 0, "Resolve Credit Team Query": 0}} 
+INFO 2017-05-02 16:18:37,670 camundaViews 9077 140474233538304 ---------------------Exiting tasksCount( request )-------------------- 
+INFO 2017-05-02 16:18:37,780 camundaViews 9077 140474233538304 ------------------Entering tasksCount(request):---------------------- 
+INFO 2017-05-02 16:18:37,815 camundaViews 9077 140474233538304 ---tasksCount--- {"Task": {"Add New Members": 0, "Resolve Data Support Team Query": 0, "Resolve Confirm Disbursement Query": 0, "Generate repayment chart": 0, "Prepare Loan Documents": 0, "myTasks": 1, "Conduct BAT- Member approval in CRM": 0, "Upload disbursement docs": 0, "Upload loan documents in Web application": 0, "Resolve Credit Team Query": 0}} 
+INFO 2017-05-02 16:18:37,815 camundaViews 9077 140474233538304 ---------------------Exiting tasksCount( request )-------------------- 
+INFO 2017-05-02 16:30:28,476 mfupload 9284 140212948571904 ----s3Resource----
+INFO 2017-05-02 16:30:28,477 mfupload 9284 140212948571904 s3.ServiceResource()
+INFO 2017-05-02 16:31:01,966 mfupload 9291 140364065359616 ----s3Resource----
+INFO 2017-05-02 16:31:01,966 mfupload 9291 140364065359616 s3.ServiceResource()
+INFO 2017-05-02 16:32:22,345 mfupload 9301 140343382710016 ----s3Resource----
+INFO 2017-05-02 16:32:22,346 mfupload 9301 140343382710016 s3.ServiceResource()
+INFO 2017-05-02 16:32:37,927 mfupload 9307 140680837482240 ----s3Resource----
+INFO 2017-05-02 16:32:37,927 mfupload 9307 140680837482240 s3.ServiceResource()
+INFO 2017-05-02 16:33:00,548 mfupload 9313 140227580036864 ----s3Resource----
+INFO 2017-05-02 16:33:00,548 mfupload 9313 140227580036864 s3.ServiceResource()
+INFO 2017-05-02 16:33:23,191 mfupload 9319 139800150173440 ----s3Resource----
+INFO 2017-05-02 16:33:23,191 mfupload 9319 139800150173440 s3.ServiceResource()
+INFO 2017-05-02 16:33:50,088 mfupload 9329 140049449191168 ----s3Resource----
+INFO 2017-05-02 16:33:50,088 mfupload 9329 140049449191168 s3.ServiceResource()
