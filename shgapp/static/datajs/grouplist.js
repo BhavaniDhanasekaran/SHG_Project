@@ -74,7 +74,7 @@ function getGroupData(groupID, loanId) {
         success: function(data) {
             groupData = data;
             var activeMembersArr = [];
-            console.log(groupData);
+
             if (groupData["data"]["groupMemDetail"]) {
                 if (groupData["data"]["groupMemDetail"][0]) {
                     totalCount = groupData["data"]["groupMemDetail"].length;
@@ -167,7 +167,7 @@ function getMemberDetails(memberId, groupId, loanId) {
         },
         success: function(data) {
             var memberData = data;
-            console.log(memberData);
+
             var conflictListArr = [];
             var imgFiles = ["MEMBERPHOTO", "IDPROOF", "IDPROOF_2", "ADDRESSPROOF", "ADDRESSPROOF_2", "SBACCOUNTPASSBOOK", "OVERLAPREPORT"];
 
@@ -398,7 +398,6 @@ function updateMemValidationStatus(status) {
     var groupId = document.getElementById("groupId").innerHTML;
     var loanId = document.getElementById("loanId").innerHTML;
     var comment = document.getElementById("comment").value;
-    console.log(comment,"comment");
     var memStatus = document.getElementById("memberValStatus").innerHTML;
     var loanTypeId = document.getElementById("loanTypeId1").innerHTML;
     var commentCamunda = "";
@@ -1011,7 +1010,7 @@ function updateTask(status) {
     var dataObj = {};
     var groupName = document.getElementById("groupName_groupRole").innerHTML;
     dataObj["taskId"] = taskId;
-    console.log(groupName);
+
     dataObj["processUpdate"] = {};
     $.ajax({
         url: '/updateTask/',
@@ -1150,7 +1149,7 @@ function updateGroupMemberStatus() {
         "rep1": nrepm1,
         "rep2": nrepm2
     };
-    //console.log(groupValData);
+
     var dataObj = {};
     dataObj["groupValData"] = groupValData;
     var responseData;
@@ -1184,7 +1183,7 @@ function getLoanDetails(groupId, loanId) {
         success: function(data) {
             var htmlContent = '';
             var creditData = data;
-            console.log(creditData);
+
             var loanDetails = data["data"]["loanDetails"];
             if (document.getElementById("loanTypeName")) {
                 document.getElementById("loanTypeName").innerHTML = loanDetails["loanTypeName"];
@@ -1201,7 +1200,7 @@ function getLoanDetails(groupId, loanId) {
                 success: function(loanPurposeData) {
 
                     $.each(loanPurposeData.data, function(key, value) {
-                        // console.log(value.name);
+
                         //$(".purpose2").css("width","100%");
                         $('.purpose2').append('<option value="' + value.id + '">' + value.name + '</option>');
                     });
@@ -1221,12 +1220,12 @@ function getLoanDetails(groupId, loanId) {
             });
 
             if (creditData.data) {
-                //   console.log(creditData.data);
+
                 for (var i = 0; i < creditData.data.loanMemberDetails.length; i++) {
                     var creditObj = creditData["data"]["loanMemberDetails"][i];
                     var newMem = "";
                     var tdColor = '';
-                    //  console.log(creditObj);
+
                     if (creditObj["newMember"] == true) {
                         tdColor = "green";
                         newMem = "Yes";
@@ -1294,7 +1293,7 @@ function getLoanDetails(groupId, loanId) {
                 }
             }
             document.getElementById("loandata").innerHTML = htmlContent;
-            //console.log(JSON.stringify(data));
+
             for (var key in loanDetails) {
                 if (document.getElementById(key)) {
                     document.getElementById(key).innerHTML = loanDetails[key];
@@ -1304,10 +1303,7 @@ function getLoanDetails(groupId, loanId) {
                 }
             }
             loadDataTable("#paymentTable");
-            /*if(loanTypeName == "ATL"){
-                console.log("ATLATLATLATLATLATLATLATLATLATLATLATLATL")
-                getForeClosureInfo();
-            }*/
+            
         },
     });
 }
@@ -1381,15 +1377,15 @@ function updateloanDatail(updateloanData) {
     var atlLoanId = '';
     var atlAccNo = '';
     var updateloanData = eval(updateloanData);
-    console.log(updateloanData);
+
     for(var key in updateloanData){
-        console.log(updateloanData[key]);
+
         if(updateloanData[key]["ATLloanId"] != null){
             atlLoanId = updateloanData[key]["ATLloanId"];
             atlAccNo  = updateloanData[key]["ATLaccNo"];
         }
     }
-    console.log(atlAccNo,atlLoanId);
+
     var uploadData2 = {
         "loanId": String(loanId),
         "installments": installment,
@@ -1540,7 +1536,7 @@ function validate(evt, id) {
 function alpha(e) {
     var k;
     document.all ? k = e.keyCode : k = e.which;
-    console.log(k, e);
+
     return ((k >= 63 && k <= 91) || (k >= 97 && k < 123) || (k >= 93 && k < 96) || k == 8 || k == 32 || k == 33 || (k >= 40 && k <= 59) || k == 61 || (k >= 35 && k <= 38));
 }
 
@@ -1607,7 +1603,7 @@ function rmGroupMaster(groupId) {
                 var rep1value = $("#rep1Id_groupRole").text();
                 var rep2value = $("#rep2Id_groupRole").text();
 
-                //console.log(animatorvalue, rep1value, rep2value)
+
                 //alert(rep2value);
                 if (document.getElementById("Animator")) {
                     if ($("#Animator option[value=" + animatorvalue + "]").length == 0) {
@@ -1949,13 +1945,13 @@ function updateGroupValStatus(status) {
             "bpmTaskName": taskName,
             "bpmProcessId": processInstanceId
         };
-        console.log(groupValData);
+
         dataObj["groupValData"] = groupValData;
         dataObj["taskId"] = taskId;
         if (comment != "") {
             dataObj["message"] = comment;
         }
-         console.log("dataObj",dataObj);
+
 
         $.ajax({
             url: '/updateGrpValidationStatus/',
@@ -2015,7 +2011,6 @@ function getMemberFSRData(memberId){
             var childRowHtml = '';
             childRowHtml = '<thead><td><b>Field Name</b></td><td><b>Actual Value</b></td></thead>';
             var fsrData = data;
-            //console.log("fsrData",fsrData);
             var formSectionData = [];
             var fsrDataJsonStr = fsrData.data;
             if(fsrDataJsonStr == null){
@@ -2026,7 +2021,7 @@ function getMemberFSRData(memberId){
             }
             else{
                 var fsrDataJson = JSON.parse(fsrDataJsonStr);
-                //console.log(fsrDataJson);
+
                 formSectionData = fsrDataJson.form_sections;
                 var irrelevantDataArr = ["Official Details","Signature","CMR/BM/CLM confirmation after screening"];
                 for(var key in formSectionData){
@@ -2090,7 +2085,7 @@ function getMemberComments(processInstanceId, loanId) {
                         commentsHtml += '<div ><i class="fa fa-user fa-2" aria-hidden="true"></i> &nbsp<span style="font-size:12px;color:darkblue;"><b>' + value.memberName + ' (' + value.memberId + ' ) </b> <span> </div>';
                     }
                     $.each(value.comments, function(index, val) {
-                        //console.log(value)
+
                         if (val.comments != "") {
                             commentsHtml += '' +
                                 '<div class="profile-activity clearfix"><div><span style="font-weight:bold; font-size:11px;color:#981b1b;">' +
@@ -2131,7 +2126,7 @@ function getGroupComments(processInstanceId, loanId) {
         },
         success: function(data) {
             var jsondata = data;
-            console.log("jsondata",jsondata);
+
             if(jsondata.data[0]){
                 if (jsondata.data[0].comments.length>0) {
                     var groupName = jsondata.data[0].groupName;
@@ -2187,7 +2182,7 @@ function getPaymentHistory(key,memberId,groupId){
 
             var paymentHistoryData = [];
             if(!$.isArray(paymentHisLoanData) || !paymentHisLoanData.length){
-                //console.log('if paymentHisLoanData.length:', paymentHisLoanData.length);
+
             }else{
                 var memberPaymentHistoryData = paymentHisLoanData[0];
                 paymentHistoryData = memberPaymentHistoryData.paymentHistory;
@@ -2288,7 +2283,8 @@ function generateLOS(){
                 }
             }
             if(data["code"] == "11001"){
-                $.alert(data["message"]);
+                //$.alert(data["message"]);
+                $.alert(data.data.message);
             }
         },
         data: JSON.stringify(dataObj)
@@ -2351,7 +2347,7 @@ function loadDisburseDocData(){
                                  '<option value="Fund Transfer"> Fund Transfer </option><option value="Prepaid Card"> Prepaid Card </option>';
 
     var innerHTMLMemAvailLoan = '<option value="null" > Select</option><option value="true"> Yes </option><option value="false"> No </option>';
-    console.log(disbDocData);
+
 
     if(disbDocData && disbDocData[0]){
         for(var key in disbDocData){
@@ -2426,8 +2422,8 @@ function updateChequeInfo(){
         }
     }
 
-    console.log(    memberAvailedLoanFalseArr);
-    console.log(    memberAvailedLoanArray);
+
+
     var formFields = ["bank","modeOfPayment","chequeNo","memberAvailedLoan"];
     for(var i in memberAvailedLoanArray){
         for(var j in formFields){
@@ -2468,7 +2464,7 @@ function updateChequeInfo(){
     dataObj["cheqData"] = eval(updateCheqData);
 
 
-    console.log(dataObj);
+
 
     return $.ajax({
         url: '/updateDisburseMemberData/',
@@ -2558,7 +2554,7 @@ function loadDisburseDocDataRead(){
 	var selectOptValArray = [];
     if(disbDocData && disbDocData[0]){
         for(var key in disbDocData){
-            console.log(disbDocData[0]["oldDos"]);
+
             if(disbDocData[0]["oldDos"] != "" || disbDocData[0]["oldDos"] != null){
                 var dateSplit = disbDocData[0]["oldDos"].split("-");
                 dateSplit = dateSplit[2].split(" ")[0]+"-"+dateSplit[1]+"-"+dateSplit[0];
@@ -2629,7 +2625,7 @@ function confirmLoan(status){
                 var dataObj = {};
                 dataObj["cheqData"] = eval(JSON.stringify(rows));
                 dataObj["processUpdate"] = { 'variables': { 'disbursement': {   'value': status     },     }     };
-                console.log(dataObj);
+
                 $.ajax({
                     url : '/confirmChqDisbursement/',
                     dataType: 'json',
