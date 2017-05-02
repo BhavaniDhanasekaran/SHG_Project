@@ -27,7 +27,7 @@ $(document).ajaxError(function(e, xhr, settings, exception) {
 
 function loadUnassignedTaskList(data){
 	var groupTaskdata = data;
-	console.log(groupTaskdata);
+
 	var dataArray = [];
 	$("#loading").hide();
 	for(var key in groupTaskdata){
@@ -115,7 +115,7 @@ function loadUnassignedTaskList(data){
 function loadAssignedTaskList(){
 	$("#loading").hide();
 	var myTaskdata = JSON.parse(myTaskList);
-	console.log(myTaskdata);
+
 	var dataArray = [];
 	for(var key in myTaskdata){
 		var obj={};
@@ -493,7 +493,7 @@ function getTaskList(taskName){
         url = '/proposalScrutinyTaskList/';
     }
     if(taskName == "Resolve Confirm Disbursement Query"){
-	console.log("SDFSDFDSFDSFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+
         url = '/confirmDisburseRwrk/';
     }
     if(taskName == "Confirm Disbursement Query Response"){
@@ -512,7 +512,7 @@ function getTaskList(taskName){
 		$("#loading").hide();
 	    },
 	    success: function (data) {
-            console.log(data);
+
             loadUnassignedTaskList(data);
             triggerLoadFunc();
 	    }

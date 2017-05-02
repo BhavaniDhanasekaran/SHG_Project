@@ -14,11 +14,21 @@ from shgapp.utils.helper import Helper
 from shgapp.views.decorator import session_required
 
 helper = Helper()
+import logging
+import sys
+logging.basicConfig(level=logging.INFO)
+loggerInfo = logging.getLogger(__name__)
+
+logging.basicConfig(level=logging.ERROR)
+errorLog = logging.getLogger(__name__)
+
+
 s3Resource = boto3.resource('s3',
                             aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
                             aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
                             region_name=settings.AWS_REGION_NAME)
-print 's3 resource: ', s3Resource
+loggerInfo.info("----s3Resource----")
+loggerInfo.info(s3Resource)
 
 
 def create_random_string(length=30):
@@ -41,8 +51,7 @@ def upload_to_filename(filename):
 
 @session_required
 def ajax_progress_bar_upload(request):
-    print "called ajax_progress_bar_upload"
-    print 'request: ', request
+    loggerInfo.info('------------------Entering ajax_progress_bar_upload(request):---------------------- ')
     time.sleep(1)
     try:
         for filename, file in request.FILES.iteritems():
@@ -50,19 +59,20 @@ def ajax_progress_bar_upload(request):
             uploadtofilename = upload_to_filename(request.FILES[filename].name)
             ctype = mimetypes.guess_type(uploadtofilename)
             file_size = file.size
-            print 'name: ', name
-            print 'upload_to_filename name: ', uploadtofilename
-            print 'content type: ', mimetypes.guess_type(uploadtofilename)
+            loggerInfo.info(name)
+            loggerInfo.info(uploadtofilename)
+            loggerInfo.info(mimetypes.guess_type(uploadtofilename))
             s3Resource.Bucket(settings.AWS_BUCKET_NAME).put_object(
                 Key=settings.AWS_BUCKET_FOLDER_PATH + uploadtofilename,
                 Body=file,ContentType=ctype[0])
-            print  'ProgressBarUploadView done - upload_to_filename', uploadtofilename
+            loggerInfo.info('ProgressBarUploadView done - upload_to_filename', uploadtofilename)
             data = {'is_valid': True, 'name': uploadtofilename, 'url': settings.AWS_S3_BASE_URL + uploadtofilename,'file_size':file_size}
     except Exception, e:
-        print 'ajax_progress_bar_upload Exception e: ', e
+        errorLog.error('ajax_progress_bar_upload Exception e:  %s' %e)
         data = {'is_valid': False}
         return helper.bad_request('Unexpected error occurred while uploading document.')
-    print 'data: ', data
+    loggerInfo.info(data)
+    loggerInfo.info('------------------Exiting ajax_progress_bar_upload(request):---------------------- ')
     return JsonResponse(data)
 
 

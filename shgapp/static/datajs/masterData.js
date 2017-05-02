@@ -30,7 +30,6 @@ function areasUnderPincode(){
 				if(pincodeData["data"][0]){
 					$('#villages').append('<option value="" >   Select Area </option>');
 					for(var i = 0; i< pincodeData["data"].length; i++){
-					console.log(pincodeData["data"][i]);
 						$('#villages').append('<option value="'+pincodeData["data"][i]["villageId"]+'">'+pincodeData["data"][i]["villageName"]+'</option>');
 					}
 				}

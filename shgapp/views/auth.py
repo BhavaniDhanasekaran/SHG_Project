@@ -13,10 +13,21 @@ from shgapp.forms import SignUpForm
 from django.views.decorators.csrf  import csrf_exempt
 import datetime
 
+
+import logging
+import sys
+logging.basicConfig(level=logging.INFO)
+loggerInfo = logging.getLogger(__name__)
+
+logging.basicConfig(level=logging.ERROR)
+errorLog = logging.getLogger(__name__)
+
+
 import json
 helper = Helper()
 sscoreClient = SSCoreClient()
 def signup(request):
+    loggerInfo.info("-------------------------Entering signup(request):--------------------------")
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if not form.is_valid():
@@ -30,30 +41,34 @@ def signup(request):
             user = authenticate(username=username, password=password)
             login(request, user)
             messages.add_message(request, messages.SUCCESS, 'Your account were successfully created.')
+            loggerInfo.info("-------------------------Exiting signup(request):--------------------------")
             return HttpResponseRedirect('/')
     else:
+        loggerInfo.info("-------------------------Exiting signup(request):--------------------------")
         return render(request, 'auth/signup.html', { 'form': SignUpForm() })
 
 @csrf_exempt
 def signin(request):
-    print 'signin'
+    loggerInfo.info("-------------------------Entering signin(request):--------------------------")
     if 'userName' in request.session:
-        print 'authenticated'
+        loggerInfo.info("User authenticated")
+        loggerInfo.info("-------------------------Exiting signin(request):--------------------------")
         return HttpResponseRedirect('/')
     else:
-        print 'not authenticated'
+        loggerInfo.info("User not authenticated")
         if request.method == 'POST':
             username = request.POST['username']
             password = request.POST['password']
 
             if username is not None:
                 bodyData = {"userName" : username, "password":password}
-                print "bodyDatadssdfsdfsd"
-                print bodyData
+                loggerInfo.info("username :" +username)
+                loggerInfo.info("password :" + password)
+
                 loginResponse = sscoreClient._urllib2_request('User/logIn', bodyData,
                                                               requestType='POST')
-                print "loginResponse"
-                print loginResponse
+                loggerInfo.info("loginResponse")
+                loggerInfo.info(loginResponse)
                 if loginResponse["code"] == 5001:
                     group = loginResponse["data"]["userOfficeDetails"]["designation"]
                     userId = loginResponse["data"]["userId"]
@@ -63,13 +78,15 @@ def signin(request):
                     request.session["userId"] = userId
                     request.session["userLogin"] = username
                     request.session["loginTime"] = datetime.datetime.now()
-                    #return render(request, 'index.html', {"Message": "Successful login","group" : group, "userId" :userId,"user":userName})
                     if 'next' in request.GET:
                         return HttpResponseRedirect(request.GET['next'])
                     else:
+                        loggerInfo.info("-------------------------Exiting signin(request):--------------------------")
                         return HttpResponseRedirect('/')
                 if loginResponse["code"] == 5002:
                     message = loginResponse["data"]["logInStatus"]
+                    loggerInfo.info(message)
+                    loggerInfo.info("-------------------------Exiting signin(request):--------------------------")
                     return render(request, 'auth/signin.html', {"Message": message})
                 else:
                     return render(request, 'auth/signin.html', {"Message": "Invalid Username or Password. Try again."})

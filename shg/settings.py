@@ -3,6 +3,9 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+print "BASE_DIR"
+print BASE_DIR
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'j(eizq_b!dk+rse4!94x5$caj3dux31ks*xj8im(c&jpbkomud'
 
@@ -172,3 +175,95 @@ AWS_REGION_NAME='ap-southeast-1'
 AWS_BUCKET_NAME = 'testingdocuments.mmfl.in'
 AWS_BUCKET_FOLDER_PATH = 'media/doc_data/documents/'
 AWS_S3_BASE_URL='http://testingdocuments.mmfl.in.s3.amazonaws.com/media/doc_data/documents/'
+
+
+
+LOGGING = {
+    'version': 1,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+        },
+        'null': {
+            'class': 'logging.NullHandler',
+        },
+        'log_file':{
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR+'/Logs/', 'djangoEntireLog.log'),
+            'maxBytes': '5777216', # 5megabytes
+            'formatter': 'verbose'
+        },
+        'log_file1':{
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR+'/Logs/', 'djangoInfo.log'),
+            'maxBytes': '5777216', # 5megabytes
+            'formatter': 'verbose'
+        },
+        'log_file2':{
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR+'/Logs/', 'djangoError.log'),
+            'maxBytes': '5777216', # 5megabytes
+            'formatter': 'verbose'
+        },
+        
+        
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': True,
+            
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+        },
+        'django.request': {
+            'handlers': ['mail_admins','log_file2'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'django.security': {
+            'handlers': ['mail_admins','log_file2'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'shgapp.views': {
+            'handlers': ['console','log_file1'],
+         },
+        'dba': {
+            'handlers': ['console','log_file'],
+        },
+        'django': {
+            'handlers': ['console','log_file'],
+        },
+        'py.warnings': {
+            'handlers': ['console','log_file'],
+        },
+	 
+        
+    }
+}

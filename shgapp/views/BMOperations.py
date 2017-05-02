@@ -12,9 +12,17 @@ helper = Helper()
 sscoreClient = SSCoreClient()
 camundaClient = CamundaClient()
 
+import logging
+logging.basicConfig(level=logging.INFO)
+loggerInfo = logging.getLogger(__name__)
+
+logging.basicConfig(level=logging.ERROR)
+errorLog = logging.getLogger(__name__)
+
 #@decryption_required
 @session_required
 def getTasksByTaskName(request,taskName):
+    loggerInfo.info("--------------------Entering getTasksByTaskName(request,taskName):-------------------")
     try:
         print "Entering getTasksByTaskName(request): view "
         username = request.session["userName"]
@@ -67,8 +75,10 @@ def getTasksByTaskName(request,taskName):
 
         for key in groupTaskDict:
             groupTaskData.append(groupTaskDict[key])
+            loggerInfo.info("--------------------Exiting getTasksByTaskName(request,taskName):-------------------")
         return HttpResponse(json.dumps(groupTaskData), content_type="application/json")
     except ShgInvalidRequest, e:
+        errorLog.error("Exception raised inside getTasksByTaskName(request,taskName): %s" %e)
         return helper.bad_request('Unexpected error occurred while getting task details.')
 
 
@@ -76,19 +86,23 @@ def getTasksByTaskName(request,taskName):
 @session_required
 def groupRoleDetails(request):
     print "Inside groupRoleDetails(request):"
+    loggerInfo.info("--------------------Entering groupRoleDetails(request):-------------------")
     try:
         if request.method == "POST":
             formData  = json.loads(request.body)
             bodyData =  formData["roleObj"]
             roleResponse = sscoreClient._urllib2_request('workflowDetailView/workflowGroupDetail',bodyData,requestType='POST')
+            loggerInfo.info("--------------------Exiting groupRoleDetails(request):-------------------")
             return HttpResponse(json.dumps(roleResponse), content_type="application/json")
     except ShgInvalidRequest, e:
+        errorLog.error("Exception raised inside groupRoleDetails(request): %s" %e)
         return helper.bad_request('Unexpected error occurred while getting Credit History.')
 
 @csrf_exempt
 @session_required
 def updateGrpValidationStatus(request):
     print "Inside updateGrpValidationStatus(request):"
+    loggerInfo.info("--------------------Entering updateGrpValidationStatus(request):-------------------")
     try:
         if request.method == "POST":
             formData  = json.loads(request.body)
@@ -104,8 +118,10 @@ def updateGrpValidationStatus(request):
                 else:
                     bodyData = {}
                 taskUpdateResponse = taskComplete(request,bodyData,taskId)
+                loggerInfo.info("--------------------Exiting updateGrpValidationStatus(request):-------------------")
                 return HttpResponse(json.dumps(taskUpdateResponse), content_type="application/json")
     except ShgInvalidRequest, e:
+        errorLog.error("Exception raised inside updateGrpValidationStatus(request): %s" %e)
         return helper.bad_request('Unexpected error occurred while updating group status.')
 
 
@@ -113,12 +129,15 @@ def updateGrpValidationStatus(request):
 @session_required
 def updateGroupMemberStatus(request):
     print "Inside updateGroupMemberStatus(request):"
+    loggerInfo.info("--------------------Entering updateGroupMemberStatus(request):-------------------")
     try:
         if request.method == "POST":
             formData  = json.loads(request.body)
             bodyGroupValidation =  formData["groupValData"]
             validationResponse = sscoreClient._urllib2_request('workflowEdit/updateMemberGroupLoan',bodyGroupValidation,requestType='POST')
+            loggerInfo.info("--------------------Exiting updateGroupMemberStatus(request):-------------------")
             return HttpResponse(json.dumps(validationResponse), content_type="application/json")
     except ShgInvalidRequest, e:
+        errorLog.error("Exception raised inside updateGroupMemberStatus(request): %s" %e)
         return helper.bad_request('An expected error occurred while update Group Member Status details.')
 

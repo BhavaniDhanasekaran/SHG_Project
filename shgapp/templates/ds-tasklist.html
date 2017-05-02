@@ -15,10 +15,9 @@
             taskList = JSON.parse(taskList);
         }
         $(document).ready(function(){
-            console.log("taskName",taskName);
+           
             if(taskName != "Query Response" && taskName != "Confirm disbursement" && taskName != "Confirm Disbursement Query Response" && taskName != "Upload disbursement docs" && taskName != "Resolve Confirm Disbursement Query" && taskName != "KYC Check" && taskName != "Proposal scrutiny" && taskName != "BM Reply"){
-	         console.log(taskName );
-		  getTasksByTaskName(taskName);
+	    		  getTasksByTaskName(taskName);
             }
             else{
                 getTaskList(taskName);            }
