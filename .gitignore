@@ -3,6 +3,7 @@
 /.idea
 /.komodotools
 *.out
+*.log
 *.komodoproject
 *.pyc
 *~
