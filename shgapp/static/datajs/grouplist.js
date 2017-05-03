@@ -1861,21 +1861,10 @@ function updateGroupValStatus(status) {
 
                 else
                 {
-                    
-                    $.confirm({
-                        title: 'Do you really want to approve the group?',
-                        confirmButton: 'Yes',
-                        cancelButton: 'No',
-                        confirm: function(){
-                            completeTask("Approved");
-                        },
-                        cancel: function(){
-                        }
-                    });
-                    
-
+                   validationType = "PEN";
+		     proStatus = "bmapproved";
+                   showConfirmBox(status);
                 }
-
                    
                     }
                 });
@@ -1885,7 +1874,7 @@ function updateGroupValStatus(status) {
                 
             }
             if(status == "Rejected"){
-                validationType = "CLMAPPROVAL";
+                validationType = "PEN";
                 proStatus = "bmrejected";
                 showConfirmBox(status);
             }
