@@ -1,0 +1,77 @@
+INFO 2017-05-03 12:46:46,389 mfupload 3386 140328654014208 ----s3Resource----
+INFO 2017-05-03 12:46:46,390 mfupload 3386 140328654014208 s3.ServiceResource()
+INFO 2017-05-03 12:46:48,592 task 3386 140328611329792 ------------------Entering SHGForm(request,groupId,loanId,taskId,processId,taskName,loanTypeName,loanTypeId):---------------------- 
+INFO 2017-05-03 12:46:48,592 task 3386 140328611329792 ------------------Exiting SHGForm(request,groupId,loanId,taskId,processId,taskName,loanTypeName,loanTypeId):---------------------- 
+INFO 2017-05-03 12:46:49,943 BMOperations 3386 140328611329792 --------------------Entering groupRoleDetails(request):-------------------
+INFO 2017-05-03 12:46:49,973 BMOperations 3386 140328611329792 --------------------Exiting groupRoleDetails(request):-------------------
+INFO 2017-05-03 12:46:50,030 camundaViews 3386 140328611329792 ------------------Entering tasksCount(request):---------------------- 
+INFO 2017-05-03 12:46:50,047 camundaViews 3386 140328611329792 ---tasksCount--- {"Task": {"myTasks": 1, "KYC Check": 1, "Query Response": 0}} 
+INFO 2017-05-03 12:46:50,048 camundaViews 3386 140328611329792 ---------------------Exiting tasksCount( request )-------------------- 
+INFO 2017-05-03 12:46:50,051 kyc 3386 140328375932672 --------------------Entering getGroupData(request):-------------------
+INFO 2017-05-03 12:46:50,074 kyc 3386 140328375932672 --------------------Exiting getGroupData(request):-------------------
+INFO 2017-05-03 12:46:50,307 kyc 3386 140328375932672 --------------------Entering getGroupData(request):-------------------
+INFO 2017-05-03 12:46:50,325 kyc 3386 140328384325376 ------------------Entering getIndMemberData(request,memberId,groupId,taskName):-----------------------
+INFO 2017-05-03 12:46:50,333 kyc 3386 140328375932672 --------------------Exiting getGroupData(request):-------------------
+INFO 2017-05-03 12:46:50,567 masterData 3386 140328375932672 ------------------Entering masterDataBank(request):---------------------- 
+INFO 2017-05-03 12:46:50,576 masterData 3386 140328375932672 ------------------Exiting masterDataBank(request):---------------------- 
+INFO 2017-05-03 12:46:50,584 masterData 3386 140328367539968 ------------------Entering masterIDProof(request):---------------------- 
+INFO 2017-05-03 12:46:50,589 masterData 3386 140328367539968 ------------------Exiting masterIDProof(request):---------------------- 
+INFO 2017-05-03 12:46:50,598 masterData 3386 140328611329792 ------------------Entering masterAddressProof(request):---------------------- 
+INFO 2017-05-03 12:46:50,603 masterData 3386 140328611329792 ------------------Exiting masterAddressProof(request):---------------------- 
+INFO 2017-05-03 12:46:50,612 masterData 3386 140328602937088 ------------------Entering masterLoanPurpose(request):---------------------- 
+INFO 2017-05-03 12:46:50,617 masterData 3386 140328602937088 ------------------Exiting masterLoanPurpose(request):---------------------- 
+INFO 2017-05-03 12:46:55,675 kyc 3386 140328384325376 ------------------Exiting getIndMemberData(request,memberId,groupId,taskName):-----------------------
+INFO 2017-05-03 12:46:55,890 kyc 3386 140328384325376 ------------------Entering getLoanMemberPaymentHistory(request, memberId, groupId):---------------------- 
+INFO 2017-05-03 12:46:55,891 kyc 3386 140328602937088 ------------------Entering getMemberFSR(request,memberId):---------------------- 
+INFO 2017-05-03 12:46:55,943 kyc 3386 140328602937088 ------------------Exiting getMemberFSR(request,memberId):---------------------- 
+INFO 2017-05-03 12:46:56,001 kyc 3386 140328384325376 ------------------Exiting getLoanMemberPaymentHistory(request, memberId, groupId):---------------------- 
+INFO 2017-05-03 12:47:24,057 task 3386 140328384325376 ------------------Entering SHGForm(request,groupId,loanId,taskId,processId,taskName,loanTypeName,loanTypeId):---------------------- 
+INFO 2017-05-03 12:47:24,057 task 3386 140328384325376 ------------------Exiting SHGForm(request,groupId,loanId,taskId,processId,taskName,loanTypeName,loanTypeId):---------------------- 
+INFO 2017-05-03 12:47:24,542 camundaViews 3386 140328367539968 ------------------Entering tasksCount(request):---------------------- 
+INFO 2017-05-03 12:47:24,558 camundaViews 3386 140328367539968 ---tasksCount--- {"Task": {"myTasks": 1, "KYC Check": 1, "Query Response": 0}} 
+INFO 2017-05-03 12:47:24,558 camundaViews 3386 140328367539968 ---------------------Exiting tasksCount( request )-------------------- 
+INFO 2017-05-03 12:47:24,560 kyc 3386 140328375932672 --------------------Entering getGroupData(request):-------------------
+INFO 2017-05-03 12:47:24,578 BMOperations 3386 140328392718080 --------------------Entering groupRoleDetails(request):-------------------
+INFO 2017-05-03 12:47:24,585 kyc 3386 140328375932672 --------------------Exiting getGroupData(request):-------------------
+INFO 2017-05-03 12:47:24,609 BMOperations 3386 140328392718080 --------------------Exiting groupRoleDetails(request):-------------------
+INFO 2017-05-03 12:47:24,704 masterData 3386 140328392718080 ------------------Entering masterDataBank(request):---------------------- 
+INFO 2017-05-03 12:47:24,714 masterData 3386 140328392718080 ------------------Exiting masterDataBank(request):---------------------- 
+INFO 2017-05-03 12:47:24,721 masterData 3386 140328375932672 ------------------Entering masterIDProof(request):---------------------- 
+INFO 2017-05-03 12:47:24,725 masterData 3386 140328375932672 ------------------Exiting masterIDProof(request):---------------------- 
+INFO 2017-05-03 12:47:24,735 masterData 3386 140328367539968 ------------------Entering masterAddressProof(request):---------------------- 
+INFO 2017-05-03 12:47:24,740 masterData 3386 140328367539968 ------------------Exiting masterAddressProof(request):---------------------- 
+INFO 2017-05-03 12:47:24,749 masterData 3386 140328384325376 ------------------Entering masterLoanPurpose(request):---------------------- 
+INFO 2017-05-03 12:47:24,756 masterData 3386 140328384325376 ------------------Exiting masterLoanPurpose(request):---------------------- 
+INFO 2017-05-03 12:47:24,777 kyc 3386 140328611329792 ------------------Entering getIndMemberData(request,memberId,groupId,taskName):-----------------------
+INFO 2017-05-03 12:47:24,900 kyc 3386 140328602937088 --------------------Entering getGroupData(request):-------------------
+INFO 2017-05-03 12:47:24,923 kyc 3386 140328602937088 --------------------Exiting getGroupData(request):-------------------
+INFO 2017-05-03 12:47:30,243 kyc 3386 140328611329792 ------------------Exiting getIndMemberData(request,memberId,groupId,taskName):-----------------------
+INFO 2017-05-03 12:47:30,437 kyc 3386 140328611329792 ------------------Entering getLoanMemberPaymentHistory(request, memberId, groupId):---------------------- 
+INFO 2017-05-03 12:47:30,448 kyc 3386 140328602937088 ------------------Entering getMemberFSR(request,memberId):---------------------- 
+INFO 2017-05-03 12:47:30,497 kyc 3386 140328602937088 ------------------Exiting getMemberFSR(request,memberId):---------------------- 
+INFO 2017-05-03 12:47:30,547 kyc 3386 140328611329792 ------------------Exiting getLoanMemberPaymentHistory(request, memberId, groupId):---------------------- 
+INFO 2017-05-03 12:47:58,911 task 3386 140328611329792 ------------------Entering SHGForm(request,groupId,loanId,taskId,processId,taskName,loanTypeName,loanTypeId):---------------------- 
+INFO 2017-05-03 12:47:58,911 task 3386 140328611329792 ------------------Exiting SHGForm(request,groupId,loanId,taskId,processId,taskName,loanTypeName,loanTypeId):---------------------- 
+INFO 2017-05-03 12:47:59,548 camundaViews 3386 140328375932672 ------------------Entering tasksCount(request):---------------------- 
+INFO 2017-05-03 12:47:59,559 kyc 3386 140328358098688 --------------------Entering getGroupData(request):-------------------
+INFO 2017-05-03 12:47:59,562 camundaViews 3386 140328375932672 ---tasksCount--- {"Task": {"myTasks": 1, "KYC Check": 1, "Query Response": 0}} 
+INFO 2017-05-03 12:47:59,562 camundaViews 3386 140328375932672 ---------------------Exiting tasksCount( request )-------------------- 
+INFO 2017-05-03 12:47:59,577 BMOperations 3386 140328611329792 --------------------Entering groupRoleDetails(request):-------------------
+INFO 2017-05-03 12:47:59,582 kyc 3386 140328358098688 --------------------Exiting getGroupData(request):-------------------
+INFO 2017-05-03 12:47:59,604 BMOperations 3386 140328611329792 --------------------Exiting groupRoleDetails(request):-------------------
+INFO 2017-05-03 12:47:59,723 kyc 3386 140328611329792 ------------------Entering getIndMemberData(request,memberId,groupId,taskName):-----------------------
+INFO 2017-05-03 12:47:59,735 kyc 3386 140328358098688 --------------------Entering getGroupData(request):-------------------
+INFO 2017-05-03 12:47:59,758 kyc 3386 140328358098688 --------------------Exiting getGroupData(request):-------------------
+INFO 2017-05-03 12:48:05,233 kyc 3386 140328611329792 ------------------Exiting getIndMemberData(request,memberId,groupId,taskName):-----------------------
+INFO 2017-05-03 12:48:05,680 kyc 3386 140328358098688 ------------------Entering getLoanMemberPaymentHistory(request, memberId, groupId):---------------------- 
+INFO 2017-05-03 12:48:05,706 kyc 3386 140328611329792 ------------------Entering getMemberFSR(request,memberId):---------------------- 
+INFO 2017-05-03 12:48:05,756 kyc 3386 140328611329792 ------------------Exiting getMemberFSR(request,memberId):---------------------- 
+INFO 2017-05-03 12:48:05,790 kyc 3386 140328358098688 ------------------Exiting getLoanMemberPaymentHistory(request, memberId, groupId):---------------------- 
+INFO 2017-05-03 12:48:20,264 masterData 3386 140328358098688 ------------------Entering masterDataBank(request):---------------------- 
+INFO 2017-05-03 12:48:20,273 masterData 3386 140328358098688 ------------------Exiting masterDataBank(request):---------------------- 
+INFO 2017-05-03 12:48:20,302 masterData 3386 140328611329792 ------------------Entering masterIDProof(request):---------------------- 
+INFO 2017-05-03 12:48:20,307 masterData 3386 140328611329792 ------------------Exiting masterIDProof(request):---------------------- 
+INFO 2017-05-03 12:48:20,325 masterData 3386 140328367539968 ------------------Entering masterAddressProof(request):---------------------- 
+INFO 2017-05-03 12:48:20,330 masterData 3386 140328367539968 ------------------Exiting masterAddressProof(request):---------------------- 
+INFO 2017-05-03 12:48:20,351 masterData 3386 140328375932672 ------------------Entering masterLoanPurpose(request):---------------------- 
+INFO 2017-05-03 12:48:20,357 masterData 3386 140328375932672 ------------------Exiting masterLoanPurpose(request):---------------------- 
