@@ -209,21 +209,24 @@ LOGGING = {
         'log_file':{
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join('/opt/DjangoLogs/', 'djangoEntireLog.log'),
+            #'filename': os.path.join('/opt/SHGDjangoLogs/', 'djangoEntireLog.log'),
+            'filename': os.path.join(BASE_DIR+'/Logs/', 'djangoEntireLog.log'),
             'maxBytes': '5777216', # 5megabytes
             'formatter': 'verbose'
         },
         'log_file1':{
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join('/opt/DjangoLogs/', 'djangoInfo.log'),
+            #'filename': os.path.join('/opt/SHGDjangoLogs/', 'djangoInfo.log'),
+            'filename': os.path.join(BASE_DIR+'/Logs/', 'djangoInfo.log'),
             'maxBytes': '5777216', # 5megabytes
             'formatter': 'verbose'
         },
         'log_file2':{
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join('/opt/DjangoLogs/', 'djangoError.log'),
+            #'filename': os.path.join('/opt/SHGDjangoLogs/', 'djangoError.log'),
+            'filename': os.path.join(BASE_DIR+'/Logs/', 'djangoError.log'),
             'maxBytes': '5777216', # 5megabytes
             'formatter': 'verbose'
         },

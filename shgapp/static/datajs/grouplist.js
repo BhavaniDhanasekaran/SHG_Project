@@ -2203,6 +2203,10 @@ function getPaymentHistory(key,memberId,groupId){
 }
 
 function clearMemberData() {
+   $('#Animator').empty();
+   $('#repm1').empty();
+   $('#repm2').empty();
+
    $("#ADDRESSPROOF_docPath").css("display", "none");
    $("#ADDRESSPROOF_docPath").attr("src","");
 
@@ -2243,7 +2247,7 @@ function reloadComments(id) {
 }
 
 function generateLOS(){
-    var loanAccNo = document.getElementById("loanAccountNumber").value;
+    var loanAccNo = document.getElementById("loanAccountNumber").innerHTML;
     var dataObj = {};
     var losGenerationData = {
         "loanAccountNo" : loanAccNo,
@@ -2272,8 +2276,9 @@ function generateLOS(){
                 }
             }
             if(data["code"] == "11001"){
+		console.log(data);
                 //$.alert(data["message"]);
-                $.alert(data.data.message);
+                $.alert(data.data.message[0]);
             }
         },
         data: JSON.stringify(dataObj)
@@ -2405,10 +2410,10 @@ function updateChequeInfo(){
             if(document.getElementById(totalMemberIdArray[i]).value == "true"){
                 memberAvailedLoanArray.push(totalMemberIdArray[i].split("_")[0]);
             }
-            else{
+	     if(document.getElementById(totalMemberIdArray[i]).value == "false"){
                 memberAvailedLoanFalseArr.push(totalMemberIdArray[i].split("_")[0]);
             }
-        }
+                    }
     }
 
 
@@ -2422,11 +2427,6 @@ function updateChequeInfo(){
                     $("#"+domElemId).addClass("setBGColor");
                     flag = 1
                 }
-                else{
-                     $("#"+domElemId).removeClass("setBGColor");
-			flag = 0;
-
-                }
             }
         }
     }
@@ -2437,11 +2437,10 @@ function updateChequeInfo(){
                 $("#"+domElemId).removeClass("setBGColor");
                 $("#"+domElemId).css("border","1px solid #D5D5D5");
                 $("#"+domElemId).css("color","black");
-		  flag = 0;
             }
         }
     }
-
+    
     if(flag == 1){
         $(".setBGColor").css("border","1px solid #CD0000");
         $(".setBGColor").css("color","black");
@@ -2614,6 +2613,7 @@ function confirmLoan(status){
                 var dataObj = {};
                 dataObj["cheqData"] = eval(JSON.stringify(rows));
                 dataObj["processUpdate"] = { 'variables': { 'disbursement': {   'value': status     },     }     };
+		  dataObj["taskId"] = taskId;
 
                 $.ajax({
                     url : '/confirmChqDisbursement/',
@@ -2656,16 +2656,19 @@ function completeTask(status){
     }
     else{
 
-
+    var fontColor = '';
     var statusUpdate = '';
     var groupName = document.getElementById("groupName_groupRole").innerHTML;
     if(status == "rework"){
+	 fontColor = 'darkgoldenrod';
         statusUpdate = "'"+groupName+"'"+'  has been sent for rework';
     }
     if(status == "send"){
+	 fontColor = 'green';
         statusUpdate = "'"+groupName+"'"+' has been approved';
     }
     if(status == "resolved"){
+	 fontcolor = 'green';
         statusUpdate = groupName+"'s query"+'  has been resolved';
     }
     var dataObj = {};
@@ -2673,9 +2676,10 @@ function completeTask(status){
     dataObj["taskId"] = taskId;
     dataObj["processUpdate"] = { 'variables': { 'disbursement': {   'value': status     },     }     };
     flag =1;
+	
     }   
     if(flag == 1){
-        
+
          $.ajax({
         url: '/updateTask/',
         dataType: 'json',
@@ -2689,7 +2693,7 @@ function completeTask(status){
         success: function(data) {
             if (data == "Successful") {
                 $("#validationMessage").addClass("center");
-                document.getElementById("validationMessage").innerHTML ='<span style="color:green" " class="bigger-50"><i class="ace-icon fa fa-check-circle bigger-125"></i> &nbsp&nbsp'+statusUpdate+'</span>';
+                document.getElementById("validationMessage").innerHTML ='<span style="color:'+fontColor+'" " class="bigger-50"><i class="ace-icon fa fa-check-circle bigger-125"></i> &nbsp&nbsp'+statusUpdate+'</span>';
                 document.getElementById("gStatus").innerHTML = '<h3  class="lighter center smaller">Task has been completed successfully!  <i class="ace-icon glyphicon glyphicon-thumbs-up bigger-150"></i> </h3>';
                 document.getElementById("taskValBtn").innerHTML = '<a href="/assignedTaskList/" class="btn btn-primary"> <i class="glyphicon glyphicon-user"></i> Go to My Tasks </a>';
                 $("#successPanel").show();
@@ -2711,7 +2715,7 @@ function getLoanAccountNumber(){
         url: '/getLoanAccNo/'+processInstanceId,
         dataType: 'json',
         success: function(data) {
-            document.getElementById("loanAccountNumber").value = data["loanAccNo"];
+            document.getElementById("loanAccountNumber").innerHTML = data["loanAccNo"];
         }
     });
 }

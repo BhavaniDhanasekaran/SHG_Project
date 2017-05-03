@@ -333,7 +333,7 @@ def approveLoan(request):
         return helper.bad_request('An expected error occurred while approving loan.')
 
 
-# @decryption_required
+#@decryption_required
 @session_required
 def loanAccNo(request, loanAccNumber, appGroupId, loanTypeName, groupName, funder, successMsg):
     username = request.session["userName"]

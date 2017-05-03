@@ -64,10 +64,9 @@
                 <div class="tabbable">
                     <div class="tab-content">
                         <div class="profile-info-row">
-                            <b><div class="profile-info-name"> Loan A/c No. </div></b>
+                            <div style="font-weight: bold;" class="profile-info-name"> Loan A/c No : </div>
                             <div class="profile-info-value">
-                                <input maxlength=14  style="font-weight: bold;" class="editable" id="loanAccountNumber" autofocus>&nbsp&nbsp&nbsp&nbsp
-                                <button type="button" class="btn btn-danger" onclick="generateLOS();" >Generate LOS</button>
+                                <span style="font-weight: bold;" class="editable" id="loanAccountNumber"></span>                                
                             </div>
                         </div>
                         <div id="upload" class="tab-pane in active">
@@ -154,7 +153,9 @@
                                 </div-->
                                 <div class="row-centered">
                                     <div class="col-md-12">
-                                        <button type="button" class="btn btn-danger btn-md" onclick="updateTask('Approved');">Approve</button>
+                                        <button type="button" class="btn btn-danger" onclick="generateLOS();" >Generate LOS</button>
+					     <button type="button" class="btn btn-danger btn-md" onclick="updateTask('Approved');">Approve</button>
+					     
                                     </div>
                                 </div>
                                 <!--upload doc end-->
