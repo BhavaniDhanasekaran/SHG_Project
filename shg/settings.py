@@ -209,21 +209,21 @@ LOGGING = {
         'log_file':{
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(BASE_DIR+'/Logs/', 'djangoEntireLog.log'),
+            'filename': os.path.join('/opt/DjangoLogs/', 'djangoEntireLog.log'),
             'maxBytes': '5777216', # 5megabytes
             'formatter': 'verbose'
         },
         'log_file1':{
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(BASE_DIR+'/Logs/', 'djangoInfo.log'),
+            'filename': os.path.join('/opt/DjangoLogs/', 'djangoInfo.log'),
             'maxBytes': '5777216', # 5megabytes
             'formatter': 'verbose'
         },
         'log_file2':{
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(BASE_DIR+'/Logs/', 'djangoError.log'),
+            'filename': os.path.join('/opt/DjangoLogs/', 'djangoError.log'),
             'maxBytes': '5777216', # 5megabytes
             'formatter': 'verbose'
         },
