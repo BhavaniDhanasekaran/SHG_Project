@@ -14,6 +14,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 import time
+from datetime import datetime
 JS_VERSION  = time.time()
 
 
@@ -78,9 +79,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'dev_shg_django',
-        'USER': 'postgres',
-        'PASSWORD': 'G6j88U2JYzcwpjPq',
-        'HOST': 'madurabpm.cwxetrwsi128.ap-southeast-1.rds.amazonaws.com',
+        'USER': 'sangamam',
+        'PASSWORD': 'madura123',
+        'HOST': 'devsangamam.cwxetrwsi128.ap-southeast-1.rds.amazonaws.com',
         'PORT': '5432',
     }
 }
@@ -182,7 +183,8 @@ LOGGING = {
     'version': 1,
     'formatters': {
         'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
         },
         'simple': {
             'format': '%(levelname)s %(message)s'
@@ -208,30 +210,12 @@ LOGGING = {
         },
         'log_file':{
             'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
-            #'filename': os.path.join('/opt/SHGDjangoLogs/', 'djangoEntireLog.log'),
-            'filename': os.path.join(BASE_DIR+'/Logs/', 'djangoEntireLog.log'),
-            'maxBytes': '5777216', # 5megabytes
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join('/opt/shgbpm/shgdjango_logs/', 'djangoLog.log'),
+            'when': 'midnight',
+            'backupCount': 15,
             'formatter': 'verbose'
         },
-        'log_file1':{
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            #'filename': os.path.join('/opt/SHGDjangoLogs/', 'djangoInfo.log'),
-            'filename': os.path.join(BASE_DIR+'/Logs/', 'djangoInfo.log'),
-            'maxBytes': '5777216', # 5megabytes
-            'formatter': 'verbose'
-        },
-        'log_file2':{
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            #'filename': os.path.join('/opt/SHGDjangoLogs/', 'djangoError.log'),
-            'filename': os.path.join(BASE_DIR+'/Logs/', 'djangoError.log'),
-            'maxBytes': '5777216', # 5megabytes
-            'formatter': 'verbose'
-        },
-        
-        
         'mail_admins': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
@@ -244,18 +228,8 @@ LOGGING = {
         'django': {
             'handlers': ['console'],
         },
-        'django.request': {
-            'handlers': ['mail_admins','log_file2'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-        'django.security': {
-            'handlers': ['mail_admins','log_file2'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
         'shgapp.views': {
-            'handlers': ['console','log_file1'],
+            'handlers': ['console','log_file'],
          },
         'dba': {
             'handlers': ['console','log_file'],

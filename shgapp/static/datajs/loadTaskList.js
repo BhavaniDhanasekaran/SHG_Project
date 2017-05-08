@@ -107,9 +107,7 @@ function loadUnassignedTaskList(data){
         table = $('#taskListTable').DataTable( {
             "pageLength": 50
         } );
-      /*  if(taskName == "Query Response" || taskName == "Proposal scrutiny" || taskName == "BM Reply"){
-        	 triggerLoadFunc();
-		}*/
+      	triggerLoadFunc();
  }
 
 function loadAssignedTaskList(){
@@ -233,6 +231,7 @@ function loadAssignedTaskList(){
         table = $('#taskListTable').DataTable( {
         	"pageLength": 50
         } );
+	triggerLoadFunc();
 
 }
 
@@ -255,6 +254,9 @@ $(document).ready(function (){
 		triggerLoadFunc();
 	});
 	$('.dataTables_length').click(function() {
+		triggerLoadFunc();
+	});
+	$( ".dataTables_filter" ).keypress(function() {
 		triggerLoadFunc();
 	});
 	$('.dataTables_filter').click(function() {

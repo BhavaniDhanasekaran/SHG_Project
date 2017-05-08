@@ -1874,7 +1874,7 @@ function updateGroupValStatus(status) {
                 
             }
             if(status == "Rejected"){
-                validationType = "PEN";
+                validationType = "CLMAPPROVAL";
                 proStatus = "bmrejected";
                 showConfirmBox(status);
             }
