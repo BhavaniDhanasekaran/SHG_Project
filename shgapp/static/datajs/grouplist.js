@@ -293,48 +293,30 @@ function getMemberDetails(memberId, groupId, loanId) {
                     });
                 }
                 if (memberData["data"]["memberDocumentDetails"]) {
-                    var documentObj = memberData["data"]["memberDocumentDetails"];
-                    $.each(documentObj, function(key, value) {
-                        if (value.documentType == "OVERLAPREPORT") {
-                            $("#OVERLAPREPORT_docPath").attr('onClick', 'window.open(' + "'" + value.documentPath + "'" + "," + value.docId + "," + "config='width=500,height=500'" + ').focus();return false;');
-                        } else if (value.documentType == "ADDRESSPROOF") {
-                            $("#ADDRESSPROOF_docPath").css("display", "inline-block");
-                            $("#ADDRESSPROOF_docPath").attr("src", value.documentPath);
-                            $("#ADDRESSPROOF_docPath").attr("data-url", value.documentPath);
-                            $("#ADDRESSPROOF_docPath").attr("data-original", value.documentPath);
-                        } else if (value.documentType == "ADDRESSPROOF_2") {
-                            $("#ADDRESSPROOF_2_docPath").css("display", "inline-block");
-                            $("#ADDRESSPROOF_2_docPath").attr("src", value.documentPath);
-                            $("#ADDRESSPROOF_2_docPath").attr("data-url", value.documentPath);
-                            $("#ADDRESSPROOF_2_docPath").attr("data-original", value.documentPath);
-                        } else if (value.documentType == "SBACCOUNTPASSBOOK") {
-                            $("#SBACCOUNTPASSBOOK_docPath").css("display", "inline-block");
-                            $("#SBACCOUNTPASSBOOK_docPath").attr("src", value.documentPath);
-                            $("#SBACCOUNTPASSBOOK_docPath").attr("data-url", value.documentPath);
-                            $("#SBACCOUNTPASSBOOK_docPath").attr("data-original", value.documentPath);
-                        } else if (value.documentType == "IDPROOF_2") {
-                            $("#IDPROOF_2_docPath").css("display", "inline-block");
-                            $("#IDPROOF_2_docPath").attr("src", value.documentPath);
-                            $("#IDPROOF_2_docPath").attr("data-url", value.documentPath);
-                            $("#IDPROOF_2_docPath").attr("data-original", value.documentPath);
-                        } else if (value.documentType == "MEMBERPHOTO") {
-                            $("#MEMBERPHOTO_docPath").css("display", "inline-block");
-                            $("#MEMBERPHOTO_docPath").attr("src", value.documentPath);
-                            $("#MEMBERPHOTO_docPath").attr("data-url", value.documentPath);
-                            $("#MEMBERPHOTO_docPath").attr("data-original", value.documentPath);
-                        } else if (value.documentType == "IDPROOF") {
-                            $("#IDPROOF_docPath").css("display", "inline-block");
-                            $("#IDPROOF_docPath").attr("src", value.documentPath);
-                            $("#IDPROOF_docPath").attr("data-url", value.documentPath);
-                            $("#IDPROOF_docPath").attr("data-original", value.documentPath);
-                        } else if (value.documentType == "OverLapReport") {
-                            $("#OverLapReport_docPath").css("display", "inline-block");
-                            $("#OverLapReport_docPath").attr("src", value.documentPath);
-                            $("#OverLapReport_docPath").attr("data-url", value.documentPath);
-                            $("#OverLapReport_docPath").attr("data-original", value.documentPath);
-                        } else {
+                    if (memberData["data"]["memberDocumentDetails"][0]) {
+                        var memberDocumentsArray = memberData["data"]["memberDocumentDetails"];
+
+                        for (var key in memberDocumentsArray) {
+                            if ($.inArray(memberDocumentsArray[key]["documentType"], imgFiles) != -1) {
+                                if (memberDocumentsArray[key]["documentType"]) {
+                                    if (memberDocumentsArray[key]["documentType"] == "OVERLAPREPORT") {
+                                        $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr('onClick', 'window.open(' + "'" + memberDocumentsArray[key]["documentPath"] + "'" + "," + memberDocumentsArray[key]["docId"] + "," + "config='width=500,height=500'" + ').focus();');
+                                    }
+                                    if (memberDocumentsArray[key]["documentPath"] == null || memberDocumentsArray[key]["documentPath"] == 'Not uploaded' ) {
+                                        $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").css("display", "none");
+                                    } else {
+                                        $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").css("display", "inline-block");
+                                        if (memberDocumentsArray[key]["documentType"] != "OVERLAPREPORT") {
+                                            $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").addClass("img img-test");
+                                        }
+                                        $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", memberDocumentsArray[key]["documentPath"]);
+                                        $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("data-url", memberDocumentsArray[key]["documentPath"]);
+                                        $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("data-original", memberDocumentsArray[key]["documentPath"]);
+                                    }
+                                }
+                            }
                         }
-                    });
+                    }
                 }
 
                 if(document.getElementById("previousLoanMemberCycle")){
