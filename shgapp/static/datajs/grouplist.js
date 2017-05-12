@@ -1362,9 +1362,9 @@ function updateloanDatail(updateloanData) {
 
     for(var key in updateloanData){
 
-        if(updateloanData[key]["ATLloanId"] != null){
-            atlLoanId = updateloanData[key]["ATLloanId"];
-            atlAccNo  = updateloanData[key]["ATLaccNo"];
+        if(updateloanData[key]["atlLoanId"] != null){
+            atlLoanId = updateloanData[key]["atlLoanId"];
+            atlAccNo  = updateloanData[key]["atlAccNo"];
         }
     }
 
@@ -1433,9 +1433,9 @@ function approveLoan(updateloanData){
     var atlAccNo = '';
     var updateloanData = eval(updateloanData);
     for(var key in updateloanData){
-        if(updateloanData[key]["ATLloanId"] != null){
-            atlLoanId = updateloanData[key]["ATLloanId"];
-            atlAccNo  = updateloanData[key]["ATLaccNo"];
+        if(updateloanData[key]["atlLoanId"] != null){
+            atlLoanId = updateloanData[key]["atlLoanId"];
+            atlAccNo  = updateloanData[key]["atlAccNo"];
         }
     }
     var loanData = {
