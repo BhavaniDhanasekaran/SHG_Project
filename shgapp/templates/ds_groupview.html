@@ -20,7 +20,9 @@
         $(".main").imageBox();
         $("#unbind-pos").draggable();
         getGroupData(groupId,loanId);
-        loadGroupRoles(groupId, loanId, taskName);
+        loadMasterData(taskName);
+        loadGroupRoles2(groupId, loanId, taskName);
+
         $('textarea.limited').inputlimiter({
           remText: '%n character%s remaining...',
           limitText: 'max allowed : %n.'

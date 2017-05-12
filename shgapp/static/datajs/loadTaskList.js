@@ -107,7 +107,7 @@ function loadUnassignedTaskList(data){
         table = $('#taskListTable').DataTable( {
             "pageLength": 50
         } );
-      	triggerLoadFunc();
+      triggerLoadFunc();
  }
 
 function loadAssignedTaskList(){
@@ -256,10 +256,10 @@ $(document).ready(function (){
 	$('.dataTables_length').click(function() {
 		triggerLoadFunc();
 	});
-	$( ".dataTables_filter" ).keypress(function() {
+	$('.dataTables_filter').click(function() {
 		triggerLoadFunc();
 	});
-	$('.dataTables_filter').click(function() {
+	$('.dataTables_filter').keypress(function() {
 		triggerLoadFunc();
 	});
 	$('.sorting').click(function() {
@@ -310,7 +310,12 @@ function taskCount(){
 			}
 		}
 
-	    }
+	    },
+       error: function (error) {
+       		$("#loading").hide();
+       	 		$.alert("Connection Time out");	
+               
+              }
 	});
 }
 
@@ -517,6 +522,10 @@ function getTaskList(taskName){
 
             loadUnassignedTaskList(data);
             triggerLoadFunc();
-	    }
+	    },
+	    error: function (error) {
+       	$("#loading").hide();
+       	$.alert("Connection Time out");	
+        }
 	});
 }
