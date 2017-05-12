@@ -154,7 +154,7 @@ function getGroupData(groupID, loanId) {
 
 function loadMasterData(taskName){
  if (taskName == "KYC Check" || taskName == "Proposal scrutiny") {
- 	  console.log('form seting');
+
       setSelectOptionInForm()
      }
 }
@@ -165,8 +165,7 @@ function getMemberDetails(memberId, groupId, loanId) {
 
     $("#operationsDivId").hide();
     $(".spanClearClass").text('');
-    clearMemberData();
-    document.getElementById("formMembers").reset();
+    
     $("#defaultDisplay").show();
     $("#successPanel").hide();
     $.ajax({
@@ -174,6 +173,8 @@ function getMemberDetails(memberId, groupId, loanId) {
         dataType: 'json',
         beforeSend: function() {
             $("#loading").show();
+		clearMemberData();
+    		document.getElementById("formMembers").reset();
         },
         complete: function() {
             $("#loading").hide();
@@ -184,13 +185,7 @@ function getMemberDetails(memberId, groupId, loanId) {
             //getPaymentHistory("member",memberId,groupId);
         },
         success: function(data) {
-
-
             if (data.code == "2019") {
-
-                console.log("getMemberDetails from db");
-
-                console.log(data);
                 MemberDatadisplay(data)
                 highMarksList(data)
                 DocumentDetails(data)
@@ -199,37 +194,17 @@ function getMemberDetails(memberId, groupId, loanId) {
                 getPaymentHistory("member", memberId, groupId);
                 $("#loading").hide();
             }
-
-
-
         },
-
         error: function(error) {
             $("#loading").hide();
             $.alert('Please Retry again');
-
-
         }
-
     });
-
-
-
 }
 
-
-
 function MemberDatadisplay(data) {
-
     var memberData = data;
-
-    console.log('get memberData start');
-
-
-
     if (memberData["data"]["memberDetails"]) {
-
-
         if (document.getElementById("previousLoanMemberCycle")) {
             var tagname = document.getElementById("previousLoanMemberCycle").tagName;
             if (tagname == "INPUT") {
@@ -268,8 +243,6 @@ function MemberDatadisplay(data) {
             }
         }
 
-
-        console.log('get memberData end');
     } else {
         $.alert(memberData["message"]);
     }
@@ -286,10 +259,7 @@ function MemberDatadisplay(data) {
 
 
 function highMarksList(data) {
-    console.log("high");
-    console.log(data);
     var memberData = data;
-
     if (memberData["data"]["highMarksList"]) {
         var conflictDataCreditEnquiry = memberData["data"]["highMarksList"];
         if (document.getElementById("CBStatus") && conflictDataCreditEnquiry[0]) {
@@ -426,15 +396,10 @@ function highMarksList(data) {
             ],
         });
     }
-
-
-    console.log("high-end");
-
 }
 
 
 function DocumentDetails(data) {
-    console.log("DocumentDetails-start");
     var memberData = data;
     var imgFiles = ["MEMBERPHOTO", "IDPROOF", "IDPROOF_2", "ADDRESSPROOF", "ADDRESSPROOF_2", "SBACCOUNTPASSBOOK", "OVERLAPREPORT"];
 
@@ -464,16 +429,11 @@ function DocumentDetails(data) {
             }
         }
     }
-
-
-    console.log("DocumentDetails-end");
-
 }
 
 
 
 function conflictList(data) {
-    console.log("conflictList-start");
     var conflictListArr = [];
     var memberData = data;
 
@@ -529,9 +489,6 @@ function conflictList(data) {
             ],
         });
     }
-
-    console.log("conflictList-end");
-
 }
 
 
@@ -1149,9 +1106,6 @@ function loadGroupRoles(groupId, loanId, taskName) {
         },
 
         success: function(data) {
-            console.log("load Group data load start")
-            console.log(data);
-            console.log("load Group after data got")
             document.getElementById("loanTypeId1").innerHTML = data["data"]["loanTypeId"];
             if (document.getElementById("appGroupId")) {
                 document.getElementById("appGroupId").innerHTML = data["data"]["groupDetails"]["appGroupId"];
@@ -1209,9 +1163,6 @@ function loadGroupRoles2(groupId, loanId, taskName) {
         },
 
         success: function(data) {
-            console.log("load Group data2 load start")
-            console.log(data);
-            console.log("load Group2 after data got")
             document.getElementById("loanTypeId1").innerHTML = data["data"]["loanTypeId"];
             if (document.getElementById("appGroupId")) {
                 document.getElementById("appGroupId").innerHTML = data["data"]["groupDetails"]["appGroupId"];
@@ -2596,8 +2547,7 @@ function generateLOS(){
                 }
             }
             if(data["code"] == "11001"){
-		console.log(data);
-                //$.alert(data["message"]);
+		  //$.alert(data["message"]);
                 $.alert(data.data.message[0]);
             }
         },
