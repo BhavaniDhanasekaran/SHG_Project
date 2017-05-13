@@ -102,7 +102,7 @@ function getGroupData(groupID, loanId) {
                             rewCount += 1;
                         }
                         if (document.getElementById("groupMembersDropDown")) {
-                            $("#groupMembersDropDown").append('<a id="' + memberId + '" onclick="getMemberDetails(' + memberId + ',' + groupId + ',' + loanId + ');tabControl();loadGroupRoles('+groupId+','+ loanId+','+"'"+taskName+"'"+');" class="' + className + '" style="font-weight:bold;"> (' + groupData["data"]["groupMemDetail"][i]["sequenceNumber"] + ")  " + groupData["data"]["groupMemDetail"][i]["memberName"] + '</a>');
+                            $("#groupMembersDropDown").append('<a id="' + memberId + '" onclick="getMemberDetails(' + memberId + ',' + groupId + ',' + loanId + ');tabControl();loadGroupRoles2('+groupId+','+ loanId+','+"'"+taskName+"'"+');" class="' + className + '" style="font-weight:bold;"> (' + groupData["data"]["groupMemDetail"][i]["sequenceNumber"] + ")  " + groupData["data"]["groupMemDetail"][i]["memberName"] + '</a>');
                         }
                         if (document.getElementById("groupName") && groupData["data"]["groupName"]) {
                             document.getElementById("groupName").innerHTML = groupData["data"]["groupName"];
@@ -136,7 +136,15 @@ function getGroupData(groupID, loanId) {
             } else {
                 $.alert(groupData["message"]);
             }
-        }
+
+        } ,
+
+       		error: function (error) {
+       		$("#loading").hide();
+       	 		$.alert("Connection Time out");	
+               
+
+              }
     });
     //getHistComments(processInstanceId);
     //getMemberComments(processInstanceId,loanId);
@@ -144,245 +152,346 @@ function getGroupData(groupID, loanId) {
 
 }
 
+function loadMasterData(taskName){
+ if (taskName == "KYC Check" || taskName == "Proposal scrutiny") {
+
+      setSelectOptionInForm()
+     }
+}
+
+
+
 function getMemberDetails(memberId, groupId, loanId) {
+
     $("#operationsDivId").hide();
     $(".spanClearClass").text('');
-    clearMemberData();
-    document.getElementById("formMembers").reset();
+    
     $("#defaultDisplay").show();
     $("#successPanel").hide();
     $.ajax({
-        url: '/getIndMemberData/' + memberId + '/' + groupId + '/' + loanId+ '/' + taskName,
+        url: '/getIndMemberData/' + memberId + '/' + groupId + '/' + loanId + '/' + taskName,
         dataType: 'json',
         beforeSend: function() {
             $("#loading").show();
+		clearMemberData();
+    		document.getElementById("formMembers").reset();
         },
         complete: function() {
             $("#loading").hide();
-            if(document.getElementById("penCount").innerHTML != 0){
+            if (document.getElementById("penCount").innerHTML != 0) {
                 $("#operationsDivId").show();
             }
-            getMemberFSRData(memberId);
-            getPaymentHistory("member",memberId,groupId);
+            // getMemberFSRData(memberId);
+            //getPaymentHistory("member",memberId,groupId);
         },
         success: function(data) {
-            var memberData = data;
-
-            var conflictListArr = [];
-            var imgFiles = ["MEMBERPHOTO", "IDPROOF", "IDPROOF_2", "ADDRESSPROOF", "ADDRESSPROOF_2", "SBACCOUNTPASSBOOK", "OVERLAPREPORT"];
-
-            if (memberData["data"]["memberDetails"]) {
-                if (memberData["data"]["conflictList"]) {
-                    var conflictData = memberData["data"]["conflictList"];
-                    if ($.fn.DataTable.isDataTable('#memberHistConflict')) {
-                        $("#memberHistConflict").dataTable().fnDestroy();
-                    }
-                    $('#memberHistConflict').dataTable({
-                        "data": conflictData,
-                        "bDestroy": true,
-                        "bJQueryUI": false,
-                        "bProcessing": true,
-                        "bSort": true,
-                        "bInfo": true,
-                        "bPaginate": false,
-                        "iDisplayLength": 10,
-                        "bSortClasses": false,
-                        "bAutoWidth": false,
-                        "searching": false,
-                        "sDom": '<"top">rt<"bottom"flp><"clear">',
-                        "bDeferRender": true,
-                        "aoColumns": [
-                            {
-                                "mData": "memberName",
-                                "sTitle": "Member Name",
-                                "sWidth": "25%",
-                                className: "column"
-                            },
-                            {
-                                "mData": "groupName",
-                                "sTitle": "Group Name",
-                                "sWidth": "30%",
-                                className: "column"
-                            },
-                            {
-                                "mData": "appGroupId",
-                                "sTitle": "App Group ID",
-                                "sWidth": "15%",
-                                className: "column"
-                            },
-                            {
-                                "mData": "groupId",
-                                "sTitle": "Group ID",
-                                "sWidth": "15%",
-                                className: "column"
-                            },
-                            {
-                                "mData": "memberStatus",
-                                "sTitle": "Member Status",
-                                "sWidth": "15%",
-                                className: "column"
-                            },
-                        ],
-                    });
-                }
-
-                if (memberData["data"]["highMarksList"]) {
-                    var conflictDataCreditEnquiry = memberData["data"]["highMarksList"];
-                    if (document.getElementById("CBStatus") && conflictDataCreditEnquiry[0]) {
-                         document.getElementById("CBStatus").innerHTML = conflictDataCreditEnquiry[0]["status"];
-                    }
-                    var memberDocumentDetails = memberData["data"]["memberDocumentDetails"];
-                    var memberOverlapLink = ''
-                    var docPath = ''
-                    var docId = ''
-                    for (var j = 0; j < memberDocumentDetails.length; j++) {
-                        if (memberDocumentDetails[j]["documentType"] == "OVERLAPREPORT") {
-                            docPath = memberDocumentDetails[j]["documentPath"];
-                             docId = memberDocumentDetails[j]["docId"];
-                        }
-                    }
-                    memberOverlapLink = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + "'MemberOverlapWin'" + "," + "config='width=500,height=500'"+');return false;">View</button>';
-                    if ($.fn.DataTable.isDataTable( '#creditLoadData' ) ) {
-                        $("#creditLoadData").dataTable().fnDestroy();
-                    }
-
-                    $('#creditLoadData').dataTable({
-                        "data": conflictDataCreditEnquiry,
-                        "bDestroy": true,
-                        "bJQueryUI": false,
-                        "bProcessing": true,
-                        "bSort": true,
-                        "bInfo": true,
-                        "bPaginate": false,
-                        "iDisplayLength": 10,
-                        "bSortClasses": false,
-                        "bAutoWidth": false,
-                        "searching" :false,
-                        "sDom": '<"top">rt<"bottom"flp><"clear">',
-                        "bDeferRender": true,
-                        "aoColumns": [
-                            { "mData": "remarks", "sTitle": "OverLap Report",
-                                "mRender": function(data, type, full) {
-                                    return memberOverlapLink;
-                                }
-                            },
-                            { "mData": "s_product_type", "sTitle": "Product"},
-                            { "mData": "status","sTitle": "Status"},
-                            { "mData": "remarks","sTitle": "Remarks"},
-                            { "mData": "hm_response_date","sTitle": "HM Response Date"},
-                            { "mData": "existing_loan_limit","sTitle": "Existing Loan Limit"},
-                            { "mData": "loan_amount_eligible","sTitle": "Loan Amount Eligible"},
-                            { "mData": "no_of_mfi_eligible","sTitle": "MFI Eligible"},
-                            { "mData": "name_of_mfi_1","sTitle": "MFI 1 Name"},
-                            { "mData": "overdue_amount_1","sTitle": "Overdue_1"},
-                            { "mData": "loan_amount_1","sTitle": "Loan Amount_1"},
-                            { "mData": "balance_1","sTitle": "Balance_1"},
-                            { "mData": "name_of_mfi_2","sTitle": "MFI 2 Name"},
-                            { "mData": "overdue_amount_2","sTitle": "Overdue_2"},
-                            { "mData": "loan_amount_2","sTitle": "Loan Amount_2"},
-                            { "mData": "balance_2","sTitle": "Balance_2"},
-                            { "mData": "name_of_mfi_3","sTitle": "MFI 3 Name"},
-                            { "mData": "overdue_amount_3","sTitle": "Overdue_3"},
-                            { "mData": "loan_amount_3","sTitle": "Loan Amount_3"},
-                            { "mData": "balance_3","sTitle": "Balance_3"},
-                            { "mData": "name_of_mfi_4","sTitle": "MFI 4 Name"},
-                            { "mData": "overdue_amount_4","sTitle": "Overdue_4"},
-                            { "mData": "loan_amount_4","sTitle": "Loan Amount_4"},
-                            { "mData": "balance_4","sTitle": "Balance_4"}
-                            ],
-                    });
-                }
-                if (memberData["data"]["memberDocumentDetails"]) {
-                    var documentObj = memberData["data"]["memberDocumentDetails"];
-                    $.each(documentObj, function(key, value) {
-                        if (value.documentType == "OVERLAPREPORT") {
-                            $("#OVERLAPREPORT_docPath").attr('onClick', 'window.open(' + "'" + value.documentPath + "'" + "," + value.docId + "," + "config='width=500,height=500'" + ').focus();return false;');
-                        } else if (value.documentType == "ADDRESSPROOF") {
-                            $("#ADDRESSPROOF_docPath").css("display", "inline-block");
-                            $("#ADDRESSPROOF_docPath").attr("src", value.documentPath);
-                            $("#ADDRESSPROOF_docPath").attr("data-url", value.documentPath);
-                            $("#ADDRESSPROOF_docPath").attr("data-original", value.documentPath);
-                        } else if (value.documentType == "ADDRESSPROOF_2") {
-                            $("#ADDRESSPROOF_2_docPath").css("display", "inline-block");
-                            $("#ADDRESSPROOF_2_docPath").attr("src", value.documentPath);
-                            $("#ADDRESSPROOF_2_docPath").attr("data-url", value.documentPath);
-                            $("#ADDRESSPROOF_2_docPath").attr("data-original", value.documentPath);
-                        } else if (value.documentType == "SBACCOUNTPASSBOOK") {
-                            $("#SBACCOUNTPASSBOOK_docPath").css("display", "inline-block");
-                            $("#SBACCOUNTPASSBOOK_docPath").attr("src", value.documentPath);
-                            $("#SBACCOUNTPASSBOOK_docPath").attr("data-url", value.documentPath);
-                            $("#SBACCOUNTPASSBOOK_docPath").attr("data-original", value.documentPath);
-                        } else if (value.documentType == "IDPROOF_2") {
-                            $("#IDPROOF_2_docPath").css("display", "inline-block");
-                            $("#IDPROOF_2_docPath").attr("src", value.documentPath);
-                            $("#IDPROOF_2_docPath").attr("data-url", value.documentPath);
-                            $("#IDPROOF_2_docPath").attr("data-original", value.documentPath);
-                        } else if (value.documentType == "MEMBERPHOTO") {
-                            $("#MEMBERPHOTO_docPath").css("display", "inline-block");
-                            $("#MEMBERPHOTO_docPath").attr("src", value.documentPath);
-                            $("#MEMBERPHOTO_docPath").attr("data-url", value.documentPath);
-                            $("#MEMBERPHOTO_docPath").attr("data-original", value.documentPath);
-                        } else if (value.documentType == "IDPROOF") {
-                            $("#IDPROOF_docPath").css("display", "inline-block");
-                            $("#IDPROOF_docPath").attr("src", value.documentPath);
-                            $("#IDPROOF_docPath").attr("data-url", value.documentPath);
-                            $("#IDPROOF_docPath").attr("data-original", value.documentPath);
-                        } else if (value.documentType == "OverLapReport") {
-                            $("#OverLapReport_docPath").css("display", "inline-block");
-                            $("#OverLapReport_docPath").attr("src", value.documentPath);
-                            $("#OverLapReport_docPath").attr("data-url", value.documentPath);
-                            $("#OverLapReport_docPath").attr("data-original", value.documentPath);
-                        } else {
-                        }
-                    });
-                }
-
-                if(document.getElementById("previousLoanMemberCycle")){
-                    var tagname = document.getElementById("previousLoanMemberCycle").tagName;
-                    if (tagname == "INPUT"){
-                        document.getElementById("previousLoanMemberCycle").value = memberData["data"]["previousLoanMemberCycle"];
-                    }
-                    if (tagname == "SPAN"){
-                        document.getElementById("previousLoanMemberCycle").innerHTML = memberData["data"]["previousLoanMemberCycle"];
-                    }
-
-                }
-                for (var data in memberData["data"]["memberDetails"]) {
-                    if (document.getElementById(data)) {
-                        if (data == "villages") {
-                            $('#villages').empty();
-                            var pincodeData = memberData["data"]["memberDetails"];
-                            $('#villages').append('<option value="" >   Select Area </option>');
-                            for (var i = 0; i < pincodeData[data].length; i++) {
-                                $('#villages').append('<option value="' + pincodeData[data][i]["villageId"] + '">' + pincodeData[data][i]["villageName"] + '</option>');
-                            }
-                        }
-                        $("#villages").val(memberData["data"]["memberDetails"]["villageId"]);
-                        var tagname = document.getElementById(data).tagName;
-                        if (tagname == "INPUT" || tagname == "SELECT" || tagname == "TEXTAREA") {
-                            document.getElementById(data).value = memberData["data"]["memberDetails"][data];
-                        }
-                        if (tagname == "SPAN") {
-                            document.getElementById(data).innerHTML = memberData["data"]["memberDetails"][data];
-                            if (document.getElementById("villages").tagName == "SPAN") {
-                                document.getElementById("villages").innerHTML = memberData["data"]["memberDetails"]["villageId"];
-                            }
-                            if (document.getElementById("memberName2") && document.getElementById("appMemberId_top")) {
-                                document.getElementById("memberName2").innerHTML = memberData["data"]["memberDetails"]["memberName"];
-                                document.getElementById("appMemberId_top").innerHTML = memberData["data"]["memberDetails"]["appMemberId"];
-                            }
-                        }
-                    }
-                }
-            } else {
-                $.alert(memberData["message"]);
+            if (data.code == "2019") {
+                MemberDatadisplay(data)
+                highMarksList(data)
+                DocumentDetails(data)
+                conflictList(data)
+                getMemberFSRData(memberId);
+                getPaymentHistory("member", memberId, groupId);
+                $("#loading").hide();
             }
-            document.getElementById("groupId").innerHTML = groupId;
-            document.getElementById("loanId").innerHTML = loanId;
+        },
+        error: function(error) {
+            $("#loading").hide();
+            $.alert('Please Retry again');
         }
     });
+}
+
+function MemberDatadisplay(data) {
+    var memberData = data;
+    if (memberData["data"]["memberDetails"]) {
+        if (document.getElementById("previousLoanMemberCycle")) {
+            var tagname = document.getElementById("previousLoanMemberCycle").tagName;
+            if (tagname == "INPUT") {
+                document.getElementById("previousLoanMemberCycle").value = memberData["data"]["previousLoanMemberCycle"];
+            }
+            if (tagname == "SPAN") {
+                document.getElementById("previousLoanMemberCycle").innerHTML = memberData["data"]["previousLoanMemberCycle"];
+            }
+
+        }
+        for (var data in memberData["data"]["memberDetails"]) {
+            if (document.getElementById(data)) {
+                if (data == "villages") {
+                    $('#villages').empty();
+                    var pincodeData = memberData["data"]["memberDetails"];
+                    $('#villages').append('<option value="" >   Select Area </option>');
+                    for (var i = 0; i < pincodeData[data].length; i++) {
+                        $('#villages').append('<option value="' + pincodeData[data][i]["villageId"] + '">' + pincodeData[data][i]["villageName"] + '</option>');
+                    }
+                }
+                $("#villages").val(memberData["data"]["memberDetails"]["villageId"]);
+                var tagname = document.getElementById(data).tagName;
+                if (tagname == "INPUT" || tagname == "SELECT" || tagname == "TEXTAREA") {
+                    document.getElementById(data).value = memberData["data"]["memberDetails"][data];
+                }
+                if (tagname == "SPAN") {
+                    document.getElementById(data).innerHTML = memberData["data"]["memberDetails"][data];
+                    if (document.getElementById("villages").tagName == "SPAN") {
+                        document.getElementById("villages").innerHTML = memberData["data"]["memberDetails"]["villageId"];
+                    }
+                    if (document.getElementById("memberName2") && document.getElementById("appMemberId_top")) {
+                        document.getElementById("memberName2").innerHTML = memberData["data"]["memberDetails"]["memberName"];
+                        document.getElementById("appMemberId_top").innerHTML = memberData["data"]["memberDetails"]["appMemberId"];
+                    }
+                }
+            }
+        }
+
+    } else {
+        $.alert(memberData["message"]);
+    }
+
+    document.getElementById("groupId").innerHTML = groupId;
+    document.getElementById("loanId").innerHTML = loanId;
+
+
+
 
 }
+
+
+
+
+function highMarksList(data) {
+    var memberData = data;
+    if (memberData["data"]["highMarksList"]) {
+        var conflictDataCreditEnquiry = memberData["data"]["highMarksList"];
+        if (document.getElementById("CBStatus") && conflictDataCreditEnquiry[0]) {
+            document.getElementById("CBStatus").innerHTML = conflictDataCreditEnquiry[0]["status"];
+        }
+        var memberDocumentDetails = memberData["data"]["memberDocumentDetails"];
+        var memberOverlapLink = ''
+        var docPath = ''
+        var docId = ''
+        for (var j = 0; j < memberDocumentDetails.length; j++) {
+            if (memberDocumentDetails[j]["documentType"] == "OVERLAPREPORT") {
+                docPath = memberDocumentDetails[j]["documentPath"];
+                docId = memberDocumentDetails[j]["docId"];
+            }
+        }
+        memberOverlapLink = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + "'MemberOverlapWin'" + "," + "config='width=500,height=500'" + ');return false;">View</button>';
+        if ($.fn.DataTable.isDataTable('#creditLoadData')) {
+            $("#creditLoadData").dataTable().fnDestroy();
+        }
+
+        $('#creditLoadData').dataTable({
+            "data": conflictDataCreditEnquiry,
+            "bDestroy": true,
+            "bJQueryUI": false,
+            "bProcessing": true,
+            "bSort": true,
+            "bInfo": true,
+            "bPaginate": false,
+            "iDisplayLength": 10,
+            "bSortClasses": false,
+            "bAutoWidth": false,
+            "searching": false,
+            "sDom": '<"top">rt<"bottom"flp><"clear">',
+            "bDeferRender": true,
+            "aoColumns": [{
+                    "mData": "remarks",
+                    "sTitle": "OverLap Report",
+                    "mRender": function(data, type, full) {
+                        return memberOverlapLink;
+                    }
+                },
+                {
+                    "mData": "s_product_type",
+                    "sTitle": "Product"
+                },
+                {
+                    "mData": "status",
+                    "sTitle": "Status"
+                },
+                {
+                    "mData": "remarks",
+                    "sTitle": "Remarks"
+                },
+                {
+                    "mData": "hm_response_date",
+                    "sTitle": "HM Response Date"
+                },
+                {
+                    "mData": "existing_loan_limit",
+                    "sTitle": "Existing Loan Limit"
+                },
+                {
+                    "mData": "loan_amount_eligible",
+                    "sTitle": "Loan Amount Eligible"
+                },
+                {
+                    "mData": "no_of_mfi_eligible",
+                    "sTitle": "MFI Eligible"
+                },
+                {
+                    "mData": "name_of_mfi_1",
+                    "sTitle": "MFI 1 Name"
+                },
+                {
+                    "mData": "overdue_amount_1",
+                    "sTitle": "Overdue_1"
+                },
+                {
+                    "mData": "loan_amount_1",
+                    "sTitle": "Loan Amount_1"
+                },
+                {
+                    "mData": "balance_1",
+                    "sTitle": "Balance_1"
+                },
+                {
+                    "mData": "name_of_mfi_2",
+                    "sTitle": "MFI 2 Name"
+                },
+                {
+                    "mData": "overdue_amount_2",
+                    "sTitle": "Overdue_2"
+                },
+                {
+                    "mData": "loan_amount_2",
+                    "sTitle": "Loan Amount_2"
+                },
+                {
+                    "mData": "balance_2",
+                    "sTitle": "Balance_2"
+                },
+                {
+                    "mData": "name_of_mfi_3",
+                    "sTitle": "MFI 3 Name"
+                },
+                {
+                    "mData": "overdue_amount_3",
+                    "sTitle": "Overdue_3"
+                },
+                {
+                    "mData": "loan_amount_3",
+                    "sTitle": "Loan Amount_3"
+                },
+                {
+                    "mData": "balance_3",
+                    "sTitle": "Balance_3"
+                },
+                {
+                    "mData": "name_of_mfi_4",
+                    "sTitle": "MFI 4 Name"
+                },
+                {
+                    "mData": "overdue_amount_4",
+                    "sTitle": "Overdue_4"
+                },
+                {
+                    "mData": "loan_amount_4",
+                    "sTitle": "Loan Amount_4"
+                },
+                {
+                    "mData": "balance_4",
+                    "sTitle": "Balance_4"
+                }
+            ],
+        });
+    }
+}
+
+
+function DocumentDetails(data) {
+    var memberData = data;
+    var imgFiles = ["MEMBERPHOTO", "IDPROOF", "IDPROOF_2", "ADDRESSPROOF", "ADDRESSPROOF_2", "SBACCOUNTPASSBOOK", "OVERLAPREPORT"];
+
+    if (memberData["data"]["memberDocumentDetails"]) {
+        if (memberData["data"]["memberDocumentDetails"][0]) {
+            var memberDocumentsArray = memberData["data"]["memberDocumentDetails"];
+
+            for (var key in memberDocumentsArray) {
+                if ($.inArray(memberDocumentsArray[key]["documentType"], imgFiles) != -1) {
+                    if (memberDocumentsArray[key]["documentType"]) {
+                        if (memberDocumentsArray[key]["documentType"] == "OVERLAPREPORT") {
+                            $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr('onClick', 'window.open(' + "'" + memberDocumentsArray[key]["documentPath"] + "'" + "," + memberDocumentsArray[key]["docId"] + "," + "config='width=500,height=500'" + ').focus();');
+                        }
+                        if (memberDocumentsArray[key]["documentPath"] == null || memberDocumentsArray[key]["documentPath"] == 'Not uploaded') {
+                            $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").css("display", "none");
+                        } else {
+                            $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").css("display", "inline-block");
+                            if (memberDocumentsArray[key]["documentType"] != "OVERLAPREPORT") {
+                                $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").addClass("img img-test");
+                            }
+                            $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("src", memberDocumentsArray[key]["documentPath"]);
+                            $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("data-url", memberDocumentsArray[key]["documentPath"]);
+                            $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr("data-original", memberDocumentsArray[key]["documentPath"]);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+function conflictList(data) {
+    var conflictListArr = [];
+    var memberData = data;
+
+    if (memberData["data"]["conflictList"]) {
+        var conflictData = memberData["data"]["conflictList"];
+        if ($.fn.DataTable.isDataTable('#memberHistConflict')) {
+            $("#memberHistConflict").dataTable().fnDestroy();
+        }
+        $('#memberHistConflict').dataTable({
+            "data": conflictData,
+            "bDestroy": true,
+            "bJQueryUI": false,
+            "bProcessing": true,
+            "bSort": true,
+            "bInfo": true,
+            "bPaginate": false,
+            "iDisplayLength": 10,
+            "bSortClasses": false,
+            "bAutoWidth": false,
+            "searching": false,
+            "sDom": '<"top">rt<"bottom"flp><"clear">',
+            "bDeferRender": true,
+            "aoColumns": [{
+                    "mData": "memberName",
+                    "sTitle": "Member Name",
+                    "sWidth": "25%",
+                    className: "column"
+                },
+                {
+                    "mData": "groupName",
+                    "sTitle": "Group Name",
+                    "sWidth": "30%",
+                    className: "column"
+                },
+                {
+                    "mData": "appGroupId",
+                    "sTitle": "App Group ID",
+                    "sWidth": "15%",
+                    className: "column"
+                },
+                {
+                    "mData": "groupId",
+                    "sTitle": "Group ID",
+                    "sWidth": "15%",
+                    className: "column"
+                },
+                {
+                    "mData": "memberStatus",
+                    "sTitle": "Member Status",
+                    "sWidth": "15%",
+                    className: "column"
+                },
+            ],
+        });
+    }
+}
+
+
 
 function updateMemValidationStatus(status) {
     var memberName = '';
@@ -521,6 +630,7 @@ function updateMemValidationStatus(status) {
     });
 
 }
+
 
 
 function submitKYCForm(status) {
@@ -709,6 +819,7 @@ function submitKYCForm(status) {
                 $.alert("Connection Time out");
             }
         },
+
         data: JSON.stringify(dataObj)
     });
 }
@@ -935,6 +1046,12 @@ function creditHistory(loanId) {
             });
 
             //loadDataTable("#creditTableID");
+        },
+           error: function(error) {
+            $("#loading").hide();
+            $.alert('Please Retry again');
+
+
         }
     });
 }
@@ -981,6 +1098,12 @@ function loadGroupRoles(groupId, loanId, taskName) {
         url: '/groupRoleDetails/',
         dataType: 'json',
         type: "post",
+         beforeSend: function() {
+            $("#loading").show();
+        },
+        complete: function() {
+            $("#loading").show();
+        },
 
         success: function(data) {
             document.getElementById("loanTypeId1").innerHTML = data["data"]["loanTypeId"];
@@ -998,6 +1121,63 @@ function loadGroupRoles(groupId, loanId, taskName) {
                 }
             }
             rmGroupMaster(groupId);
+        },
+        data: JSON.stringify(dataObj)
+    });
+}
+
+
+
+
+
+function loadGroupRoles2(groupId, loanId, taskName) {
+    var dataObj = {};
+    var validationType = '';
+    if (group == "CMR" || group == "CLM" || group == "BM") {
+        if (taskName == "Prepare Loan Documents" || taskName == "Print Loan Documents & FSR" || taskName == "Add New Members" || taskName == "Upload disbursement docs") {
+            validationType = "PEN"
+        }
+        if (taskName == "Upload loan documents in Web application") {
+            validationType = "PRE"
+        }
+    }
+    if (group == "RM" || group == "rm") {
+        validationType = "CLMAPPROVAL"
+    }
+    var roleObj = {
+        "groupId": groupId,
+        "entityType": "GROUP",
+        "validationType": validationType,
+        "loanId": loanId
+    };
+    dataObj["roleObj"] = roleObj;
+    $.ajax({
+        url: '/groupRoleDetails/',
+        dataType: 'json',
+        type: "post",
+         beforeSend: function() {
+            $("#loading").show();
+        },
+        complete: function() {
+            $("#loading").hide();
+        },
+
+        success: function(data) {
+            document.getElementById("loanTypeId1").innerHTML = data["data"]["loanTypeId"];
+            if (document.getElementById("appGroupId")) {
+                document.getElementById("appGroupId").innerHTML = data["data"]["groupDetails"]["appGroupId"];
+            }
+
+            var groupDetails = data["data"]["groupDetails"];
+            for (var key in groupDetails) {
+                if (document.getElementById(key + "_groupRole")) {
+                    document.getElementById(key + "_groupRole").innerHTML = groupDetails[key];
+                    if (document.getElementById(key + "1")) {
+                        document.getElementById(key + "1").innerHTML = groupDetails[key];
+                    }
+                }
+            }
+            rmGroupMaster2(groupId);
         },
         data: JSON.stringify(dataObj)
     });
@@ -1122,6 +1302,8 @@ function documentView(groupId) {
 }
 
 
+
+
 function updateGroupMemberStatus() {
     var validationType = ''
     if (!document.getElementById("Animator").value) {
@@ -1175,6 +1357,7 @@ function updateGroupMemberStatus() {
             data: JSON.stringify(dataObj)
         });
 }
+
 
 function getLoanDetails(groupId, loanId) {
     $.ajax({
@@ -1380,9 +1563,9 @@ function updateloanDatail(updateloanData) {
 
     for(var key in updateloanData){
 
-        if(updateloanData[key]["ATLloanId"] != null){
-            atlLoanId = updateloanData[key]["ATLloanId"];
-            atlAccNo  = updateloanData[key]["ATLaccNo"];
+        if(updateloanData[key]["atlLoanId"] != null){
+            atlLoanId = updateloanData[key]["atlLoanId"];
+            atlAccNo  = updateloanData[key]["atlAccNo"];
         }
     }
 
@@ -1451,9 +1634,9 @@ function approveLoan(updateloanData){
     var atlAccNo = '';
     var updateloanData = eval(updateloanData);
     for(var key in updateloanData){
-        if(updateloanData[key]["ATLloanId"] != null){
-            atlLoanId = updateloanData[key]["ATLloanId"];
-            atlAccNo  = updateloanData[key]["ATLaccNo"];
+        if(updateloanData[key]["atlLoanId"] != null){
+            atlLoanId = updateloanData[key]["atlLoanId"];
+            atlAccNo  = updateloanData[key]["atlAccNo"];
         }
     }
     var loanData = {
@@ -1572,6 +1755,83 @@ function updateMembersCount() {
     if (document.getElementById("totCount")) {
         document.getElementById("totCount").innerHTML = membersCount;
     }
+}
+
+
+function rmGroupMaster2(groupId) {
+    $.ajax({
+        url: '/getGroupData/' + groupId + '/' + loanId + '/'+ taskName,
+        dataType: 'json',
+        beforeSend: function() {
+            $("#loading").show();
+        },
+        complete: function() {
+            $("#loading").show();
+        },
+        success: function(data) {
+            var groupViewData2 = data;
+            if (groupViewData2["data"]["groupMemDetail"]) {
+                var groupData = groupViewData2["data"]["groupMemDetail"];
+
+                var found_names = $.grep(groupViewData2.data.groupMemDetail, function(v) {
+                    return v.memberStatus != "Rejected";
+                });
+                $.each(found_names, function(key, value) {
+                    $('#Animator').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
+                    $('#repm1').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
+                    $('#repm2').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
+                });
+
+                var animatorvalue = $("#animatorId_groupRole").text();
+                var rep1value = $("#rep1Id_groupRole").text();
+                var rep2value = $("#rep2Id_groupRole").text();
+
+
+                //alert(rep2value);
+                if (document.getElementById("Animator")) {
+                    if ($("#Animator option[value=" + animatorvalue + "]").length == 0) {
+                        $("#Animator").val();
+                    } else {
+                        $("#Animator").val(animatorvalue);
+                    }
+                }
+                if (document.getElementById("repm1")) {
+                    if ($("#repm1 option[value=" + rep1value + "]").length == 0) {
+                        $("#repm1").val();
+                    } else {
+                        $("#repm1").val(rep1value);
+                    }
+                }
+                if (document.getElementById("repm2")) {
+                    if ($("#repm2 option[value=" + rep2value + "]").length == 0) {
+                        $("#repm2").val();
+                    } else {
+                        $("#repm2").val(rep2value);
+                    }
+                }
+
+                $.each($('.compact option'), function(key, optionElement) {
+                    var curText = $(optionElement).text();
+                    $(this).attr('title', curText);
+                    var lengthToShortenTo = Math.round(parseInt('170px', 10) / 9.4);
+                    if (curText.length > lengthToShortenTo) {
+                        $(this).text(curText.substring(0, lengthToShortenTo) + '...');
+                    }
+                });
+                // Show full name in tooltip after choosing an option
+                $('.compact').change(function() {
+                    $(this).attr('title', ($(this).find('option:eq(' + $(this).get(0).selectedIndex + ')').attr('title')));
+                });
+
+                
+            }
+        },
+
+        error: function (error) {
+       		$("#loading").hide();
+       	 	$.alert("Please Retry page");	
+            }
+    });
 }
 
 
@@ -1698,6 +1958,7 @@ function rmGroupMaster(groupId) {
         }
     });
 }
+
 
 function validateFields(id, val, fieldName) {
     if (fieldName == "age" && val < 18) {
@@ -1861,21 +2122,10 @@ function updateGroupValStatus(status) {
 
                 else
                 {
-                    
-                    $.confirm({
-                        title: 'Do you really want to approve the group?',
-                        confirmButton: 'Yes',
-                        cancelButton: 'No',
-                        confirm: function(){
-                            completeTask("Approved");
-                        },
-                        cancel: function(){
-                        }
-                    });
-                    
-
+                   validationType = "PEN";
+		     proStatus = "bmapproved";
+                   showConfirmBox(status);
                 }
-
                    
                     }
                 });
@@ -2051,7 +2301,12 @@ function getMemberFSRData(memberId){
                  document.getElementById("fsrLoadData").innerHTML = childRowHtml;
             }
 
-        }
+        },
+
+    error: function (error) {
+       		$("#loading").hide();
+       	 	$.alert("Please Retry page");	
+      }
    });
 }
 function getMemberComments(processInstanceId, loanId) {
@@ -2160,7 +2415,7 @@ function loadNextMem(){
     clearMemberData();
     document.getElementById("formMembers").reset();
     getGroupData(groupId,loanId);
-    loadGroupRoles(groupId, loanId, taskName) ;
+    loadGroupRoles2(groupId, loanId, taskName) ;
 }
 
 function getPaymentHistory(key,memberId,groupId){
@@ -2209,11 +2464,20 @@ function getPaymentHistory(key,memberId,groupId){
                 { "mData": "arrears","sTitle": "Arrears"},
                 ]
             });
-        }
+        },
+         error: function (error) {
+       		$("#loading").hide();
+       	 	$.alert("Please Retry page");	
+            }
+
     });
 }
 
 function clearMemberData() {
+   $('#Animator').empty();
+   $('#repm1').empty();
+   $('#repm2').empty();
+
    $("#ADDRESSPROOF_docPath").css("display", "none");
    $("#ADDRESSPROOF_docPath").attr("src","");
 
@@ -2254,7 +2518,7 @@ function reloadComments(id) {
 }
 
 function generateLOS(){
-    var loanAccNo = document.getElementById("loanAccountNumber").value;
+    var loanAccNo = document.getElementById("loanAccountNumber").innerHTML;
     var dataObj = {};
     var losGenerationData = {
         "loanAccountNo" : loanAccNo,
@@ -2283,8 +2547,8 @@ function generateLOS(){
                 }
             }
             if(data["code"] == "11001"){
-                //$.alert(data["message"]);
-                $.alert(data.data.message);
+		  //$.alert(data["message"]);
+                $.alert(data.data.message[0]);
             }
         },
         data: JSON.stringify(dataObj)
@@ -2416,10 +2680,10 @@ function updateChequeInfo(){
             if(document.getElementById(totalMemberIdArray[i]).value == "true"){
                 memberAvailedLoanArray.push(totalMemberIdArray[i].split("_")[0]);
             }
-            else{
+	     if(document.getElementById(totalMemberIdArray[i]).value == "false"){
                 memberAvailedLoanFalseArr.push(totalMemberIdArray[i].split("_")[0]);
             }
-        }
+                    }
     }
 
 
@@ -2433,11 +2697,6 @@ function updateChequeInfo(){
                     $("#"+domElemId).addClass("setBGColor");
                     flag = 1
                 }
-                else{
-                     $("#"+domElemId).removeClass("setBGColor");
-			flag = 0;
-
-                }
             }
         }
     }
@@ -2448,11 +2707,10 @@ function updateChequeInfo(){
                 $("#"+domElemId).removeClass("setBGColor");
                 $("#"+domElemId).css("border","1px solid #D5D5D5");
                 $("#"+domElemId).css("color","black");
-		  flag = 0;
             }
         }
     }
-
+    
     if(flag == 1){
         $(".setBGColor").css("border","1px solid #CD0000");
         $(".setBGColor").css("color","black");
@@ -2625,6 +2883,7 @@ function confirmLoan(status){
                 var dataObj = {};
                 dataObj["cheqData"] = eval(JSON.stringify(rows));
                 dataObj["processUpdate"] = { 'variables': { 'disbursement': {   'value': status     },     }     };
+		  dataObj["taskId"] = taskId;
 
                 $.ajax({
                     url : '/confirmChqDisbursement/',
@@ -2667,16 +2926,19 @@ function completeTask(status){
     }
     else{
 
-
+    var fontColor = '';
     var statusUpdate = '';
     var groupName = document.getElementById("groupName_groupRole").innerHTML;
     if(status == "rework"){
+	 fontColor = 'darkgoldenrod';
         statusUpdate = "'"+groupName+"'"+'  has been sent for rework';
     }
     if(status == "send"){
+	 fontColor = 'green';
         statusUpdate = "'"+groupName+"'"+' has been approved';
     }
     if(status == "resolved"){
+	 fontcolor = 'green';
         statusUpdate = groupName+"'s query"+'  has been resolved';
     }
     var dataObj = {};
@@ -2684,9 +2946,10 @@ function completeTask(status){
     dataObj["taskId"] = taskId;
     dataObj["processUpdate"] = { 'variables': { 'disbursement': {   'value': status     },     }     };
     flag =1;
+	
     }   
     if(flag == 1){
-        
+
          $.ajax({
         url: '/updateTask/',
         dataType: 'json',
@@ -2700,7 +2963,7 @@ function completeTask(status){
         success: function(data) {
             if (data == "Successful") {
                 $("#validationMessage").addClass("center");
-                document.getElementById("validationMessage").innerHTML ='<span style="color:green" " class="bigger-50"><i class="ace-icon fa fa-check-circle bigger-125"></i> &nbsp&nbsp'+statusUpdate+'</span>';
+                document.getElementById("validationMessage").innerHTML ='<span style="color:'+fontColor+'" " class="bigger-50"><i class="ace-icon fa fa-check-circle bigger-125"></i> &nbsp&nbsp'+statusUpdate+'</span>';
                 document.getElementById("gStatus").innerHTML = '<h3  class="lighter center smaller">Task has been completed successfully!  <i class="ace-icon glyphicon glyphicon-thumbs-up bigger-150"></i> </h3>';
                 document.getElementById("taskValBtn").innerHTML = '<a href="/assignedTaskList/" class="btn btn-primary"> <i class="glyphicon glyphicon-user"></i> Go to My Tasks </a>';
                 $("#successPanel").show();
@@ -2722,8 +2985,119 @@ function getLoanAccountNumber(){
         url: '/getLoanAccNo/'+processInstanceId,
         dataType: 'json',
         success: function(data) {
-            document.getElementById("loanAccountNumber").value = data["loanAccNo"];
+            document.getElementById("loanAccountNumber").innerHTML = data["loanAccNo"];
         }
     });
 }
 
+
+
+function setSelectOptionInForm(){
+    $.ajax({
+        url :  '/masterDataBank/',
+            type    : 'post',
+            dataType: 'json',
+            success : function (bankData) {
+            if(bankData["data"][0]){
+                keyValueMasterBankArray = bankData["data"].sort(function(a, b){ var a1= a.bankName, b1= b.bankName;    if(a1== b1) return 0;    return a1> b1? 1: -1; })
+                $('#bankId').append('<option value="" > Select Bank </option>');
+                for(var i = 0; i < Object.keys(keyValueMasterBankArray).length ; i++){
+                    $('#bankId').append('<option value="'+keyValueMasterBankArray[i].bankId+'">'+keyValueMasterBankArray[i].bankName+'</option>');
+                }   
+    
+                $.each($('#bankId option'), function(key, optionElement) {
+                     var curText = $(optionElement).text();
+                     $(this).attr('title', curText);
+                     var lengthToShortenTo = Math.round(parseInt('350px', 10) / 9.4);
+                         if (curText.length > lengthToShortenTo) {
+                        $(this).text(curText.substring(0,lengthToShortenTo)+'...');
+                         }
+                });
+                // Show full name in tooltip after choosing an option
+                $('#bankId').change(function() {
+                    $(this).attr('title', ($(this).find('option:eq('+$(this).get(0).selectedIndex +')').attr('title')));
+                });
+            }
+
+        }   
+    }); 
+    
+    $.ajax({
+        url :  '/masterIDProof/',
+            type    : 'post',
+            dataType: 'json',
+            success : function (idProofData) {
+            keyValueIDProofArray = idProofData["data"].sort(function(a, b){ var a1= a.idProofName, b1= b.idProofName;    if(a1== b1) return 0;    return a1> b1? 1: -1; })
+            $('#idProofTypeId').append('<option value="" > Select ID Proof </option>');
+            for(var i = 0; i < Object.keys(keyValueIDProofArray).length ; i++){
+                $('#idProofTypeId').append('<option value="'+keyValueIDProofArray[i].idProofId+'">'+keyValueIDProofArray[i].idProofName+'</option>');
+            }   
+
+            $.each($('#idProofTypeId option'), function(key, optionElement) {
+                 var curText = $(optionElement).text();
+                 $(this).attr('title', curText);
+                 var lengthToShortenTo = Math.round(parseInt('265px', 10) / 9.4);
+                     if (curText.length > lengthToShortenTo) {
+                    $(this).text(curText.substring(0,lengthToShortenTo)+'...');
+                     }
+            });
+            // Show full name in tooltip after choosing an option
+            $('#idProofTypeId').change(function() {
+                $(this).attr('title', ($(this).find('option:eq('+$(this).get(0).selectedIndex +')').attr('title')));
+            });
+            }
+    });
+    $.ajax({
+        url :  '/masterAddressProof/',
+            type    : 'post',
+            dataType: 'json',
+            success : function (addressProofData) {
+            keyValueAddressProofArray = addressProofData["data"].sort(function(a, b){ var a1= a.addProofName, b1= b.addProofName;    if(a1== b1) return 0;    return a1> b1? 1: -1; })
+            $('#addressProofTypeId').append('<option value="" > Select Address Proof </option>');
+            for(var i = 0; i < Object.keys(keyValueAddressProofArray).length ; i++){
+                $('#addressProofTypeId').append('<option value="'+keyValueAddressProofArray[i].addProofId+'">'+keyValueAddressProofArray[i].addProofName+'</option>');
+            }   
+
+            $.each($('#addressProofTypeId option'), function(key, optionElement) {
+                 var curText = $(optionElement).text();
+                 $(this).attr('title', curText);
+                 var lengthToShortenTo = Math.round(parseInt('265px', 10) / 9.4);
+                     if (curText.length > lengthToShortenTo) {
+                    $(this).text(curText.substring(0,lengthToShortenTo)+'...');
+                     }
+            });
+            // Show full name in tooltip after choosing an option
+            $('#addressProofTypeId').change(function() {
+                $(this).attr('title', ($(this).find('option:eq('+$(this).get(0).selectedIndex +')').attr('title')));
+            });
+            }
+    });
+    $.ajax({
+        url :  '/masterLoanPurpose/',
+            type    : 'post',
+            dataType: 'json',
+            success : function (loanPurposeData) {
+            keyValueloanPurposeArray = loanPurposeData["data"].sort(function(a, b){ var a1= a.name, b1= b.name;    if(a1== b1) return 0;    return a1> b1? 1: -1; })
+            $('#loanTypeValue').append('<option value="" > Select Loan Purpose </option>');
+            for(var i = 0; i < Object.keys(keyValueloanPurposeArray).length ; i++){
+                $('#loanTypeValue').append('<option value="'+keyValueloanPurposeArray[i].id+'">'+keyValueloanPurposeArray[i].name+'</option>');
+            }   
+
+            $.each($('#loanTypeValue option'), function(key, optionElement) {
+                 var curText = $(optionElement).text();
+                 $(this).attr('title', curText);
+                 var lengthToShortenTo = Math.round(parseInt('265px', 10) / 9.4);
+                     if (curText.length > lengthToShortenTo) {
+                         $(this).text(curText.substring(0,lengthToShortenTo)+'...');
+                     }
+            });
+            // Show full name in tooltip after choosing an option
+            $('#loanTypeValue').change(function() {
+                $(this).attr('title', ($(this).find('option:eq('+$(this).get(0).selectedIndex +')').attr('title')));
+            });
+            }
+    });
+    
+    
+    
+}
