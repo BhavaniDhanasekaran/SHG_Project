@@ -168,10 +168,8 @@ def assignedTaskList(request):
     myTaskData = []
     proInstArrFalse = []
     proInstArrTrue = []
-
     user = "%20".join(username.split(" "))
     myTaskList = camundaClient._urllib2_request('task?&assignee=' + str(loginUser), {}, requestType='GET')
-
     for data in myTaskList:
         if groupName == "CMR" or groupName == "CLM" or groupName == "BM":
             processInstancesArr.append(data["processInstanceId"])
@@ -181,7 +179,6 @@ def assignedTaskList(request):
         else:
             processInstancesArr.append(data["processInstanceId"])
             myTaskDict[data["processInstanceId"]] = data
-
     bodyData = {"processInstanceIdIn": processInstancesArr, "variableName": "groupstatus"}
     groupStatusList = camundaClient._urllib2_request('variable-instance', bodyData, requestType='POST')
     for data in groupStatusList:
@@ -190,16 +187,14 @@ def assignedTaskList(request):
 
         else:
             proInstArrTrue.append(data["processInstanceId"])
-
-    taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false',
-                                                     {"processInstanceIdIn": proInstArrFalse},
-                                                     requestType='POST')
-    taskProVarList.append(taskProVarList1)
-    taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=true',
-                                                     {"processInstanceIdIn": proInstArrTrue},
-                                                     requestType='POST')
-    taskProVarList.append(taskProVarList1)
-
+    if proInstArrFalse:
+    	if proInstArrFalse[0]:
+    	    taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false',{"processInstanceIdIn": proInstArrFalse}, requestType='POST')
+            taskProVarList.append(taskProVarList1)
+    if proInstArrTrue:
+        if proInstArrTrue[0]:
+    	    taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=true',{"processInstanceIdIn": proInstArrTrue}, requestType='POST')
+    	    taskProVarList.append(taskProVarList1)
     for key in range(len(taskProVarList)):
         for data in taskProVarList[key]:
             if groupName == "CMR" or groupName == "CLM" or groupName == "BM":
@@ -209,7 +204,6 @@ def assignedTaskList(request):
             else:
                 if data["processInstanceId"] in myTaskDict:
                     myTaskDict[data["processInstanceId"]][data["name"]] = data["value"]
-
     for key in myTaskDict:
         if groupName == "DataSupportTeam":
             if myTaskDict[key].has_key("kyc"):
@@ -218,7 +212,8 @@ def assignedTaskList(request):
             myTaskData.append(myTaskDict[key])
         if groupName == "CMR" or groupName == "CLM" or groupName == "BM" or groupName == "RM" or groupName == "rm" or groupName == "CreditTeam":
             myTaskData.append(myTaskDict[key])
-
+    loggerInfo.info( "myTaskData")
+    loggerInfo.info( myTaskData)
     loggerInfo.info('------------------Exiting assignedTaskList(request)---------------------- ')
     return render(request, 'ds-mytask.html',
                   {"myTaskList": json.dumps(myTaskData), "group": groupName, "user": username, "userId": userId})
@@ -312,16 +307,16 @@ def confirmDisburseRwrk(request):
             proInstArrFalse.append(data["processInstanceId"])
         else:
             proInstArrTrue.append(data["processInstanceId"])
-
-    taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false',
-                                                     {"processInstanceIdIn": proInstArrFalse},
-                                                     requestType='POST')
-    taskProVarList.append(taskProVarList1)
-    taskProVarList2 = camundaClient._urllib2_request('variable-instance?deserializeValues=true',
-                                                     {"processInstanceIdIn": proInstArrTrue},
-                                                     requestType='POST')
-    taskProVarList.append(taskProVarList2)
-
+    
+    if proInstArrFalse:
+    	if proInstArrFalse[0]:
+    	    taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false',{"processInstanceIdIn": proInstArrFalse}, requestType='POST')
+            taskProVarList.append(taskProVarList1)
+    if proInstArrTrue:
+        if proInstArrTrue[0]:
+    	    taskProVarList2 = camundaClient._urllib2_request('variable-instance?deserializeValues=true',{"processInstanceIdIn": proInstArrTrue}, requestType='POST')
+    	    taskProVarList.append(taskProVarList2)
+    
     for key in range(len(taskProVarList)):
         for data in taskProVarList[key]:
             if data["processInstanceId"] in QRTaskDict:
@@ -376,14 +371,14 @@ def queryRespTaskList(request):
         else:
             proInstArrTrue.append(data["processInstanceId"])
 
-    taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false',
-                                                     {"processInstanceIdIn": proInstArrFalse},
-                                                     requestType='POST')
-    taskProVarList.append(taskProVarList1)
-    taskProVarList2 = camundaClient._urllib2_request('variable-instance?deserializeValues=true',
-                                                     {"processInstanceIdIn": proInstArrTrue},
-                                                     requestType='POST')
-    taskProVarList.append(taskProVarList2)
+    if proInstArrFalse:
+    	if proInstArrFalse[0]:
+    	    taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false',{"processInstanceIdIn": proInstArrFalse}, requestType='POST')
+            taskProVarList.append(taskProVarList1)
+    if proInstArrTrue:
+        if proInstArrTrue[0]:
+    	    taskProVarList2 = camundaClient._urllib2_request('variable-instance?deserializeValues=true',{"processInstanceIdIn": proInstArrTrue}, requestType='POST')
+    	    taskProVarList.append(taskProVarList2)
 
     for key in range(len(taskProVarList)):
         for data in taskProVarList[key]:
@@ -511,14 +506,14 @@ def proposalScrutinyTaskList(request):
         else:
             proInstArrTrue.append(data["processInstanceId"])
 
-    taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false',
-                                                     {"processInstanceIdIn": proInstArrFalse},
-                                                     requestType='POST')
-    taskProVarList.append(taskProVarList1)
-    taskProVarList2 = camundaClient._urllib2_request('variable-instance?deserializeValues=true',
-                                                     {"processInstanceIdIn": proInstArrTrue},
-                                                     requestType='POST')
-    taskProVarList.append(taskProVarList2)
+    if proInstArrFalse:
+    	if proInstArrFalse[0]:
+    	    taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false',{"processInstanceIdIn": proInstArrFalse}, requestType='POST')
+            taskProVarList.append(taskProVarList1)
+    if proInstArrTrue:
+        if proInstArrTrue[0]:
+    	    taskProVarList2 = camundaClient._urllib2_request('variable-instance?deserializeValues=true',{"processInstanceIdIn": proInstArrTrue}, requestType='POST')
+    	    taskProVarList.append(taskProVarList2)
 
     for key in range(len(taskProVarList)):
         for data in taskProVarList[key]:
@@ -576,14 +571,14 @@ def KYCTaskListByLoanType(request):
             else:
                 proInstArrTrue.append(data["processInstanceId"])
 
-        taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false',
-                                                         {"processInstanceIdIn": proInstArrFalse},
-                                                         requestType='POST')
-        proVarList.append(taskProVarList1)
-        taskProVarList2 = camundaClient._urllib2_request('variable-instance?deserializeValues=true',
-                                                         {"processInstanceIdIn": proInstArrTrue},
-                                                         requestType='POST')
-        proVarList.append(taskProVarList2)
+        if proInstArrFalse:
+	    if proInstArrFalse[0]:
+	    	taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false',{"processInstanceIdIn": proInstArrFalse}, requestType='POST')
+		proVarList.append(taskProVarList1)
+        if proInstArrTrue:
+	    if proInstArrTrue[0]:
+	        taskProVarList2 = camundaClient._urllib2_request('variable-instance?deserializeValues=true',{"processInstanceIdIn": proInstArrTrue}, requestType='POST')
+	    	proVarList.append(taskProVarList2)
 
         for key in range(len(proVarList)):
             for data in proVarList[key]:
@@ -759,14 +754,14 @@ def confDisburseQueryResponse(request):
         else:
             proInstArrTrue.append(data["processInstanceId"])
 
-    taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false',
-                                                     {"processInstanceIdIn": proInstArrFalse},
-                                                     requestType='POST')
-    taskProVarList.append(taskProVarList1)
-    taskProVarList2 = camundaClient._urllib2_request('variable-instance?deserializeValues=true',
-                                                     {"processInstanceIdIn": proInstArrTrue},
-                                                     requestType='POST')
-    taskProVarList.append(taskProVarList2)
+    if proInstArrFalse:
+	if proInstArrFalse[0]:
+	    taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false',{"processInstanceIdIn": proInstArrFalse}, requestType='POST')
+	    taskProVarList.append(taskProVarList1)
+    if proInstArrTrue:
+	if proInstArrTrue[0]:
+	    taskProVarList2 = camundaClient._urllib2_request('variable-instance?deserializeValues=true',{"processInstanceIdIn": proInstArrTrue}, requestType='POST')
+	    taskProVarList.append(taskProVarList2)
 
     for key in range(len(taskProVarList)):
         for data in taskProVarList[key]:
@@ -821,14 +816,14 @@ def confirmDisbursement(request):
         else:
             proInstArrTrue.append(data["processInstanceId"])
 
-    taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false',
-                                                     {"processInstanceIdIn": proInstArrFalse},
-                                                     requestType='POST')
-    taskProVarList.append(taskProVarList1)
-    taskProVarList2 = camundaClient._urllib2_request('variable-instance?deserializeValues=true',
-                                                     {"processInstanceIdIn": proInstArrTrue},
-                                                     requestType='POST')
-    taskProVarList.append(taskProVarList2)
+    if proInstArrFalse:
+	if proInstArrFalse[0]:
+	    taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false',{"processInstanceIdIn": proInstArrFalse}, requestType='POST')
+	    taskProVarList.append(taskProVarList1)
+    if proInstArrTrue:
+	if proInstArrTrue[0]:
+	    taskProVarList2 = camundaClient._urllib2_request('variable-instance?deserializeValues=true',{"processInstanceIdIn": proInstArrTrue}, requestType='POST')
+	    taskProVarList.append(taskProVarList2)
 
     for key in range(len(taskProVarList)):
         for data in taskProVarList[key]:

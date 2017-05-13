@@ -10,14 +10,12 @@
     var group = '{{ group | escapejs }}';
     var loanId = '{{ loanId | escapejs }}';
     var userId = '{{ userId | escapejs }}';
-    var userName = '{{ user | escapejs }}';
     var taskName = '{{ taskName | escapejs }}';
     var taskId = '{{ taskId | escapejs }}';
     var processInstanceId = '{{ processInstanceId | escapejs }}';
-    var loanType = '{{ loanType | escapejs }}';
+    
     $(document).ready(function(){
         $("#commentSpanId").css("display","inline-block");
-	 getLoanAccountNumber();
         loadGroupRoles(groupId,loanId,taskName);
         $('textarea.limited').inputlimiter({
             remText: '%n character%s remaining...',
@@ -31,8 +29,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <span id="groupName_groupRole"></span>&nbsp&nbsp&nbsp
-            ( <span id="appGroupId1"></span> -  <span id="loanTypeName">{{ loanType }}</span> )
-
+            ( <span id="appGroupId1"></span> )
             <span id="groupId" style="visibility:hidden;"></span>
             <span id="loanTypeId1" style="visibility:hidden;"></span>
 
@@ -48,25 +45,34 @@
                 </div>
             </div>
         </div>
-        <!--div class="panel-body" >
-            <div class="col-sm-12 col-lg-6 col-md-6 col-xs-12">
-                <div class="profile-info-row">
-                    <b><div class="profile-info-name2"> Loan Account No. </div></b>
-                    <div class="profile-info-value">
-                        <input maxlength=14  style="font-weight: bold;" class="editable" id="loanAccountNumber" autofocus>
-                        <button type="button" class="btn btn-danger" onclick="generateLOS();" >Generate LOS</button>
-                    </div>
-                </div>
-            </div>
-        </div-->
         <div class="panel-body-danger">
             <div id="defaultDisplay">
                 <div class="tabbable">
+                    <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
+                        <li class="active">
+                            <a data-toggle="tab" href="#upload">Group Details</a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#memberDetails">Member Details</a>
+                        </li>
+                    </ul>
                     <div class="tab-content">
-                        <div class="profile-info-row">
-                            <div style="font-weight: bold;" class="profile-info-name"> Loan A/c No : </div>
-                            <div class="profile-info-value">
-                                <span style="font-weight: bold;" class="editable" id="loanAccountNumber"></span>                                
+                        <div id="memberDetails" class="tab-pane">
+                            <div class="page-content">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
+                                            <div class="widget-box widget-color-blue" id="widget-box-2">
+                                                <div class="widget-body"  style="overflow: auto;">
+                                                    <div class="widget-main no-padding">
+                                                        <table class="table table-striped table-bordered table-hover" id="groupMemberDetails">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div id="upload" class="tab-pane in active">
@@ -98,14 +104,13 @@
                                                 <div class="profile-info-name"> Rep 1</div>
                                                 <div class="profile-info-value">
                                                     <span class="editable" id="rep1_groupRole">
-
                                                     </span>
                                                 </div>
                                             </div>
                                             <div class="profile-info-row">
                                                 <div class="profile-info-name"> Rep 2</div>
-                                                <div class="profile-info-value" id="rep2_groupRole"
-                                                    <span class="editable" >
+                                                <div class="profile-info-value">
+                                                    <span class="editable"  id="rep2_groupRole">
                                                     </span>
                                                 </div>
                                             </div>
@@ -144,18 +149,30 @@
                             </div>
                             <!-- ROW END -->
                             <br>
-                            <div class="row" style="margin-left:0px;">
-                                <!--div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
-                                    <div class="form-group" >
+                            <div class="row">
+                                <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                                    <div class="form-group">
                                         <label for="comment">Comment:</label>
                                         <textarea class="form-control limited sample" autofocus rows="5" id="comment"></textarea>
                                     </div>
-                                </div-->
+                                </div>
                                 <div class="row-centered">
                                     <div class="col-md-12">
-                                        <button type="button" class="btn btn-danger" onclick="generateLOS();" >Generate LOS</button>
-					     <button type="button" class="btn btn-danger btn-md" onclick="updateTask('Approved');">Approve</button>
-					     
+                                        {% if taskName == "Print Loan Documents & FSR" or taskName == "Prepare Loan Documents" %}
+                                            <button type="button" class="btn btn-danger btn-md" onclick="updateGroupMemberStatus();">Update</button>
+                                            <button type="button" class="btn btn-danger btn-md" onclick="updateGroupValStatus('Approved');">Approve</button>
+                                            <!--button type="button" class="btn btn-danger btn-md" onclick="updateGroupValStatus('Rejected');">Reject</button-->
+                                        {% endif %}
+                                        {% if taskName == "Add New Members" %}
+                                             <button onclick="updateGroupValStatus('Approved');" class="btn btn-danger" type="button">
+                                            <i class="ace-icon fa fa-check bigger-110"></i>
+                                            Approve
+                                            </button>
+                                            <button onclick="updateGroupValStatus('Rejected');" class="btn btn-danger" type="button">
+                                                <i class="ace-icon fa fa-close bigger-110"></i>
+                                                Reject
+                                            </button>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <!--upload doc end-->
