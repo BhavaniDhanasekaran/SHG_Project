@@ -484,9 +484,12 @@ def confirmChqDisbursement(request):
             processUpdate = formData["processUpdate"]
             print "processUpdate"
             print processUpdate
+
             serialized_data = sscoreClient._urllib2_request('ChequeDisbursement/MemberCancellation', bodyData,
                                                             requestType='POST')
+	    
             if serialized_data["code"] == 12002:
+                
                 taskComplete(request, processUpdate, taskId)
             loggerInfo.info('------------------Exiting confirmChqDisbursement(request):--------------------- ')
             return HttpResponse(json.dumps(serialized_data), content_type="application/json")

@@ -35,10 +35,12 @@ function loadUnassignedTaskList(data){
 		if(groupTaskdata[key]["name"]  && groupTaskdata[key]["created"]){
 			obj["slNo"] = parseInt(key)+1;
 			obj["taskName"] = groupTaskdata[key]["name"];
-			var createdDateTime = groupTaskdata[key]["created"].split("T");
+			/*var createdDateTime = groupTaskdata[key]["created"].split("T");
 			var createdDate = createdDateTime[0].split("-");
 			createdDate = createdDate[2]+"-"+createdDate[1]+"-"+createdDate[0]
-			obj["taskDate"] = createdDate+ " at " +createdDateTime[1];
+			obj["taskDate"] = createdDate+ " at " +createdDateTime[1];*/
+			var createdDateTime = groupTaskdata[key]["created"].split("T");
+                     obj["taskDate"] = createdDateTime;
 			obj["taskId"]   = groupTaskdata[key]["id"]
 
 		}
@@ -152,10 +154,12 @@ function loadAssignedTaskList(){
 			else{
 				obj["taskName"] = '<a class="tdViewData">'+myTaskdata[key]["name"]+'</a>';
 			}
-			var createdDateTime = myTaskdata[key]["created"].split("T");
+			/*var createdDateTime = myTaskdata[key]["created"].split("T");
 			var createdDate = createdDateTime[0].split("-");
 			createdDate = createdDate[2]+"-"+createdDate[1]+"-"+createdDate[0]
-			obj["taskDate"] = '<a class="tdViewData">'+createdDate+ " at " +createdDateTime[1]+'</a>';
+			obj["taskDate"] = '<a class="tdViewData">'+createdDate+ " at " +createdDateTime[1]+'</a>';*/
+			var createdDateTime = myTaskdata[key]["created"].split("T");
+                     obj["taskDate"] = '<a class="tdViewData">'+createdDateTime+'</a>';
 			obj["taskId"]   = myTaskdata[key]["id"]
 			obj["processInstanceId"] = myTaskdata[key]["processInstanceId"]
 		}
@@ -262,6 +266,9 @@ $(document).ready(function (){
 	$('.dataTables_filter').keypress(function() {
 		triggerLoadFunc();
 	});
+	$('.dataTables_filter').on('paste', function () {
+		setTimeout(triggerLoadFunc,1000);
+	});
 	$('.sorting').click(function() {
 		triggerLoadFunc();
 	});
@@ -269,9 +276,10 @@ $(document).ready(function (){
 
 function triggerLoadFunc(){
 	taskCount();
+	
 	$('.tdViewData').click(function() {
-	    	var trId = $(this).closest('tr').attr('id');
-	    	var groupLoanID = trId;
+	     var trId = $(this).closest('tr').attr('id');
+	     var groupLoanID = trId;
             groupLoanIDSplit = groupLoanID.split("_");
             groupID = groupLoanIDSplit[0];
             loanID =  groupLoanIDSplit[1];

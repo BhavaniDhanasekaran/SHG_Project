@@ -135,6 +135,7 @@ function getGroupData(groupID, loanId) {
                 }
             } else {
                 $.alert(groupData["message"]);
+		   $("#loading").hide();
             }
 
         } ,
@@ -153,8 +154,7 @@ function getGroupData(groupID, loanId) {
 }
 
 function loadMasterData(taskName){
- if (taskName == "KYC Check" || taskName == "Proposal scrutiny") {
-
+ if (taskName == "KYC Check" || taskName == "Proposal scrutiny" || taskName == "Query Response"  || taskName =="BM Reply") {
       setSelectOptionInForm()
      }
 }
@@ -197,7 +197,7 @@ function getMemberDetails(memberId, groupId, loanId) {
         },
         error: function(error) {
             $("#loading").hide();
-            $.alert('Please Retry again');
+            $.alert('Please try after sometime');
         }
     });
 }
@@ -1049,7 +1049,7 @@ function creditHistory(loanId) {
         },
            error: function(error) {
             $("#loading").hide();
-            $.alert('Please Retry again');
+            $.alert('Please try after sometime');
 
 
         }
@@ -1188,8 +1188,12 @@ function loadGroupRoles2(groupId, loanId, taskName) {
 
 function updateTask(status) {
     var dataObj = {};
-    var groupName = document.getElementById("groupName_groupRole").innerHTML;
-    dataObj["taskId"] = taskId;
+     if( document.getElementById("groupName_groupRole")){
+    	var groupName = document.getElementById("groupName_groupRole").innerHTML;
+    }
+    if(document.getElementById("groupName")){
+	var groupName = document.getElementById("groupName").innerHTML;
+    }    dataObj["taskId"] = taskId;
 
     dataObj["processUpdate"] = {};
     $.ajax({
@@ -1585,6 +1589,7 @@ function updateloanDatail(updateloanData) {
         "userId": userId
     }*/
     dataObj3["uploadData"] = uploadData2;
+	console.log(dataObj3);
     $.ajax({
         url: '/updateloanDetail/',
         dataType: 'json',
@@ -1829,7 +1834,7 @@ function rmGroupMaster2(groupId) {
 
         error: function (error) {
        		$("#loading").hide();
-       	 	$.alert("Please Retry page");	
+       	 	$.alert("Please try after sometime");	
             }
     });
 }
@@ -2078,6 +2083,9 @@ function updateGroupValStatus(status) {
     }
 
     if (group == "CMR" || group == "CLM" || group == "BM") {
+	if (taskName == "Conduct BAT- Member approval in CRM"){
+		updateTask("Approved");			
+	}
         if (taskName == "Upload loan documents in Web application") {
             validationType = "CLMAPPROVAL";
             showConfirmBox(status);
@@ -2112,7 +2120,7 @@ function updateGroupValStatus(status) {
                 {
                     var AddMember= 10- ActiveMembercount;
                     
-                    $.alert('You Need Add  ' + AddMember + ' More Member,To Approve this Group');
+                    $.alert('You need to Add  ' + AddMember + ' more Members to approve this Group');
                     return false;
         
 
@@ -2249,6 +2257,18 @@ function updateGroupValStatus(status) {
         });
     }
 }
+function showConfirmBox(status){
+        $.confirm({
+            title: 'Do you really want to approve the group?',
+            confirmButton: 'Yes',
+            cancelButton: 'No',
+            confirm: function(){
+                updateTask(status);
+            },
+            cancel: function(){
+            }
+        });
+    }
 
 
 
@@ -2305,7 +2325,7 @@ function getMemberFSRData(memberId){
 
     error: function (error) {
        		$("#loading").hide();
-       	 	$.alert("Please Retry page");	
+       	 	$.alert("Please try after sometime");	
       }
    });
 }
@@ -2467,7 +2487,7 @@ function getPaymentHistory(key,memberId,groupId){
         },
          error: function (error) {
        		$("#loading").hide();
-       	 	$.alert("Please Retry page");	
+       	 	$.alert("Please try after sometime");	
             }
 
     });
@@ -2857,6 +2877,7 @@ function loadDisburseDocDataRead(){
 }
 
 function confirmLoan(status){
+   var groupName = document.getElementById("groupName_groupRole").innerHTML;
     $.confirm({
             title: 'Do you really want to approve the group?',
             confirmButton: 'Yes',
@@ -2884,13 +2905,14 @@ function confirmLoan(status){
                 dataObj["cheqData"] = eval(JSON.stringify(rows));
                 dataObj["processUpdate"] = { 'variables': { 'disbursement': {   'value': status     },     }     };
 		  dataObj["taskId"] = taskId;
-
+	
                 $.ajax({
                     url : '/confirmChqDisbursement/',
                     dataType: 'json',
                     type: 'POST',
                     success: function(data){
                         if(data["code"] == "12002"){
+				var groupName = document.getElementById("groupName_groupRole").innerHTML;
                             $("#validationMessage").addClass("center");
                              document.getElementById("validationMessage").innerHTML ='<span style="color:green" " class="bigger-50"><i class="ace-icon fa fa-check-circle bigger-125"></i> &nbsp&nbsp'+"'"+ groupName +"'" + " has been approved"+'</span>';
                              document.getElementById("gStatus").innerHTML = '<h3  class="lighter center smaller">Loan process has been completed successfully!  <i class="ace-icon glyphicon glyphicon-thumbs-up bigger-150"></i> </h3>';
