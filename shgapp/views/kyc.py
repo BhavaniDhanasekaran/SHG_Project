@@ -315,6 +315,8 @@ def approveLoan(request):
             formData = json.loads(request.body)
             bodyData = formData["loanData"]
             taskId = formData["taskId"]
+	    print bodyData
+
             serialized_data = sscoreClient._urllib2_request('workflowEdit/loanValidation', bodyData,
                                                             requestType='POST')
             print "serialized_data-------------------------------"
