@@ -67,12 +67,15 @@ function loanDocument(loanTypeId) {
 }
 $(document).ready(function() {
     $(".js-upload-photos").click(function() {
+	console.log("clicked");
         var oldid = "";
         var docName = "";
         oldid = $(this).attr('name');
         var newid = oldid.split("_")[1];
         docName = oldid.split("_")[0];
-        uploaddoc(newid, docName);
+
+        uploaddoc(newid, docName,groupId);
+
     });
     $(".js-upload-photos2").click(function() {
         var UniqueId = "";
@@ -93,6 +96,7 @@ function trigger() {
         var newid = oldid.split("_")[1];
         docName = oldid.split("_")[0];
         uploaddoc(newid, docName, groupId);
+console.log("clicked11");
     });
     $(".js-upload-photos2").click(function() {
         var UniqueId = "";
@@ -102,24 +106,30 @@ function trigger() {
         doceditId = $(this).attr('id');
         newdoceditId = doceditId.split("_")[0];
         Editdoc(UniqueId, newdoceditId);
+console.log("clicked11edit");
     });
 }
 
 function uploaddoc(fileid, docName, groupId) {
+	console.log("clicked232222222");
+console.log(fileid);
     $("#" + fileid).click();
     $("#" + fileid).fileupload({
         dataType: 'json',
         sequentialUploads: true,
         start: function(e) {
+	console.log("SDFSDFDSFDSFDSFDSFDSFDSFDSF");
              disableActiveTab();
             $("#loading").show();
 
         },
         stop: function(e) {
             $("#loading").hide()
+	console.log("stop");
              enableActiveTab();
         },
         done: function(e, data) {
+console.log(data);
             if (data.result.is_valid) {
                 var groupId = document.getElementById("groupId").innerHTML;
                 var fileName = docName;
@@ -127,6 +137,7 @@ function uploaddoc(fileid, docName, groupId) {
                 var newfileName = docName + '*' + fileid;
                 var oldfileName = docName;
                 var s3url = data.result.url;
+console.log(s3url );
                 var file_size = data.result.file_size;
                 UpdateUrl(loanId,groupId, oldfileName, s3url, fileid,file_size);
                // UpdateUrl(loanId,groupId, oldfileName, s3url, fileid);
@@ -172,6 +183,8 @@ function UpdateUrl(loanId,groupId, oldfileName, s3url, fileid,file_size) {
 }
 
 function Editdoc(UniqueId, newdoceditId) {
+console.log("clicked133333333331edit");
+console.log(newdoceditId);
     $("#" + newdoceditId + "_Edit").click();
     $("#" + newdoceditId + "_Edit").fileupload({
         dataType: 'json',

@@ -3,6 +3,7 @@
 {% block javascript %}
 <script src="/static/datajs/grouplist.js?v={{JS_VERSION}}"></script>
 <script src="/static/datajs/loadTaskList.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/masterData.js?v={{JS_VERSION}}"></script>
 <script src="/static/datajs/mysidenav.js?v={{JS_VERSION}}"></script>
 <script src="/static/datajs/DocUPload.js?v={{JS_VERSION}}"></script>
 <script type="text/javascript">
@@ -12,9 +13,9 @@
     var group = '{{ group | escapejs }}';
     var userId = '{{ userId | escapejs }}';
     var taskName = '{{ taskName | escapejs }}';
-    var processInstanceId = '{{ processInstanceId | escapejs }}';
     var loanType = '{{ loanType | escapejs }}';
     var loanTypeId = '{{ loanTypeId | escapejs }}';
+    var processInstanceId = '{{ processInstanceId | escapejs }}';
     $(document).ready(function (){
         $("#commentSpanId").css("display","inline-block");
         $(".main").imageBox();
@@ -22,15 +23,12 @@
         getGroupData(groupId,loanId);
         loadGroupRoles2(groupId, loanId, taskName) ;
         taskCount();
-        if (taskName == "Resolve Credit Team Query")
-        	{
-        	loanDocument(loanTypeId);
-        	}	
-        
         $('textarea.limited').inputlimiter({
           remText: '%n character%s remaining...',
           limitText: 'max allowed : %n.'
         });
+	 loanDocument(loanTypeId);
+
     });
 
 </script>
@@ -110,6 +108,8 @@
                                     data-toggle="tab" href="#home4">Member</a></li>
                                 <li id="tab2"><a data-toggle="tab"
                                     href="#profile4">Credit Enquiry</a></li>
+				   
+
                                 <li id="tab3"><a data-toggle="tab"
                                     href="#groupDetail">Group Details</a></li>
                                 <li id="tab4"><a data-toggle="tab"
@@ -120,13 +120,9 @@
                                     href="#paymentHistory">Payment History</a></li>
                                 <li id="tab7"><a data-toggle="tab"
                                     href="#Location">Location</a></li>
-              	   {% if taskName == "Resolve Credit Team Query" %}
-                                <li id="tab8"><a data-toggle="tab"
-                                    href="#upload">Documents</a></li>  
-                               {%  endif %}
-
-
-                                 
+					{% if taskName == "Resolve Credit Team Query" %}
+				    <li id="tab8"><a data-toggle="tab" href="#dropdown14">Documents</a>  </li>
+					{% endif %}
                             </ul>
                             <div class="tab-content">
 
@@ -164,7 +160,7 @@
                                             <!-- tabrow  colmd-2 end-->
                                             <div class="col-md-4">
                                                 <!-- tabrow  colmd-5 start-->
-                                                <form id="formMembers" class="form-horizontal" role="form">
+                                                <form id="formMembers" class="form-horizontal" role="form" name = "form" enctype = "multipart/form-data" action = "{% url "ajax_progress_bar_upload" %}" method = "POST" >{% csrf_token %}
                                                 <div
                                                     class="profile-user-info profile-user-info-striped">
                                                     <div class="profile-info-row">
@@ -547,6 +543,39 @@
                                         table-bordered table-hover" id="memberHistConflict">
                                     </table>
                                 </div>
+
+				    <div id="dropdown14" class="tab-pane">
+                                    <div class="page-content">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <!-- PAGE CONTENT BEGINS -->
+                                                <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
+                                                    <div class="widget-box widget-color-blue" id="widget-box-2">
+                                                        <div class="widget-body">
+                                                            <div class="widget-main no-padding" style="overflow: auto;">
+                                                                                                                       <table class="table table-bordered" id="docments_table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Doc ID</th>
+                                                                    <th>Document Name</th>
+                                                                    <th>Upload / View Doc</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="records_table">
+                                                            </tbody>
+                                                        </table>
+                                                   
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- /.span -->
+                                            </div>
+                                            <!-- /.row -->
+                                            <!-- PAGE CONTENT ENDS -->
+                                        </div>
+                                        <!-- /.col -->
+                                    </div>
+                                </div></div>
                                 <!-- groupDetail tab start-->
                                 <div id="groupDetail" class="tab-pane">
                                     <!-- form start-->
@@ -681,74 +710,10 @@
                                     <!-- SECTION END -->
                                     <!-- CONATINER END -->
                                     <!--form End-->
-                                </form>
                                 </div>
                                 <div id="Location" class="tab-pane">
                                     Under Processing...
                                 </div>
-
-
-
-
-
-
-                                <div id="upload" class="tab-pane">
-                                
-                                	            <div class="page-content">
-                                            <div class="row">
-                                                <div class="col-xs-12">
-                          	<form name = "form" enctype = "multipart/form-data" 
-                          	action = "{% url "ajax_progress_bar_upload" %}" method = "POST" >
-                          	{% csrf_token %}
-                                                        <table class="table table-bordered" id="docments_table">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Doc ID</th>
-                                                                    <th>Document Name</th>
-                                                                    <th>Upload / View Doc</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="records_table">
-                                                            </tbody>
-                                                        </table>
-                                                    </form>
-                                                   
-
-                                                </div>
-                                               </div>
- </div>
-
-
-                                            </div>
-                                            
-                                     
-                              
-                          
-                    
-           
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                                 <div id="paymentHistory" class="tab-pane">
                                     <div class="page-content">
                                         <div class="row">
