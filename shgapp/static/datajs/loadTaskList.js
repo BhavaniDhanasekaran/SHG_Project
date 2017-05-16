@@ -36,9 +36,9 @@ function loadUnassignedTaskList(data){
 			obj["slNo"] = parseInt(key)+1;
 			obj["taskName"] = groupTaskdata[key]["name"];
 			var createdDateTime = groupTaskdata[key]["created"].split("T");
-			var createdDate = createdDateTime[0].split("-");
-			createdDate = createdDate[2]+"-"+createdDate[1]+"-"+createdDate[0]
-			obj["taskDate"] = createdDate+ " at " +createdDateTime[1];
+			date = new Date(createdDateTime);
+			dateTime = moment(date).format("DD-MM-YYYY HH:mm:ss");
+			obj["taskDate"] = dateTime;
 			obj["taskId"]   = groupTaskdata[key]["id"]
 
 		}
@@ -76,6 +76,7 @@ function loadUnassignedTaskList(data){
 		dataArray.push(obj);
 
 	}
+	$.fn.dataTable.moment('DD-MM-YYYY HH:mm:ss');
 	var table = $('#taskListTable').dataTable({
             data: dataArray,
 	        "pageLength": 50,
@@ -89,7 +90,7 @@ function loadUnassignedTaskList(data){
 
             "aoColumns": [
                 { "mData": "taskName", "sTitle": "Task Name", "sWidth": "13%", className:"column"},
-                { "mData": "taskDate","sTitle": "Task Date"  , "sWidth": "8%", className:"column"},
+                { "mData": "taskDate","sTitle": "Task Date"  , "sWidth": "8%", "sType": "date", className:"column"},
                 { "mData": "loanType","sTitle": "Product Name"  , "sWidth": "8%", className:"column"},
                 { "mData": "loanAmount","sTitle": "Loan Amt"  , "sWidth": "8%", className:"column"},
                 { "mData": "shgId","sTitle": "SHG ID"  , "sWidth": "8%", className:"column"},
@@ -153,9 +154,9 @@ function loadAssignedTaskList(){
 				obj["taskName"] = '<a class="tdViewData">'+myTaskdata[key]["name"]+'</a>';
 			}
 			var createdDateTime = myTaskdata[key]["created"].split("T");
-			var createdDate = createdDateTime[0].split("-");
-			createdDate = createdDate[2]+"-"+createdDate[1]+"-"+createdDate[0]
-			obj["taskDate"] = '<a class="tdViewData">'+createdDate+ " at " +createdDateTime[1]+'</a>';
+			date = new Date(createdDateTime);
+			dateTime = moment(date).format("DD-MM-YYYY HH:mm:ss");		
+			obj["taskDate"] = '<a class="tdViewData">'+dateTime+'</a>';
 			obj["taskId"]   = myTaskdata[key]["id"]
 			obj["processInstanceId"] = myTaskdata[key]["processInstanceId"]
 		}
@@ -201,6 +202,7 @@ function loadAssignedTaskList(){
 		}
 		dataArray.push(obj);
 	}
+	$.fn.dataTable.moment('DD-MM-YYYY HH:mm:ss');
 	var table = $('#taskListTable').dataTable({
             data: dataArray,
             "pageLength": 50,
@@ -214,7 +216,7 @@ function loadAssignedTaskList(){
 
             "aoColumns": [
                 { "mData": "taskName", "sTitle": "Task Name", "sWidth": "13%", className:"column"},
-                { "mData": "taskDate","sTitle": "Task Date"  , "sWidth": "8%", className:"column"},
+                { "mData": "taskDate","sTitle": "Task Date"  , "sWidth": "8%", "sType": "date", className:"column"},
                 { "mData": "loanType","sTitle": "Product Name"  , "sWidth": "8%", className:"column"},
                 { "mData": "loanAmount","sTitle": "Loan Amt"  , "sWidth": "8%", className:"column"},
                 { "mData": "shgId","sTitle": "SHG ID"  , "sWidth": "8%", className:"column"},
@@ -262,6 +264,9 @@ $(document).ready(function (){
 	$('.dataTables_filter').keypress(function() {
 		triggerLoadFunc();
 	});
+	$('.dataTables_filter').on('paste', function () {
+		setTimeout(triggerLoadFunc,1000);
+	});
 	$('.sorting').click(function() {
 		triggerLoadFunc();
 	});
@@ -269,9 +274,10 @@ $(document).ready(function (){
 
 function triggerLoadFunc(){
 	taskCount();
+	
 	$('.tdViewData').click(function() {
-	    	var trId = $(this).closest('tr').attr('id');
-	    	var groupLoanID = trId;
+	     var trId = $(this).closest('tr').attr('id');
+	     var groupLoanID = trId;
             groupLoanIDSplit = groupLoanID.split("_");
             groupID = groupLoanIDSplit[0];
             loanID =  groupLoanIDSplit[1];

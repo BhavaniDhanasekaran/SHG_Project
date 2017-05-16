@@ -315,6 +315,8 @@ def approveLoan(request):
             formData = json.loads(request.body)
             bodyData = formData["loanData"]
             taskId = formData["taskId"]
+	    print bodyData
+
             serialized_data = sscoreClient._urllib2_request('workflowEdit/loanValidation', bodyData,
                                                             requestType='POST')
             print "serialized_data-------------------------------"
@@ -484,9 +486,12 @@ def confirmChqDisbursement(request):
             processUpdate = formData["processUpdate"]
             print "processUpdate"
             print processUpdate
+
             serialized_data = sscoreClient._urllib2_request('ChequeDisbursement/MemberCancellation', bodyData,
                                                             requestType='POST')
+	    
             if serialized_data["code"] == 12002:
+                
                 taskComplete(request, processUpdate, taskId)
             loggerInfo.info('------------------Exiting confirmChqDisbursement(request):--------------------- ')
             return HttpResponse(json.dumps(serialized_data), content_type="application/json")

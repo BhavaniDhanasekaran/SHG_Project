@@ -411,6 +411,7 @@ def updateTask(request):
             else:
                 bodyData = {}
             taskId = formData["taskId"]
+
             taskUpdateResponse = camundaClient._urllib2_request('task/' + taskId + '/complete', bodyData,
                                                                 requestType='POST')
             loggerInfo.info('------------------Exiting updateTask(request)---------------------- ')
