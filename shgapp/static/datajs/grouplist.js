@@ -1,33 +1,6 @@
 var validationFields = ["memberName", "sequenceNumber", "age", "husbandName", "maritalStatus", "fatherName", "address", "villageName", "idProofValue", "addressProofValue", "sbAccountNumber", "bankId", "sbAccountName",
     "permanentAddress", "pincode", "villages", "mobileNo", "idProofTypeId", "addressProofTypeId", "loanAmount", "loanTypeValue"
 ];
-/*
-$.ajaxSetup({
-    cache : false,
-    error: function(xhr,status,error){
-        if (status == "timeout") {
-            window.location = '/connection_timeout/';
-        }
-        if(error == 400){
-            $.alert("Bad Request !!");
-        }
-        if(error == 404){
-            window.location = '/page_not_found/';
-        }
-        if(error == 500) {
-            window.location = '/server_error/';
-        }
-        if(error == 403) {
-           window.location = '/permission_denied/';
-        }
-        if(error == 522) {
-            window.location = '/connection_timeout/';
-        }
-        if(error == 503){
-            window.location = '/service_unavailable/';
-        }
-    }
-});*/
 
 $(document).ajaxError(function(e, xhr, settings, exception) {
     if (exception == "timeout") {
@@ -53,7 +26,7 @@ $(document).ajaxError(function(e, xhr, settings, exception) {
         }
 });
 
-//var loanTypeId = loanTypeId;
+
 function getGroupData(groupID, loanId) {
     var memId;
     var totalCount = 0;
@@ -133,17 +106,18 @@ function getGroupData(groupID, loanId) {
                     }
 
                 }
-            } else {
+            }
+             else {
                 $.alert(groupData["message"]);
-		   $("#loading").hide();
+		        $("#loading").hide();
             }
 
         } ,
 
        		error: function (error) {
        		$("#loading").hide();
-       	 		$.alert("Connection Time out");	
-               
+       	 		$.alert("Connection Time out");
+
 
               }
     });
@@ -165,7 +139,7 @@ function getMemberDetails(memberId, groupId, loanId) {
 
     $("#operationsDivId").hide();
     $(".spanClearClass").text('');
-    
+
     $("#defaultDisplay").show();
     $("#successPanel").hide();
     $.ajax({
@@ -245,6 +219,7 @@ function MemberDatadisplay(data) {
 
     } else {
         $.alert(memberData["message"]);
+        $("#loading").hide();
     }
 
     document.getElementById("groupId").innerHTML = groupId;
@@ -1102,7 +1077,7 @@ function loadGroupRoles(groupId, loanId, taskName) {
             $("#loading").show();
         },
         complete: function() {
-            $("#loading").show();
+            $("#loading").hide();
         },
 
         success: function(data) {
@@ -1490,7 +1465,7 @@ function getLoanDetails(groupId, loanId) {
                 }
             }
             loadDataTable("#paymentTable");
-            
+
         },
     });
 }
@@ -1771,7 +1746,7 @@ function rmGroupMaster2(groupId) {
             $("#loading").show();
         },
         complete: function() {
-            $("#loading").show();
+            $("#loading").hide();
         },
         success: function(data) {
             var groupViewData2 = data;
@@ -1828,13 +1803,13 @@ function rmGroupMaster2(groupId) {
                     $(this).attr('title', ($(this).find('option:eq(' + $(this).get(0).selectedIndex + ')').attr('title')));
                 });
 
-                
+
             }
         },
 
         error: function (error) {
        		$("#loading").hide();
-       	 	$.alert("Please try after sometime");	
+       	 	$.alert("Please try after sometime");
             }
     });
 }
@@ -1960,6 +1935,7 @@ function rmGroupMaster(groupId) {
                     });
                 }
             }
+
         }
     });
 }
@@ -2084,7 +2060,7 @@ function updateGroupValStatus(status) {
 
     if (group == "CMR" || group == "CLM" || group == "BM") {
 	if (taskName == "Conduct BAT- Member approval in CRM"){
-		updateTask("Approved");			
+		updateTask("Approved");
 	}
         if (taskName == "Upload loan documents in Web application") {
             validationType = "CLMAPPROVAL";
@@ -2119,10 +2095,10 @@ function updateGroupValStatus(status) {
                           if( (ActiveMembercount<10)  && (loanTypeId=="1" ||  loanTypeId=="2") )
                 {
                     var AddMember= 10- ActiveMembercount;
-                    
+
                     $.alert('You need to Add  ' + AddMember + ' more Members to approve this Group');
                     return false;
-        
+
 
 
 
@@ -2134,13 +2110,13 @@ function updateGroupValStatus(status) {
 		     proStatus = "bmapproved";
                    showConfirmBox(status);
                 }
-                   
+
                     }
                 });
 
 
-              
-                
+
+
             }
             if(status == "Rejected"){
                 validationType = "CLMAPPROVAL";
@@ -2325,7 +2301,7 @@ function getMemberFSRData(memberId){
 
     error: function (error) {
        		$("#loading").hide();
-       	 	$.alert("Please try after sometime");	
+       	 	$.alert("Please try after sometime");
       }
    });
 }
@@ -2487,7 +2463,7 @@ function getPaymentHistory(key,memberId,groupId){
         },
          error: function (error) {
        		$("#loading").hide();
-       	 	$.alert("Please try after sometime");	
+       	 	$.alert("Please try after sometime");
             }
 
     });
@@ -2608,6 +2584,16 @@ function loadDisburseDocData(){
             }
         }
     });
+    console.log(disbDocData);
+    $('.date-picker').datepicker({
+            autoclose: true,
+            todayHighlight: true,
+            minDate : new Date(disbDocData[0]["loanApprovalDate"])
+        })
+        //show datepicker when clicking on the icon
+        .next().on(ace.click_event, function(){
+            $(this).prev().focus();
+        });
 	var html = '<tr>';
 	var innerHTMLBank = '';
 	var selectOptValArray = [];
@@ -2635,15 +2621,8 @@ function loadDisburseDocData(){
 
     if(disbDocData && disbDocData[0]){
         for(var key in disbDocData){
-            if(disbDocData[0]["oldDos"] == "" || disbDocData[0]["oldDos"] == null){
-                $("#prevDate").hide();
-            }
-            else{
-                $("#prevDate").show();
-                var dateSplit = disbDocData[0]["oldDos"].split(" ")[0];
-                dateSplit = dateSplit.split("-");
-                document.getElementById("oldDos").innerHTML = dateSplit[2]+"-"+dateSplit[1]+"-"+dateSplit[0];
-            }
+            document.getElementById("dateOfDisbursement").value = disbDocData[0]["loanApprovalDate"].split("-")[2]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[1]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[0];
+            document.getElementById("loanSancDate").innerHTML = disbDocData[0]["loanApprovalDate"].split("-")[2]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[1]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[0];
             var obj = {};
             totalMemberIdArray.push(disbDocData[key]["appMemberId"]+"_memberAvailedLoan");
             obj[disbDocData[key]["appMemberId"]+"_modeOfPayment"] = disbDocData[key]["modeOfPayment"];
@@ -2717,6 +2696,11 @@ function updateChequeInfo(){
                     $("#"+domElemId).addClass("setBGColor");
                     flag = 1
                 }
+                else{
+                     $("#"+domElemId).removeClass("setBGColor");
+                     $("#"+domElemId).css("border","1px solid #D5D5D5");
+                     $("#"+domElemId).css("color","black");
+                }
             }
         }
     }
@@ -2730,7 +2714,7 @@ function updateChequeInfo(){
             }
         }
     }
-    
+
     if(flag == 1){
         $(".setBGColor").css("border","1px solid #CD0000");
         $(".setBGColor").css("color","black");
@@ -2759,6 +2743,7 @@ function updateChequeInfo(){
                 $.alert("Cheque details updated successfully");
                 $("#disburseDocData").dataTable().fnDestroy();
                 loadDisburseDocData();
+
             }
         },
         data: JSON.stringify(dataObj)
@@ -2770,7 +2755,7 @@ function convertChequeDataToJson(){
     var rows = [];
     var disbursementDate = document.getElementById("dateOfDisbursement").value;
     disbursementDateSplit = disbursementDate.split("/");
-    disbursementDate = disbursementDateSplit[2]+"-"+disbursementDateSplit[0]+"-"+disbursementDateSplit[1];
+    disbursementDate = disbursementDateSplit[2]+"-"+disbursementDateSplit[1]+"-"+disbursementDateSplit[0];
     $('table.disburseDocData tr').not('thead tr').each(function(i, n){
         var $row = $(n);
         rows.push({
@@ -2827,6 +2812,7 @@ function loadDisburseDocDataRead(){
             }
         }
     });
+    console.log(disbDocData);
 	var html = '<tr>';
 	var innerHTMLBank = '';
 	var selectOptValArray = [];
@@ -2905,7 +2891,7 @@ function confirmLoan(status){
                 dataObj["cheqData"] = eval(JSON.stringify(rows));
                 dataObj["processUpdate"] = { 'variables': { 'disbursement': {   'value': status     },     }     };
 		  dataObj["taskId"] = taskId;
-	
+
                 $.ajax({
                     url : '/confirmChqDisbursement/',
                     dataType: 'json',
@@ -2968,8 +2954,8 @@ function completeTask(status){
     dataObj["taskId"] = taskId;
     dataObj["processUpdate"] = { 'variables': { 'disbursement': {   'value': status     },     }     };
     flag =1;
-	
-    }   
+
+    }
     if(flag == 1){
 
          $.ajax({
@@ -2998,7 +2984,7 @@ function completeTask(status){
         data: JSON.stringify(dataObj)
     });
     }
-   
+
 }
 
 
@@ -3025,8 +3011,8 @@ function setSelectOptionInForm(){
                 $('#bankId').append('<option value="" > Select Bank </option>');
                 for(var i = 0; i < Object.keys(keyValueMasterBankArray).length ; i++){
                     $('#bankId').append('<option value="'+keyValueMasterBankArray[i].bankId+'">'+keyValueMasterBankArray[i].bankName+'</option>');
-                }   
-    
+                }
+
                 $.each($('#bankId option'), function(key, optionElement) {
                      var curText = $(optionElement).text();
                      $(this).attr('title', curText);
@@ -3041,9 +3027,9 @@ function setSelectOptionInForm(){
                 });
             }
 
-        }   
-    }); 
-    
+        }
+    });
+
     $.ajax({
         url :  '/masterIDProof/',
             type    : 'post',
@@ -3053,7 +3039,7 @@ function setSelectOptionInForm(){
             $('#idProofTypeId').append('<option value="" > Select ID Proof </option>');
             for(var i = 0; i < Object.keys(keyValueIDProofArray).length ; i++){
                 $('#idProofTypeId').append('<option value="'+keyValueIDProofArray[i].idProofId+'">'+keyValueIDProofArray[i].idProofName+'</option>');
-            }   
+            }
 
             $.each($('#idProofTypeId option'), function(key, optionElement) {
                  var curText = $(optionElement).text();
@@ -3078,7 +3064,7 @@ function setSelectOptionInForm(){
             $('#addressProofTypeId').append('<option value="" > Select Address Proof </option>');
             for(var i = 0; i < Object.keys(keyValueAddressProofArray).length ; i++){
                 $('#addressProofTypeId').append('<option value="'+keyValueAddressProofArray[i].addProofId+'">'+keyValueAddressProofArray[i].addProofName+'</option>');
-            }   
+            }
 
             $.each($('#addressProofTypeId option'), function(key, optionElement) {
                  var curText = $(optionElement).text();
@@ -3103,7 +3089,7 @@ function setSelectOptionInForm(){
             $('#loanTypeValue').append('<option value="" > Select Loan Purpose </option>');
             for(var i = 0; i < Object.keys(keyValueloanPurposeArray).length ; i++){
                 $('#loanTypeValue').append('<option value="'+keyValueloanPurposeArray[i].id+'">'+keyValueloanPurposeArray[i].name+'</option>');
-            }   
+            }
 
             $.each($('#loanTypeValue option'), function(key, optionElement) {
                  var curText = $(optionElement).text();
@@ -3119,7 +3105,7 @@ function setSelectOptionInForm(){
             });
             }
     });
-    
-    
-    
+
+
+
 }
