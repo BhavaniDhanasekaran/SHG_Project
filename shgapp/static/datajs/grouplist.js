@@ -128,7 +128,7 @@ function getGroupData(groupID, loanId) {
 }
 
 function loadMasterData(taskName){
- if (taskName == "KYC Check" || taskName == "Proposal scrutiny" || taskName == "Query Response"  || taskName =="BM Reply") {
+ if (taskName == "KYC Check" || taskName == "Proposal scrutiny" || taskName == "Query Response"  || taskName =="BM Reply" || taskName =="Resolve Credit Team Query") {
       setSelectOptionInForm()
      }
 }
@@ -160,6 +160,7 @@ function getMemberDetails(memberId, groupId, loanId) {
         },
         success: function(data) {
             if (data.code == "2019") {
+console.log(data);
                 MemberDatadisplay(data)
                 highMarksList(data)
                 DocumentDetails(data)
@@ -244,13 +245,30 @@ function highMarksList(data) {
         var memberOverlapLink = ''
         var docPath = ''
         var docId = ''
-        for (var j = 0; j < memberDocumentDetails.length; j++) {
-            if (memberDocumentDetails[j]["documentType"] == "OVERLAPREPORT") {
-                docPath = memberDocumentDetails[j]["documentPath"];
-                docId = memberDocumentDetails[j]["docId"];
-            }
-        }
-        memberOverlapLink = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + "'MemberOverlapWin'" + "," + "config='width=500,height=500'" + ');return false;">View</button>';
+	 if(conflictDataCreditEnquiry.length == memberDocumentDetails.length){
+		for (var j = 0; j < memberDocumentDetails.length; j++) {
+			if (memberDocumentDetails[j]["documentType"] == "OVERLAPREPORT") {
+            			docPath = memberDocumentDetails[j]["documentPath"];
+             			docId = memberDocumentDetails[j]["docId"];
+				conflictDataCreditEnquiry[j]["overLapReportURL"] = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + docId + "," + "config='width=500,height=500'" + ');return false;">View</button>';
+			}
+		}	
+	 }
+	 else{
+		for (var k = 0; k < conflictDataCreditEnquiry.length; k++) {
+			for (var j = 0; j < memberDocumentDetails.length; j++) {
+
+				if (memberDocumentDetails[j]["documentType"] == "OVERLAPREPORT") {
+            				docPath = memberDocumentDetails[j]["documentPath"];
+             				docId = memberDocumentDetails[j]["docId"];
+					conflictDataCreditEnquiry[k]["overLapReportURL"] = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + docId + "," + "config='width=500,height=500'" + ');return false;">View</button>';
+				}
+			}
+		}
+	 }
+
+
+       // memberOverlapLink = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + "'MemberOverlapWin'" + "," + "config='width=500,height=500'" + ');return false;">View</button>';
         if ($.fn.DataTable.isDataTable('#creditLoadData')) {
             $("#creditLoadData").dataTable().fnDestroy();
         }
@@ -270,12 +288,9 @@ function highMarksList(data) {
             "sDom": '<"top">rt<"bottom"flp><"clear">',
             "bDeferRender": true,
             "aoColumns": [{
-                    "mData": "remarks",
+                    "mData": "overLapReportURL",
                     "sTitle": "OverLap Report",
-                    "mRender": function(data, type, full) {
-                        return memberOverlapLink;
-                    }
-                },
+                    },
                 {
                     "mData": "s_product_type",
                     "sTitle": "Product"
@@ -386,7 +401,7 @@ function DocumentDetails(data) {
                 if ($.inArray(memberDocumentsArray[key]["documentType"], imgFiles) != -1) {
                     if (memberDocumentsArray[key]["documentType"]) {
                         if (memberDocumentsArray[key]["documentType"] == "OVERLAPREPORT") {
-                            $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr('onClick', 'window.open(' + "'" + memberDocumentsArray[key]["documentPath"] + "'" + "," + memberDocumentsArray[key]["docId"] + "," + "config='width=500,height=500'" + ').focus();');
+                            //$("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr('onClick', 'window.open(' + "'" + memberDocumentsArray[key]["documentPath"] + "'" + "," + memberDocumentsArray[key]["docId"] + "," + "config='width=500,height=500'" + ').focus();');
                         }
                         if (memberDocumentsArray[key]["documentPath"] == null || memberDocumentsArray[key]["documentPath"] == 'Not uploaded') {
                             $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").css("display", "none");
@@ -616,6 +631,10 @@ function submitKYCForm(status) {
     if (group == "CreditTeam") {
         validationType = "POST";
     }
+    if (group == "CLM" || group == "BM" || group == "CMR") {
+        validationType = "CLM";
+    }
+
     var mandatoryFieldsDict = {};
     var count = 0;
     var validation = 0;

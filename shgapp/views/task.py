@@ -66,7 +66,7 @@ def SHGForm(request,groupId,loanId,taskId,processId,taskName,loanTypeName,loanTy
             "Approve or Reject Group"                   : "RmGroupApproval.html",
             "Proposal scrutiny"                         : "proposalScrutiny.html",
             "BM Reply"                                  : "proposalScrutiny.html",
-            "Resolve Credit Team Query"                 : "queryResponseDS.html",
+            "Resolve Credit Team Query"                 : "creditTeamQuery.html",
             "Approve Loan"                              : "CTLoanApproval.html",
             "Upload disbursement docs"                  : "disburseDocs.html",
             "Generate repayment chart"                  : "generateRepaymentChart.html",

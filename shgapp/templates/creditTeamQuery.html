@@ -19,14 +19,17 @@
         $("#commentSpanId").css("display","inline-block");
         $(".main").imageBox();
         $("#unbind-pos").draggable();
+	loadMasterData(taskName);
         getGroupData(groupId,loanId);
+	 
+
         loadGroupRoles2(groupId, loanId, taskName) ;
         taskCount();
         if (taskName == "Resolve Credit Team Query")
         	{
         	loanDocument(loanTypeId);
-        	}	
-        
+        	}
+
         $('textarea.limited').inputlimiter({
           remText: '%n character%s remaining...',
           limitText: 'max allowed : %n.'
@@ -122,11 +125,11 @@
                                     href="#Location">Location</a></li>
               	   {% if taskName == "Resolve Credit Team Query" %}
                                 <li id="tab8"><a data-toggle="tab"
-                                    href="#upload">Documents</a></li>  
+                                    href="#upload">Documents</a></li>
                                {%  endif %}
 
 
-                                 
+
                             </ul>
                             <div class="tab-content">
 
@@ -165,380 +168,373 @@
                                             <div class="col-md-4">
                                                 <!-- tabrow  colmd-5 start-->
                                                 <form id="formMembers" class="form-horizontal" role="form">
-                                                <div
-                                                    class="profile-user-info profile-user-info-striped">
-                                                    <div class="profile-info-row">
-                                                        <div
-                                                            id="sequenceNumber_label" class="profile-info-name">
-                                                            Seq. Number
-                                                        </div>
-                                                        <div
-                                                            class="profile-info-value">
-                                                            <span
-                                                                class="editable spanClearClass" id="sequenceNumber" style="width:99%"></span>
-                                                        </div>
+                                            <div class="profile-user-info profile-user-info-striped">
+                                                <div class="profile-info-row">
+                                                    <div id="sequenceNumber_label" class="profile-info-name">
+                                                        Sequence Number
                                                     </div>
-                                                    <div class="profile-info-row">
-                                                        <div
-                                                            id="memberName_label" class="profile-info-name">
-                                                            Name <font class="mandatory">*</font>
-                                                        </div>
-                                                        <div
-                                                            class="profile-info-value">
-                                                            <span
-                                                                class="editable  spanClearClass" id="memberName" style="width:80%"></span>
-                                                            </span>
-                                                            <img src=""
-                                                                id="MEMBERPHOTO_docPath" class="img img-test"
-                                                                style="width: 30px;
-                                                                height:21px;"    data-original="">
-                                                        </div>
-                                                    </div>
-                                                    <div class="profile-info-row">
-                                                        <div
-                                                            id="age_label" class="profile-info-name"> Age
-                                                            <font
-                                                                class="mandatory">*</font>
-                                                        </div>
-                                                        <div
-                                                            class="profile-info-value">
-                                                            <span
-                                                                class="editable spanClearClass" id="age" style="width:99%"></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="profile-info-row">
-                                                        <div
-                                                            id="maritalStatus_label" class="profile-info-name"> Marital
-                                                            Status
-                                                            <font
-                                                                class="mandatory">*</font>
-                                                        </div>
-                                                        <div
-                                                            class="profile-info-value">
-                                                            <span
-                                                                class="editable spanClearClass" id="maritalStatusString" style="width:99%"></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="profile-info-row">
-                                                        <div
-                                                            id="husbandName_label" class="profile-info-name"> Spouse
-                                                            <font
-                                                                class="mandatory">*</font>
-                                                        </div>
-                                                        <div
-                                                            class="profile-info-value">
-                                                            <span
-                                                                class="editable spanClearClass" id="husbandName" style="width:99%"></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="profile-info-row">
-                                                        <div
-                                                            id="fatherName_label" class="profile-info-name"> Father
-                                                            <font
-                                                                class="mandatory">*</font>
-                                                        </div>
-                                                        <div
-                                                            class="profile-info-value">
-                                                            <span
-                                                                class="editable spanClearClass" id="fatherName" style="width:99%"></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="profile-info-row">
-                                                        <div
-                                                            id="address_label" class="profile-info-name"> Address <font
-                                                            class="mandatory">*</font></div>
-                                                        <div
-                                                            class="profile-info-value">
-                                                            <span
-                                                                class="editable spanClearClass" id="address" style="width:99%"></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="profile-info-row">
-                                                        <div
-                                                            id="villageName_label" class="profile-info-name"> Village / Area <font
-                                                            class="mandatory">*</font></div>
-                                                        <div
-                                                            class="profile-info-value">
-                                                            <span
-                                                                class="editable spanClearClass" id="villageName" style="width:99%"></span>
-                                                            <span
-                                                                style="visibility:hidden" id="villages"></span>
-                                                        </div>
+                                                    <div class="profile-info-value">
+                                                        <span class="editable">
+                                                        <input type="text" class="sample4" placeholder="Sequence Number"
+                                                            id="sequenceNumber" autofocus maxlength="2" style="width:99%">
+                                                        </span>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <!-- tabrow  colmd-5 END-->
-                                            <div class="col-md-4">
-                                                <!-- tabrow  2 colmd-5 sTART-->
-                                                <div
-                                                    class="profile-user-info profile-user-info-striped">
-                                                    <div class="profile-info-row">
-                                                        <div
-                                                            id="permanentAddress_label" class="profile-info-name"> Per.
-                                                            Address <font
-                                                                class="mandatory">*</font>
-                                                        </div>
-                                                        <div
-                                                            class="profile-info-value">
-                                                            <span
-                                                                class="editable spanClearClass" id="permanentAddress" style="width:99%"></span>
-                                                        </div>
+                                                <div class="profile-info-row">
+                                                    <div id="memberName_label" class="profile-info-name">
+                                                        Name <font class="mandatory">*</font>
                                                     </div>
-                                                    <div class="profile-info-row">
-                                                        <div
-                                                            id="pincode_label" class="profile-info-name"> Pin Code <font
-                                                            class="mandatory">*</font></div>
-                                                        <div
-                                                            class="profile-info-value">
-                                                            <span
-                                                                class="editable spanClearClass" id="pincode" style="width:99%"></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="profile-info-row">
-                                                        <div
-                                                            id="mobileNo_label" class="profile-info-name"> Mobile no
-                                                            <font
-                                                                class="mandatory">*</font>
-                                                        </div>
-                                                        <div
-                                                            class="profile-info-value">
-                                                            <span
-                                                                class="editable spanClearClass" id="mobileNo" style="width:99%"></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="profile-info-row">
-                                                        <div
-                                                            id="idProofValue_label" class="profile-info-name"> ID Proof
-                                                            <font
-                                                                class="mandatory">*</font>
-                                                        </div>
-                                                        <div
-                                                            class="profile-info-value">
-                                                            <span
-                                                                class="editable spanClearClass" id="idProofValue" style="width:80%"></span>
-                                                            &nbsp;&nbsp;
-                                                            <div
-                                                                id="idProof" style="display:inline-block;margin-top: 4px"
-                                                                class="idProof">
-                                                                <img
-                                                                    src=""  id="IDPROOF_docPath" class="img img-test"
-                                                                    style="width: 20px; height:21px;"
-                                                                    data-original="">
-                                                                <img src=""
-                                                                    id="IDPROOF_2_docPath"  class="img img-test"
-                                                                    style="display:none;width: 20px;
-                                                                    height: 21px;" data-original="">
-                                                                <!--button
-                                                                    type="button" class="btn btn-info btn-md btn-danger" id="myBtn2">view
-                                                                                                                                    proof</button-->
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="profile-info-row">
-                                                        <div
-                                                            id="addressProofValue_label" class="profile-info-name">
-                                                            Address Proof
-                                                            <font
-                                                                class="mandatory">*</font>
-                                                        </div>
-                                                        <div
-                                                            class="profile-info-value">
-                                                            <span
-                                                                class="editable spanClearClass" id="addressProofValue" style="width:80%"></span>
-                                                            &nbsp;&nbsp;
-                                                            <div id="idProof"
-                                                                style="display:inline-block;margin-top: 4px" class="idProof">
-                                                                <img
-                                                                    src=""  id="ADDRESSPROOF_docPath"  class="img img-test"
-                                                                    style="display:none;width: 20px;
-                                                                    height: 21px;" data-original="">
-                                                                <img src=""
-                                                                    id="ADDRESSPROOF_2_docPath"  class="img img-test"
-                                                                    style="display:none;width: 20px;
-                                                                    height: 21px;" data-original="">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="profile-info-row">
-                                                        <div
-                                                            id="sbAccountNumber_label" class="profile-info-name"> SB
-                                                            Account
-                                                            <font
-                                                                class="mandatory">*</font>
-                                                        </div>
-                                                        <div
-                                                            class="profile-info-value">
-                                                            <span
-                                                                class="editable spanClearClass" id="sbAccountNumber" style="width:99%"></span>
-                                                            &nbsp;&nbsp;
-                                                            <div
-                                                                style="display:inline-block;margin-top: 4px"
-                                                                class="idProof">
-                                                                <img src=""
-                                                                    id="SBACCOUNTPASSBOOK_docPath"  class="img img-test"
-                                                                    style="display:none;width: 20px;
-                                                                    height: 21px;" data-original="">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="profile-info-row">
-                                                        <div
-                                                            id="bankId_label" class="profile-info-name"> Bank name <font
-                                                            class="mandatory">*</font></div>
-                                                        <div
-                                                            class="profile-info-value">
-                                                            <span
-                                                                class="editable spanClearClass" id="bankName" style="width:99%"></span>
-                                                            <span
-                                                                style="visibility:hidden"  id="bankId"></span>
-                                                        </div>
+                                                    <div class="profile-info-value">
+                                                        <span class="editable">
+                                                        <input type="text" class="sample8" id="memberName"
+                                                            placeholder="Member Name"
+                                                            style="width:80%">
+                                                        </span>
+                                              <img src=""  id="MEMBERPHOTO_docPath" class="img img-test"
+                                                   style="width: 30px; height:21px;"    data-original="">
+
+
+
+
+
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <!-- tabrow  2 colmd-5 END-->
-                                            <div class="col-md-4">
-                                                <!-- tabrow  3 colmd-5 sTART-->
-                                                <div
-                                                    class="profile-user-info profile-user-info-striped">
-                                                    <div class="profile-info-row">
-                                                        <div
-                                                            id="sbAccountName_label" class="profile-info-name"> Name (
-                                                            Bank
-                                                            ) <font
-                                                                class="mandatory">*</font>
-                                                        </div>
-                                                        <div
-                                                            class="profile-info-value">
-                                                            <span
-                                                                class="editable spanClearClass" id="sbAccountName" style="width:99%"></span>
-                                                        </div>
+                                                <div class="profile-info-row">
+                                                    <div id="age_label" class="profile-info-name"> Age
+                                                        <font class="mandatory">*</font>
                                                     </div>
-                                                    <div class="profile-info-row">
-                                                        <div
-                                                            id="branch_label" class="profile-info-name">Bank branch</div>
-                                                        <div
-                                                            class="profile-info-value">
-                                                            <span
-                                                                class="editable spanClearClass" id="branch" style="width:99%"></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="profile-info-row">
-                                                        <div
-                                                            id="idProofTypeId_label" class="profile-info-name">Id Proof
-                                                            Type <font class="mandatory">*</font>
-                                                        </div>
-                                                        <div
-                                                            class="profile-info-value">
-                                                            <span
-                                                                class="editable spanClearClass" id="idProofTypeValue" style="width:99%"></span>
-                                                            <span
-                                                                style="visibility:hidden" id="idProofTypeId"></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="profile-info-row">
-                                                        <div
-                                                            id="addressProofTypeId_label" class="profile-info-name">Address Proof <font class="mandatory">*</font>
-                                                        </div>
-                                                        <div
-                                                            class="profile-info-value">
-                                                            <span
-                                                                class="editable spanClearClass" id="addressProofTypeValue" style="width:99%"></span>
-                                                            <span
-                                                                style="visibility:hidden" id="addressProofTypeId"></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="profile-info-row">
-                                                        <div
-                                                            id="loanAmount_label" class="profile-info-name"> Loan Amount <font class="mandatory">*</font>
-                                                        </div>
-                                                        <div
-                                                            class="profile-info-value">
-                                                            <span
-                                                                class="editable spanClearClass" id="loanAmount" style="width:99%"></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="profile-info-row">
-                                                        <div
-                                                            id="loanTypeValue_label" class="profile-info-name">Loan
-                                                            purpose <font class="mandatory">*</font>
-                                                        </div>
-                                                        <div
-                                                            class="profile-info-value">
-                                                            <span
-                                                                class="editable spanClearClass" id="loanTypeName" style="width:99%"></span>
-                                                            <span
-                                                                style="visibility:hidden" id="loanTypeValue">
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="profile-info-row">
-                                                        <div
-                                                            id="previousLoanMemberCycle_label" class="profile-info-name">
-                                                            Previous Loan Cycle
-                                                        </div>
-                                                        <div
-                                                            class="profile-info-value">
-                                                            <span
-                                                                class="editable spanClearClass" id="previousLoanMemberCycle" style="width:99%">
-                                                            </span>
-                                                        </div>
+                                                    <div class="profile-info-value">
+                                                        <span class="editable">
+                                                        <input type="text" style="width:99%" id="age"
+                                                            class="sample4" placeholder="Age"
+                                                            maxlength="2"
+                                                            onchange="validateFields(this.id,this.value,'age');">
+                                                        </span>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <!-- tabrow  3colmd-5 END-->
-                                        </div>
-                                        <!-- tabrow END-->
-                                        <!--- tab 2form row end -->
-                                        <br>
-                                        <div class="row vertical-center">
-                                            <div class="col-md-8">
-                                                <div
-                                                    class="profile-user-info profile-user-info-striped">
-                                                    <div class="profile-info-row">
-                                                        <div
-                                                            id="commentDivId" class="profile-info-name">
-                                                            <label
-                                                                id="comment_label" for="comment">Comment </label>
-                                                            {% if taskName == "Resolve Data Support Team Query" or taskName == "Resolve Credit Team Query" %}
-                                                                <font class="mandatory">*</font>
-                                                            {%  endif %}
-                                                        </div>
-                                                        <div
-                                                            class="profile-info-value">
-                                                            <span class="editable">
-                                                            <textarea class="form-control limited sample spanClearClass" autofocus maxlength="3000" rows="3" style="width:94%;" id="comment"></textarea>
-                                                            </span>
-                                                        </div>
+                                                <div class="profile-info-row">
+                                                    <div id="maritalStatus_label" class="profile-info-name"> Marital
+                                                        Status
+                                                        <font class="mandatory">*</font>
+                                                    </div>
+                                                    <div class="profile-info-value">
+                                                        <span class="editable">
+                                                            <select id="maritalStatus" style="width:99%">
+                                                                <option value="">Select</option>
+                                                                <option value="1">UnMarried</option>
+                                                                <option value="2">Married</option>
+                                                                <option value="3">Divorced</option>
+                                                                <option value="4">Seperated</option>
+                                                                <option value="5">Widow</option>
+                                                            </select>
+                                                        </span>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div></div>
-                                            <div id="operationsDivId"
-                                                class="col-md-4 text-center .btn-block">
-                                                {% if group == "DataSupportTeam" %}
-                                                <button type="button"
-                                                    class="btn btn-danger btn-md" id="myBtn2"
-                                                    onclick="updateMemValidationStatus('Rework');">Rework</button>
-                                                {% endif %}
-                                                <button type="button"
-                                                    class="btn btn-danger btn-md" id="myBtn2"
-                                                    onclick="updateMemValidationStatus('Approved');">Approve</button>
-                                                <button type="button"
-                                                    class="btn btn-danger btn-md" id="myBtn2"
-                                                    onclick="updateMemValidationStatus('Rejected');">Reject</button>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-2"></div>
-                                                <div id="groupApproveBtnIdQuery"
-                                                    style="display:none;">
-                                                    <button type="button"
-                                                        class="btn btn-danger btn-md" id="myBtn2"
-                                                        onclick="updateGroupValStatus('Approved');">Approve Group</button>
+                                                <div class="profile-info-row">
+                                                    <div id="husbandName_label" class="profile-info-name"> Spouse
+                                                        <font
+                                                            class="mandatory">*</font>
+                                                    </div>
+                                                    <div class="profile-info-value">
+                                                        <span class="editable">
+                                                        <input type="text" class="sample8" style="width:99%"
+                                                            id="husbandName" placeholder="Spouse Name"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-info-row">
+                                                    <div id="fatherName_label" class="profile-info-name"> Father
+                                                        <font
+                                                            class="mandatory">*</font>
+                                                    </div>
+                                                    <div class="profile-info-value">
+                                                        <span class="editable">
+                                                        <input type="text" class="sample8" id="fatherName" style="width:99%"
+                                                            placeholder="Father Name"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-info-row">
+                                                    <div id="address_label" class="profile-info-name"> Address <font
+                                                        class="mandatory">*</font></div>
+                                                    <div class="profile-info-value">
+                                                        <span class="editable">
+                                                        <textarea class="sample2" rows="3"
+                                                            style="width:99%;height:65px;" id="address"
+                                                            placeholder="Address"></textarea>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-info-row">
+                                                    <div id="villageName_label" class="profile-info-name"> Village <font
+                                                        class="mandatory">*</font></div>
+                                                    <div class="profile-info-value">
+                                                        <span class="editable">
+                                                        <input type="text" class="sample2"
+                                                            id="villageName" style="width:99%"
+                                                            placeholder="Village Name"></span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!--- tab final row end -->
-                                    </section>
+                                        <!-- tabrow  colmd-5 END-->
+                                        <div class="col-md-4">
+                                            <!-- tabrow  2 colmd-5 sTART-->
+                                            <div class="profile-user-info profile-user-info-striped">
+
+                                                <div class="profile-info-row">
+                                                    <div id="permanentAddress_label" class="profile-info-name"> Per.
+                                                        Address <font class="mandatory">*</font>
+                                                    </div>
+                                                    <div
+                                                        class="profile-info-value">
+                                                        <span class="editable">
+                                                        <textarea
+                                                            class="sample2" style="width:99%;height:65px;"
+                                                            placeholder="Permanent Address"
+                                                            id="permanentAddress"></textarea>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-info-row">
+                                                    <div
+                                                        id="pincode_label" class="profile-info-name"> Pin Code <font
+                                                        class="mandatory">*</font></div>
+                                                    <div
+                                                        class="profile-info-value">
+                                                        <span>
+                                                        <input type="text" class="sample4" style="width:99%"
+                                                            placeholder="Pincode" id="pincode" maxlength="6" onkeypress='validate(event,1)'
+                                                            onchange="areasUnderPincode()"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-info-row">
+                                                    <div id="villages_label" class="profile-info-name"> Area <font
+                                                        class="mandatory">*</font></div>
+                                                    <div class="profile-info-value">
+                                                        <select id="villages" style="width:99%">
+                                                            <option value="">Select Area</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-info-row">
+                                                    <div
+                                                        id="mobileNo_label" class="profile-info-name"> Mobile no
+                                                        <font
+                                                            class="mandatory">*</font>
+                                                    </div>
+                                                    <div
+                                                        class="profile-info-value">
+                                                        <span
+                                                            class="editable">
+                                                        <input type="text" class="sample4"
+                                                            placeholder="Mobile Number"
+                                                            onchange="validateFields(this.id,this.value,'mobileNumber');"
+                                                            onkeypress='validate(event,1)' id="mobileNo" maxlength="10"
+                                                            style="width:99%"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-info-row">
+                                                    <div id="idProofValue_label" class="profile-info-name"> ID Proof
+                                                        <font class="mandatory">*</font>
+                                                    </div>
+                                                    <div class="profile-info-value">
+                                                        <span class="editable">
+                                                        <input type="text" class="sample2" style="width:60%"
+                                                            placeholder="ID Proof" id="idProofValue">
+                                                        </span>
+                                                        &nbsp;&nbsp;
+
+
+
+                                                        <div id="idProof" style="display:inline-block;margin-top: 4px"  class="idProof">
+
+                                                            <img src=""  id="IDPROOF_docPath" class="img img-test"
+                                  style="width: 20px; height:21px;"    data-original="">
+
+                                     <img src=""  id="IDPROOF_2_docPath"  class="img img-test"
+                                   style="display:none;width: 20px; height: 21px;" data-original="">
+
+
+                                                            <!--button
+                                                                type="button" class="btn btn-info btn-md btn-danger" id="myBtn2">view
+                                                                proof</button-->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-info-row">
+                                                    <div
+                                                        id="addressProofValue_label" class="profile-info-name">
+                                                        Address Proof
+                                                        <font class="mandatory">*</font>
+                                                    </div>
+                                                    <div
+                                                        class="profile-info-value">
+                                                        <span
+                                                            class="editable">
+                                                        <input type="text" style="width:60%" class="sample2"
+                                                            placeholder="Address Proof" id="addressProofValue"></span>
+                                                        &nbsp;&nbsp;
+                                                        <div id="idProof" style="display:inline-block;margin-top: 4px"
+                                                            class="idProof">
+                                                            <img src=""  id="ADDRESSPROOF_docPath"  class="img img-test"
+                                   style="display:none;width: 20px; height: 21px;" data-original="">
+
+
+                                    <img src=""  id="ADDRESSPROOF_2_docPath"  class="img img-test"
+                                   style="display:none;width: 20px; height: 21px;" data-original="">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                  <div class="profile-info-row">
+                                                    <div
+                                                        id="sbAccountNumber_label" class="profile-info-name"> SB
+                                                        Account
+                                                        <font class="mandatory">*</font>
+                                                    </div>
+                                                    <div
+                                                        class="profile-info-value">
+                                                        <span
+                                                            class="editable">    <input class="sample2" type="text"
+                                                            style="width:60%" placeholder="SB Account
+                                                            number" id="sbAccountNumber"></span> &nbsp;&nbsp;
+                                                        <div style="display:inline-block;margin-top: 4px"
+                                                            class="idProof">
+
+                                     <img src=""  id="SBACCOUNTPASSBOOK_docPath"  class="img img-test"
+                                   style="display:none;width: 20px; height: 21px;" data-original="">
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                 <div class="profile-info-row">
+                                                    <div
+                                                        id="bankId_label" class="profile-info-name"> Bank name <font
+                                                        class="mandatory">*</font></div>
+                                                    <div
+                                                        class="profile-info-value">
+                                                        <span class="editable">
+                                                        <select
+                                                            id="bankId" style="width:99%"></select>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- tabrow  2 colmd-5 END-->
+                                        <div class="col-md-4">
+                                            <!-- tabrow  3 colmd-5 sTART-->
+                                            <div class="profile-user-info profile-user-info-striped">
+
+
+                                                <div class="profile-info-row">
+                                                    <div
+                                                        id="sbAccountName_label" class="profile-info-name"> Name (
+                                                        Bank
+                                                        ) <font class="mandatory">*</font>
+                                                    </div>
+                                                    <div
+                                                        class="profile-info-value">
+                                                        <span
+                                                            class="editable">   <input type="text" class="sample8"
+                                                            style="width:99%"
+                                                            placeholder="SB Account Name"
+                                                            id="sbAccountName"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-info-row">
+                                                    <div id="branch_label" class="profile-info-name">Bank branch</div>
+                                                    <div class="profile-info-value">
+                                                        <span class="editable">
+                                                        <input type="text" class="sample8" style="width:99%"
+                                                            placeholder="Bank Branch" id="branch">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-info-row">
+                                                    <div id="idProofTypeId_label" class="profile-info-name">Id Proof
+                                                        Type <font class="mandatory">*</font>
+                                                    </div>
+                                                    <div class="profile-info-value">
+                                                        <select id="idProofTypeId" style="width:99%;"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-info-row">
+                                                    <div id="addressProofTypeId_label" class="profile-info-name">Address
+                                                        Proof <font class="mandatory">*</font>
+                                                    </div>
+                                                    <div class="profile-info-value">
+                                                        <select id="addressProofTypeId" style="width:99%;"> </select>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-info-row">
+                                                    <div id="loanAmount_label" class="profile-info-name"> Loan Amount <font class="mandatory">*</font>
+                                                    </div>
+                                                    <div class="profile-info-value">
+                                                        <span class="editable">
+                                                        <input type="text" class="sample5" placeholder="Loan Amount"
+                                                            id="loanAmount" maxlength="10" style="width:99%">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-info-row">
+                                                    <div id="loanTypeValue_label" class="profile-info-name">Loan
+                                                        purpose <font class="mandatory">*</font>
+                                                    </div>
+                                                    <div class="profile-info-value">
+                                                        <span class="editable">
+                                                        <select id="loanTypeValue" style="width:99%;"></select>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-info-row">
+                                                    <div id="previousLoanMemberCycle_label" class="profile-info-name">
+                                                        Previous Loan Cycle
+                                                    </div>
+                                                    <div class="profile-info-value">
+                                                         <span class="editable"
+                                                            id="previousLoanMemberCycle">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- tabrow  3colmd-5 END-->
+                                    </div>
+                                    <!-- tabrow END-->
+                                    <!--- tab 2form row end -->
+                                    <br>
+                                    <div class="row vertical-center">
+                                        <div class="col-md-8">
+                                            <div class="profile-user-info profile-user-info-striped">
+                                                <div class="profile-info-row">
+                                                    <div id="commentDivId" class="profile-info-name">
+                                                        <label id="comment_label" for="comment">Comment </label>
+                                                    </div>
+                                                    <div class="profile-info-value">
+                                                        <span class="editable">
+                                                        <textarea class="form-control limited sample" maxlength="3000" rows="3" id="comment"></textarea>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div></div>
+                                        
+                                        <div id="operationsDivId" style="display:none" class="col-md-4 text-center .btn-block">
+                                            <button type="button" class="btn btn-danger btn-md" id="myBtn2"
+                                                onclick="submitKYCForm('Approved');">Approve
+                                            </button>
+                                            <button type="button" class="btn btn-danger btn-md" id="myBtn2"
+                                                onclick="updateMemValidationStatus('Rejected');">Reject
+                                            </button>
+                                        </div>
+                                       
+                                    </div>
+                                    <!--- tab final row end -->
+                                </section>
+                                </form>
+
                                     <!-- SECTION END -->
                                 </div>
                                 <!--form End-->
@@ -681,7 +677,7 @@
                                     <!-- SECTION END -->
                                     <!-- CONATINER END -->
                                     <!--form End-->
-                                </form>
+                                
                                 </div>
                                 <div id="Location" class="tab-pane">
                                     Under Processing...
@@ -693,11 +689,11 @@
 
 
                                 <div id="upload" class="tab-pane">
-                                
+
                                 	            <div class="page-content">
                                             <div class="row">
                                                 <div class="col-xs-12">
-                          	<form name = "form" enctype = "multipart/form-data" 
+                          	<form name = "form" enctype = "multipart/form-data"
                           	action = "{% url "ajax_progress_bar_upload" %}" method = "POST" >
                           	{% csrf_token %}
                                                         <table class="table table-bordered" id="docments_table">
@@ -712,7 +708,7 @@
                                                             </tbody>
                                                         </table>
                                                     </form>
-                                                   
+
 
                                                 </div>
                                                </div>
@@ -720,12 +716,12 @@
 
 
                                             </div>
-                                            
-                                     
-                              
-                          
-                    
-           
+
+
+
+
+
+
 
 
 
