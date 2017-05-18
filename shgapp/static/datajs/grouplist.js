@@ -35,6 +35,7 @@ function getGroupData(groupID, loanId) {
     var rejCount = 0;
     var rewCount = 0;
     $("#groupMembersDropDown").empty();
+    $("#comment").focus();
     $.ajax({
         url: '/getGroupData/' + groupID + '/' + loanId + '/'+taskName,
         dataType: 'json',
@@ -142,6 +143,7 @@ function getMemberDetails(memberId, groupId, loanId) {
 
     $("#defaultDisplay").show();
     $("#successPanel").hide();
+    $("#comment").focus();
     $.ajax({
         url: '/getIndMemberData/' + memberId + '/' + groupId + '/' + loanId + '/' + taskName,
         dataType: 'json',
@@ -160,7 +162,7 @@ function getMemberDetails(memberId, groupId, loanId) {
         },
         success: function(data) {
             if (data.code == "2019") {
-console.log(data);
+                //console.log(data);
                 MemberDatadisplay(data)
                 highMarksList(data)
                 DocumentDetails(data)
@@ -168,6 +170,7 @@ console.log(data);
                 getMemberFSRData(memberId);
                 getPaymentHistory("member", memberId, groupId);
                 $("#loading").hide();
+                $("#comment").focus();
             }
         },
         error: function(error) {
@@ -225,6 +228,7 @@ function MemberDatadisplay(data) {
 
     document.getElementById("groupId").innerHTML = groupId;
     document.getElementById("loanId").innerHTML = loanId;
+    $("#comment").focus();
 
 
 
@@ -512,6 +516,7 @@ function updateMemValidationStatus(status) {
         if (taskName == "Resolve Data Support Team Query") {
             validationType = "PRE";
             if (comment == "") {
+                $("#comment").focus();
                 $.alert("Please input comment");
                 return false;
             } else {
@@ -525,6 +530,7 @@ function updateMemValidationStatus(status) {
         if (taskName == "Resolve Credit Team Query") {
             validationType = "CLM";
             if (comment == "") {
+                $("#comment").focus();
                 $.alert("Please input comment");
                 return false;
             } else {
@@ -538,6 +544,7 @@ function updateMemValidationStatus(status) {
     }
     if (status == "Rejected" || status == "Rework") {
         if (comment == "") {
+            $("#comment").focus();
             $.alert("Please input comment");
             return false;
         } else {
@@ -767,6 +774,7 @@ function submitKYCForm(status) {
     }
     if (status == "Rework" || status == "Rejected") {
         if (comment == "") {
+            $("#comment").focus();
             $.alert("Please input Comment!");
             return false;
         } else {
@@ -1125,6 +1133,7 @@ function loadGroupRoles(groupId, loanId, taskName) {
 
 
 function loadGroupRoles2(groupId, loanId, taskName) {
+    $("#comment").focus();
     var dataObj = {};
     var validationType = '';
     if (group == "CMR" || group == "CLM" || group == "BM") {
@@ -2079,6 +2088,7 @@ function updateGroupValStatus(status) {
         updateStatus = "rejected";
         fontColor = "darkred";
         if (comment == "") {
+            $("#comment").focus();
             $.alert("Please input comment");
             return false;
         }
@@ -2487,8 +2497,10 @@ function loadNextMem(){
     $('.spanClearClass').text('');
     clearMemberData();
     document.getElementById("formMembers").reset();
+    
     getGroupData(groupId,loanId);
     loadGroupRoles2(groupId, loanId, taskName) ;
+    $("#comment").focus();
 }
 
 function getPaymentHistory(key,memberId,groupId){

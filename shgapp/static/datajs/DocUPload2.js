@@ -169,9 +169,8 @@ function trigger() {
 
 
 
-    $(".js-upload-photos3").click(function() {
-
-        var docName = $("#drop").val();
+    $('.js-upload-photos3').off().on('click', function() {
+         var docName = $("#drop").val();
 
         if (docName == "Resolutions if any - Resolutions if any") {
 
@@ -181,7 +180,7 @@ function trigger() {
         }
 
         uploaddoc_res(docName, groupId);
-
+        // function body
     });
 
 
