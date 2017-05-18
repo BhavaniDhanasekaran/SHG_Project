@@ -51,7 +51,7 @@
 
   function initHtml(obj){
 
-    var div = $('<div id="unbind-pos" class="modal fade" data-backdrop="false" data-modal="false" style="display:none;" aria-hidden="true"></div>');
+    var div = $('<div id="unbind-pos" class="modal fade" data-backdrop="false" data-modal="false" style="display:none;width:600px" aria-hidden="true"></div>');
     div.append('<div class="modal-dialog">' +
                   '<div class="modal-content">'+
                         '<div class="modal-header">'+

@@ -252,7 +252,7 @@ function highMarksList(data) {
              			docId = memberDocumentDetails[j]["docId"];
 				conflictDataCreditEnquiry[j]["overLapReportURL"] = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + docId + "," + "config='width=500,height=500'" + ');return false;">View</button>';
 			}
-		}	
+		}
 	 }
 	 else{
 		for (var k = 0; k < conflictDataCreditEnquiry.length; k++) {
@@ -1835,8 +1835,16 @@ function rmGroupMaster2(groupId) {
 
 
 function rmGroupMaster(groupId) {
+    var url= '';
+    if(taskName == "Add New Members"){
+	url = '/getAddNewMemTaskInfo/' + groupId + '/' + loanId + '/'+ processInstanceId;
+    }
+    else{
+   	url =  '/getGroupData/' + groupId + '/' + loanId + '/'+ taskName;
+   }
+
     $.ajax({
-        url: '/getGroupData/' + groupId + '/' + loanId + '/'+ taskName,
+        url: url,
         dataType: 'json',
         beforeSend: function() {
             $("#loading").show();
@@ -1848,10 +1856,34 @@ function rmGroupMaster(groupId) {
             var groupViewData2 = data;
             if (groupViewData2["data"]["groupMemDetail"]) {
                 var groupData = groupViewData2["data"]["groupMemDetail"];
-
                 var found_names = $.grep(groupViewData2.data.groupMemDetail, function(v) {
                     return v.memberStatus != "Rejected";
                 });
+        		var activeCount = $.grep(groupViewData2.data.groupMemDetail, function(v) {
+                    return v.memberStatus == "Active";
+                });
+		        var appCount = $.grep(groupViewData2.data.groupMemDetail, function(v) {
+                    return v.memberStatus == "Approved";
+                });
+                var rejCount = $.grep(groupViewData2.data.groupMemDetail, function(v) {
+                    return v.memberStatus == "Rejected";
+                });
+                if(document.getElementById("totCount")){
+                    document.getElementById("totCount").innerHTML = groupData.length;
+                }
+                if(document.getElementById("eligibleCount")){
+                    document.getElementById("eligibleCount").innerHTML = appCount.length;
+                }
+                if(document.getElementById("rejectedCount")){
+                    document.getElementById("rejectedCount").innerHTML = rejCount.length;
+                }
+		  if(document.getElementById("newMemCount")){
+                    document.getElementById("newMemCount").innerHTML = activeCount.length;
+                }
+
+                if(document.getElementById("minimumrem")){
+                    document.getElementById("minimumrem").innerHTML = 10 - (appCount.length+activeCount.length);
+                }
                 $.each(found_names, function(key, value) {
                     $('#Animator').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
                     $('#repm1').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
@@ -1861,9 +1893,6 @@ function rmGroupMaster(groupId) {
                 var animatorvalue = $("#animatorId_groupRole").text();
                 var rep1value = $("#rep1Id_groupRole").text();
                 var rep2value = $("#rep2Id_groupRole").text();
-
-
-                //alert(rep2value);
                 if (document.getElementById("Animator")) {
                     if ($("#Animator option[value=" + animatorvalue + "]").length == 0) {
                         $("#Animator").val();
@@ -1898,7 +1927,29 @@ function rmGroupMaster(groupId) {
                 $('.compact').change(function() {
                     $(this).attr('title', ($(this).find('option:eq(' + $(this).get(0).selectedIndex + ')').attr('title')));
                 });
+                for (var i=0;i<groupData.length;i++){
+                    if(groupData[i]["memberStatus"] == "Active"){
+                        groupData[i]["memberStatus"] = '<span style="color:dodgerblue;font-weight:bold;">Pending/Newly added</span>';
+                        groupData[i]["memberName"] = '<span style="color:dodgerblue;font-weight:bold;">'+groupData[i]["memberName"]+'</span>';
+                        groupData[i]["appMemberId"] = '<span style="color:dodgerblue;font-weight:bold;">'+groupData[i]["appMemberId"]+'</span>';
+                    }
+                    if(groupData[i]["memberStatus"] == "Approved"){
+                        groupData[i]["memberStatus"] = '<span style="color:green;font-weight:bold;">Approved</span>';
+                        groupData[i]["memberName"] = '<span style="color:green;font-weight:bold;">'+groupData[i]["memberName"]+'</span>';
+                        groupData[i]["appMemberId"] = '<span style="color:green;font-weight:bold;">'+groupData[i]["appMemberId"]+'</span>';
+                    }
 
+                    if(groupData[i]["memberStatus"] == "Rejected"){
+                        groupData[i]["memberStatus"] = '<span style="color:red;font-weight:bold;">Rejected</span>';
+                        groupData[i]["memberName"] = '<span style="color:red;font-weight:bold;">'+groupData[i]["memberName"]+'</span>';
+                        groupData[i]["appMemberId"] = '<span style="color:red;font-weight:bold;">'+groupData[i]["appMemberId"]+'</span>';
+                    }
+                    if(groupData[i]["memberStatus"] == "Rework"){
+                        groupData[i]["memberStatus"] = '<span style="color:darkgoldenrod;font-weight:bold;">Rework</span>';
+                        groupData[i]["memberName"] = '<span style="color:darkgoldenrod;font-weight:bold;">'+groupData[i]["memberName"]+'</span>';
+                        groupData[i]["appMemberId"] = '<span style="color:darkgoldenrod;font-weight:bold;">'+groupData[i]["appMemberId"]+'</span>';
+                    }
+                }
                 if (document.getElementById("groupMemberDetails")) {
                     $('#groupMemberDetails').dataTable({
                         data: groupData,
@@ -1923,7 +1974,7 @@ function rmGroupMaster(groupId) {
                             {
                                 "mData": "memberName",
                                 "sTitle": "Member Name",
-                                "sWidth": "25%",
+                                "sWidth": "20%",
                                 className: "column"
                             },
                             {
@@ -1935,21 +1986,28 @@ function rmGroupMaster(groupId) {
                             {
                                 "mData": "address",
                                 "sTitle": "Address",
-                                "sWidth": "30%",
+                                "sWidth": "25%",
                                 className: "column"
                             },
                             {
                                 "mData": "villageName",
                                 "sTitle": "Village",
-                                "sWidth": "20%",
+                                "sWidth": "15%",
                                 className: "column"
                             },
                             {
                                 "mData": "pincode",
                                 "sTitle": "Pincode",
+                                "sWidth": "8%",
+                                className: "column"
+                            },
+				{
+                                "mData": "memberStatus",
+                                "sTitle": "Validation Status",
                                 "sWidth": "10%",
                                 className: "column"
                             },
+
                         ],
                     });
                 }
