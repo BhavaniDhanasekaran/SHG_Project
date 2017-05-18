@@ -2698,7 +2698,12 @@ function loadDisburseDocData(){
 
     if(disbDocData && disbDocData[0]){
         for(var key in disbDocData){
-            document.getElementById("dateOfDisbursement").value = disbDocData[0]["loanApprovalDate"].split("-")[2]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[1]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[0];
+	     if(disbDocData[0]["oldDos"] == null || disbDocData[0]["oldDos"] == "null"){
+            	  document.getElementById("dateOfDisbursement").value = disbDocData[0]["loanApprovalDate"].split("-")[1]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[2]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[0];
+	     }else{
+		  var dd = disbDocData[0]["oldDos"].split(" ")[0];
+		  document.getElementById("dateOfDisbursement").value = dd.split("-")[1]+"/"+dd.split("-")[2]+"/"+dd.split("-")[0];
+	     }
             document.getElementById("loanSancDate").innerHTML = disbDocData[0]["loanApprovalDate"].split("-")[2]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[1]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[0];
             var obj = {};
             totalMemberIdArray.push(disbDocData[key]["appMemberId"]+"_memberAvailedLoan");
@@ -2832,7 +2837,7 @@ function convertChequeDataToJson(){
     var rows = [];
     var disbursementDate = document.getElementById("dateOfDisbursement").value;
     disbursementDateSplit = disbursementDate.split("/");
-    disbursementDate = disbursementDateSplit[2]+"-"+disbursementDateSplit[1]+"-"+disbursementDateSplit[0];
+    disbursementDate = disbursementDateSplit[2]+"-"+disbursementDateSplit[0]+"-"+disbursementDateSplit[1];
     $('table.disburseDocData tr').not('thead tr').each(function(i, n){
         var $row = $(n);
         rows.push({
