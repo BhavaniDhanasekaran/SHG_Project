@@ -17,7 +17,7 @@
     $(objClicked).on('click', function(){
           var _url = $(this).attr('data-original'), current = 0;
       //var _url = $(this).data("url"), current = 0;
-      console.log(_url);
+      //console.log(_url);
 
       if(list_images.length > 0){
         list_images.length = 0;
@@ -51,7 +51,7 @@
 
   function initHtml(obj){
 
-    var div = $('<div id="unbind-pos" class="modal fade" data-backdrop="false" data-modal="false" style="display:none;" aria-hidden="true"></div>');
+    var div = $('<div id="unbind-pos" class="modal fade" data-backdrop="false" data-modal="false" style="display:none;width:600px" aria-hidden="true"></div>');
     div.append('<div class="modal-dialog">' +
                   '<div class="modal-content">'+
                         '<div class="modal-header">'+
