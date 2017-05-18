@@ -16,8 +16,7 @@
 
     $(objClicked).on('click', function(){
           var _url = $(this).attr('data-original'), current = 0;
-      //var _url = $(this).data("url"), current = 0;
-      console.log(_url);
+
 
       if(list_images.length > 0){
         list_images.length = 0;

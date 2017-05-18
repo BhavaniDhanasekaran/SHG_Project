@@ -4,7 +4,7 @@
 <script src="/static/datajs/grouplist.js?v={{JS_VERSION}}"></script>
 <script src="/static/datajs/loadTaskList.js?v={{JS_VERSION}}"></script>
 <script src="/static/datajs/mysidenav.js?v={{JS_VERSION}}"></script>
-<script src="/static/datajs/DocUPload.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/DocUPload2.js?v={{JS_VERSION}}"></script>
 <script type="text/javascript">
     var groupId = '{{ groupId | escapejs }}';
     var loanId = '{{ loanId | escapejs }}';
@@ -19,16 +19,16 @@
         $("#commentSpanId").css("display","inline-block");
         $(".main").imageBox();
         $("#unbind-pos").draggable();
-	loadMasterData(taskName);
+    loadMasterData(taskName);
         getGroupData(groupId,loanId);
-	 
+     
 
         loadGroupRoles2(groupId, loanId, taskName) ;
         taskCount();
         if (taskName == "Resolve Credit Team Query")
-        	{
-        	loanDocument(loanTypeId);
-        	}
+            {
+            loanDocument(loanTypeId);
+            }
 
         $('textarea.limited').inputlimiter({
           remText: '%n character%s remaining...',
@@ -119,14 +119,16 @@
                                     href="#profile5">Member History</a></li>
                                 <li id="tab5"><a data-toggle="tab"
                                     href="#fsr">FSR</a></li>
+                                 {% if taskName == "Resolve Credit Team Query" %}
+                                <li id="tab8"><a data-toggle="tab"
+                                    href="#upload">Documents</a></li>
+                               {%  endif %}
+                                   
                                 <li id="tab6"><a data-toggle="tab"
                                     href="#paymentHistory">Payment History</a></li>
                                 <li id="tab7"><a data-toggle="tab"
                                     href="#Location">Location</a></li>
-              	   {% if taskName == "Resolve Credit Team Query" %}
-                                <li id="tab8"><a data-toggle="tab"
-                                    href="#upload">Documents</a></li>
-                               {%  endif %}
+                  
 
 
 
@@ -687,54 +689,54 @@
 
 
 
+ 
 
-                                <div id="upload" class="tab-pane">
-
-                                	            <div class="page-content">
-                                            <div class="row">
-                                                <div class="col-xs-12">
-                          	<form name = "form" enctype = "multipart/form-data"
-                          	action = "{% url "ajax_progress_bar_upload" %}" method = "POST" >
-                          	{% csrf_token %}
-                                                        <table class="table table-bordered" id="docments_table">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Doc ID</th>
-                                                                    <th>Document Name</th>
-                                                                    <th>Upload / View Doc</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="records_table">
-                                                            </tbody>
-                                                        </table>
-                                                    </form>
-
-
-                                                </div>
-                                               </div>
- </div>
-
-
-                                            </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<div id="upload" class="tab-pane">
+   <div class="page-content">
+      <div class="row">
+         <div class="col-xs-12">
+            <form name = "form" enctype = "multipart/form-data" 
+            action = "{% url "ajax_progress_bar_upload" %}" method = "POST" >
+            {% csrf_token %}
+            <table class="table table-bordered" id="docments_table">
+               <thead>
+                  <tr>
+                     <th>Doc ID</th>
+                     <th>Document Name</th>
+                     <th>Upload / View Doc</th>
+                  </tr>
+                  <tr>
+                     <th>*</th>
+                     <th><select id="drop" style="width:70%;">
+                        </select>
+                     </th>
+                     <th>
+                        <input type = "file"   accept="application/pdf" name = "fileupload" id ="Doc1" style="display: none;" /></input>
+                        <span><button type="button" class="btn btn-primary js-upload-photos3" id = "Doc2" 
+                           name="Doc1">
+                        </span><span class="glyphicon glyphicon-cloud-upload"></span> Upload  </button>
+                     </th>
+                  </tr>
+               </thead>
+               <tbody id="records_table">
+               </tbody>
+            </table>
+            <table class="table table-bordered" id="docments_table2" >
+               <thead>
+                  <tr>
+                     <th>Doc ID</th>
+                     <th>Document Name</th>
+                     <th>View /Edit Doc</th>
+                  </tr>
+               </thead>
+               <tbody id="records_table2">
+               </tbody>
+            </table>
+            </form>
+         </div>
+      </div>
+   </div>
+</div>
 
 
 
