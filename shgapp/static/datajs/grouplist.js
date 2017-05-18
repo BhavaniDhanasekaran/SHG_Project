@@ -35,7 +35,6 @@ function getGroupData(groupID, loanId) {
     var rejCount = 0;
     var rewCount = 0;
     $("#groupMembersDropDown").empty();
-    $("#comment").focus();
     $.ajax({
         url: '/getGroupData/' + groupID + '/' + loanId + '/'+taskName,
         dataType: 'json',
@@ -143,7 +142,6 @@ function getMemberDetails(memberId, groupId, loanId) {
 
     $("#defaultDisplay").show();
     $("#successPanel").hide();
-    $("#comment").focus();
     $.ajax({
         url: '/getIndMemberData/' + memberId + '/' + groupId + '/' + loanId + '/' + taskName,
         dataType: 'json',
@@ -162,7 +160,7 @@ function getMemberDetails(memberId, groupId, loanId) {
         },
         success: function(data) {
             if (data.code == "2019") {
-                //console.log(data);
+console.log(data);
                 MemberDatadisplay(data)
                 highMarksList(data)
                 DocumentDetails(data)
@@ -170,7 +168,6 @@ function getMemberDetails(memberId, groupId, loanId) {
                 getMemberFSRData(memberId);
                 getPaymentHistory("member", memberId, groupId);
                 $("#loading").hide();
-                $("#comment").focus();
             }
         },
         error: function(error) {
@@ -228,7 +225,6 @@ function MemberDatadisplay(data) {
 
     document.getElementById("groupId").innerHTML = groupId;
     document.getElementById("loanId").innerHTML = loanId;
-    $("#comment").focus();
 
 
 
@@ -516,7 +512,6 @@ function updateMemValidationStatus(status) {
         if (taskName == "Resolve Data Support Team Query") {
             validationType = "PRE";
             if (comment == "") {
-                $("#comment").focus();
                 $.alert("Please input comment");
                 return false;
             } else {
@@ -530,7 +525,6 @@ function updateMemValidationStatus(status) {
         if (taskName == "Resolve Credit Team Query") {
             validationType = "CLM";
             if (comment == "") {
-                $("#comment").focus();
                 $.alert("Please input comment");
                 return false;
             } else {
@@ -544,7 +538,6 @@ function updateMemValidationStatus(status) {
     }
     if (status == "Rejected" || status == "Rework") {
         if (comment == "") {
-            $("#comment").focus();
             $.alert("Please input comment");
             return false;
         } else {
@@ -774,7 +767,6 @@ function submitKYCForm(status) {
     }
     if (status == "Rework" || status == "Rejected") {
         if (comment == "") {
-            $("#comment").focus();
             $.alert("Please input Comment!");
             return false;
         } else {
@@ -1133,7 +1125,6 @@ function loadGroupRoles(groupId, loanId, taskName) {
 
 
 function loadGroupRoles2(groupId, loanId, taskName) {
-    $("#comment").focus();
     var dataObj = {};
     var validationType = '';
     if (group == "CMR" || group == "CLM" || group == "BM") {
@@ -1381,6 +1372,10 @@ function getLoanDetails(groupId, loanId) {
             if (document.getElementById("loanInstallments")) {
                 document.getElementById("loanInstallments").value = loanDetails["loanInstallments"];
             }
+	     if (document.getElementById("postValidationCount")) {
+                document.getElementById("postValidationCount").innerHTML = data["data"]["postValidationCount"];
+            }
+
             var loanMemberDetails = data["data"]["loanMemberDetails"];
 
             $.ajax({
@@ -1408,7 +1403,7 @@ function getLoanDetails(groupId, loanId) {
                     });
                 }
             });
-
+		console.log(creditData);
             if (creditData.data) {
 
                 for (var i = 0; i < creditData.data.loanMemberDetails.length; i++) {
@@ -1936,9 +1931,10 @@ function rmGroupMaster(groupId) {
                 $('.compact').change(function() {
                     $(this).attr('title', ($(this).find('option:eq(' + $(this).get(0).selectedIndex + ')').attr('title')));
                 });
+                if(taskName == "Add New Members"){
                 for (var i=0;i<groupData.length;i++){
                     if(groupData[i]["memberStatus"] == "Active"){
-                        groupData[i]["memberStatus"] = '<span style="color:dodgerblue;font-weight:bold;">Pending/Newly added</span>';
+                        groupData[i]["memberStatus"] = '<span style="color:dodgerblue;font-weight:bold;">Pending</span>';
                         groupData[i]["memberName"] = '<span style="color:dodgerblue;font-weight:bold;">'+groupData[i]["memberName"]+'</span>';
                         groupData[i]["appMemberId"] = '<span style="color:dodgerblue;font-weight:bold;">'+groupData[i]["appMemberId"]+'</span>';
                     }
@@ -1959,6 +1955,7 @@ function rmGroupMaster(groupId) {
                         groupData[i]["appMemberId"] = '<span style="color:darkgoldenrod;font-weight:bold;">'+groupData[i]["appMemberId"]+'</span>';
                     }
                 }
+		}
                 if (document.getElementById("groupMemberDetails")) {
                     $('#groupMemberDetails').dataTable({
                         data: groupData,
@@ -2088,7 +2085,6 @@ function updateGroupValStatus(status) {
         updateStatus = "rejected";
         fontColor = "darkred";
         if (comment == "") {
-            $("#comment").focus();
             $.alert("Please input comment");
             return false;
         }
@@ -2497,10 +2493,8 @@ function loadNextMem(){
     $('.spanClearClass').text('');
     clearMemberData();
     document.getElementById("formMembers").reset();
-    
     getGroupData(groupId,loanId);
     loadGroupRoles2(groupId, loanId, taskName) ;
-    $("#comment").focus();
 }
 
 function getPaymentHistory(key,memberId,groupId){
