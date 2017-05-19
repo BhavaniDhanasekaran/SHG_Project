@@ -218,8 +218,8 @@
                         $.alert('You must select PDF file only')
                         goUpload = false;
                     }
-                    if (uploadFile.size > 20000000) { // 2mb
-                          $.alert('Please upload a smaller image, max size is 20 MB')
+                     if (uploadFile.size > 1000000000) { // 1GB
+                          $.alert('Please upload a PDF doc with max size 1GB')
 
                         goUpload = false;
                     }

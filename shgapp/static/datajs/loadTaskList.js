@@ -35,8 +35,8 @@ function loadUnassignedTaskList(data){
 		if(groupTaskdata[key]["name"]  && groupTaskdata[key]["created"]){
 			obj["slNo"] = parseInt(key)+1;
 			obj["taskName"] = groupTaskdata[key]["name"];
-			var createdDateTime = groupTaskdata[key]["created"].split("T");
-			date = new Date(createdDateTime);
+			var createdDateTime = groupTaskdata[key]["created"];
+		       date = moment.parseZone(createdDateTime).utc().format();
 			dateTime = moment(date).format("DD-MM-YYYY HH:mm:ss");
 			obj["taskDate"] = dateTime;
 			obj["taskId"]   = groupTaskdata[key]["id"]
@@ -153,8 +153,8 @@ function loadAssignedTaskList(){
 			else{
 				obj["taskName"] = '<a class="tdViewData">'+myTaskdata[key]["name"]+'</a>';
 			}
-			var createdDateTime = myTaskdata[key]["created"].split("T");
-			date = new Date(createdDateTime);
+			var createdDateTime = myTaskdata[key]["created"];
+		       date = moment.parseZone(createdDateTime).utc().format();
 			dateTime = moment(date).format("DD-MM-YYYY HH:mm:ss");		
 			obj["taskDate"] = '<a class="tdViewData">'+dateTime+'</a>';
 			obj["taskId"]   = myTaskdata[key]["id"]
