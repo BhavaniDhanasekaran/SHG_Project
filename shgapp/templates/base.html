@@ -24,6 +24,7 @@
         <link rel="stylesheet" href="{% static 'css/responsible_table.css'  %}" />
         <link rel="stylesheet" href="{% static 'css/comments.css'  %}" />
          <link type="text/css" href="/static/css/jquery-confirm.css" rel="stylesheet"  />
+        <link rel="stylesheet" href="{% static 'css/marquee.css' %}" />
         <!--[if lte IE 9]>
         <link rel="stylesheet" href="{% static 'css/ace-ie.min.css'  %}" />
         <![endif]-->
@@ -54,6 +55,10 @@
         <script src="{% static 'js/datetime-moment.js' %}"></script>
         <script src="{% static 'js/jquery.inputlimiter.min.js' %}"></script>
         <script src="{% static 'js/jquery.alphanumeric.js' %}"></script>
+	 <script src="{% static 'js/jquery-ticker.js' %}"></script>
+	
+
+
 
 
         {% block javascript %}
@@ -70,7 +75,8 @@
         {% include 'header.html' %}
         {% include 'sidebar.html' %}
         <div class="page-content">
-            <div class="row">
+		
+           <div class="row">
                 <div class="col-xs-12">
                     {% block content %}
                     {% endblock content %}
@@ -101,6 +107,62 @@
         $('.sample6').alphanumeric({ichars:'.1a'});
         $('.sample7').numeric({allow:" "});
         $('.sample8').alpha({allow:" "});
+	$(function (){
+		showDiff();
+		function showDiff(){
+			var date1 = new Date();    
+			var date2 = new Date("2017/05/19 15:25:00");
+			//Customise date2 for your required future time
+			var diff,days,leftSec,hrs,min;
+			var diff = (date2 - date1)/1000;
+			if(diff < 0){
+				days = '0';hrs='00';min='00';leftSec='00';
+			}
+			else{
+				diff = Math.abs(Math.floor(diff));
+				days = Math.floor(diff/(24*60*60));
+				leftSec = diff - days * 24*60*60;
+				hrs = Math.floor(leftSec/(60*60));
+				if(hrs == '0'){
+					hrs = '00';
+				}
+				leftSec = leftSec - hrs * 60*60;
+
+				min = Math.floor(leftSec/(60));
+				leftSec = leftSec - min * 60;
+			}	
+			$("#notificationText").text("Server will be under maintenance from 6PM to 7PM ");
+			$(".minute").text(min);
+			$(".second").text(leftSec);
+			$(".hour").text(hrs);
+			$("#notificationDiv").css("display","block");
+			$('.simple-marquee-container').SimpleMarquee();
+
+		}
+		
+		var fragmentTime;
+	       var minutes = jQuery('span.minute').text();
+		var seconds = jQuery('span.second').text();
+		minutes = parseInt(minutes);
+		seconds = parseInt(seconds);
+		if (isNaN(minutes)) {
+			minutes = 00;
+		}
+		if (isNaN(seconds)) {
+			seconds = 00;
+		}
+		if (minutes == 60) {
+			minutes = 59;
+		}
+		if (seconds == 60) {
+			seconds = 59;
+		}
+		fragmentTime = (60 * minutes) + (seconds);
+		displayMinute = document.querySelector('span.minute');
+		displaySecond = document.querySelector('span.second');
+		startTimer(fragmentTime, displayMinute, displaySecond);
+		
+	});
     </script>
     <script src="{% static 'js/lodash.min.js' %}"></script>
     <script src="{% static 'js/imageViewer.js' %}"></script>
