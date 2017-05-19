@@ -1,4 +1,3 @@
-
 from django.shortcuts import render_to_response, reverse
 from   django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
@@ -16,12 +15,12 @@ sscoreClient = SSCoreClient()
 camundaClient = CamundaClient()
 
 import logging
+
 logging.basicConfig(level=logging.INFO)
 loggerInfo = logging.getLogger(__name__)
 
 logging.basicConfig(level=logging.ERROR)
 errorLog = logging.getLogger(__name__)
-
 
 
 # @decryption_required
@@ -53,14 +52,15 @@ def getGroupData(request, groupID, loanId, taskName):
         loggerInfo.info("--------------------Exiting getGroupData(request):-------------------")
         return HttpResponse(json.dumps(groupMembersData), content_type="application/json")
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside getGroupData(request, groupID, loanId, taskName): %s" %e)
+        errorLog.error("Exception raised inside getGroupData(request, groupID, loanId, taskName): %s" % e)
         return helper.bad_request('Unexpected error occurred while searching group.')
 
 
 # @decryption_required
 @session_required
 def getIndMemberData(request, memberId, groupId, loanId, taskName):
-    loggerInfo.info("------------------Entering getIndMemberData(request,memberId,groupId,taskName):-----------------------")
+    loggerInfo.info(
+        "------------------Entering getIndMemberData(request,memberId,groupId,taskName):-----------------------")
     try:
         validationType = ''
         validationLevel = ''
@@ -89,11 +89,12 @@ def getIndMemberData(request, memberId, groupId, loanId, taskName):
                     "userId": "1996"}
         IndMemberData = sscoreClient._urllib2_request('workflowDetailView/workflowMemberDetail/', bodyData,
                                                       requestType='POST')
-        loggerInfo.info("------------------Exiting getIndMemberData(request,memberId,groupId,taskName):-----------------------")
+        loggerInfo.info(
+            "------------------Exiting getIndMemberData(request,memberId,groupId,taskName):-----------------------")
         return HttpResponse(json.dumps(IndMemberData), content_type="application/json")
 
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside getIndMemberData(request, memberId, groupId, loanId, taskName): %s" %e)
+        errorLog.error("Exception raised inside getIndMemberData(request, memberId, groupId, loanId, taskName): %s" % e)
         return helper.bad_request('Unexpected error occurred while searching group members.')
 
 
@@ -108,7 +109,7 @@ def getPinCodeDetails(request, pincode):
         loggerInfo.info("-------------------- Exiting getPinCodeDetails(request,pincode):------------------")
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside getPinCodeDetails(request, pincode):  %s" %e)
+        errorLog.error("Exception raised inside getPinCodeDetails(request, pincode):  %s" % e)
         return helper.bad_request('Unexpected error occurred while getting areas under this pincode.')
 
 
@@ -123,8 +124,9 @@ def creditHistoryGroup(request, loanId):
         loggerInfo.info("------------------Exiting creditHistoryGroup(request,loanId):-----------------")
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside creditHistoryGroup(request,loanId):  %s" %e)
+        errorLog.error("Exception raised inside creditHistoryGroup(request,loanId):  %s" % e)
         return helper.bad_request('Unexpected error occurred while getting Credit History.')
+
 
 # @decryption_required
 @session_required
@@ -137,7 +139,7 @@ def DocumentView(request, loanId):
         loggerInfo.info("------------------Exiting DocumentView(request,loanId):-----------------")
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside DocumentView(request,loanId):  %s" %e)
+        errorLog.error("Exception raised inside DocumentView(request,loanId):  %s" % e)
         return helper.bad_request('An expected error occurred while getting Documents')
 
 
@@ -166,7 +168,7 @@ def updateKYCDetails(request):
                 loggerInfo.info("------------------Exiting updateKYCDetails(request):----------------")
                 return HttpResponse(json.dumps(dataUpdateResponse), content_type="application/json")
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside updateKYCDetails(request):  %s" %e)
+        errorLog.error("Exception raised inside updateKYCDetails(request):  %s" % e)
         return helper.bad_request('Unexpected error occurred while updating the KYC details.')
 
 
@@ -190,7 +192,7 @@ def updateMemValidationStatus(request):
             loggerInfo.info("------------------Exiting updateMemValidationStatus(request):-----------------")
             return HttpResponse(json.dumps(validationResponse), content_type="application/json")
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside updateMemValidationStatus(request):  %s" %e)
+        errorLog.error("Exception raised inside updateMemValidationStatus(request):  %s" % e)
         return helper.bad_request('Unexpected error occurred while updating the KYC details.')
 
 
@@ -204,7 +206,7 @@ def creditHistory(request, groupId):
         loggerInfo.info("------------------Exiting creditHistory(request,groupid):-----------------")
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside creditHistory(request,groupid):  %s" %e)
+        errorLog.error("Exception raised inside creditHistory(request,groupid):  %s" % e)
         return helper.bad_request('Unexpected error occurred while getting Credit History.')
 
 
@@ -220,7 +222,7 @@ def updateUrl(request):
             loggerInfo.info('------------------Exiting updateUrl(request):-----------------')
             return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside updateUrl(request):  %s" %e)
+        errorLog.error("Exception raised inside updateUrl(request):  %s" % e)
         return helper.bad_request('An expected error occurred while Updating Url details.')
 
 
@@ -235,7 +237,7 @@ def loanDocument(request, loanTypeId):
         loggerInfo.info('------------------Exiting loanDocument(request,loanTypeId):-----------------')
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside loanDocument(request,loanTypeId): %s" %e)
+        errorLog.error("Exception raised inside loanDocument(request,loanTypeId): %s" % e)
         return helper.bad_request('Unexpected error occurred while getting loanDocument details.')
 
 
@@ -251,7 +253,7 @@ def editUrl(request):
             loggerInfo.info('------------------Exiting editUrl(request):-----------------')
             return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside editUrl(request): %s" %e)
+        errorLog.error("Exception raised inside editUrl(request): %s" % e)
         return helper.bad_request('An expected error occurred while Editing Url details.')
 
 
@@ -267,7 +269,7 @@ def getLoanDetails(request, groupId, loanId):
         loggerInfo.info('------------------Exiting getLoanDetails(request,groupId,loanId):----------------------')
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside getLoanDetails(request,groupId,loanId): %s" %e)
+        errorLog.error("Exception raised inside getLoanDetails(request,groupId,loanId): %s" % e)
         return helper.bad_request('Unexpected error occurred while getting getLoanDetails')
 
 
@@ -283,7 +285,7 @@ def dropMemberDetail(request):
             loggerInfo.info('------------------Exiting dropMemberDetail(request):----------------------')
             return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside dropMemberDetail(request): %s" %e)
+        errorLog.error("Exception raised inside dropMemberDetail(request): %s" % e)
         return helper.bad_request('An expected error occurred while  dropMemberDetail.')
 
 
@@ -302,7 +304,7 @@ def updateloanDetail(request):
             loggerInfo.info('------------------Exiting updateloanDetail(request):----------------------')
             return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside updateloanDetail(request): %s" %e)
+        errorLog.error("Exception raised inside updateloanDetail(request): %s" % e)
         return helper.bad_request('An expected error occurred while updateloanDetail.')
 
 
@@ -315,7 +317,7 @@ def approveLoan(request):
             formData = json.loads(request.body)
             bodyData = formData["loanData"]
             taskId = formData["taskId"]
-	    print bodyData
+            print bodyData
 
             serialized_data = sscoreClient._urllib2_request('workflowEdit/loanValidation', bodyData,
                                                             requestType='POST')
@@ -331,11 +333,11 @@ def approveLoan(request):
             loggerInfo.info('------------------Exiting approveLoan(request):---------------------- ')
             return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside approveLoan(request): %s" %e)
+        errorLog.error("Exception raised inside approveLoan(request): %s" % e)
         return helper.bad_request('An expected error occurred while approving loan.')
 
 
-#@decryption_required
+# @decryption_required
 @session_required
 def loanAccNo(request, loanAccNumber, appGroupId, loanTypeName, groupName, funder, successMsg):
     username = request.session["userName"]
@@ -360,7 +362,7 @@ def getMemberFSR(request, memberId):
         loggerInfo.info('------------------Exiting getMemberFSR(request,memberId):---------------------- ')
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside approveLoan(request): %s" %e)
+        errorLog.error("Exception raised inside approveLoan(request): %s" % e)
         return helper.bad_request('Unexpected error occurred while getting Member FSR.')
 
 
@@ -371,10 +373,11 @@ def getMemberComments(request, processId, loanId):
         bodyData = {"processId": str(processId), "loanId": str(loanId)}
         serialized_data = sscoreClient._urllib2_request('workflowDetailView/MemberComments', bodyData,
                                                         requestType='POST')
-        loggerInfo.info('------------------Exiting getMemberComments(request, processId, loanId):---------------------- ')
+        loggerInfo.info(
+            '------------------Exiting getMemberComments(request, processId, loanId):---------------------- ')
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside getMemberComments(request, processId, loanId): %s" %e)
+        errorLog.error("Exception raised inside getMemberComments(request, processId, loanId): %s" % e)
         return helper.bad_request('Unexpected error occurred while getting getMemberComments')
 
 
@@ -385,25 +388,28 @@ def getGroupComments(request, processId, loanId):
         bodyData = {"processId": str(processId), "loanId": str(loanId)}
         serialized_data = sscoreClient._urllib2_request('workflowDetailView/GroupComments', bodyData,
                                                         requestType='POST')
-        loggerInfo.info('------------------Exiting getGroupComments(request, processId, loanId):---------------------- ')
+        loggerInfo.info(
+            '------------------Exiting getGroupComments(request, processId, loanId):---------------------- ')
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside getGroupComments(request, processId, loanId): %s" %e)
+        errorLog.error("Exception raised inside getGroupComments(request, processId, loanId): %s" % e)
         return helper.bad_request('Unexpected error occurred while getting getGroupComments')
 
 
 @csrf_exempt
 @session_required
 def getLoanMemberPaymentHistory(request, memberId, groupId):
-    loggerInfo.info('------------------Entering getLoanMemberPaymentHistory(request, memberId, groupId):---------------------- ')
+    loggerInfo.info(
+        '------------------Entering getLoanMemberPaymentHistory(request, memberId, groupId):---------------------- ')
     try:
         bodyData = {"memberIds": [str(memberId)], "groupId": str(groupId)}
         serialized_data = sscoreClient._urllib2_request('workflowDetailView/LoanMemberPaymentHistory', bodyData,
                                                         requestType='POST')
-        loggerInfo.info('------------------Exiting getLoanMemberPaymentHistory(request, memberId, groupId):---------------------- ')
+        loggerInfo.info(
+            '------------------Exiting getLoanMemberPaymentHistory(request, memberId, groupId):---------------------- ')
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside getLoanMemberPaymentHistory(request, memberId, groupId): %s" %e)
+        errorLog.error("Exception raised inside getLoanMemberPaymentHistory(request, memberId, groupId): %s" % e)
         return helper.bad_request('Unexpected error occurred while getting Loan Member PaymentHistory.')
 
 
@@ -415,10 +421,11 @@ def getLoanGroupPaymentHistory(request, groupId):
         bodyData = {"groupId": str(groupId)}
         serialized_data = sscoreClient._urllib2_request('workflowDetailView/AllMembersLoanPaymentHistory', bodyData,
                                                         requestType='POST')
-        loggerInfo.info('------------------Exiting getLoanGroupPaymentHistory(request, groupId):---------------------- ')
+        loggerInfo.info(
+            '------------------Exiting getLoanGroupPaymentHistory(request, groupId):---------------------- ')
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside getLoanGroupPaymentHistory(request, groupId): %s" %e)
+        errorLog.error("Exception raised inside getLoanGroupPaymentHistory(request, groupId): %s" % e)
         return helper.bad_request('Unexpected error occurred while getting Loan group PaymentHistory.')
 
 
@@ -439,7 +446,7 @@ def generateLOS(request):
             loggerInfo.info('------------------Exiting generateLOS(request):---------------------- ')
             return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside generateLOS(request): %s" %e)
+        errorLog.error("Exception raised inside generateLOS(request): %s" % e)
         return helper.bad_request('Unexpected error occurred while generating LOS.')
 
 
@@ -453,7 +460,7 @@ def disburseDocsData(request, loanId):
         loggerInfo.info('------------------Exiting disburseDocsData(request, loanId):---------------------- ')
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside disburseDocsData(request, loanId): %s" %e)
+        errorLog.error("Exception raised inside disburseDocsData(request, loanId): %s" % e)
         return helper.bad_request('Unexpected error occurred while getting disburse doc details')
 
 
@@ -470,7 +477,7 @@ def updateDisburseMemberData(request):
             loggerInfo.info('------------------Exiting updateDisburseMemberData(request):---------------------- ')
             return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside updateDisburseMemberData(request): %s" %e)
+        errorLog.error("Exception raised inside updateDisburseMemberData(request): %s" % e)
         return helper.bad_request('Unexpected error occurred while updating disburse doc details')
 
 
@@ -489,14 +496,13 @@ def confirmChqDisbursement(request):
 
             serialized_data = sscoreClient._urllib2_request('ChequeDisbursement/MemberCancellation', bodyData,
                                                             requestType='POST')
-	    
+
             if serialized_data["code"] == 12002:
-                
                 taskComplete(request, processUpdate, taskId)
             loggerInfo.info('------------------Exiting confirmChqDisbursement(request):--------------------- ')
             return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside confirmChqDisbursement(request): %s" %e)
+        errorLog.error("Exception raised inside confirmChqDisbursement(request): %s" % e)
         return helper.bad_request('Unexpected error occurred while confirming disbursement')
 
 
@@ -508,7 +514,7 @@ def chkTaskState(request, taskId):
         loggerInfo.info('------------------Entering chkTaskState(request, taskId):--------------------- ')
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside chkTaskState(request, taskId): %s" %e)
+        errorLog.error("Exception raised inside chkTaskState(request, taskId): %s" % e)
         return HttpResponse(json.dumps({"message": "No matching task with id " + taskId}),
                             content_type="application/json")
 
@@ -523,7 +529,7 @@ def LoanActiveMemberCount(request, loanId):
         loggerInfo.info('------------------Exiting LoanActiveMemberCount(request, loanId):--------------------- ')
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside LoanActiveMemberCount(request, loanId): %s" %e)
+        errorLog.error("Exception raised inside LoanActiveMemberCount(request, loanId): %s" % e)
         return helper.bad_request('Unexpected error occurred while getting LoanActiveMemberCount ')
 
 
@@ -535,5 +541,28 @@ def getLoanAccNo(request, processId):
         loggerInfo.info('------------------Exiting getLoanAccNo(request, processId):--------------------- ')
         return HttpResponse(json.dumps({"loanAccNo": serialized_data[0]["value"]}), content_type="application/json")
     except ShgInvalidRequest, e:
-        errorLog.error("Exception raised inside getLoanAccNo(request, processId): %s" %e)
+        errorLog.error("Exception raised inside getLoanAccNo(request, processId): %s" % e)
         return helper.bad_request('Unexpected error occurred while getting loanaccount number')
+
+
+def getAddNewMemTaskInfo(request, groupId, loanId,processId):
+    try:
+        loggerInfo.info("--------------------Entering getAddNewMemTaskInfo(request, groupId, loanId,processId):-------------------")
+        validationLevel = ''
+        histBody = {"activityName": "Conduct BAT- Member approval in CRM", "processInstanceId": processId}
+        histInfo = camundaClient._urllib2_request('history/activity-instance', histBody, requestType='POST')
+        loggerInfo.info(histInfo)
+        if histInfo and histInfo[0]:
+             validationLevel = "BM"
+        else:
+            validationLevel = "KYC"
+        loggerInfo.info(validationLevel)
+        bodyData = {"groupId": groupId, "validationLevel": validationLevel, "loanId": loanId}
+        groupMembersData = sscoreClient._urllib2_request('workflowDetailView/getallmembers', bodyData,
+                                                         requestType='POST')
+        loggerInfo.info("--------------------Exiting getAddNewMemTaskInfo(request, groupId, loanId,processId):-------------------")
+        return HttpResponse(json.dumps(groupMembersData), content_type="application/json")
+
+    except ShgInvalidRequest, e:
+        errorLog.error("Exception raised inside getGroupData(request, groupID, loanId, taskName): %s" % e)
+        return helper.bad_request('Unexpected error occurred while searching group.')

@@ -13,7 +13,7 @@
     var taskName = '{{ taskName | escapejs }}';
     var taskId = '{{ taskId | escapejs }}';
     var processInstanceId = '{{ processInstanceId | escapejs }}';
-    
+
     $(document).ready(function(){
         $("#commentSpanId").css("display","inline-block");
         loadGroupRoles(groupId,loanId,taskName);
@@ -32,6 +32,13 @@
             ( <span id="appGroupId1"></span> )
             <span id="groupId" style="visibility:hidden;"></span>
             <span id="loanTypeId1" style="visibility:hidden;"></span>
+	     <br>
+            Total : <span id="totCount">0</span>&nbsp; &nbsp;&nbsp;
+	     Eligible : <span id="eligibleCount">0</span>&nbsp; &nbsp;&nbsp;
+            Rejected : <span id="rejectedCount">0</span>&nbsp; &nbsp;&nbsp;
+	     New members : <span id="newMemCount">0</span>&nbsp; &nbsp;&nbsp;
+            Min mem req : <span id="minimumrem">0</span>&nbsp; &nbsp;&nbsp;
+            
 
         </div>
         <div class="row" id="successPanel" style="display:none;">
@@ -77,104 +84,104 @@
                         </div>
                         <div id="upload" class="tab-pane in active">
                             <section>
-                                <div class="row">
-                                    <div class="col-md-5">
-                                        <div class="space-12"></div>
-                                        <div class="profile-user-info profile-user-info-striped">
-                                            <div class="profile-info-row">
-                                                <div class="profile-info-name"> Formation Date </div>
-                                                <div class="profile-info-value">
-                                                    <span class="editable" id="groupFormationDate_groupRole"></span>
-                                                </div>
-                                            </div>
-                                            <div class="profile-info-row">
-                                                <div class="profile-info-name"> SHG Address </div>
-                                                <div class="profile-info-value">
-                                                    <span class="editable" id="shgaddress_groupRole"></span>
-                                                </div>
-                                            </div>
-                                            <div class="profile-info-row">
-                                                <div class="profile-info-name"> Animator </div>
-                                                <div class="profile-info-value">
-                                                    <span class="editable" id="animator_groupRole">
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="profile-info-row">
-                                                <div class="profile-info-name"> Rep 1</div>
-                                                <div class="profile-info-value">
-                                                    <span class="editable" id="rep1_groupRole">
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="profile-info-row">
-                                                <div class="profile-info-name"> Rep 2</div>
-                                                <div class="profile-info-value">
-                                                    <span class="editable"  id="rep2_groupRole">
-                                                    </span>
-                                                </div>
-                                            </div>
+				<div class="row">
+                            <div class="col-md-5">
+                                <div class="space-12"></div>
+                                <div class="profile-user-info profile-user-info-striped">
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> Formation Date </div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="groupFormationDate_groupRole"></span>
                                         </div>
                                     </div>
-                                    <div class="col-md-5">
-                                        <div class="space-12"></div>
-                                        <div class="profile-user-info profile-user-info-striped">
-                                            <div class="profile-info-row">
-                                                <div class="profile-info-name"> SHG Id </div>
-                                                <div class="profile-info-value">
-                                                    <span class="editable" id="appGroupId_groupRole"></span>
-                                                </div>
-                                            </div>
-                                            <div class="profile-info-row">
-                                                <div class="profile-info-name"> MDA </div>
-                                                <div class="profile-info-value">
-                                                    <span class="editable" id="mda_groupRole"></span>
-                                                </div>
-                                                </div>
-                                            <div class="profile-info-row">
-                                                <div class="profile-info-name"> MWA</div>
-                                                <div class="profile-info-value">
-                                                    <span class="editable" id="mwa_groupRole"></span>
-                                                </div>
-                                            </div>
-                                            <div class="profile-info-row">
-                                                <div class="profile-info-name"> Village </div>
-                                                <div class="profile-info-value">
-                                                    <span class="editable" id="villageName_groupRole"></span>
-                                                </div>
-                                            </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> SHG Address </div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="shgaddress_groupRole"></span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> Animator </div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="animator_groupRole">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> Rep 1</div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="rep1_groupRole">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> Rep 2</div>
+                                        <div class="profile-info-value">
+                                            <span class="editable"  id="rep2_groupRole">
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-
                             </div>
-                            <!-- ROW END -->
-                            <br>
-                            <div class="row">
-                                <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
-                                    <div class="form-group">
-                                        <label for="comment">Comment:</label>
-                                        <textarea class="form-control limited sample" autofocus rows="5" id="comment"></textarea>
+                            <div class="col-md-5">
+                                <div class="space-12"></div>
+                                <div class="profile-user-info profile-user-info-striped">
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> SHG Id </div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="appGroupId_groupRole"></span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row-centered">
-                                    <div class="col-md-12">
-                                        {% if taskName == "Print Loan Documents & FSR" or taskName == "Prepare Loan Documents" %}
-                                            <button type="button" class="btn btn-danger btn-md" onclick="updateGroupMemberStatus();">Update</button>
-                                            <button type="button" class="btn btn-danger btn-md" onclick="updateGroupValStatus('Approved');">Approve</button>
-                                            <!--button type="button" class="btn btn-danger btn-md" onclick="updateGroupValStatus('Rejected');">Reject</button-->
-                                        {% endif %}
-                                        {% if taskName == "Add New Members" %}
-                                             <button onclick="updateGroupValStatus('Approved');" class="btn btn-danger" type="button">
-                                            <i class="ace-icon fa fa-check bigger-110"></i>
-                                            Approve
-                                            </button>
-                                            <button onclick="updateGroupValStatus('Rejected');" class="btn btn-danger" type="button">
-                                                <i class="ace-icon fa fa-close bigger-110"></i>
-                                                Reject
-                                            </button>
-                                        {% endif %}
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> MDA </div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="mda_groupRole"></span>
+                                        </div>
+                                        </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> MWA</div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="mwa_groupRole"></span>
+                                        </div>
                                     </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> Village </div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="villageName_groupRole"></span>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+
+                        </div>
+                        <!-- ROW END -->
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+                                <div class="form-group">
+                                    <label for="comment">Comment:</label>
+                                    <textarea class="form-control limited sample" autofocus rows="5" id="comment"></textarea>
                                 </div>
+                            </div>
+                            <div class="row-centered">
+                                <div class="col-md-12">
+                                    {% if taskName == "Print Loan Documents & FSR" or taskName == "Prepare Loan Documents" %}
+                                        <button type="button" class="btn btn-danger btn-md" onclick="updateGroupMemberStatus();">Update</button>
+                                        <button type="button" class="btn btn-danger btn-md" onclick="updateGroupValStatus('Approved');">Approve</button>
+                                        <!--button type="button" class="btn btn-danger btn-md" onclick="updateGroupValStatus('Rejected');">Reject</button-->
+                                    {% endif %}
+                                    {% if taskName == "Add New Members" %}
+                                         <button onclick="updateGroupValStatus('Approved');" class="btn btn-danger" type="button">
+                                        <i class="ace-icon fa fa-check bigger-110"></i>
+                                        Approve
+                                        </button>
+                                        <button onclick="updateGroupValStatus('Rejected');" class="btn btn-danger" type="button">
+                                            <i class="ace-icon fa fa-close bigger-110"></i>
+                                            Reject
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            </div>
                                 <!--upload doc end-->
                         </section>
                         <!-- SECTION END -->

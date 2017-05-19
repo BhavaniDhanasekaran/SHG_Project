@@ -32,7 +32,7 @@
         $('.date-picker').datepicker({
             autoclose: true,
             todayHighlight: true
-        })
+	 })
         //show datepicker when clicking on the icon
         .next().on(ace.click_event, function(){
             $(this).prev().focus();
@@ -81,11 +81,11 @@
                         </div>
                     </div>
                 </div>
-                 <div class="col-sm-12 col-lg-6 col-md-6 col-xs-12" id="prevDate" style="display:none;">
+                 <div class="col-sm-12 col-lg-6 col-md-6 col-xs-12" id="prevDate">
                      <div class="profile-info-row">
-                          <b><div class="profile-info-name" style="width:145px;"> Prev selected Date : </div>
+                          <b><div class="profile-info-name" style="width:145px;">Loan Sanc Date : </div>
                          <div class="profile-info-value">
-                             <span class="editable" id="oldDos"></span>
+                             <span class="editable" id="loanSancDate"></span>
                          </div></b>
                      </div>
                  </div>
