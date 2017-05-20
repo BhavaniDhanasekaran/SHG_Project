@@ -70,9 +70,9 @@ h1 {
 }
 
 .content {
-	display: block;
+	/*display: block;
 	width: 450px;
-	background: rgb(215, 215, 215);
+	background: rgb(215, 215, 215);*/
 	padding: 1px;
 	float:right;
 	overflow: hidden;
