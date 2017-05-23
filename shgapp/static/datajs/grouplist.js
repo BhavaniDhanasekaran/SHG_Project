@@ -1013,6 +1013,9 @@ function taskUpdate(status) {
     });
 }
 
+
+
+
 function creditHistory(loanId) {
     var htmlContent = '';
     $.ajax({
@@ -1026,6 +1029,7 @@ function creditHistory(loanId) {
         },
 
         success: function(data) {
+            console.log(data);
             var creditData = data;
             var documentObj = [];
             var docPath = ''
@@ -1037,22 +1041,15 @@ function creditHistory(loanId) {
                     documentObj = creditData["data"][i]["memberDocument"];
 
                     var documentPath = '';
-                    if (documentObj[0]) {
+                    if (documentObj) {
+                        //console.log( documentObj.length);
                         for (var j = 0; j < documentObj.length; j++) {
                             if (documentObj[j]["documentType"] == "OVERLAPREPORT") {
                                 docPath = documentObj[j]["documentPath"];
                                 docId = documentObj[j]["docId"];
-                                docBtn = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + docId + "," + "config='width=500,height=500'" + ');return false;"+>View</button>';
-                            }
-                            else{
-                                docBtn = '<button type="button" class="btn btn-info btn-md btn-danger"+>View</button>';
-                            }
-                        }
-                    }
-                    else {
-                        docBtn = '<button type="button" class="btn btn-info btn-md btn-danger"+>View</button>';
-                    }
-                    htmlContent += '<tr><td>' + docBtn + ' </td>' +
+                                docBtn = '<button type="button"  class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + docId + "," + "config='width=500,height=500'" + ');return false;"+>View</button>';
+
+                        htmlContent += '<tr><td>' + docBtn + ' </td>' +
                         '<td>' + creditObj["appMemberId"] + '</td><td>' +
                         creditObj["memberName"] + '</td>' +
                         '<td>' + creditObj["s_product_type"] + '</td>' +
@@ -1079,6 +1076,19 @@ function creditHistory(loanId) {
                         '<td>' + creditObj["loan_amount_4"] + '</td>' +
                         '<td>' + creditObj["balance_4"] + '</td>' +
                         '</tr>';
+                            }
+                            else{
+                                docBtn = '<button type="button" class="btn btn-info btn-md btn-danger"+>View</button>';
+                            }
+                        }
+                    }
+                    else {
+                        docBtn = '<button type="button" class="btn btn-info btn-md btn-danger"+>View</button>';
+                    }
+
+
+
+                   
                 }
             }
             document.getElementById("creditData").innerHTML = htmlContent;
@@ -1827,7 +1837,7 @@ function rmGroupMaster(groupId) {
                 }
 
                 if(document.getElementById("minimumrem")){
-            if((10 - (10)) > 0 ){
+             if((10 - (appCount.length+activeCount.length)) > 0 ){
                             document.getElementById("minimumrem").innerHTML = 10 - (appCount.length+activeCount.length);
             }
             else{
