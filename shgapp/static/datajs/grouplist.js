@@ -1323,6 +1323,12 @@ function updateGroupMemberStatus() {
     var nrepm1 = document.getElementById("repm1").value;
     var nrepm2 = document.getElementById("repm2").value;
 
+      if((nAnimator==nrepm1) ||(nrepm1==nrepm2)||(nrepm2==nAnimator)){
+    $.alert("Selected Option Cannot be Same,Please Change the Roles");
+        return false;
+
+    }
+
     var groupValData = {
         "entityType": "GROUP",
         "validationType": "POST",
@@ -1708,6 +1714,7 @@ function approveLoan(updateloanData){
 function validate(evt, id) {
     var theEvent = evt || window.event;
     var key = theEvent.keyCode || theEvent.which;
+    if(key===8){return;}
     key = String.fromCharCode(key);
     if (id == 1) {
         var regex = /[0-9]/;
