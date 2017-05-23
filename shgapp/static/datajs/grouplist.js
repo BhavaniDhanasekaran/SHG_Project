@@ -1035,25 +1035,14 @@ function creditHistory(loanId) {
 
                     var documentPath = '';
                     if (documentObj) {
-                        console.log(documentObj);
+                        //console.log( documentObj.length);
                         for (var j = 0; j < documentObj.length; j++) {
                             if (documentObj[j]["documentType"] == "OVERLAPREPORT") {
                                 docPath = documentObj[j]["documentPath"];
                                 docId = documentObj[j]["docId"];
-                                docBtn = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + docId + "," + "config='width=500,height=500'" + ');return false;"+>View</button>';
-                            }
-                            else{
-                                docBtn = '<button type="button" class="btn btn-info btn-md btn-danger"+>View</button>';
-                            }
-                        }
-                    }
-                    else {
-                        docBtn = '<button type="button" class="btn btn-info btn-md btn-danger"+>View</button>';
-                    }
+                                docBtn = '<button type="button"  class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + docId + "," + "config='width=500,height=500'" + ');return false;"+>View</button>';
 
-                    
-
-                    htmlContent += '<tr><td>' + docBtn + ' </td>' +
+                        htmlContent += '<tr><td>' + docBtn + ' </td>' +
                         '<td>' + creditObj["appMemberId"] + '</td><td>' +
                         creditObj["memberName"] + '</td>' +
                         '<td>' + creditObj["s_product_type"] + '</td>' +
@@ -1080,6 +1069,19 @@ function creditHistory(loanId) {
                         '<td>' + creditObj["loan_amount_4"] + '</td>' +
                         '<td>' + creditObj["balance_4"] + '</td>' +
                         '</tr>';
+                            }
+                            else{
+                                docBtn = '<button type="button" class="btn btn-info btn-md btn-danger"+>View</button>';
+                            }
+                        }
+                    }
+                    else {
+                        docBtn = '<button type="button" class="btn btn-info btn-md btn-danger"+>View</button>';
+                    }
+
+
+
+                   
                 }
             }
             document.getElementById("creditData").innerHTML = htmlContent;
