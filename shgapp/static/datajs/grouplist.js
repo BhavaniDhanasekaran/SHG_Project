@@ -70,7 +70,7 @@ function getGroupData(groupID, loanId) {
         url: '/getGroupData/' + groupID + '/' + loanId + '/'+taskName,
         dataType: 'json',
         beforeSend: function() {
-            $("#loading").show();
+           $("#loading").show();
         },
         complete: function() {
             $("#loading").hide();
@@ -198,7 +198,7 @@ function getMemberDetails(memberId, groupId, loanId) {
 }
 
 function MemberDatadisplay(data) {
-    $("#loading").show();
+   
     var memberData = data;
     if (memberData["data"]["memberDetails"]) {
         if (document.getElementById("previousLoanMemberCycle")) {
@@ -260,7 +260,10 @@ function highMarksList(memberId,loanId,memberDocData) {
          url: '/getmemberCreditEnq/' + memberId + '/' + loanId,
          dataType: 'json',
          beforeSend: function() {
-            $("#loading").show();
+          // $("#loading").show();
+         },
+         complete: function() {
+           // $("#loading").hide();
          },
          success: function(data) {
             if(data.code == "2045"){
@@ -465,6 +468,7 @@ function conflictList(memberId) {
         },
         success: function(data) {
             if(data.code == "2046"){
+
 
                 var conflictData;
                 if (data["data"] && data["data"][0]) {
@@ -1322,6 +1326,12 @@ function updateGroupMemberStatus() {
     var nAnimator = document.getElementById("Animator").value;
     var nrepm1 = document.getElementById("repm1").value;
     var nrepm2 = document.getElementById("repm2").value;
+    //console.log(nAnimator,nrepm1,nrepm2);
+    if((nAnimator==nrepm1) ||(nrepm1==nrepm2)||(nrepm2==nAnimator)){
+    $.alert("Selected Option Cannot be Same,Please Change the Roles");
+        return false;
+
+    }
 
     var groupValData = {
         "entityType": "GROUP",
@@ -1708,6 +1718,7 @@ function approveLoan(updateloanData){
 function validate(evt, id) {
     var theEvent = evt || window.event;
     var key = theEvent.keyCode || theEvent.which;
+    if(key===8){return;}
     key = String.fromCharCode(key);
     if (id == 1) {
         var regex = /[0-9]/;
@@ -3149,6 +3160,6 @@ function setSelectOptionInForm(){
             }
     });
 
-    $("#loading").show();
+   
 
 }
