@@ -1022,6 +1022,7 @@ function creditHistory(loanId) {
         },
 
         success: function(data) {
+            console.log(data);
             var creditData = data;
             var documentObj = [];
             var docPath = ''
@@ -1033,7 +1034,8 @@ function creditHistory(loanId) {
                     documentObj = creditData["data"][i]["memberDocument"];
 
                     var documentPath = '';
-                    if (documentObj[0]) {
+                    if (documentObj) {
+                        console.log(documentObj);
                         for (var j = 0; j < documentObj.length; j++) {
                             if (documentObj[j]["documentType"] == "OVERLAPREPORT") {
                                 docPath = documentObj[j]["documentPath"];
@@ -1048,6 +1050,9 @@ function creditHistory(loanId) {
                     else {
                         docBtn = '<button type="button" class="btn btn-info btn-md btn-danger"+>View</button>';
                     }
+
+                    
+
                     htmlContent += '<tr><td>' + docBtn + ' </td>' +
                         '<td>' + creditObj["appMemberId"] + '</td><td>' +
                         creditObj["memberName"] + '</td>' +
@@ -1823,7 +1828,7 @@ function rmGroupMaster(groupId) {
                 }
 
                 if(document.getElementById("minimumrem")){
-            if((10 - (10)) > 0 ){
+            if((10 - (appCount.length+activeCount.length)) > 0 ){
                             document.getElementById("minimumrem").innerHTML = 10 - (appCount.length+activeCount.length);
             }
             else{
