@@ -5,7 +5,7 @@
 <script src="/static/datajs/loadTaskList.js?v={{JS_VERSION}}"></script>
 <script src="/static/datajs/masterData.js?v={{JS_VERSION}}"></script>
 <script src="/static/datajs/mysidenav.js?v={{JS_VERSION}}"></script>
-<script src="/static/datajs/DocUPload.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/DocUPload2.js?v={{JS_VERSION}}"></script>
 
 <script>
     var groupId = '{{ groupId | escapejs }}';
@@ -23,19 +23,28 @@
     var totLoanDocCount;
     var uploadedDocsCount;
     $(document).ready(function (){
+         $('#docments_tble2').hide();
+          $('#docments_table').hide();
+         
         loadDisburseDocData();
         loadGroupRoles(groupId, loanId, taskName);
         $("#commentSpanId").css("display","inline-block");
         
-         loanDocument(loanTypeId);
+        loanDocument(loanTypeId);
         taskCount();
         $('.date-picker').datepicker({
             autoclose: true,
             todayHighlight: true
-	 })
+     })
         //show datepicker when clicking on the icon
         .next().on(ace.click_event, function(){
             $(this).prev().focus();
+        });
+
+
+          $('textarea.limited').inputlimiter({
+            remText: '%n character%s remaining...',
+            limitText: 'max allowed : %n.'
         });
     });
 
@@ -72,7 +81,10 @@
                         <div class="profile-info-value">
                             <div class="col-xs-8 col-sm-11">
                                 <div class="input-group date" id="dateOfDisbursementDiv">
-                                    <input class="form-control date-picker" id="dateOfDisbursement" data-date-format="yyyy-mm-dd" />
+                                    <input class="form-control date-picker" 
+                                    id="dateOfDisbursement" data-date-format="dd-mm-yyyy" />
+           
+
                                     <span class="input-group-addon">
                                         <i class="fa fa-calendar bigger-110"></i>
                                     </span>
@@ -138,7 +150,10 @@
                                     <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
                                         <div class="form-group vertical-center">
                                             <label for="comment">Comment:</label>
-                                            <textarea class="form-control limited sample" rows="3" id="comment"></textarea>
+                                            <textarea class="form-control limited sample" 
+                                            maxlength="3000"  rows="3" id="comment"></textarea>
+
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -152,29 +167,53 @@
                                     {% endif %}
                                 </div>
                             </div>
-                            <div id="upload" class="tab-pane">
-                                <section>
-                                    <div class="page-content">
-                                        <div class="row">
-                                            <div class="col-xs-12">
-                                                <form name = "form" enctype = "multipart/form-data" action = "{% url "ajax_progress_bar_upload" %}" method = "POST" >{% csrf_token %}
-                                                    <table class="table table-bordered" id="docments_table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Doc ID</th>
-                                                                <th>Document Name</th>
-                                                                <th>Upload / View Doc</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="records_table">
-                                                        </tbody>
-                                                    </table>
-                                                </form>
-                                                <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2"> </div>
-                                            </div>
-                                        </div>
-                                        <br>
-                                    </div>
+                     
+
+
+
+
+
+<div id="upload" class="tab-pane">
+   <div class="page-content">
+      <div class="row">
+         <div class="col-xs-12">
+            <form name = "form" enctype = "multipart/form-data" 
+            action = "{% url "ajax_progress_bar_upload" %}" method = "POST" >
+            {% csrf_token %}
+            <table class="table table-bordered" id="docments_table">
+               <thead>
+                  <tr>
+                     <th>Doc ID</th>
+                     <th>Document Name</th>
+                     <th>Upload / View Doc</th>
+                  </tr>
+                 
+               </thead>
+               <tbody id="records_table">
+               </tbody>
+            </table>
+
+            <table class="table table-bordered" id="docments_table2"  >
+               <thead>
+                  <tr>
+                     <th>Doc ID</th>
+                     <th>Document Name</th>
+                     <th>View /Edit Doc</th>
+                  </tr>
+               </thead>
+               <tbody id="records_table2">
+               </tbody>
+            </table>
+            </form>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+
+
+
                                 </section>
                             </div>
                         </div>

@@ -23,10 +23,10 @@
         //getHistComments(processInstanceId);
         //getMemberComments(processInstanceId,loanId);
         //getGroupComments(processInstanceId,loanId);
-        creditHistory(loanId);
+        
         documentView(loanId);
         getLoanDetails(groupId,loanId);
-        getPaymentHistory("group",0,groupId);
+        
         $('textarea.limited').inputlimiter({
           remText: '%n character%s remaining...',
           limitText: 'max allowed : %n.'
@@ -244,11 +244,11 @@
             <div class="tabbable">
                 <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
                     <li class="active"><a data-toggle="tab" href="#upload">Member</a></li>
-                    <li><a data-toggle="tab" href="#profile4">SHG Credit Enquiry</a></li>
-                    <li><a data-toggle="tab" href="#dropdown14">Documents</a></li>
-                    <li><a data-toggle="tab" href="#paymentHistory">Payment History</a></li>
+                    <li><a data-toggle="tab" href="#SHGCreditHistory">SHG Credit Enquiry</a></li>
+                    <li><a data-toggle="tab" href="#viewDocuments">Documents</a></li>
+                    <li><a data-toggle="tab" href="#groupPaymentHistory">Payment History</a></li>
                     <li><a data-toggle="tab" href="#groupHistory">Group History</a></li>
-                    <li><a data-toggle="tab" href="#groupDetails">Group Details</a></li>
+                    <li><a data-toggle="tab" href="#groupDetail">Group Details</a></li>
                     <li><a data-toggle="tab" href="#memberDetails">Member Details</a></li>
                 </ul>
                 <div class="tab-content">
@@ -321,8 +321,10 @@
                                     <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
                                                 <div class="form-group vertical-center">
                                                     <label for="comment">Comment:</label>
-                                                    <textarea class="form-control limited sample" rows="3" maxlength="3000"id="comment"></textarea>
-                                                </div>
+
+                                                    <textarea class="form-control limited sample" rows="3" maxlength="3000" id="comment"></textarea>   
+                                             </div>
+
                                     </div>
                                 </div>
                                 <div >
@@ -340,7 +342,7 @@
                     </div>
                     <!--form End-->
                     <!-- Document tab start  -->
-                    <div id="dropdown14" class="tab-pane">
+                    <div id="viewDocuments" class="tab-pane">
                         <div class="page-content1">
                             <div class="row">
                                 <div class="col-xs-12">
@@ -374,7 +376,7 @@
                             <!-- /.col -->
                         </div>
                     </div>
-                   <div id="paymentHistory" class="tab-pane">
+                   <div id="groupPaymentHistory" class="tab-pane">
                             <div class="page-content">
                             <div class="row">
                                 <div class="col-xs-12">
@@ -398,7 +400,7 @@
                             <!-- /.col -->
                         </div>
                     </div>
-                    <div id="groupDetails" class="tab-pane">
+                    <div id="groupDetail" class="tab-pane">
                             <!-- form start-->
                             <section >
                                 <div class="row">
@@ -530,7 +532,7 @@
                             <!-- /.col -->
                         </div>
                     </div>
-                    <div id="profile4" class="tab-pane">
+                    <div id="SHGCreditHistory" class="tab-pane">
                         <!--TAB MENU2 CONTENT START-->
                         <div class="page-content1">
                             <div class="row">

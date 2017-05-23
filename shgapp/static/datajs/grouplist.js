@@ -27,6 +27,37 @@ $(document).ajaxError(function(e, xhr, settings, exception) {
 });
 
 
+$(function() {
+    $("a[href=#groupDetail]").click(function() {
+        loadGroupRoles(groupId, loanId, taskName);
+    });
+     $("a[href=#memberConfHistory]").click(function() {
+        var memberId = document.getElementById("memberId").innerHTML;
+        conflictList(memberId);
+    });
+    $("a[href=#fsr]").click(function() {
+        var memberId = document.getElementById("memberId").innerHTML;
+        getMemberFSRData(memberId);
+    });
+    $("a[href=#paymentHistory]").click(function() {
+         var memberId = document.getElementById("memberId").innerHTML;
+         getPaymentHistory("member",memberId,groupId);
+    });
+
+    $("a[href=#viewDocuments]").click(function() {
+        documentView(loanId);
+    });
+    $("a[href=#SHGCreditHistory]").click(function() {
+        creditHistory(loanId);
+    });
+     $("a[href=#groupPaymentHistory]").click(function() {
+        getPaymentHistory("group",0,groupId);
+    });
+
+
+});
+
+
 function getGroupData(groupID, loanId) {
     var memId;
     var totalCount = 0;
@@ -75,7 +106,7 @@ function getGroupData(groupID, loanId) {
                             rewCount += 1;
                         }
                         if (document.getElementById("groupMembersDropDown")) {
-                            $("#groupMembersDropDown").append('<a id="' + memberId + '" onclick="getMemberDetails(' + memberId + ',' + groupId + ',' + loanId + ');tabControl();loadGroupRoles2('+groupId+','+ loanId+','+"'"+taskName+"'"+');" class="' + className + '" style="font-weight:bold;"> (' + groupData["data"]["groupMemDetail"][i]["sequenceNumber"] + ")  " + groupData["data"]["groupMemDetail"][i]["memberName"] + '</a>');
+                            $("#groupMembersDropDown").append('<a id="' + memberId + '" onclick="getMemberDetails(' + memberId + ',' + groupId + ',' + loanId + ');tabControl();loadGroupRoles('+groupId+','+ loanId+','+"'"+taskName+"'"+');" class="' + className + '" style="font-weight:bold;"> (' + groupData["data"]["groupMemDetail"][i]["sequenceNumber"] + ")  " + groupData["data"]["groupMemDetail"][i]["memberName"] + '</a>');
                         }
                         if (document.getElementById("groupName") && groupData["data"]["groupName"]) {
                             document.getElementById("groupName").innerHTML = groupData["data"]["groupName"];
@@ -109,22 +140,18 @@ function getGroupData(groupID, loanId) {
             }
              else {
                 $.alert(groupData["message"]);
-		        $("#loading").hide();
+                $("#loading").hide();
             }
 
         } ,
 
-       		error: function (error) {
-       		$("#loading").hide();
-       	 		$.alert("Connection Time out");
+            error: function (error) {
+            $("#loading").hide();
+                $.alert("Connection Time out");
 
 
               }
     });
-    //getHistComments(processInstanceId);
-    //getMemberComments(processInstanceId,loanId);
-    //getGroupComments(processInstanceId,loanId);
-
 }
 
 function loadMasterData(taskName){
@@ -147,26 +174,19 @@ function getMemberDetails(memberId, groupId, loanId) {
         dataType: 'json',
         beforeSend: function() {
             $("#loading").show();
-		clearMemberData();
-    		document.getElementById("formMembers").reset();
+            clearMemberData();
+            document.getElementById("formMembers").reset();
         },
         complete: function() {
             $("#loading").hide();
             if (document.getElementById("penCount").innerHTML != 0) {
                 $("#operationsDivId").show();
             }
-            // getMemberFSRData(memberId);
-            //getPaymentHistory("member",memberId,groupId);
         },
         success: function(data) {
             if (data.code == "2019") {
-console.log(data);
                 MemberDatadisplay(data)
-                highMarksList(data)
-                DocumentDetails(data)
-                conflictList(data)
-                getMemberFSRData(memberId);
-                getPaymentHistory("member", memberId, groupId);
+                highMarksList(memberId,loanId,data["data"]["memberDocumentDetails"]);
                 $("#loading").hide();
             }
         },
@@ -178,6 +198,7 @@ console.log(data);
 }
 
 function MemberDatadisplay(data) {
+    $("#loading").show();
     var memberData = data;
     if (memberData["data"]["memberDetails"]) {
         if (document.getElementById("previousLoanMemberCycle")) {
@@ -234,158 +255,166 @@ function MemberDatadisplay(data) {
 
 
 
-function highMarksList(data) {
-    var memberData = data;
-    if (memberData["data"]["highMarksList"]) {
-        var conflictDataCreditEnquiry = memberData["data"]["highMarksList"];
-        if (document.getElementById("CBStatus") && conflictDataCreditEnquiry[0]) {
-            document.getElementById("CBStatus").innerHTML = conflictDataCreditEnquiry[0]["status"];
-        }
-        var memberDocumentDetails = memberData["data"]["memberDocumentDetails"];
-        var memberOverlapLink = ''
-        var docPath = ''
-        var docId = ''
-	 if(conflictDataCreditEnquiry.length == memberDocumentDetails.length){
-		for (var j = 0; j < memberDocumentDetails.length; j++) {
-			if (memberDocumentDetails[j]["documentType"] == "OVERLAPREPORT") {
-            			docPath = memberDocumentDetails[j]["documentPath"];
-             			docId = memberDocumentDetails[j]["docId"];
-				conflictDataCreditEnquiry[j]["overLapReportURL"] = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + docId + "," + "config='width=500,height=500'" + ');return false;">View</button>';
-			}
-		}
-	 }
-	 else{
-		for (var k = 0; k < conflictDataCreditEnquiry.length; k++) {
-			for (var j = 0; j < memberDocumentDetails.length; j++) {
+function highMarksList(memberId,loanId,memberDocData) {
+     $.ajax({
+         url: '/getmemberCreditEnq/' + memberId + '/' + loanId,
+         dataType: 'json',
+         beforeSend: function() {
+            $("#loading").show();
+         },
+         success: function(data) {
+            if(data.code == "2045"){
 
-				if (memberDocumentDetails[j]["documentType"] == "OVERLAPREPORT") {
-            				docPath = memberDocumentDetails[j]["documentPath"];
-             				docId = memberDocumentDetails[j]["docId"];
-					conflictDataCreditEnquiry[k]["overLapReportURL"] = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + docId + "," + "config='width=500,height=500'" + ');return false;">View</button>';
-				}
-			}
-		}
-	 }
+                if (data["data"] && data["data"][0]) {
+                    var conflictDataCreditEnquiry =data["data"];
+                    if (document.getElementById("CBStatus") && conflictDataCreditEnquiry[0]) {
+                        document.getElementById("CBStatus").innerHTML = conflictDataCreditEnquiry[0]["status"];
+                    }
+                    var memberDocumentDetails = memberDocData;
+                    var memberOverlapLink = ''
+                    var docPath = ''
+                    var docId = ''
+                    if(conflictDataCreditEnquiry.length == memberDocumentDetails.length){
+                        for (var j = 0; j < memberDocumentDetails.length; j++) {
+                            if (memberDocumentDetails[j]["documentType"] == "OVERLAPREPORT") {
+                                        docPath = memberDocumentDetails[j]["documentPath"];
+                                        docId = memberDocumentDetails[j]["docId"];
+                                conflictDataCreditEnquiry[j]["overLapReportURL"] = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + docId + "," + "config='width=500,height=500'" + ');return false;">View</button>';
+                            }
+                        }
+                    }
+                    else{
+                        for (var k = 0; k < conflictDataCreditEnquiry.length; k++) {
+                            for (var j = 0; j < memberDocumentDetails.length; j++) {
 
-
-       // memberOverlapLink = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + "'MemberOverlapWin'" + "," + "config='width=500,height=500'" + ');return false;">View</button>';
-        if ($.fn.DataTable.isDataTable('#creditLoadData')) {
-            $("#creditLoadData").dataTable().fnDestroy();
-        }
-
-        $('#creditLoadData').dataTable({
-            "data": conflictDataCreditEnquiry,
-            "bDestroy": true,
-            "bJQueryUI": false,
-            "bProcessing": true,
-            "bSort": true,
-            "bInfo": true,
-            "bPaginate": false,
-            "iDisplayLength": 10,
-            "bSortClasses": false,
-            "bAutoWidth": false,
-            "searching": false,
-            "sDom": '<"top">rt<"bottom"flp><"clear">',
-            "bDeferRender": true,
-            "aoColumns": [{
-                    "mData": "overLapReportURL",
-                    "sTitle": "OverLap Report",
-                    },
-                {
-                    "mData": "s_product_type",
-                    "sTitle": "Product"
-                },
-                {
-                    "mData": "status",
-                    "sTitle": "Status"
-                },
-                {
-                    "mData": "remarks",
-                    "sTitle": "Remarks"
-                },
-                {
-                    "mData": "hm_response_date",
-                    "sTitle": "HM Response Date"
-                },
-                {
-                    "mData": "existing_loan_limit",
-                    "sTitle": "Existing Loan Limit"
-                },
-                {
-                    "mData": "loan_amount_eligible",
-                    "sTitle": "Loan Amount Eligible"
-                },
-                {
-                    "mData": "no_of_mfi_eligible",
-                    "sTitle": "MFI Eligible"
-                },
-                {
-                    "mData": "name_of_mfi_1",
-                    "sTitle": "MFI 1 Name"
-                },
-                {
-                    "mData": "overdue_amount_1",
-                    "sTitle": "Overdue_1"
-                },
-                {
-                    "mData": "loan_amount_1",
-                    "sTitle": "Loan Amount_1"
-                },
-                {
-                    "mData": "balance_1",
-                    "sTitle": "Balance_1"
-                },
-                {
-                    "mData": "name_of_mfi_2",
-                    "sTitle": "MFI 2 Name"
-                },
-                {
-                    "mData": "overdue_amount_2",
-                    "sTitle": "Overdue_2"
-                },
-                {
-                    "mData": "loan_amount_2",
-                    "sTitle": "Loan Amount_2"
-                },
-                {
-                    "mData": "balance_2",
-                    "sTitle": "Balance_2"
-                },
-                {
-                    "mData": "name_of_mfi_3",
-                    "sTitle": "MFI 3 Name"
-                },
-                {
-                    "mData": "overdue_amount_3",
-                    "sTitle": "Overdue_3"
-                },
-                {
-                    "mData": "loan_amount_3",
-                    "sTitle": "Loan Amount_3"
-                },
-                {
-                    "mData": "balance_3",
-                    "sTitle": "Balance_3"
-                },
-                {
-                    "mData": "name_of_mfi_4",
-                    "sTitle": "MFI 4 Name"
-                },
-                {
-                    "mData": "overdue_amount_4",
-                    "sTitle": "Overdue_4"
-                },
-                {
-                    "mData": "loan_amount_4",
-                    "sTitle": "Loan Amount_4"
-                },
-                {
-                    "mData": "balance_4",
-                    "sTitle": "Balance_4"
+                                if (memberDocumentDetails[j]["documentType"] == "OVERLAPREPORT") {
+                                            docPath = memberDocumentDetails[j]["documentPath"];
+                                            docId = memberDocumentDetails[j]["docId"];
+                                    conflictDataCreditEnquiry[k]["overLapReportURL"] = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + docId + "," + "config='width=500,height=500'" + ');return false;">View</button>';
+                                }
+                            }
+                        }
+                    }
+                    if ($.fn.DataTable.isDataTable('#creditLoadData')) {
+                        $("#creditLoadData").dataTable().fnDestroy();
+                    }
+                    $('#creditLoadData').dataTable({
+                        "data": conflictDataCreditEnquiry,
+                        "bDestroy": true,
+                        "bJQueryUI": false,
+                        "bProcessing": true,
+                        "bSort": true,
+                        "bInfo": true,
+                        "bPaginate": false,
+                        "iDisplayLength": 10,
+                        "bSortClasses": false,
+                        "bAutoWidth": false,
+                        "searching": false,
+                        "sDom": '<"top">rt<"bottom"flp><"clear">',
+                        "bDeferRender": true,
+                        "aoColumns": [{
+                                "mData": "overLapReportURL",
+                                "sTitle": "OverLap Report",
+                                },
+                            {
+                                "mData": "s_product_type",
+                                "sTitle": "Product"
+                            },
+                            {
+                                "mData": "status",
+                                "sTitle": "Status"
+                            },
+                            {
+                                "mData": "remarks",
+                                "sTitle": "Remarks"
+                            },
+                            {
+                                "mData": "hm_response_date",
+                                "sTitle": "HM Response Date"
+                            },
+                            {
+                                "mData": "existing_loan_limit",
+                                "sTitle": "Existing Loan Limit"
+                            },
+                            {
+                                "mData": "loan_amount_eligible",
+                                "sTitle": "Loan Amount Eligible"
+                            },
+                            {
+                                "mData": "no_of_mfi_eligible",
+                                "sTitle": "MFI Eligible"
+                            },
+                            {
+                                "mData": "name_of_mfi_1",
+                                "sTitle": "MFI 1 Name"
+                            },
+                            {
+                                "mData": "overdue_amount_1",
+                                "sTitle": "Overdue_1"
+                            },
+                            {
+                                "mData": "loan_amount_1",
+                                "sTitle": "Loan Amount_1"
+                            },
+                            {
+                                "mData": "balance_1",
+                                "sTitle": "Balance_1"
+                            },
+                            {
+                                "mData": "name_of_mfi_2",
+                                "sTitle": "MFI 2 Name"
+                            },
+                            {
+                                "mData": "overdue_amount_2",
+                                "sTitle": "Overdue_2"
+                            },
+                            {
+                                "mData": "loan_amount_2",
+                                "sTitle": "Loan Amount_2"
+                            },
+                            {
+                                "mData": "balance_2",
+                                "sTitle": "Balance_2"
+                            },
+                            {
+                                "mData": "name_of_mfi_3",
+                                "sTitle": "MFI 3 Name"
+                            },
+                            {
+                                "mData": "overdue_amount_3",
+                                "sTitle": "Overdue_3"
+                            },
+                            {
+                                "mData": "loan_amount_3",
+                                "sTitle": "Loan Amount_3"
+                            },
+                            {
+                                "mData": "balance_3",
+                                "sTitle": "Balance_3"
+                            },
+                            {
+                                "mData": "name_of_mfi_4",
+                                "sTitle": "MFI 4 Name"
+                            },
+                            {
+                                "mData": "overdue_amount_4",
+                                "sTitle": "Overdue_4"
+                            },
+                            {
+                                "mData": "loan_amount_4",
+                                "sTitle": "Loan Amount_4"
+                            },
+                            {
+                                "mData": "balance_4",
+                                "sTitle": "Balance_4"
+                            }
+                            ],
+                        });
+                    }
                 }
-            ],
-        });
-    }
+         }
+    });
+
 }
 
 
@@ -422,63 +451,81 @@ function DocumentDetails(data) {
 }
 
 
+function conflictList(memberId) {
+     var conflictListArr = [];
+    $.ajax({
+        url: '/getmemberConflictHist/' + memberId,
+        dataType: 'json',
+        type: "POST",
+        beforeSend: function() {
+            $("#loading").show();
+        },
+        complete: function() {
+            $("#loading").hide();
+        },
+        success: function(data) {
+            if(data.code == "2046"){
 
-function conflictList(data) {
-    var conflictListArr = [];
-    var memberData = data;
+                var conflictData;
+                if (data["data"] && data["data"][0]) {
+                    conflictData = data["data"];
+                    if ($.fn.DataTable.isDataTable('#memberHistConflict')) {
+                        $("#memberHistConflict").dataTable().fnDestroy();
+                    }
 
-    if (memberData["data"]["conflictList"]) {
-        var conflictData = memberData["data"]["conflictList"];
-        if ($.fn.DataTable.isDataTable('#memberHistConflict')) {
-            $("#memberHistConflict").dataTable().fnDestroy();
+                }
+                else{
+                    conflictData = [];
+                }
+                 $('#memberHistConflict').dataTable({
+                        "data": conflictData,
+                        "bDestroy": true,
+                        "bJQueryUI": false,
+                        "bProcessing": true,
+                        "bSort": true,
+                        "bInfo": true,
+                        "bPaginate": false,
+                        "iDisplayLength": 10,
+                        "bSortClasses": false,
+                        "bAutoWidth": false,
+                        "searching": false,
+                        "sDom": '<"top">rt<"bottom"flp><"clear">',
+                        "bDeferRender": true,
+                        "aoColumns": [{
+                                "mData": "memberName",
+                                "sTitle": "Member Name",
+                                "sWidth": "25%",
+                                className: "column"
+                            },
+                            {
+                                "mData": "groupName",
+                                "sTitle": "Group Name",
+                                "sWidth": "30%",
+                                className: "column"
+                            },
+                            {
+                                "mData": "appGroupId",
+                                "sTitle": "App Group ID",
+                                "sWidth": "15%",
+                                className: "column"
+                            },
+                            {
+                                "mData": "groupId",
+                                "sTitle": "Group ID",
+                                "sWidth": "15%",
+                                className: "column"
+                            },
+                            {
+                                "mData": "memberStatus",
+                                "sTitle": "Member Status",
+                                "sWidth": "15%",
+                                className: "column"
+                            },
+                        ],
+                    });
+            }
         }
-        $('#memberHistConflict').dataTable({
-            "data": conflictData,
-            "bDestroy": true,
-            "bJQueryUI": false,
-            "bProcessing": true,
-            "bSort": true,
-            "bInfo": true,
-            "bPaginate": false,
-            "iDisplayLength": 10,
-            "bSortClasses": false,
-            "bAutoWidth": false,
-            "searching": false,
-            "sDom": '<"top">rt<"bottom"flp><"clear">',
-            "bDeferRender": true,
-            "aoColumns": [{
-                    "mData": "memberName",
-                    "sTitle": "Member Name",
-                    "sWidth": "25%",
-                    className: "column"
-                },
-                {
-                    "mData": "groupName",
-                    "sTitle": "Group Name",
-                    "sWidth": "30%",
-                    className: "column"
-                },
-                {
-                    "mData": "appGroupId",
-                    "sTitle": "App Group ID",
-                    "sWidth": "15%",
-                    className: "column"
-                },
-                {
-                    "mData": "groupId",
-                    "sTitle": "Group ID",
-                    "sWidth": "15%",
-                    className: "column"
-                },
-                {
-                    "mData": "memberStatus",
-                    "sTitle": "Member Status",
-                    "sWidth": "15%",
-                    className: "column"
-                },
-            ],
-        });
-    }
+    });
 }
 
 
@@ -967,6 +1014,13 @@ function creditHistory(loanId) {
     $.ajax({
         url: '/creditHistoryGroup/' + loanId,
         dataType: 'json',
+     beforeSend: function() {
+            $("#loading").show();
+        },
+        complete: function() {
+            $("#loading").hide();
+        },
+
         success: function(data) {
             var creditData = data;
             var documentObj = [];
@@ -1123,70 +1177,13 @@ function loadGroupRoles(groupId, loanId, taskName) {
 
 
 
-
-function loadGroupRoles2(groupId, loanId, taskName) {
-    var dataObj = {};
-    var validationType = '';
-    if (group == "CMR" || group == "CLM" || group == "BM") {
-        if (taskName == "Prepare Loan Documents" || taskName == "Print Loan Documents & FSR" || taskName == "Add New Members" || taskName == "Upload disbursement docs") {
-            validationType = "PEN"
-        }
-        if (taskName == "Upload loan documents in Web application") {
-            validationType = "PRE"
-        }
-    }
-    if (group == "RM" || group == "rm") {
-        validationType = "CLMAPPROVAL"
-    }
-    var roleObj = {
-        "groupId": groupId,
-        "entityType": "GROUP",
-        "validationType": validationType,
-        "loanId": loanId
-    };
-    dataObj["roleObj"] = roleObj;
-    $.ajax({
-        url: '/groupRoleDetails/',
-        dataType: 'json',
-        type: "post",
-         beforeSend: function() {
-            $("#loading").show();
-        },
-        complete: function() {
-            $("#loading").hide();
-        },
-
-        success: function(data) {
-            document.getElementById("loanTypeId1").innerHTML = data["data"]["loanTypeId"];
-            if (document.getElementById("appGroupId")) {
-                document.getElementById("appGroupId").innerHTML = data["data"]["groupDetails"]["appGroupId"];
-            }
-
-            var groupDetails = data["data"]["groupDetails"];
-            for (var key in groupDetails) {
-                if (document.getElementById(key + "_groupRole")) {
-                    document.getElementById(key + "_groupRole").innerHTML = groupDetails[key];
-                    if (document.getElementById(key + "1")) {
-                        document.getElementById(key + "1").innerHTML = groupDetails[key];
-                    }
-                }
-            }
-            rmGroupMaster2(groupId);
-        },
-        data: JSON.stringify(dataObj)
-    });
-}
-
-
-
-
 function updateTask(status) {
     var dataObj = {};
      if( document.getElementById("groupName_groupRole")){
-    	var groupName = document.getElementById("groupName_groupRole").innerHTML;
+        var groupName = document.getElementById("groupName_groupRole").innerHTML;
     }
     if(document.getElementById("groupName")){
-	var groupName = document.getElementById("groupName").innerHTML;
+    var groupName = document.getElementById("groupName").innerHTML;
     }    dataObj["taskId"] = taskId;
 
     dataObj["processUpdate"] = {};
@@ -1280,6 +1277,12 @@ function documentView(groupId) {
     $.ajax({
         url: '/DocumentView/' + groupId,
         dataType: 'json',
+        beforeSend: function() {
+            $("#loading").show();
+        },
+        complete: function() {
+            $("#loading").hide();
+        },
         success: function(data) {
             groupDocData = data;
             var current = 0;
@@ -1372,7 +1375,7 @@ function getLoanDetails(groupId, loanId) {
             if (document.getElementById("loanInstallments")) {
                 document.getElementById("loanInstallments").value = loanDetails["loanInstallments"];
             }
-	     if (document.getElementById("postValidationCount")) {
+         if (document.getElementById("postValidationCount")) {
                 document.getElementById("postValidationCount").innerHTML = data["data"]["postValidationCount"];
             }
 
@@ -1403,7 +1406,7 @@ function getLoanDetails(groupId, loanId) {
                     });
                 }
             });
-		console.log(creditData);
+
             if (creditData.data) {
 
                 for (var i = 0; i < creditData.data.loanMemberDetails.length; i++) {
@@ -1587,7 +1590,7 @@ function updateloanDatail(updateloanData) {
         "userId": userId
     }*/
     dataObj3["uploadData"] = uploadData2;
-	console.log(dataObj3);
+
     $.ajax({
         url: '/updateloanDetail/',
         dataType: 'json',
@@ -1761,90 +1764,17 @@ function updateMembersCount() {
 }
 
 
-function rmGroupMaster2(groupId) {
-    $.ajax({
-        url: '/getGroupData/' + groupId + '/' + loanId + '/'+ taskName,
-        dataType: 'json',
-        beforeSend: function() {
-            $("#loading").show();
-        },
-        complete: function() {
-            $("#loading").hide();
-        },
-        success: function(data) {
-            var groupViewData2 = data;
-            if (groupViewData2["data"]["groupMemDetail"]) {
-                var groupData = groupViewData2["data"]["groupMemDetail"];
-
-                var found_names = $.grep(groupViewData2.data.groupMemDetail, function(v) {
-                    return v.memberStatus != "Rejected";
-                });
-                $.each(found_names, function(key, value) {
-                    $('#Animator').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
-                    $('#repm1').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
-                    $('#repm2').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
-                });
-
-                var animatorvalue = $("#animatorId_groupRole").text();
-                var rep1value = $("#rep1Id_groupRole").text();
-                var rep2value = $("#rep2Id_groupRole").text();
-
-
-                //alert(rep2value);
-                if (document.getElementById("Animator")) {
-                    if ($("#Animator option[value=" + animatorvalue + "]").length == 0) {
-                        $("#Animator").val();
-                    } else {
-                        $("#Animator").val(animatorvalue);
-                    }
-                }
-                if (document.getElementById("repm1")) {
-                    if ($("#repm1 option[value=" + rep1value + "]").length == 0) {
-                        $("#repm1").val();
-                    } else {
-                        $("#repm1").val(rep1value);
-                    }
-                }
-                if (document.getElementById("repm2")) {
-                    if ($("#repm2 option[value=" + rep2value + "]").length == 0) {
-                        $("#repm2").val();
-                    } else {
-                        $("#repm2").val(rep2value);
-                    }
-                }
-
-                $.each($('.compact option'), function(key, optionElement) {
-                    var curText = $(optionElement).text();
-                    $(this).attr('title', curText);
-                    var lengthToShortenTo = Math.round(parseInt('170px', 10) / 9.4);
-                    if (curText.length > lengthToShortenTo) {
-                        $(this).text(curText.substring(0, lengthToShortenTo) + '...');
-                    }
-                });
-                // Show full name in tooltip after choosing an option
-                $('.compact').change(function() {
-                    $(this).attr('title', ($(this).find('option:eq(' + $(this).get(0).selectedIndex + ')').attr('title')));
-                });
-
-
-            }
-        },
-
-        error: function (error) {
-       		$("#loading").hide();
-       	 	$.alert("Please try after sometime");
-            }
-    });
-}
-
-
 function rmGroupMaster(groupId) {
+   $('#Animator').empty();
+   $('#repm1').empty();
+   $('#repm2').empty();
+
     var url= '';
     if(taskName == "Add New Members"){
-	url = '/getAddNewMemTaskInfo/' + groupId + '/' + loanId + '/'+ processInstanceId;
+    url = '/getAddNewMemTaskInfo/' + groupId + '/' + loanId + '/'+ processInstanceId;
     }
     else{
-   	url =  '/getGroupData/' + groupId + '/' + loanId + '/'+ taskName;
+    url =  '/getGroupData/' + groupId + '/' + loanId + '/'+ taskName;
    }
 
     $.ajax({
@@ -1863,10 +1793,10 @@ function rmGroupMaster(groupId) {
                 var found_names = $.grep(groupViewData2.data.groupMemDetail, function(v) {
                     return v.memberStatus != "Rejected";
                 });
-        		var activeCount = $.grep(groupViewData2.data.groupMemDetail, function(v) {
+                var activeCount = $.grep(groupViewData2.data.groupMemDetail, function(v) {
                     return v.memberStatus == "Active";
                 });
-		        var appCount = $.grep(groupViewData2.data.groupMemDetail, function(v) {
+                var appCount = $.grep(groupViewData2.data.groupMemDetail, function(v) {
                     return v.memberStatus == "Approved";
                 });
                 var rejCount = $.grep(groupViewData2.data.groupMemDetail, function(v) {
@@ -1881,12 +1811,17 @@ function rmGroupMaster(groupId) {
                 if(document.getElementById("rejectedCount")){
                     document.getElementById("rejectedCount").innerHTML = rejCount.length;
                 }
-		  if(document.getElementById("newMemCount")){
+          if(document.getElementById("newMemCount")){
                     document.getElementById("newMemCount").innerHTML = activeCount.length;
                 }
 
                 if(document.getElementById("minimumrem")){
-                    document.getElementById("minimumrem").innerHTML = 10 - (appCount.length+activeCount.length);
+            if((10 - (10)) > 0 ){
+                            document.getElementById("minimumrem").innerHTML = 10 - (appCount.length+activeCount.length);
+            }
+            else{
+                document.getElementById("minimumrem").innerHTML = 0;
+            }
                 }
                 $.each(found_names, function(key, value) {
                     $('#Animator').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
@@ -1955,7 +1890,7 @@ function rmGroupMaster(groupId) {
                         groupData[i]["appMemberId"] = '<span style="color:darkgoldenrod;font-weight:bold;">'+groupData[i]["appMemberId"]+'</span>';
                     }
                 }
-		}
+        }
                 if (document.getElementById("groupMemberDetails")) {
                     $('#groupMemberDetails').dataTable({
                         data: groupData,
@@ -2007,7 +1942,7 @@ function rmGroupMaster(groupId) {
                                 "sWidth": "8%",
                                 className: "column"
                             },
-				{
+                {
                                 "mData": "memberStatus",
                                 "sTitle": "Validation Status",
                                 "sWidth": "10%",
@@ -2142,9 +2077,9 @@ function updateGroupValStatus(status) {
     }
 
     if (group == "CMR" || group == "CLM" || group == "BM") {
-	if (taskName == "Conduct BAT- Member approval in CRM"){
-		updateTask("Approved");
-	}
+    if (taskName == "Conduct BAT- Member approval in CRM"){
+        updateTask("Approved");
+    }
         if (taskName == "Upload loan documents in Web application") {
             validationType = "CLMAPPROVAL";
             showConfirmBox(status);
@@ -2190,7 +2125,7 @@ function updateGroupValStatus(status) {
                 else
                 {
                    validationType = "PEN";
-		     proStatus = "bmapproved";
+             proStatus = "bmapproved";
                    showConfirmBox(status);
                 }
 
@@ -2336,6 +2271,12 @@ function getMemberFSRData(memberId){
     $.ajax({
         url: '/getMemberFSR/' + memberId,
         dataType: 'json',
+         beforeSend: function() {
+             $("#loading").show();
+         },
+         complete: function() {
+             $("#loading").hide();
+         },
         success: function(data) {
             var childRowHtml = '';
             childRowHtml = '<thead><td><b>Field Name</b></td><td><b>Actual Value</b></td></thead>';
@@ -2383,8 +2324,8 @@ function getMemberFSRData(memberId){
         },
 
     error: function (error) {
-       		$("#loading").hide();
-       	 	$.alert("Please try after sometime");
+            $("#loading").hide();
+            $.alert("Please try after sometime");
       }
    });
 }
@@ -2494,7 +2435,7 @@ function loadNextMem(){
     clearMemberData();
     document.getElementById("formMembers").reset();
     getGroupData(groupId,loanId);
-    loadGroupRoles2(groupId, loanId, taskName) ;
+    loadGroupRoles(groupId, loanId, taskName) ;
 }
 
 function getPaymentHistory(key,memberId,groupId){
@@ -2509,6 +2450,12 @@ function getPaymentHistory(key,memberId,groupId){
         url: url,
         type: 'post',
         dataType: 'json',
+        beforeSend: function() {
+          $("#loading").show();
+        },
+        complete: function() {
+           $("#loading").hide();
+        },
         success: function(data) {
 
             var paymentHisData = data;
@@ -2545,8 +2492,8 @@ function getPaymentHistory(key,memberId,groupId){
             });
         },
          error: function (error) {
-       		$("#loading").hide();
-       	 	$.alert("Please try after sometime");
+            $("#loading").hide();
+            $.alert("Please try after sometime");
             }
 
     });
@@ -2626,7 +2573,7 @@ function generateLOS(){
                 }
             }
             if(data["code"] == "11001"){
-		  //$.alert(data["message"]);
+          //$.alert(data["message"]);
                 $.alert(data.data.message[0]);
             }
         },
@@ -2667,7 +2614,7 @@ function loadDisburseDocData(){
             }
         }
     });
-    console.log(disbDocData);
+
     $('.date-picker').datepicker({
             autoclose: true,
             todayHighlight: true,
@@ -2677,15 +2624,15 @@ function loadDisburseDocData(){
         .next().on(ace.click_event, function(){
             $(this).prev().focus();
         });
-	var html = '<tr>';
-	var innerHTMLBank = '';
-	var selectOptValArray = [];
+    var html = '<tr>';
+    var innerHTMLBank = '';
+    var selectOptValArray = [];
     $.ajax({
-        url	:  '/masterDataBank/',
+        url :  '/masterDataBank/',
         async: false,
-        type	: 'post',
+        type    : 'post',
         dataType: 'json',
-        success	: function (bankData) {
+        success : function (bankData) {
             if(bankData["data"][0]){
                 keyValueMasterBankArray = bankData["data"].sort(function(a, b){ var a1= a.bankName, b1= b.bankName;    if(a1== b1) return 0;    return a1> b1? 1: -1; })
                 innerHTMLBank += '<option value="null" > Select Bank </option>';
@@ -2704,12 +2651,12 @@ function loadDisburseDocData(){
 
     if(disbDocData && disbDocData[0]){
         for(var key in disbDocData){
-	     if(disbDocData[0]["oldDos"] == null || disbDocData[0]["oldDos"] == "null"){
-            	  document.getElementById("dateOfDisbursement").value = disbDocData[0]["loanApprovalDate"].split("-")[1]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[2]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[0];
-	     }else{
-		  var dd = disbDocData[0]["oldDos"].split(" ")[0];
-		  document.getElementById("dateOfDisbursement").value = dd.split("-")[1]+"/"+dd.split("-")[2]+"/"+dd.split("-")[0];
-	     }
+         if(disbDocData[0]["oldDos"] == null || disbDocData[0]["oldDos"] == "null"){
+                  document.getElementById("dateOfDisbursement").value = disbDocData[0]["loanApprovalDate"].split("-")[1]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[2]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[0];
+         }else{
+          var dd = disbDocData[0]["oldDos"].split(" ")[0];
+          document.getElementById("dateOfDisbursement").value = dd.split("-")[1]+"/"+dd.split("-")[2]+"/"+dd.split("-")[0];
+         }
             document.getElementById("loanSancDate").innerHTML = disbDocData[0]["loanApprovalDate"].split("-")[2]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[1]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[0];
             var obj = {};
             totalMemberIdArray.push(disbDocData[key]["appMemberId"]+"_memberAvailedLoan");
@@ -2767,7 +2714,7 @@ function updateChequeInfo(){
             if(document.getElementById(totalMemberIdArray[i]).value == "true"){
                 memberAvailedLoanArray.push(totalMemberIdArray[i].split("_")[0]);
             }
-	     if(document.getElementById(totalMemberIdArray[i]).value == "false"){
+         if(document.getElementById(totalMemberIdArray[i]).value == "false"){
                 memberAvailedLoanFalseArr.push(totalMemberIdArray[i].split("_")[0]);
             }
                     }
@@ -2862,7 +2809,14 @@ function convertChequeDataToJson(){
 
 function approveDisburseDocs(status){
     var flag = 0;
-    if(totLoanDocCount != uploadedDocsCount){
+
+    var count = $('#records_table').children('tr').length;
+        //console.log("count");
+        //console.log(count);
+
+
+
+    if(count != 0){
         $.alert("Please upload all the documents before approving.");
         $('.tabbable a[href="#upload"]').tab('show');
         return false;
@@ -2900,10 +2854,10 @@ function loadDisburseDocDataRead(){
             }
         }
     });
-    console.log(disbDocData);
-	var html = '<tr>';
-	var innerHTMLBank = '';
-	var selectOptValArray = [];
+
+    var html = '<tr>';
+    var innerHTMLBank = '';
+    var selectOptValArray = [];
     if(disbDocData && disbDocData[0]){
         for(var key in disbDocData){
 
@@ -2978,7 +2932,7 @@ function confirmLoan(status){
                 var dataObj = {};
                 dataObj["cheqData"] = eval(JSON.stringify(rows));
                 dataObj["processUpdate"] = { 'variables': { 'disbursement': {   'value': status     },     }     };
-		  dataObj["taskId"] = taskId;
+          dataObj["taskId"] = taskId;
 
                 $.ajax({
                     url : '/confirmChqDisbursement/',
@@ -2986,7 +2940,7 @@ function confirmLoan(status){
                     type: 'POST',
                     success: function(data){
                         if(data["code"] == "12002"){
-				var groupName = document.getElementById("groupName_groupRole").innerHTML;
+                var groupName = document.getElementById("groupName_groupRole").innerHTML;
                             $("#validationMessage").addClass("center");
                              document.getElementById("validationMessage").innerHTML ='<span style="color:green" " class="bigger-50"><i class="ace-icon fa fa-check-circle bigger-125"></i> &nbsp&nbsp'+"'"+ groupName +"'" + " has been approved"+'</span>';
                              document.getElementById("gStatus").innerHTML = '<h3  class="lighter center smaller">Loan process has been completed successfully!  <i class="ace-icon glyphicon glyphicon-thumbs-up bigger-150"></i> </h3>';
@@ -3026,15 +2980,15 @@ function completeTask(status){
     var statusUpdate = '';
     var groupName = document.getElementById("groupName_groupRole").innerHTML;
     if(status == "rework"){
-	 fontColor = 'darkgoldenrod';
+     fontColor = 'darkgoldenrod';
         statusUpdate = "'"+groupName+"'"+'  has been sent for rework';
     }
     if(status == "send"){
-	 fontColor = 'green';
+     fontColor = 'green';
         statusUpdate = "'"+groupName+"'"+' has been approved';
     }
     if(status == "resolved"){
-	 fontcolor = 'green';
+     fontcolor = 'green';
         statusUpdate = groupName+"'s query"+'  has been resolved';
     }
     var dataObj = {};
@@ -3089,6 +3043,7 @@ function getLoanAccountNumber(){
 
 
 function setSelectOptionInForm(){
+
     $.ajax({
         url :  '/masterDataBank/',
             type    : 'post',
@@ -3194,6 +3149,6 @@ function setSelectOptionInForm(){
             }
     });
 
-
+    $("#loading").show();
 
 }

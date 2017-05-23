@@ -13,11 +13,11 @@ DATABASES = {
     }
 }
 
-#CAMUNDA_BASE_URL = 'http://13.228.10.151:8089/engine-rest/'
-#SSCORE_BASE_URL = 'http://13.228.10.151:8086/sangamam-core/'
+CAMUNDA_BASE_URL = 'http://13.228.10.151:8089/engine-rest/'
+SSCORE_BASE_URL = 'http://13.228.10.151:8086/sangamam-core/'
 
-CAMUNDA_BASE_URL = 'http://52.221.13.230:8086/engine-rest/'
-SSCORE_BASE_URL = 'http://52.221.14.215:8085/sangamam-core/'
+#CAMUNDA_BASE_URL = 'http://52.221.13.230:8086/engine-rest/'
+#SSCORE_BASE_URL = 'http://52.221.14.215:8085/sangamam-core/'
 
 AWS_ACCESS_KEY_ID='AKIAJKJDLQNPXRK4NJPQ'
 AWS_SECRET_ACCESS_KEY='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'

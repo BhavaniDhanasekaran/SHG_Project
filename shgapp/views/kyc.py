@@ -566,3 +566,31 @@ def getAddNewMemTaskInfo(request, groupId, loanId,processId):
     except ShgInvalidRequest, e:
         errorLog.error("Exception raised inside getGroupData(request, groupID, loanId, taskName): %s" % e)
         return helper.bad_request('Unexpected error occurred while searching group.')
+
+@csrf_exempt
+@session_required
+def getmemberConflictHist(request,memberId):
+    loggerInfo.info('------------------Entering getmemberConflictHist(request,memberId):--------------------- ')
+    try:
+        bodyData = {"memberId": str(memberId)}
+        serialized_data = sscoreClient._urllib2_request('workflowDetailView/ConflictMembers', bodyData,
+                                                        requestType='POST')
+        loggerInfo.info('------------------Exiting getmemberConflictHist(request, memberId):--------------------- ')
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        errorLog.error("Exception raised inside getmemberConflictHist(request,memberId): %s" % e)
+        return helper.bad_request('Unexpected error occurred while getting member conflict history ')
+
+@csrf_exempt
+@session_required
+def getmemberCreditEnq(request,memberId,loanId):
+    loggerInfo.info('------------------Entering getmemberCreditEnq(request,memberId,loanId):--------------------- ')
+    try:
+        bodyData = {"memberId": str(memberId),"loanId": str(loanId)}
+        serialized_data = sscoreClient._urllib2_request('workflowDetailView/MemberCreditEnquiry', bodyData,
+                                                        requestType='POST')
+        loggerInfo.info('------------------Exiting getmemberCreditEnq(request,memberId,loanId):-------------------- ')
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        errorLog.error("Exception raised inside getmemberCreditEnq(request,,memberId,loanId): %s" % e)
+        return helper.bad_request('Unexpected error occurred while getting member credit history ')

@@ -20,7 +20,7 @@
         $(".main").imageBox();
         $("#unbind-pos").draggable();
         getGroupData(groupId,loanId);
-        loadGroupRoles2(groupId, loanId, taskName) ;
+        //loadGroupRoles2(groupId, loanId, taskName) ;
         taskCount();
         if (taskName == "Resolve Credit Team Query")
             {
@@ -110,11 +110,11 @@
                                 <li id="tab1" class="active"><a
                                     data-toggle="tab" href="#home4">Member</a></li>
                                 <li id="tab2"><a data-toggle="tab"
-                                    href="#profile4">Credit Enquiry</a></li>
+                                    href="#membercreditEnq">Credit Enquiry</a></li>
                                 <li id="tab3"><a data-toggle="tab"
                                     href="#groupDetail">Group Details</a></li>
                                 <li id="tab4"><a data-toggle="tab"
-                                    href="#profile5">Member History</a></li>
+                                    href="#memberConfHistory">Member History</a></li>
                                 <li id="tab5"><a data-toggle="tab"
                                     href="#fsr">FSR</a></li>
                                 {% if taskName == "Resolve Credit Team Query" %}
@@ -545,7 +545,7 @@
                                     <!-- SECTION END -->
                                 </div>
                                 <!--form End-->
-                                <div id="profile5" class="tab-pane">
+                                <div id="memberConfHistory" class="tab-pane">
                                     <table class="table table-striped
                                         table-bordered table-hover" id="memberHistConflict">
                                     </table>
@@ -844,7 +844,7 @@
                                         <!-- /.col -->
                                     </div>
                                 </div>
-                                <div id="profile4" class="tab-pane">
+                                <div id="membercreditEnq" class="tab-pane">
                                     <!--TAB MENU2 CONTENT START-->
                                     <div class="page-content">
                                         <div class="row">

@@ -44,19 +44,31 @@
     </div>
     <div class="main-content">
     <div class="main-content-inner" id="main-content-inner">
-    <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+    <div class="breadcrumbs ace-save-state" id="breadcrumbs" >
         <ul class="breadcrumb">
             <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="{% url 'hello' %}">Home </a> </li>
             <li> <i class="ace-icon"> </i> <span>{{ taskName }} </span> </li>
         </ul>
-        <span id="commentSpanId" style="float:right;font-size:20px;cursor:pointer;display:none;" onclick="toggleNav();">
+	         <div  style="float:right;"><div id="notificationDiv" class="content" style="float:left;display:none">
+			<div class="simple-marquee-container">
+				<div class="marquee-sibling" style="font-weight:bold;font-size:larger;"><span class="hour"></span>:<span class="minute"></span>:<span class="second"></span>
+				</div>
+				<div class="marquee">
+					<ul class="marquee-content-items">
+						<li id="notificationText">   </li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	
+        <span class="rightAlign" id="commentSpanId" style="float:right;font-size:20px;cursor:pointer;display:none;" onclick="toggleNav();">
             <button id="commentsBtn" style="float:right;margin-top:3px;"
                         class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn"
                         data-target="#right-menu" data-toggle="modal" type="button">
                 <i class="fa fa-comment fa-1x" style="cursor:pointer" aria-hidden="true"></i>
             </button>
         </span>
-
+	</div>
         <!-- /.breadcrumb -->
     </div>
 {% endif %}
@@ -182,13 +194,26 @@
                 {% endif %}
             </span> </li>
         </ul>
-        <span id="commentSpanId" style="float:right;font-size:20px;cursor:pointer;display:none;" onclick="toggleNav();">
+                <div  style="float:right;"><div id="notificationDiv" class="content" style="float:left;display:none">
+			<div class="simple-marquee-container">
+				<div class="marquee-sibling" style="font-weight:bold;font-size:larger;"><span class="hour"></span>:<span class="minute"></span>:<span class="second"></span>
+				</div>
+				<div class="marquee">
+					<ul class="marquee-content-items">
+						<li id="notificationText">   </li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	
+        <span class="rightAlign" id="commentSpanId" style="float:right;font-size:20px;cursor:pointer;display:none;" onclick="toggleNav();">
             <button id="commentsBtn" style="float:right;margin-top:3px;"
                         class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn"
                         data-target="#right-menu" data-toggle="modal" type="button">
                 <i class="fa fa-comment fa-1x" style="cursor:pointer" aria-hidden="true"></i>
             </button>
         </span>
+	</div>
 
         <!-- /.breadcrumb -->
     </div>
@@ -236,13 +261,27 @@
             <li> <i class="ace-icon"> </i> <span>{{ taskName }}  </span> </li>
 
         </ul>
-        <span id="commentSpanId" style="float:right;font-size:20px;cursor:pointer;display:none;" onclick="toggleNav();">
+                 <div style="float:right;"><div class="content" id="notificationDiv" style="float:left;display:none">
+			<div class="simple-marquee-container">
+				<div class="marquee-sibling" style="font-weight:bold;font-size:larger;"><span class="hour"></span>:<span class="minute"></span>:<span class="second"></span>
+				</div>
+				<div class="marquee">
+					<ul class="marquee-content-items">
+						<li id="notificationText">   </li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	
+        <span class="rightAlign" id="commentSpanId" style="float:right;font-size:20px;cursor:pointer;display:none;" onclick="toggleNav();">
             <button id="commentsBtn" style="float:right;margin-top:3px;"
                         class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn"
                         data-target="#right-menu" data-toggle="modal" type="button">
                 <i class="fa fa-comment fa-1x" style="cursor:pointer" aria-hidden="true"></i>
             </button>
         </span>
+	</div>
+
         <!-- /.breadcrumb -->
     </div>
     <!-- end of RM login menu -->
@@ -333,13 +372,27 @@
 
         </ul>
         <!-- /.breadcrumb -->
-         <span id="commentSpanId" style="float:right;font-size:20px;cursor:pointer;display:none;" onclick="toggleNav();">
+         <div style="float:right;"><div class="content" id="notificationDiv" style="float:left;display:none">
+			<div class="simple-marquee-container">
+				<div class="marquee-sibling" style="font-weight:bold;font-size:larger;"><span class="hour"></span>:<span class="minute"></span>:<span class="second"></span>
+				</div>
+				<div class="marquee">
+					<ul class="marquee-content-items">
+						<li id="notificationText">   </li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	
+        <span class="rightAlign" id="commentSpanId" style="float:right;font-size:20px;cursor:pointer;display:none;" onclick="toggleNav();">
             <button id="commentsBtn" style="float:right;margin-top:3px;"
                         class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn"
                         data-target="#right-menu" data-toggle="modal" type="button">
                 <i class="fa fa-comment fa-1x" style="cursor:pointer" aria-hidden="true"></i>
             </button>
         </span>
+	</div>
+
 
     </div>
 
