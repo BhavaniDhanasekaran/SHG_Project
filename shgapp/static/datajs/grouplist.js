@@ -579,7 +579,7 @@ function updateMemValidationStatus(status) {
             }
         }
         if (taskName == "Conduct BAT- Member approval in CRM" || taskName == "Proposal scrutiny") {
-            //validationType = "CLM";
+            validationType = "CLM";
             if (loanAmountInt > loanAmountEligibleInt)
             {
                 $.alert("Your Loan Eligible Amount is : " + roundOfNum);
