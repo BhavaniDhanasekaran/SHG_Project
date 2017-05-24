@@ -187,6 +187,7 @@ function getMemberDetails(memberId, groupId, loanId) {
             if (data.code == "2019") {
                 MemberDatadisplay(data)
                 highMarksList(memberId,loanId,data["data"]["memberDocumentDetails"]);
+                DocumentDetails(data);
                 $("#loading").hide();
             }
         },
@@ -2408,7 +2409,7 @@ function getMemberComments(processInstanceId, loanId) {
                         }
                     }
                     if(count>0){
-                        commentsHtml += '<div ><i class="fa fa-user fa-2" aria-hidden="true"></i> &nbsp<span style="font-size:12px;color:darkblue;"><b>' + value.memberName + ' (' + value.memberId + ' ) </b> <span> </div>';
+                        commentsHtml += '<div ><i class="fa fa-user fa-2" aria-hidden="true"></i> &nbsp<span style="font-size:12px;color:darkblue;"><b>' + value.memberName + ' (' + value.appMemberId + ' ) </b> <span> </div>';
                     }
                     $.each(value.comments, function(index, val) {
 
