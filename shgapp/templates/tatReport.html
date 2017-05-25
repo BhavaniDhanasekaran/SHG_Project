@@ -1,0 +1,284 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block javascript %}
+<script src="/static/datajs/dashboard.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/loadTaskList.js?v={{JS_VERSION}}"></script>
+
+<style>
+
+
+
+.header-tag{
+	padding-top:3%;
+	padding-bottom:1%;
+	font-size:18px;
+	color:#FFF;
+	height: 75px;
+	position:relative;
+}
+.summary-box1:hover {
+    background: #981b1b
+}
+
+.summary-box1 {
+    display: inline-block;
+    padding: 10px;
+    /* margin: 10px; */
+    margin-left: 1.3% !important;
+    margin-right: 1%;
+    margin-bottom: 1%;
+    margin-top: 0.5%;
+    background: wheat;
+    color: white;
+    font-weight: bold;
+    width: 14%;
+    text-decoration: none;
+}
+
+.tile-stats.tile-orange, .tile-title.tile-orange, .tile-block.tile-orange .tile-content .todo-list .neon-cb-replacement .cb-wrapper .checked {
+    background: #ffa812;
+}
+
+.tile-title {
+    position: relative;
+    display: block;
+    background: #303641;
+    margin-bottom: 10px;
+    -webkit-border-radius: 5px;
+    -webkit-background-clip: padding-box;
+    -moz-border-radius: 5px;
+    -moz-background-clip: padding;
+    border-radius: 5px;
+    background-clip: padding-box;
+    -moz-transition: all 300ms ease-in-out;
+    -o-transition: all 300ms ease-in-out;
+    -webkit-transition: all 300ms ease-in-out;
+    transition: all 300ms ease-in-out;
+}
+
+.tile-title .icon {
+    text-align: center;
+    padding: 20px;
+}
+</style>
+
+{% endblock %}
+{% block content %}
+
+<div class="main">
+    <div class="row_count" id="row_alltask" style="display: inline-block;float:left; margin-left: 0.3%; margin-top: .5%;">        <div class="summary-box1">
+            <div class="tile-title tile-orange">
+                <div class="icon">
+                    <span style="color:#fff;font-size:280%;" class="tat_value" id="KYC_Check_DB">0</span>
+                    <div class="header-tag" style="color: brown; ">KYC Check</div>
+                    <br>
+                    <!--i class="entypo-users" style="font-size: 36px;">&nbsp;</i-->
+                    <a href="javascript:void(0)" class="btn btn-default btn-icon icon-left createshgalert"
+                       onclick="disp_data('KYC Check');"> View All</a>
+                </div>
+            </div>
+        </div>
+        <div class="summary-box1">
+            <div class="tile-title tile-orange">
+                <div class="icon">
+                    <span style="color:#fff;font-size:280%;" class="tat_value" id="Resolve_Data_Support_Team_Query_DB">0</span>
+                    <div class="header-tag" style="color: brown;position: relative; ">Resolve Data Support Team Query</div>
+                    <br>
+                    <a href="javascript:void(0)" class="btn btn-default btn-icon icon-left createshgalert"
+                       onclick="disp_data('Resolve Data Support Team Query');"> View All</a>
+                </div>
+            </div>
+        </div>
+        <div class="summary-box1">
+            <div class="tile-title tile-orange">
+                <div class="icon">
+                    <span style="color:#fff;font-size:280%;" class="tat_value" id="Query_Response_DB">0</span>
+                    <div class="header-tag" style="color: brown;">Query Response</div>
+                    <br>
+                    <a href="javascript:void(0)" class="btn btn-default btn-icon icon-left createshgalert"
+                       onclick="disp_data('Query Response');"> View All</a>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="summary-box1">
+            <div class="tile-title tile-orange">
+                <div class="icon">
+                    <span style="color:#fff;font-size:280%;" class="tat_value" id="Conduct_BAT-_Member_approval_in_CRM_DB">0</span>
+                    <div class="header-tag" style="color: brown;">Conduct BAT</div>
+                    <br>
+                    <!--i class="entypo-users" style="font-size: 36px;">&nbsp;</i> </br><a href="javascript:void(0);" class="btn btn-default btn-icon icon-left createshgalert" onclick = "tatdetailsdisplay('Business Verification')"> View All</a-->
+                    <a href="javascript:void(0)" class="btn btn-default btn-icon icon-left createshgalert"
+                       onclick="disp_data('Conduct BAT- Member approval in CRM');"> View All</a>
+                </div>
+            </div>
+        </div>
+        <div class="summary-box1">
+            <div class="tile-title tile-orange">
+                <div class="icon">
+                    <span style="color:#fff;font-size:280%;" class="tat_value" id="Prepare_Loan_Documents_DB">0</span>
+                    <div class="header-tag" style="color: brown;">Prepare Loan Docs</div>
+                    <br>
+                    <!--i class="entypo-users" style="font-size: 36px;">&nbsp;</i> </br><a href="javascript:void(0);" class="btn btn-default btn-icon icon-left createshgalert" onclick = "tatdetailsdisplay('Resident Verification')"> View All</a-->
+                    <a href="javascript:void(0)" class="btn btn-default btn-icon icon-left createshgalert"
+                       onclick="disp_data('Prepare Loan Documents');"> View All</a>
+                </div>
+            </div>
+        </div>
+        <div class="summary-box1">
+            <div class="tile-title tile-orange">
+                <div class="icon">
+                    <span style="color:#fff;font-size:280%;" class="tat_value" id="Add_New_Members_DB">0</span>
+                    <div class="header-tag" style="color: brown;">Add new members</div>
+                    <br>
+                    <a href="javascript:void(0)" class="btn btn-default btn-icon icon-left createshgalert"
+                       onclick="disp_data('Add New Members');"> View All</a>
+
+                </div>
+            </div>
+        </div>
+        <div class="summary-box1">
+            <div class="tile-title tile-orange">
+                <div class="icon">
+                    <span style="color:#fff;font-size: 280%;" class="tat_value" id="Upload_loan_documents_in_Web_application_DB">0</span>
+                    <div class="header-tag" style="color: brown;">Upload Docs</div>
+                    <br>
+                    <!--i class="entypo-users" style="font-size: 36px;">&nbsp;</i> </br><a href="javascript:void(0);" class="btn btn-default btn-icon icon-left createshgalert" onclick = "tatdetailsdisplay('Assess Verification Report')" > View All</a-->
+                    <a href="javascript:void(0)" class="btn btn-default btn-icon icon-left createshgalert"
+                       onclick="disp_data('Upload loan documents in Web application');"> View All</a>
+                </div>
+            </div>
+        </div>
+        <div class="summary-box1">
+            <div class="tile-title tile-orange">
+                <div class="icon">
+                    <span style="color:#fff;font-size: 280%;" class="tat_value"
+                          id="Approve_or_Reject_Group_DB">0</span>
+                    <div class="header-tag" style="color: brown;">App or Rej Group</div>
+                    <br>
+                    <!--i class="entypo-users" style="font-size: 36px;">&nbsp;</i> </br><a href="javascript:void(0);" class="btn btn-default btn-icon icon-left createshgalert" onclick = "tatdetailsdisplay('Rework Business Verification')"> View All</a-->
+                    <a href="javascript:void(0)" class="btn btn-default btn-icon icon-left createshgalert"
+                       onclick="disp_data('Approve or Reject Group');"> View All</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="summary-box1">
+            <div class="tile-title tile-orange">
+                <div class="icon">
+                    <span style="color:#fff;font-size: 280%;" class="tat_value"
+                          id="Proposal_scrutiny_DB">0</span>
+                    <div class="header-tag" style="color: brown;">Proposal Scrutiny</div>
+                    <br>
+                    <!--i class="entypo-users" style="font-size: 36px;">&nbsp;</i> </br><a href="javascript:void(0);" class="btn btn-default btn-icon icon-left createshgalert" onclick = "tatdetailsdisplay('Rework Resident Verification')" > View All</a-->
+                    <a href="javascript:void(0)" class="btn btn-default btn-icon icon-left createshgalert"
+                       onclick="disp_data('Proposal scrutiny');"> View All</a>
+                </div>
+            </div>
+        </div>
+        <div class="summary-box1">
+            <div class="tile-title tile-orange">
+                <div class="icon">
+                    <span style="color:#fff;font-size:280%;" class="tat_value" id="Resolve_Credit_Team_Query_DB">0</span>
+                    <div class="header-tag" style="color: brown;">Resolve Credit Team Query</div>
+                    <br>
+                    <!--i class="entypo-users" style="font-size: 36px;">&nbsp;</i> </br><a href="javascript:void(0);" class="btn btn-default btn-icon icon-left createshgalert" onclick = "tatdetailsdisplay('Upload Doc')"> View All</a-->
+                    <a href="javascript:void(0)" class="btn btn-default btn-icon icon-left createshgalert"
+                       onclick="disp_data('Resolve Credit Team Query');"> View All</a>
+                </div>
+            </div>
+        </div>
+        <div class="summary-box1">
+            <div class="tile-title tile-orange">
+                <div class="icon">
+                    <span style="color:#fff;font-size:280%;" class="tat_value" id="BM Reply_DB">0</span>
+                    <div class="header-tag" style="color: brown;">BM Reply</div>
+                    <br>
+                    <!--i class="entypo-users" style="font-size: 36px;">&nbsp;</i> </br><a href="javascript:void(0);" class="btn btn-default btn-icon icon-left createshgalert" onclick = "tatdetailsdisplay('Verify Scan Docs')"> View All</a-->
+                    <a href="javascript:void(0)" class="btn btn-default btn-icon icon-left createshgalert"
+                       onclick="disp_data('BM Reply');"> View All</a>
+                </div>
+            </div>
+        </div>
+        <div class="summary-box1">
+            <div class="tile-title tile-orange">
+                <div class="icon">
+                    <span style="color:#fff;font-size:280%;" class="tat_value" id="Approve_Loan_DB">0</span>
+                    <div class="header-tag" style="color: brown;">Approve Loan</div>
+                    <br>
+                    <!--i class="entypo-users" style="font-size: 36px;">&nbsp;</i> </br><a href="javascript:void(0);" class="btn btn-default btn-icon icon-left createshgalert" onclick = "tatdetailsdisplay('Reupload Documents')"> View All</a-->
+                    <a href="javascript:void(0)" class="btn btn-default btn-icon icon-left createshgalert"
+                       onclick="disp_data('Approve Loan');"> View All</a>
+                </div>
+            </div>
+        </div>
+        <!--/div-->
+
+        <!--row1 close-->
+        <!--div class="row_count"-->
+        <div class="summary-box1">
+            <div class="tile-title tile-orange">
+                <div class="icon">
+                    <span style="color:#fff;font-size:280%;" class="tat_value" id="Generate_repayment_chart_DB">0</span>
+                    <div class="header-tag" style="color: brown;">Generate LOS</div>
+                    <br>
+                    <!--i class="entypo-users" style="font-size: 36px;">&nbsp;</i> </br><a href="javascript:void(0);" class="btn btn-default btn-icon icon-left createshgalert"  onclick = "tatdetailsdisplay('Check Documents')"> View All</a-->
+                    <a href="javascript:void(0)" class="btn btn-default btn-icon icon-left createshgalert"
+                       onclick="disp_data('Generate repayment chart');"> View All</a>
+                </div>
+                <!--h3 style="font-size: 36px;"><a href="javascript:void(0);" id = "Check Documents" class="btn btn-default btn-icon icon-left createshgalert"  onclick = "tatdetailsdisplay(this.id)"> View All</a></h3-->
+            </div>
+        </div>
+        <div class="summary-box1">
+            <div class="tile-title tile-orange">
+                <div class="icon">
+                    <span style="color:#fff;font-size:280%;" class="tat_value" id="Upload_disbursement_docs_DB">0</span>
+                    <div class="header-tag" style="color: brown;">Upload Disbursement Docs</div>
+                    <br>
+                    <!--i class="entypo-users" style="font-size: 36px;">&nbsp;</i> </br><a href="javascript:void(0);" class="btn btn-default btn-icon icon-left createshgalert" onclick = "tatdetailsdisplay('Despatch Documents to CO')" > View All</a-->
+                    <a href="javascript:void(0)" class="btn btn-default btn-icon icon-left createshgalert"
+                       onclick="disp_data('Upload disbursement docs');"> View All</a>
+                </div>
+            </div>
+        </div>
+        <div class="summary-box1">
+            <div class="tile-title tile-orange">
+                <div class="icon">
+                    <span style="color:#fff;font-size:280%;" class="tat_value" id="Confirm_disbursement_DB">0</span>
+                    <div class="header-tag" style="color: brown;">Confirm Disbursement</div>
+                    <br>
+                    <!--i class="entypo-users" style="font-size: 36px;">&nbsp;</i> </br><a href="javascript:void(0);" class="btn btn-default btn-icon icon-left createshgalert" onclick = "tatdetailsdisplay('Redespatch Documents to CO')" > View All</a-->
+                    <a href="javascript:void(0)" class="btn btn-default btn-icon icon-left createshgalert"
+                       onclick="disp_data('Confirm disbursement');"> View All</a>
+                </div>
+            </div>
+        </div>
+        <div class="summary-box1">
+            <div class="tile-title tile-orange">
+                <div class="icon">
+                    <span style="color:#fff;font-size:280%;" class="tat_value" id="Resolve_Confirm_Disbursement_Query_DB">0</span>
+                    <div class="header-tag" style="color: brown;">Resolve Disbursement Query</div>
+                    <br>
+                    <!--i class="entypo-users" style="font-size: 36px;">&nbsp;</i> </br><a href="javascript:void(0);" class="btn btn-default btn-icon icon-left createshgalert" onclick = "tatdetailsdisplay('Customer Creation Failure')" > View All</a-->
+                    <a href="javascript:void(0)" class="btn btn-default btn-icon icon-left createshgalert"
+                       onclick="disp_data('Resolve Confirm Disbursement Query');"> View All</a>
+                </div>
+            </div>
+        </div>
+        <div class="summary-box1">
+            <div class="tile-title tile-orange">
+                <div class="icon">
+                    <span style="color:#fff;font-size:280%;" class="tat_value" id="Confirm_Disbursement_Query_Response_DB">0</span>
+                    <div class="header-tag" style="color: brown;">Confirm Disb Query Response</div>
+                    <br>
+                    <!--i class="entypo-users" style="font-size: 36px;">&nbsp;</i> </br><a href="javascript:void(0);" class="btn btn-default btn-icon icon-left createshgalert" onclick = "tatdetailsdisplay('Loan Creation Failure')" > View All</a-->
+                    <a href="javascript:void(0)" class="btn btn-default btn-icon icon-left createshgalert"
+                       onclick="disp_data('Confirm Disbursement Query Response');"> View All</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock content %}

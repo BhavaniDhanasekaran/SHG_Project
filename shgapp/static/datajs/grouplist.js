@@ -179,9 +179,11 @@ function getMemberDetails(memberId, groupId, loanId) {
         },
         complete: function() {
             $("#loading").hide();
-            if (document.getElementById("penCount").innerHTML != 0) {
-                $("#operationsDivId").show();
-            }
+	     if(document.getElementById("penCount")){
+            	  if (document.getElementById("penCount").innerHTML != 0) {
+                    $("#operationsDivId").show();
+                }
+	     }
         },
         success: function(data) {
             if (data.code == "2019") {
@@ -243,13 +245,12 @@ function MemberDatadisplay(data) {
         $.alert(memberData["message"]);
         $("#loading").hide();
     }
-
-    document.getElementById("groupId").innerHTML = groupId;
-    document.getElementById("loanId").innerHTML = loanId;
-
-
-
-
+    if(document.getElementById("groupId")){
+    	document.getElementById("groupId").innerHTML = groupId;
+    }
+    if(document.getElementById("loanId")){
+    	document.getElementById("loanId").innerHTML = loanId;
+    }
 }
 
 
@@ -1041,12 +1042,12 @@ function creditHistory(loanId) {
                                 docBtn = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + docId + "," + "config='width=500,height=500'" + ');return false;"+>View</button>';
                             }
                             else{
-                                docBtn = '<button type="button" class="btn btn-info btn-md btn-danger"+>View</button>';
+                                docBtn = '<button type="button" class="btn btn-info btn-md btn-danger">View</button>';
                             }
                         }
                     }
                     else {
-                        docBtn = '<button type="button" class="btn btn-info btn-md btn-danger"+>View</button>';
+                        docBtn = '<button type="button" class="btn btn-info btn-md btn-danger">View</button>';
                     }
                     htmlContent += '<tr><td>' + docBtn + ' </td>' +
                         '<td>' + creditObj["appMemberId"] + '</td><td>' +
@@ -1765,10 +1766,6 @@ function updateMembersCount() {
 
 
 function rmGroupMaster(groupId) {
-   $('#Animator').empty();
-   $('#repm1').empty();
-   $('#repm2').empty();
-
     var url= '';
     if(taskName == "Add New Members"){
 	url = '/getAddNewMemTaskInfo/' + groupId + '/' + loanId + '/'+ processInstanceId;
@@ -1816,7 +1813,7 @@ function rmGroupMaster(groupId) {
                 }
 
                 if(document.getElementById("minimumrem")){
-			if((10 - (10)) > 0 ){
+			if((10 - (appCount.length+activeCount.length)) > 0 ){
                     		document.getElementById("minimumrem").innerHTML = 10 - (appCount.length+activeCount.length);
 			}
 			else{
@@ -2114,7 +2111,7 @@ function updateGroupValStatus(status) {
                 {
                     var AddMember= 10- ActiveMembercount;
 
-                    $.alert('You need to Add  ' + AddMember + ' more Members to approve this Group');
+                    $.alert('You need to add  ' + AddMember + ' more members to approve this group');
                     return false;
 
 
@@ -3144,4 +3141,76 @@ function setSelectOptionInForm(){
 
 	$("#loading").show();
 
+}
+
+
+function getGroupLevelInfo(groupId,loanId,taskName){
+    var memId;
+    var totalCount = 0;
+    var rejCount = 0;
+    $("#groupMembersDropDown").empty();
+    $.ajax({
+        url: '/getGroupLevelInfo/' + groupId + '/' + loanId + '/'+taskName,
+        dataType: 'json',
+        beforeSend: function() {
+            $("#loading").show();
+        },
+        complete: function() {
+            $("#loading").hide();
+        },
+        success: function(data) {
+            groupData = data;
+            var activeMembersArr = [];
+
+            if (groupData["data"]["groupMemDetail"]) {
+                if (groupData["data"]["groupMemDetail"][0]) {
+                    totalCount = groupData["data"]["groupMemDetail"].length;
+                    for (var i = 0; i < groupData["data"]["groupMemDetail"].length; i++) {
+                        memId = groupData["data"]["groupMemDetail"][0]["memberId"];
+                        var memberId = groupData["data"]["groupMemDetail"][i]["memberId"];
+                        var memberStatus = groupData["data"]["groupMemDetail"][i]["memberStatus"];
+                        var className = '';
+
+
+                        if (memberStatus == "Rejected") {
+                            className = "list-group-item list-group-item-action list-group-item-danger Rejected";
+                            rejCount += 1;
+                        }
+                        else {
+                            className = "list-group-item list-group-item-action Pending";
+                            activeMembersArr.push(groupData["data"]["groupMemDetail"][i]["memberId"])
+                        }
+
+                        if (document.getElementById("groupMembersDropDown")) {
+                            $("#groupMembersDropDown").append('<a id="' + memberId + '" onclick="getMemberDetails(' + memberId + ',' + groupId + ',' + loanId + ');tabControl();loadGroupRoles('+groupId+','+ loanId+','+"'"+taskName+"'"+');" class="' + className + '" style="font-weight:bold;"> (' + groupData["data"]["groupMemDetail"][i]["sequenceNumber"] + ")  " + groupData["data"]["groupMemDetail"][i]["memberName"] + '</a>');
+                        }
+                        if (document.getElementById("groupName") && groupData["data"]["groupName"]) {
+                            document.getElementById("groupName").innerHTML = groupData["data"]["groupName"];
+                        }
+                        if (document.getElementById("appGroupId") && groupData["data"]["appGroupId"]) {
+                            document.getElementById("appGroupId").innerHTML = groupData["data"]["appGroupId"];
+                        }
+
+                    }
+                    var membersCount = document.getElementById("groupMembersDropDown").getElementsByTagName("a").length;
+                    var rejectedCount = $('.Rejected').length;
+                    updateMembersCount();
+                    var totalCount = membersCount;
+                    if (activeMembersArr[0]) {
+                        getMemberDetails(activeMembersArr[0], groupId, loanId);
+                    } else {
+                        getMemberDetails(memId, groupId, loanId);
+                    }
+                }
+            }
+             else {
+                $.alert(groupData["message"]);
+		        $("#loading").hide();
+            }
+        } ,
+  		error: function (error) {
+       		$("#loading").hide();
+     		$.alert("Connection Time out");
+        }
+    });
 }

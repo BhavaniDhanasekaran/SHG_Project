@@ -69,17 +69,17 @@ h1 {
 	font-size: 3em;
 }
 
-.content {
-	/*display: block;
+.notificationBox{
+	display: block;
 	width: 450px;
-	background: rgb(215, 215, 215);*/
+	background: rgb(215, 215, 215);
 	padding: 1px;
 	float:right;
 	overflow: hidden;
 	margin: 0 auto;
 
 }
-.content *{
+.notificationBox*{
 	-webkit-box-sizing:border-box;
 	-moz-box-sizing:border-box;
 	-o-box-sizing:border-box;

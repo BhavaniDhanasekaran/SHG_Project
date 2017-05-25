@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="{% static  'font-awesome/4.5.0/css/font-awesome.min.css' %}" />
         <link rel="stylesheet" href="{% static 'css/fonts.googleapis.com.css' %}" />
         <link rel="stylesheet" href="{% static 'css/ace.min.css' %}" class="ace-main-stylesheet" id="main-ace-style" />
+
         <link rel="stylesheet" href="{% static 'css/bootstrap-datepicker3.min.css' %}" />
         <!--[if lte IE 9]>
         <link rel="stylesheet" href="{% static 'css/ace-part2.min.css'  %}" class="ace-main-stylesheet"/>
@@ -25,9 +26,14 @@
         <link rel="stylesheet" href="{% static 'css/comments.css'  %}" />
          <link type="text/css" href="/static/css/jquery-confirm.css" rel="stylesheet"  />
         <link rel="stylesheet" href="{% static 'css/marquee.css' %}" />
+	 <link rel="stylesheet" href="{% static 'css/processhistory.css' %}" />
+		 	
+	
         <!--[if lte IE 9]>
         <link rel="stylesheet" href="{% static 'css/ace-ie.min.css'  %}" />
         <![endif]-->
+
+
         <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
         <script src="{% static 'js/ace-extra.min.js' %}"></script>
         <script src="{% static 'js/datatables.min.js' %}"></script>
@@ -56,6 +62,8 @@
         <script src="{% static 'js/jquery.inputlimiter.min.js' %}"></script>
         <script src="{% static 'js/jquery.alphanumeric.js' %}"></script>
 	 <script src="{% static 'js/jquery-ticker.js' %}"></script>
+
+
 	
 
 
@@ -111,7 +119,7 @@
 		//showDiff();
 		function showDiff(){
 			var date1 = new Date();    
-			var date2 = new Date("2017/05/19 15:25:00");
+			var date2 = new Date("2017/05/25 15:25:00");
 			//Customise date2 for your required future time
 			var diff,days,leftSec,hrs,min;
 			var diff = (date2 - date1)/1000;
@@ -132,6 +140,11 @@
 				leftSec = leftSec - min * 60;
 			}	
 			$("#notificationText").text("Server will be under maintenance from 6PM to 7PM ");
+			if(days != '0'){
+				$(".days").text(days);
+				$(".days").css("display","inline-block");	
+			}
+			
 			$(".minute").text(min);
 			$(".second").text(leftSec);
 			$(".hour").text(hrs);

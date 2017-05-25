@@ -1,6 +1,6 @@
 {% if group == "DataSupportTeam" %}
 
-    <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+    <!--div class="sidebar-shortcuts" id="sidebar-shortcuts">
         <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
             <button class="btn btn-success"> <i class="ace-icon fa fa-signal"> </i> </button>
             <button class="btn btn-info"> <i class="ace-icon fa fa-pencil"> </i> </button>
@@ -8,8 +8,17 @@
             <button class="btn btn-danger"> <i class="ace-icon fa fa-cogs"> </i> </button>
         </div>
         <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini"> <span class="btn btn-success"> </span> <span class="btn btn-info"> </span> <span class="btn btn-warning"> </span> <span class="btn btn-danger"> </span> </div>
-    </div>
+    </div-->
     <ul class="nav nav-list">
+       <li class="">
+            <a style="color:#981b1b;font-weight:bold" href="{% url 'dashboard' %}">
+                <i class="menu-icon fa fa-tachometer"></i>
+                <span class="menu-text"> Dashboard
+
+        </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
         <li class="">
             <a href="{% url 'assignedTaskList' %}">
                 <i class="menu-icon glyphicon glyphicon-edit"></i>
@@ -49,9 +58,9 @@
             <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="{% url 'hello' %}">Home </a> </li>
             <li> <i class="ace-icon"> </i> <span>{{ taskName }} </span> </li>
         </ul>
-	         <div  style="float:right;"><div id="notificationDiv" class="content" style="float:left;display:none">
+	       <div  style="float:right;"><div id="notificationDiv" class="notificationBox" style="float:left;display:none">
 			<div class="simple-marquee-container">
-				<div class="marquee-sibling" style="font-weight:bold;font-size:larger;"><span class="hour"></span>:<span class="minute"></span>:<span class="second"></span>
+				<div class="marquee-sibling" style="font-weight:bold;font-size:larger;"><span class="days" style="display:none"></span>:<span class="hour"></span>:<span class="minute"></span>:<span class="second"></span>
 				</div>
 				<div class="marquee">
 					<ul class="marquee-content-items">
@@ -60,7 +69,7 @@
 				</div>
 			</div>
 		</div>
-	
+
         <span class="rightAlign" id="commentSpanId" style="float:right;font-size:20px;cursor:pointer;display:none;" onclick="toggleNav();">
             <button id="commentsBtn" style="float:right;margin-top:3px;"
                         class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn"
@@ -74,7 +83,7 @@
 {% endif %}
 {% if group == "CMR" or group == "CLM" or group == "BM"%}
     <!-- start BM login menu -->
-    <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+    <!--<div class="sidebar-shortcuts" id="sidebar-shortcuts">
         <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
             <button class="btn btn-success"> <i class="ace-icon fa fa-signal"> </i> </button>
             <button class="btn btn-info"> <i class="ace-icon fa fa-pencil"> </i> </button>
@@ -82,14 +91,23 @@
             <button class="btn btn-danger"> <i class="ace-icon fa fa-cogs"> </i> </button>
         </div>
         <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini"> <span class="btn btn-success"> </span> <span class="btn btn-info"> </span> <span class="btn btn-warning"> </span> <span class="btn btn-danger"> </span> </div>
-    </div>
+    </div>-->
     <!-- /.sidebar-shortcuts -->
     <ul class="nav nav-list">
+	<li class="">
+            <a style="color:#981b1b;font-weight:bold" href="{% url 'dashboard' %}">
+                <i class="menu-icon fa fa-tachometer"></i>
+                <span class="menu-text"> Dashboard
+
+        </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
         <li class="">
             <a href="{% url 'assignedTaskList' %}">
                 <i class="menu-icon glyphicon glyphicon-edit"></i>
-                <span class="menu-text"> My Tasks 
-                    <span id="myTasks" class="badge badge-danger">0</span> 
+                <span class="menu-text"> My Tasks
+                    <span id="myTasks" class="badge badge-danger">0</span>
                 </span>
             </a>
             <b class="arrow"></b>
@@ -175,8 +193,8 @@
                 </span>
             </a>
             <b class="arrow"></b>
-        </li> 
-        	
+        </li>
+
     </ul>
     <!-- /.nav-list -->
     <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse"> <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"> </i> </div>
@@ -194,9 +212,9 @@
                 {% endif %}
             </span> </li>
         </ul>
-                <div  style="float:right;"><div id="notificationDiv" class="content" style="float:left;display:none">
+                <div  style="float:right;"><div id="notificationDiv" class="notificationBox" style="float:left;display:none">
 			<div class="simple-marquee-container">
-				<div class="marquee-sibling" style="font-weight:bold;font-size:larger;"><span class="hour"></span>:<span class="minute"></span>:<span class="second"></span>
+				<div class="marquee-sibling" style="font-weight:bold;font-size:larger;"><span class="days" style="display:none"></span>:<span class="hour"></span>:<span class="minute"></span>:<span class="second"></span>
 				</div>
 				<div class="marquee">
 					<ul class="marquee-content-items">
@@ -205,7 +223,7 @@
 				</div>
 			</div>
 		</div>
-	
+
         <span class="rightAlign" id="commentSpanId" style="float:right;font-size:20px;cursor:pointer;display:none;" onclick="toggleNav();">
             <button id="commentsBtn" style="float:right;margin-top:3px;"
                         class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn"
@@ -221,7 +239,7 @@
 {% endif %}
 {% if group == "RM" or  group == "rm" %}
     <!-- Start of RM login menu -->
-    <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+    <!--<div class="sidebar-shortcuts" id="sidebar-shortcuts">
         <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
             <button class="btn btn-success"> <i class="ace-icon fa fa-signal"> </i> </button>
             <button class="btn btn-info"> <i class="ace-icon fa fa-pencil"> </i> </button>
@@ -229,8 +247,17 @@
             <button class="btn btn-danger"> <i class="ace-icon fa fa-cogs"> </i> </button>
         </div>
         <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini"> <span class="btn btn-success"> </span> <span class="btn btn-info"> </span> <span class="btn btn-warning"> </span> <span class="btn btn-danger"> </span> </div>
-    </div>
+    </div>-->
     <ul class="nav nav-list">
+	<li class="">
+            <a style="color:#981b1b;font-weight:bold" href="{% url 'dashboard' %}">
+                <i class="menu-icon fa fa-tachometer"></i>
+                <span class="menu-text"> Dashboard
+
+        </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
         <li class="">
             <a href="{% url 'assignedTaskList' %}">
                 <i class="menu-icon glyphicon glyphicon-edit"></i>
@@ -261,9 +288,9 @@
             <li> <i class="ace-icon"> </i> <span>{{ taskName }}  </span> </li>
 
         </ul>
-                 <div style="float:right;"><div class="content" id="notificationDiv" style="float:left;display:none">
+                 <div style="float:right;"><div class="notificationBox" id="notificationDiv" style="float:left;display:none">
 			<div class="simple-marquee-container">
-				<div class="marquee-sibling" style="font-weight:bold;font-size:larger;"><span class="hour"></span>:<span class="minute"></span>:<span class="second"></span>
+				<div class="marquee-sibling" style="font-weight:bold;font-size:larger;"><span class="days" style="display:none"></span>:<span class="hour"></span>:<span class="minute"></span>:<span class="second"></span>
 				</div>
 				<div class="marquee">
 					<ul class="marquee-content-items">
@@ -272,7 +299,7 @@
 				</div>
 			</div>
 		</div>
-	
+
         <span class="rightAlign" id="commentSpanId" style="float:right;font-size:20px;cursor:pointer;display:none;" onclick="toggleNav();">
             <button id="commentsBtn" style="float:right;margin-top:3px;"
                         class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn"
@@ -288,7 +315,7 @@
 {% endif %}
 {% if group == "CreditTeam" %}
     <!-- Start of CT login menu -->
-    <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+    <!--<div class="sidebar-shortcuts" id="sidebar-shortcuts">
         <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
             <button class="btn btn-success"> <i class="ace-icon fa fa-signal"> </i> </button>
             <button class="btn btn-info"> <i class="ace-icon fa fa-pencil"> </i> </button>
@@ -296,9 +323,18 @@
             <button class="btn btn-danger"> <i class="ace-icon fa fa-cogs"> </i> </button>
         </div>
         <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini"> <span class="btn btn-success"> </span> <span class="btn btn-info"> </span> <span class="btn btn-warning"> </span> <span class="btn btn-danger"> </span> </div>
-    </div>
+    </div>-->
     <!-- /.sidebar-shortcuts -->
     <ul class="nav nav-list">
+	<li class="">
+            <a style="color:#981b1b;font-weight:bold" href="{% url 'dashboard' %}">
+                <i class="menu-icon fa fa-tachometer"></i>
+                <span class="menu-text"> Dashboard
+
+        </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
         <li class="">
             <a href="{% url 'assignedTaskList' %}">
                 <i class="menu-icon fa fa-pencil-square-o"></i>
@@ -336,10 +372,10 @@
             <b class="arrow"></b>
         </li>
 
-       
 
 
-		    
+
+
         <li class="">
             <a href="#" onclick="tasklistRedirect('Confirm disbursement');">
                 <i class="menu-icon glyphicon glyphicon-ok-sign"></i>
@@ -358,7 +394,7 @@
             </a>
             <b class="arrow"></b>
         </li>
-        
+
     </ul>
     <!-- /.nav-list -->
     <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse"> <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"> </i> </div>
@@ -372,9 +408,9 @@
 
         </ul>
         <!-- /.breadcrumb -->
-         <div style="float:right;"><div class="content" id="notificationDiv" style="float:left;display:none">
+         <div style="float:right;"><div class="notificationBox" id="notificationDiv" style="float:left;display:none">
 			<div class="simple-marquee-container">
-				<div class="marquee-sibling" style="font-weight:bold;font-size:larger;"><span class="hour"></span>:<span class="minute"></span>:<span class="second"></span>
+				<div class="marquee-sibling" style="font-weight:bold;font-size:larger;"><span class="days" style="display:none"></span>:<span class="hour"></span>:<span class="minute"></span>:<span class="second"></span>
 				</div>
 				<div class="marquee">
 					<ul class="marquee-content-items">
@@ -383,7 +419,7 @@
 				</div>
 			</div>
 		</div>
-	
+
         <span class="rightAlign" id="commentSpanId" style="float:right;font-size:20px;cursor:pointer;display:none;" onclick="toggleNav();">
             <button id="commentsBtn" style="float:right;margin-top:3px;"
                         class="aside-trigger btn btn-danger btn-app btn-xs ace-settings-btn"

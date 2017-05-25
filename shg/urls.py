@@ -47,6 +47,16 @@ task_urlpatterns = [
     url(
         r'^SHGForm/(?P<groupId>[^/]+)/(?P<loanId>[^/]+)/(?P<taskId>[^/]+)/(?P<processId>[^/]+)/(?P<taskName>[^/]+)/(?P<loanTypeName>[^/]+)/(?P<loanTypeId>[^/]+)',
         task.SHGForm, name='SHGForm'),
+    url(r'^dashboard/', task.dashboard, name='dashboard'),
+    url(r'^getDashboardData/', task.getDashboardData, name='getDashboardData'),
+    url(r'^redirectDBTasks/(?P<taskName>[^/]+)', task.redirectDBTasks, name='redirectDBTasks'),
+    url(r'^viewTasksData/(?P<taskName>[^/]+)', task.viewTasksData, name='viewTasksData'),
+    url(r'^viewGroupHistoryDB/(?P<groupId>[^/]+)/(?P<loanId>[^/]+)/(?P<taskName>[^/]+)/(?P<loanTypeName>[^/]+)/(?P<processInstanceId>[^/]+)', task.viewGroupHistoryDB,
+        name='viewGroupHistoryDB'),
+    url(r'^getOverAllHistory/(?P<processInstanceId>[^/]+)', task.getOverAllHistory, name='getOverAllHistory'),
+    url(r'^getGroupLevelInfo/(?P<groupID>[^/]+)/(?P<loanId>[^/]+)/(?P<taskName>[^/]+)', task.getGroupLevelInfo,
+        name='getGroupLevelInfo'),
+
 
 ]
 urlpatterns += task_urlpatterns
@@ -138,4 +148,5 @@ mfupload_urlpatterns = [
     url(r'^ajax_progress_bar_upload/$', mfupload.ajax_progress_bar_upload, name='ajax_progress_bar_upload'),
 ]
 urlpatterns += mfupload_urlpatterns
+
 
