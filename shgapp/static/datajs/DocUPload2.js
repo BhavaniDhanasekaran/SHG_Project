@@ -21,6 +21,10 @@ function loanDocument(loanTypeId) {
         },
         success: function(data) {
             var jsondata1 = data;
+            //console.log("jsondata1");
+           // console.log(jsondata1);
+           // console.log(jsondata1.data.length);
+            totLoanDocCount = jsondata1.data.length;
             $('#drop').empty();
             if (jsondata1.data) {
                 $.each(jsondata1.data, function(key, value) {
@@ -51,12 +55,17 @@ function loanDocument(loanTypeId) {
                     var jsondata2 = data;
                     $('#records_table2').empty();
                     var current = 0;
+                     //console.log("jsondata2");
+                     //console.log(jsondata2);
                     //console.log(jsondata2.data.length);
+                    uploadedDocsCount = jsondata2.data.length;
+                    //console.log(uploadedDocsCount);
+                    if (uploadedDocsCount > 0) {
+                     //console.log(jsondata2.data.length );
+                        $('#docments_table2').show();
 
-                    if (jsondata2.data.length > 0) {
-                        $("docments_table2").css("display", "block");
                         $.each(jsondata2.data, function(key, value) {
-                            // console.log(value.docId);
+                            //console.log(value.docId);
                             var tr = $('<tr></tr>');
                             current++;
                             $('<td>' + current + '</td>' +
@@ -71,6 +80,7 @@ function loanDocument(loanTypeId) {
                         });
 
                     }
+                   
 
 
                     //console.log("DocumentView")
@@ -82,15 +92,30 @@ function loanDocument(loanTypeId) {
                         .differenceBy(result2, 'documentId', 'documentName')
                         .map(_.partial(_.pick, _, 'documentId', 'documentName'))
                         .value();
-
-                    //console.log(diff_data);
-                    var current = 0;
+                        //console.log("diff data");
+                        //console.log(diff_data);
+                
                     $('#records_table').empty();
+
+                       
                     if (diff_data) {
+
+                        var sizeobj= _.size(diff_data);
+                       // console.log(sizeobj);
+                        var current = 0;
+                        if(sizeobj>1){
+                          $('#docments_table').show();
+                         }
+                         else{
+                          $('#docments_table').hide();
+
+                         }
+                    
                         $.each(diff_data, function(key, value) {
                             var tr = $('<tr></tr>');
-                            current++;
+                            
                             if (value.documentName != "Resolutions if any") {
+                                current++;
                                 $('<td>' + current + '</td>' +
                                     '<td>' + value.documentName + '</td>' +
                                     '<td><input type = "file"   accept="application/pdf" name = "' + value.documentName + '" id = "' + value.documentId + '" style="display: none;" /></input>' +

@@ -140,14 +140,14 @@ function getGroupData(groupID, loanId) {
             }
              else {
                 $.alert(groupData["message"]);
-		        $("#loading").hide();
+                $("#loading").hide();
             }
 
         } ,
 
-       		error: function (error) {
-       		$("#loading").hide();
-       	 		$.alert("Connection Time out");
+            error: function (error) {
+            $("#loading").hide();
+                $.alert("Connection Time out");
 
 
               }
@@ -174,8 +174,8 @@ function getMemberDetails(memberId, groupId, loanId) {
         dataType: 'json',
         beforeSend: function() {
             $("#loading").show();
-		    clearMemberData();
-    		document.getElementById("formMembers").reset();
+            clearMemberData();
+            document.getElementById("formMembers").reset();
         },
         complete: function() {
             $("#loading").hide();
@@ -189,6 +189,7 @@ function getMemberDetails(memberId, groupId, loanId) {
             if (data.code == "2019") {
                 MemberDatadisplay(data)
                 highMarksList(memberId,loanId,data["data"]["memberDocumentDetails"]);
+                DocumentDetails(data);
                 $("#loading").hide();
             }
         },
@@ -547,6 +548,18 @@ function updateMemValidationStatus(status) {
     var comment = document.getElementById("comment").value;
     var memStatus = document.getElementById("memberValStatus").innerHTML;
     var loanTypeId = document.getElementById("loanTypeId1").innerHTML;
+    var loanAmount = document.getElementById("loanAmount").innerHTML;
+    var loanAmountInt = parseInt(loanAmount);
+    //console.log(loanAmountInt);
+
+    var loanAmountEligible = $(credit).find("td").eq(6).html();
+    var loanAmountEligibleInt = parseInt(loanAmountEligible);
+    //console.log(loanAmountEligibleInt);
+   
+	var roundOfNum = loanAmountEligibleInt;
+	roundOfNum = Math.floor(roundOfNum/1000)*1000;
+    //console.log("roundOfNum",roundOfNum);
+
     var commentCamunda = "";
     var dataObj = {};
     if (memStatus != "" && memStatus != "PEN") {
@@ -567,9 +580,15 @@ function updateMemValidationStatus(status) {
                 dataObj['message'] = commentCamunda;
             }
         }
-        if (taskName == "Conduct BAT- Member approval in CRM") {
+        if (taskName == "Conduct BAT- Member approval in CRM" || taskName == "Proposal scrutiny") {
             validationType = "CLM";
-        }
+            if (loanAmountInt > loanAmountEligibleInt)
+            {
+                $.alert("Your Loan Eligible Amount is : " + roundOfNum);
+                return false; 
+            }
+        }   
+
         if (taskName == "Resolve Credit Team Query") {
             validationType = "CLM";
             if (comment == "") {
@@ -717,7 +736,6 @@ function submitKYCForm(status) {
     var sbAccountNumber = document.getElementById("sbAccountNumber").value;
     var bankId = document.getElementById("bankId").value;
     var villageId = document.getElementById("villages").value;
-    var loanAmount = document.getElementById("loanAmount").value;
     var loanPurpose = document.getElementById("loanTypeValue").value;
     var sbAccountName = document.getElementById("sbAccountName").value;
     var mobileNumber = document.getElementById("mobileNo").value;
@@ -731,6 +749,26 @@ function submitKYCForm(status) {
     var appMemberId = document.getElementById("appMemberId").innerHTML;
     var loanTypeId = document.getElementById("loanTypeId1").innerHTML;
     var sequenceNumber = document.getElementById("sequenceNumber").value;
+
+    var loanAmount = document.getElementById("loanAmount").value;
+    var loanAmountInt = parseInt(loanAmount);
+    console.log(loanAmountInt);
+
+    var loanAmountEligible = $(credit).find("td").eq(6).html();
+    var loanAmountEligibleInt = parseInt(loanAmountEligible);
+    console.log(loanAmountEligibleInt);
+   
+	var roundOfNum = loanAmountEligibleInt;
+	roundOfNum = Math.floor(roundOfNum/1000)*1000;
+    console.log("roundOfNum",roundOfNum);
+
+    if (taskName == "Proposal scrutiny" || taskName == "Resolve Credit Team Query") {
+        if (loanAmountInt > loanAmountEligibleInt)
+        {
+            $.alert("Your Loan Eligible Amount is : " + roundOfNum);
+            return false; 
+        }
+    }    
 
 
     var commentCamunda = "";
@@ -1015,7 +1053,7 @@ function creditHistory(loanId) {
     $.ajax({
         url: '/creditHistoryGroup/' + loanId,
         dataType: 'json',
-	 beforeSend: function() {
+     beforeSend: function() {
             $("#loading").show();
         },
         complete: function() {
@@ -1023,6 +1061,7 @@ function creditHistory(loanId) {
         },
 
         success: function(data) {
+            console.log(data);
             var creditData = data;
             var documentObj = [];
             var docPath = ''
@@ -1034,22 +1073,17 @@ function creditHistory(loanId) {
                     documentObj = creditData["data"][i]["memberDocument"];
 
                     var documentPath = '';
-                    if (documentObj[0]) {
+                    if (documentObj) {
+                        //console.log( documentObj.length);
                         for (var j = 0; j < documentObj.length; j++) {
                             if (documentObj[j]["documentType"] == "OVERLAPREPORT") {
                                 docPath = documentObj[j]["documentPath"];
                                 docId = documentObj[j]["docId"];
-                                docBtn = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + docId + "," + "config='width=500,height=500'" + ');return false;"+>View</button>';
-                            }
-                            else{
-                                docBtn = '<button type="button" class="btn btn-info btn-md btn-danger">View</button>';
-                            }
-                        }
-                    }
-                    else {
-                        docBtn = '<button type="button" class="btn btn-info btn-md btn-danger">View</button>';
-                    }
-                    htmlContent += '<tr><td>' + docBtn + ' </td>' +
+
+                                docBtn = '<button type="button"  class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + docId + "," + "config='width=500,height=500'" + ');return false;"+>View</button>';
+
+                        htmlContent += '<tr><td>' + docBtn + ' </td>' +
+
                         '<td>' + creditObj["appMemberId"] + '</td><td>' +
                         creditObj["memberName"] + '</td>' +
                         '<td>' + creditObj["s_product_type"] + '</td>' +
@@ -1076,6 +1110,19 @@ function creditHistory(loanId) {
                         '<td>' + creditObj["loan_amount_4"] + '</td>' +
                         '<td>' + creditObj["balance_4"] + '</td>' +
                         '</tr>';
+                            }
+                            else{
+                                docBtn = '<button type="button" class="btn btn-info btn-md btn-danger">View</button>';
+                            }
+                        }
+                    }
+                    else {
+                        docBtn = '<button type="button" class="btn btn-info btn-md btn-danger">View</button>';
+                    }
+
+
+
+                   
                 }
             }
             document.getElementById("creditData").innerHTML = htmlContent;
@@ -1181,10 +1228,10 @@ function loadGroupRoles(groupId, loanId, taskName) {
 function updateTask(status) {
     var dataObj = {};
      if( document.getElementById("groupName_groupRole")){
-    	var groupName = document.getElementById("groupName_groupRole").innerHTML;
+        var groupName = document.getElementById("groupName_groupRole").innerHTML;
     }
     if(document.getElementById("groupName")){
-	var groupName = document.getElementById("groupName").innerHTML;
+    var groupName = document.getElementById("groupName").innerHTML;
     }    dataObj["taskId"] = taskId;
 
     dataObj["processUpdate"] = {};
@@ -1324,6 +1371,12 @@ function updateGroupMemberStatus() {
     var nrepm1 = document.getElementById("repm1").value;
     var nrepm2 = document.getElementById("repm2").value;
 
+      if((nAnimator==nrepm1) ||(nrepm1==nrepm2)||(nrepm2==nAnimator)){
+    $.alert("Selected Option Cannot be Same,Please Change the Roles");
+        return false;
+
+    }
+
     var groupValData = {
         "entityType": "GROUP",
         "validationType": "POST",
@@ -1376,7 +1429,7 @@ function getLoanDetails(groupId, loanId) {
             if (document.getElementById("loanInstallments")) {
                 document.getElementById("loanInstallments").value = loanDetails["loanInstallments"];
             }
-	     if (document.getElementById("postValidationCount")) {
+         if (document.getElementById("postValidationCount")) {
                 document.getElementById("postValidationCount").innerHTML = data["data"]["postValidationCount"];
             }
 
@@ -1709,6 +1762,7 @@ function approveLoan(updateloanData){
 function validate(evt, id) {
     var theEvent = evt || window.event;
     var key = theEvent.keyCode || theEvent.which;
+    if(key===8){return;}
     key = String.fromCharCode(key);
     if (id == 1) {
         var regex = /[0-9]/;
@@ -1768,10 +1822,10 @@ function updateMembersCount() {
 function rmGroupMaster(groupId) {
     var url= '';
     if(taskName == "Add New Members"){
-	url = '/getAddNewMemTaskInfo/' + groupId + '/' + loanId + '/'+ processInstanceId;
+    url = '/getAddNewMemTaskInfo/' + groupId + '/' + loanId + '/'+ processInstanceId;
     }
     else{
-   	url =  '/getGroupData/' + groupId + '/' + loanId + '/'+ taskName;
+    url =  '/getGroupData/' + groupId + '/' + loanId + '/'+ taskName;
    }
 
     $.ajax({
@@ -1790,10 +1844,10 @@ function rmGroupMaster(groupId) {
                 var found_names = $.grep(groupViewData2.data.groupMemDetail, function(v) {
                     return v.memberStatus != "Rejected";
                 });
-        		var activeCount = $.grep(groupViewData2.data.groupMemDetail, function(v) {
+                var activeCount = $.grep(groupViewData2.data.groupMemDetail, function(v) {
                     return v.memberStatus == "Active";
                 });
-		        var appCount = $.grep(groupViewData2.data.groupMemDetail, function(v) {
+                var appCount = $.grep(groupViewData2.data.groupMemDetail, function(v) {
                     return v.memberStatus == "Approved";
                 });
                 var rejCount = $.grep(groupViewData2.data.groupMemDetail, function(v) {
@@ -1808,17 +1862,19 @@ function rmGroupMaster(groupId) {
                 if(document.getElementById("rejectedCount")){
                     document.getElementById("rejectedCount").innerHTML = rejCount.length;
                 }
-		  if(document.getElementById("newMemCount")){
+          if(document.getElementById("newMemCount")){
                     document.getElementById("newMemCount").innerHTML = activeCount.length;
                 }
 
                 if(document.getElementById("minimumrem")){
-			if((10 - (appCount.length+activeCount.length)) > 0 ){
-                    		document.getElementById("minimumrem").innerHTML = 10 - (appCount.length+activeCount.length);
-			}
-			else{
-				document.getElementById("minimumrem").innerHTML = 0;
-			}
+
+            		if((10 - (appCount.length+activeCount.length)) > 0 ){
+                            document.getElementById("minimumrem").innerHTML = 10 - (appCount.length+activeCount.length);
+            		}
+           		 else{
+               		 document.getElementById("minimumrem").innerHTML = 0;
+            		}
+
                 }
                 $.each(found_names, function(key, value) {
                     $('#Animator').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
@@ -1887,7 +1943,7 @@ function rmGroupMaster(groupId) {
                         groupData[i]["appMemberId"] = '<span style="color:darkgoldenrod;font-weight:bold;">'+groupData[i]["appMemberId"]+'</span>';
                     }
                 }
-		}
+        }
                 if (document.getElementById("groupMemberDetails")) {
                     $('#groupMemberDetails').dataTable({
                         data: groupData,
@@ -1939,7 +1995,7 @@ function rmGroupMaster(groupId) {
                                 "sWidth": "8%",
                                 className: "column"
                             },
-				{
+                {
                                 "mData": "memberStatus",
                                 "sTitle": "Validation Status",
                                 "sWidth": "10%",
@@ -2074,9 +2130,9 @@ function updateGroupValStatus(status) {
     }
 
     if (group == "CMR" || group == "CLM" || group == "BM") {
-	if (taskName == "Conduct BAT- Member approval in CRM"){
-		updateTask("Approved");
-	}
+    if (taskName == "Conduct BAT- Member approval in CRM"){
+        updateTask("Approved");
+    }
         if (taskName == "Upload loan documents in Web application") {
             validationType = "CLMAPPROVAL";
             showConfirmBox(status);
@@ -2122,7 +2178,7 @@ function updateGroupValStatus(status) {
                 else
                 {
                    validationType = "PEN";
-		     proStatus = "bmapproved";
+             proStatus = "bmapproved";
                    showConfirmBox(status);
                 }
 
@@ -2321,8 +2377,8 @@ function getMemberFSRData(memberId){
         },
 
     error: function (error) {
-       		$("#loading").hide();
-       	 	$.alert("Please try after sometime");
+            $("#loading").hide();
+            $.alert("Please try after sometime");
       }
    });
 }
@@ -2354,7 +2410,7 @@ function getMemberComments(processInstanceId, loanId) {
                         }
                     }
                     if(count>0){
-                        commentsHtml += '<div ><i class="fa fa-user fa-2" aria-hidden="true"></i> &nbsp<span style="font-size:12px;color:darkblue;"><b>' + value.memberName + ' (' + value.memberId + ' ) </b> <span> </div>';
+                        commentsHtml += '<div ><i class="fa fa-user fa-2" aria-hidden="true"></i> &nbsp<span style="font-size:12px;color:darkblue;"><b>' + value.memberName + ' (' + value.appMemberId + ' ) </b> <span> </div>';
                     }
                     $.each(value.comments, function(index, val) {
 
@@ -2489,8 +2545,8 @@ function getPaymentHistory(key,memberId,groupId){
             });
         },
          error: function (error) {
-       		$("#loading").hide();
-       	 	$.alert("Please try after sometime");
+            $("#loading").hide();
+            $.alert("Please try after sometime");
             }
 
     });
@@ -2570,7 +2626,7 @@ function generateLOS(){
                 }
             }
             if(data["code"] == "11001"){
-		  //$.alert(data["message"]);
+          //$.alert(data["message"]);
                 $.alert(data.data.message[0]);
             }
         },
@@ -2621,15 +2677,15 @@ function loadDisburseDocData(){
         .next().on(ace.click_event, function(){
             $(this).prev().focus();
         });
-	var html = '<tr>';
-	var innerHTMLBank = '';
-	var selectOptValArray = [];
+    var html = '<tr>';
+    var innerHTMLBank = '';
+    var selectOptValArray = [];
     $.ajax({
-        url	:  '/masterDataBank/',
+        url :  '/masterDataBank/',
         async: false,
-        type	: 'post',
+        type    : 'post',
         dataType: 'json',
-        success	: function (bankData) {
+        success : function (bankData) {
             if(bankData["data"][0]){
                 keyValueMasterBankArray = bankData["data"].sort(function(a, b){ var a1= a.bankName, b1= b.bankName;    if(a1== b1) return 0;    return a1> b1? 1: -1; })
                 innerHTMLBank += '<option value="null" > Select Bank </option>';
@@ -2648,12 +2704,12 @@ function loadDisburseDocData(){
 
     if(disbDocData && disbDocData[0]){
         for(var key in disbDocData){
-	     if(disbDocData[0]["oldDos"] == null || disbDocData[0]["oldDos"] == "null"){
-            	  document.getElementById("dateOfDisbursement").value = disbDocData[0]["loanApprovalDate"].split("-")[1]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[2]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[0];
-	     }else{
-		  var dd = disbDocData[0]["oldDos"].split(" ")[0];
-		  document.getElementById("dateOfDisbursement").value = dd.split("-")[1]+"/"+dd.split("-")[2]+"/"+dd.split("-")[0];
-	     }
+         if(disbDocData[0]["oldDos"] == null || disbDocData[0]["oldDos"] == "null"){
+                  document.getElementById("dateOfDisbursement").value = disbDocData[0]["loanApprovalDate"].split("-")[1]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[2]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[0];
+         }else{
+          var dd = disbDocData[0]["oldDos"].split(" ")[0];
+          document.getElementById("dateOfDisbursement").value = dd.split("-")[1]+"/"+dd.split("-")[2]+"/"+dd.split("-")[0];
+         }
             document.getElementById("loanSancDate").innerHTML = disbDocData[0]["loanApprovalDate"].split("-")[2]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[1]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[0];
             var obj = {};
             totalMemberIdArray.push(disbDocData[key]["appMemberId"]+"_memberAvailedLoan");
@@ -2711,7 +2767,7 @@ function updateChequeInfo(){
             if(document.getElementById(totalMemberIdArray[i]).value == "true"){
                 memberAvailedLoanArray.push(totalMemberIdArray[i].split("_")[0]);
             }
-	     if(document.getElementById(totalMemberIdArray[i]).value == "false"){
+         if(document.getElementById(totalMemberIdArray[i]).value == "false"){
                 memberAvailedLoanFalseArr.push(totalMemberIdArray[i].split("_")[0]);
             }
                     }
@@ -2806,7 +2862,14 @@ function convertChequeDataToJson(){
 
 function approveDisburseDocs(status){
     var flag = 0;
-    if(totLoanDocCount != uploadedDocsCount){
+
+    var count = $('#records_table').children('tr').length;
+        //console.log("count");
+        //console.log(count);
+
+
+
+    if(count != 0){
         $.alert("Please upload all the documents before approving.");
         $('.tabbable a[href="#upload"]').tab('show');
         return false;
@@ -2845,9 +2908,9 @@ function loadDisburseDocDataRead(){
         }
     });
 
-	var html = '<tr>';
-	var innerHTMLBank = '';
-	var selectOptValArray = [];
+    var html = '<tr>';
+    var innerHTMLBank = '';
+    var selectOptValArray = [];
     if(disbDocData && disbDocData[0]){
         for(var key in disbDocData){
 
@@ -2922,7 +2985,7 @@ function confirmLoan(status){
                 var dataObj = {};
                 dataObj["cheqData"] = eval(JSON.stringify(rows));
                 dataObj["processUpdate"] = { 'variables': { 'disbursement': {   'value': status     },     }     };
-		  dataObj["taskId"] = taskId;
+          dataObj["taskId"] = taskId;
 
                 $.ajax({
                     url : '/confirmChqDisbursement/',
@@ -2930,7 +2993,7 @@ function confirmLoan(status){
                     type: 'POST',
                     success: function(data){
                         if(data["code"] == "12002"){
-				var groupName = document.getElementById("groupName_groupRole").innerHTML;
+                var groupName = document.getElementById("groupName_groupRole").innerHTML;
                             $("#validationMessage").addClass("center");
                              document.getElementById("validationMessage").innerHTML ='<span style="color:green" " class="bigger-50"><i class="ace-icon fa fa-check-circle bigger-125"></i> &nbsp&nbsp'+"'"+ groupName +"'" + " has been approved"+'</span>';
                              document.getElementById("gStatus").innerHTML = '<h3  class="lighter center smaller">Loan process has been completed successfully!  <i class="ace-icon glyphicon glyphicon-thumbs-up bigger-150"></i> </h3>';
@@ -2970,15 +3033,15 @@ function completeTask(status){
     var statusUpdate = '';
     var groupName = document.getElementById("groupName_groupRole").innerHTML;
     if(status == "rework"){
-	 fontColor = 'darkgoldenrod';
+     fontColor = 'darkgoldenrod';
         statusUpdate = "'"+groupName+"'"+'  has been sent for rework';
     }
     if(status == "send"){
-	 fontColor = 'green';
+     fontColor = 'green';
         statusUpdate = "'"+groupName+"'"+' has been approved';
     }
     if(status == "resolved"){
-	 fontcolor = 'green';
+     fontcolor = 'green';
         statusUpdate = groupName+"'s query"+'  has been resolved';
     }
     var dataObj = {};
@@ -3139,7 +3202,7 @@ function setSelectOptionInForm(){
             }
     });
 
-	$("#loading").show();
+    $("#loading").show();
 
 }
 
