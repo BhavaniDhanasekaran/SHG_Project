@@ -187,6 +187,7 @@ function getMemberDetails(memberId, groupId, loanId) {
             if (data.code == "2019") {
                 MemberDatadisplay(data)
                 highMarksList(memberId,loanId,data["data"]["memberDocumentDetails"]);
+                DocumentDetails(data);
                 $("#loading").hide();
             }
         },
@@ -546,6 +547,18 @@ function updateMemValidationStatus(status) {
     var comment = document.getElementById("comment").value;
     var memStatus = document.getElementById("memberValStatus").innerHTML;
     var loanTypeId = document.getElementById("loanTypeId1").innerHTML;
+    var loanAmount = document.getElementById("loanAmount").innerHTML;
+    var loanAmountInt = parseInt(loanAmount);
+    //console.log(loanAmountInt);
+
+    var loanAmountEligible = $(credit).find("td").eq(6).html();
+    var loanAmountEligibleInt = parseInt(loanAmountEligible);
+    //console.log(loanAmountEligibleInt);
+   
+	var roundOfNum = loanAmountEligibleInt;
+	roundOfNum = Math.floor(roundOfNum/1000)*1000;
+    //console.log("roundOfNum",roundOfNum);
+
     var commentCamunda = "";
     var dataObj = {};
     if (memStatus != "" && memStatus != "PEN") {
@@ -566,9 +579,15 @@ function updateMemValidationStatus(status) {
                 dataObj['message'] = commentCamunda;
             }
         }
-        if (taskName == "Conduct BAT- Member approval in CRM") {
+        if (taskName == "Conduct BAT- Member approval in CRM" || taskName == "Proposal scrutiny") {
             validationType = "CLM";
-        }
+            if (loanAmountInt > loanAmountEligibleInt)
+            {
+                $.alert("Your Loan Eligible Amount is : " + roundOfNum);
+                return false; 
+            }
+        }   
+
         if (taskName == "Resolve Credit Team Query") {
             validationType = "CLM";
             if (comment == "") {
@@ -716,7 +735,6 @@ function submitKYCForm(status) {
     var sbAccountNumber = document.getElementById("sbAccountNumber").value;
     var bankId = document.getElementById("bankId").value;
     var villageId = document.getElementById("villages").value;
-    var loanAmount = document.getElementById("loanAmount").value;
     var loanPurpose = document.getElementById("loanTypeValue").value;
     var sbAccountName = document.getElementById("sbAccountName").value;
     var mobileNumber = document.getElementById("mobileNo").value;
@@ -730,6 +748,26 @@ function submitKYCForm(status) {
     var appMemberId = document.getElementById("appMemberId").innerHTML;
     var loanTypeId = document.getElementById("loanTypeId1").innerHTML;
     var sequenceNumber = document.getElementById("sequenceNumber").value;
+
+    var loanAmount = document.getElementById("loanAmount").value;
+    var loanAmountInt = parseInt(loanAmount);
+    console.log(loanAmountInt);
+
+    var loanAmountEligible = $(credit).find("td").eq(6).html();
+    var loanAmountEligibleInt = parseInt(loanAmountEligible);
+    console.log(loanAmountEligibleInt);
+   
+	var roundOfNum = loanAmountEligibleInt;
+	roundOfNum = Math.floor(roundOfNum/1000)*1000;
+    console.log("roundOfNum",roundOfNum);
+
+    if (taskName == "Proposal scrutiny" || taskName == "Resolve Credit Team Query") {
+        if (loanAmountInt > loanAmountEligibleInt)
+        {
+            $.alert("Your Loan Eligible Amount is : " + roundOfNum);
+            return false; 
+        }
+    }    
 
 
     var commentCamunda = "";
@@ -1022,6 +1060,7 @@ function creditHistory(loanId) {
         },
 
         success: function(data) {
+            console.log(data);
             var creditData = data;
             var documentObj = [];
             var docPath = ''
@@ -1033,22 +1072,15 @@ function creditHistory(loanId) {
                     documentObj = creditData["data"][i]["memberDocument"];
 
                     var documentPath = '';
-                    if (documentObj[0]) {
+                    if (documentObj) {
+                        //console.log( documentObj.length);
                         for (var j = 0; j < documentObj.length; j++) {
                             if (documentObj[j]["documentType"] == "OVERLAPREPORT") {
                                 docPath = documentObj[j]["documentPath"];
                                 docId = documentObj[j]["docId"];
-                                docBtn = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + docId + "," + "config='width=500,height=500'" + ');return false;"+>View</button>';
-                            }
-                            else{
-                                docBtn = '<button type="button" class="btn btn-info btn-md btn-danger"+>View</button>';
-                            }
-                        }
-                    }
-                    else {
-                        docBtn = '<button type="button" class="btn btn-info btn-md btn-danger"+>View</button>';
-                    }
-                    htmlContent += '<tr><td>' + docBtn + ' </td>' +
+                                docBtn = '<button type="button"  class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + docId + "," + "config='width=500,height=500'" + ');return false;"+>View</button>';
+
+                        htmlContent += '<tr><td>' + docBtn + ' </td>' +
                         '<td>' + creditObj["appMemberId"] + '</td><td>' +
                         creditObj["memberName"] + '</td>' +
                         '<td>' + creditObj["s_product_type"] + '</td>' +
@@ -1075,6 +1107,19 @@ function creditHistory(loanId) {
                         '<td>' + creditObj["loan_amount_4"] + '</td>' +
                         '<td>' + creditObj["balance_4"] + '</td>' +
                         '</tr>';
+                            }
+                            else{
+                                docBtn = '<button type="button" class="btn btn-info btn-md btn-danger"+>View</button>';
+                            }
+                        }
+                    }
+                    else {
+                        docBtn = '<button type="button" class="btn btn-info btn-md btn-danger"+>View</button>';
+                    }
+
+
+
+                   
                 }
             }
             document.getElementById("creditData").innerHTML = htmlContent;
@@ -1322,6 +1367,12 @@ function updateGroupMemberStatus() {
     var nAnimator = document.getElementById("Animator").value;
     var nrepm1 = document.getElementById("repm1").value;
     var nrepm2 = document.getElementById("repm2").value;
+
+      if((nAnimator==nrepm1) ||(nrepm1==nrepm2)||(nrepm2==nAnimator)){
+    $.alert("Selected Option Cannot be Same,Please Change the Roles");
+        return false;
+
+    }
 
     var groupValData = {
         "entityType": "GROUP",
@@ -1708,6 +1759,7 @@ function approveLoan(updateloanData){
 function validate(evt, id) {
     var theEvent = evt || window.event;
     var key = theEvent.keyCode || theEvent.which;
+    if(key===8){return;}
     key = String.fromCharCode(key);
     if (id == 1) {
         var regex = /[0-9]/;
@@ -1816,7 +1868,7 @@ function rmGroupMaster(groupId) {
                 }
 
                 if(document.getElementById("minimumrem")){
-            if((10 - (10)) > 0 ){
+            if((10 - (appCount.length+activeCount.length)) > 0 ){
                             document.getElementById("minimumrem").innerHTML = 10 - (appCount.length+activeCount.length);
             }
             else{
@@ -2357,7 +2409,7 @@ function getMemberComments(processInstanceId, loanId) {
                         }
                     }
                     if(count>0){
-                        commentsHtml += '<div ><i class="fa fa-user fa-2" aria-hidden="true"></i> &nbsp<span style="font-size:12px;color:darkblue;"><b>' + value.memberName + ' (' + value.memberId + ' ) </b> <span> </div>';
+                        commentsHtml += '<div ><i class="fa fa-user fa-2" aria-hidden="true"></i> &nbsp<span style="font-size:12px;color:darkblue;"><b>' + value.memberName + ' (' + value.appMemberId + ' ) </b> <span> </div>';
                     }
                     $.each(value.comments, function(index, val) {
 
