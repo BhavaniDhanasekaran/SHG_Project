@@ -555,7 +555,7 @@ function updateMemValidationStatus(status) {
     var loanAmountEligible = $(credit).find("td").eq(6).html();
     var loanAmountEligibleInt = parseInt(loanAmountEligible);
     //console.log(loanAmountEligibleInt);
-   
+
 	var roundOfNum = loanAmountEligibleInt;
 	roundOfNum = Math.floor(roundOfNum/1000)*1000;
     //console.log("roundOfNum",roundOfNum);
@@ -585,9 +585,9 @@ function updateMemValidationStatus(status) {
             if (loanAmountInt > loanAmountEligibleInt)
             {
                 $.alert("Your Loan Eligible Amount is : " + roundOfNum);
-                return false; 
+                return false;
             }
-        }   
+        }
 
         if (taskName == "Resolve Credit Team Query") {
             validationType = "CLM";
@@ -757,7 +757,7 @@ function submitKYCForm(status) {
     var loanAmountEligible = $(credit).find("td").eq(6).html();
     var loanAmountEligibleInt = parseInt(loanAmountEligible);
     console.log(loanAmountEligibleInt);
-   
+
 	var roundOfNum = loanAmountEligibleInt;
 	roundOfNum = Math.floor(roundOfNum/1000)*1000;
     console.log("roundOfNum",roundOfNum);
@@ -766,9 +766,9 @@ function submitKYCForm(status) {
         if (loanAmountInt > loanAmountEligibleInt)
         {
             $.alert("Your Loan Eligible Amount is : " + roundOfNum);
-            return false; 
+            return false;
         }
-    }    
+    }
 
 
     var commentCamunda = "";
@@ -1122,7 +1122,7 @@ function creditHistory(loanId) {
 
 
 
-                   
+
                 }
             }
             document.getElementById("creditData").innerHTML = htmlContent;
@@ -1844,38 +1844,40 @@ function rmGroupMaster(groupId) {
                 var found_names = $.grep(groupViewData2.data.groupMemDetail, function(v) {
                     return v.memberStatus != "Rejected";
                 });
-                var activeCount = $.grep(groupViewData2.data.groupMemDetail, function(v) {
-                    return v.memberStatus == "Active";
-                });
-                var appCount = $.grep(groupViewData2.data.groupMemDetail, function(v) {
-                    return v.memberStatus == "Approved";
-                });
-                var rejCount = $.grep(groupViewData2.data.groupMemDetail, function(v) {
-                    return v.memberStatus == "Rejected";
-                });
-                if(document.getElementById("totCount")){
-                    document.getElementById("totCount").innerHTML = groupData.length;
-                }
-                if(document.getElementById("eligibleCount")){
-                    document.getElementById("eligibleCount").innerHTML = appCount.length;
-                }
-                if(document.getElementById("rejectedCount")){
-                    document.getElementById("rejectedCount").innerHTML = rejCount.length;
-                }
-          if(document.getElementById("newMemCount")){
-                    document.getElementById("newMemCount").innerHTML = activeCount.length;
-                }
 
-                if(document.getElementById("minimumrem")){
+                if(taskName == "Add New Members"){
+                    var activeCount = $.grep(groupViewData2.data.groupMemDetail, function(v) {
+                        return v.memberStatus == "Active";
+                    });
+                    var appCount = $.grep(groupViewData2.data.groupMemDetail, function(v) {
+                        return v.memberStatus == "Approved";
+                    });
+                    var rejCount = $.grep(groupViewData2.data.groupMemDetail, function(v) {
+                        return v.memberStatus == "Rejected";
+                    });
+                    if(document.getElementById("totCount")){
+                        document.getElementById("totCount").innerHTML = groupData.length;
+                    }
+                    if(document.getElementById("eligibleCount")){
+                        document.getElementById("eligibleCount").innerHTML = appCount.length;
+                    }
+                    if(document.getElementById("rejectedCount")){
+                        document.getElementById("rejectedCount").innerHTML = rejCount.length;
+                    }
+                    if(document.getElementById("newMemCount")){
+                        document.getElementById("newMemCount").innerHTML = activeCount.length;
+                    }
 
-            		if((10 - (appCount.length+activeCount.length)) > 0 ){
-                            document.getElementById("minimumrem").innerHTML = 10 - (appCount.length+activeCount.length);
-            		}
-           		 else{
-               		 document.getElementById("minimumrem").innerHTML = 0;
-            		}
+                    if(document.getElementById("minimumrem")){
 
-                }
+                        if((10 - (appCount.length+activeCount.length)) > 0 ){
+                                document.getElementById("minimumrem").innerHTML = 10 - (appCount.length+activeCount.length);
+                        }
+                        else{
+                         document.getElementById("minimumrem").innerHTML = 0;
+                        }
+                    }
+                 }
                 $.each(found_names, function(key, value) {
                     $('#Animator').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
                     $('#repm1').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
@@ -1920,90 +1922,84 @@ function rmGroupMaster(groupId) {
                     $(this).attr('title', ($(this).find('option:eq(' + $(this).get(0).selectedIndex + ')').attr('title')));
                 });
                 if(taskName == "Add New Members"){
-                for (var i=0;i<groupData.length;i++){
-                    if(groupData[i]["memberStatus"] == "Active"){
-                        groupData[i]["memberStatus"] = '<span style="color:dodgerblue;font-weight:bold;">Pending</span>';
-                        groupData[i]["memberName"] = '<span style="color:dodgerblue;font-weight:bold;">'+groupData[i]["memberName"]+'</span>';
-                        groupData[i]["appMemberId"] = '<span style="color:dodgerblue;font-weight:bold;">'+groupData[i]["appMemberId"]+'</span>';
-                    }
-                    if(groupData[i]["memberStatus"] == "Approved"){
-                        groupData[i]["memberStatus"] = '<span style="color:green;font-weight:bold;">Approved</span>';
-                        groupData[i]["memberName"] = '<span style="color:green;font-weight:bold;">'+groupData[i]["memberName"]+'</span>';
-                        groupData[i]["appMemberId"] = '<span style="color:green;font-weight:bold;">'+groupData[i]["appMemberId"]+'</span>';
-                    }
+                    for (var i=0;i<groupData.length;i++){
+                        if(groupData[i]["memberStatus"] == "Active"){
+                            groupData[i]["memberStatus"] = '<span style="color:dodgerblue;font-weight:bold;">Pending</span>';
+                            groupData[i]["memberName"] = '<span style="color:dodgerblue;font-weight:bold;">'+groupData[i]["memberName"]+'</span>';
+                            groupData[i]["appMemberId"] = '<span style="color:dodgerblue;font-weight:bold;">'+groupData[i]["appMemberId"]+'</span>';
+                        }
+                        if(groupData[i]["memberStatus"] == "Approved"){
+                            groupData[i]["memberStatus"] = '<span style="color:green;font-weight:bold;">Approved</span>';
+                            groupData[i]["memberName"] = '<span style="color:green;font-weight:bold;">'+groupData[i]["memberName"]+'</span>';
+                            groupData[i]["appMemberId"] = '<span style="color:green;font-weight:bold;">'+groupData[i]["appMemberId"]+'</span>';
+                        }
 
-                    if(groupData[i]["memberStatus"] == "Rejected"){
-                        groupData[i]["memberStatus"] = '<span style="color:red;font-weight:bold;">Rejected</span>';
-                        groupData[i]["memberName"] = '<span style="color:red;font-weight:bold;">'+groupData[i]["memberName"]+'</span>';
-                        groupData[i]["appMemberId"] = '<span style="color:red;font-weight:bold;">'+groupData[i]["appMemberId"]+'</span>';
-                    }
-                    if(groupData[i]["memberStatus"] == "Rework"){
-                        groupData[i]["memberStatus"] = '<span style="color:darkgoldenrod;font-weight:bold;">Rework</span>';
-                        groupData[i]["memberName"] = '<span style="color:darkgoldenrod;font-weight:bold;">'+groupData[i]["memberName"]+'</span>';
-                        groupData[i]["appMemberId"] = '<span style="color:darkgoldenrod;font-weight:bold;">'+groupData[i]["appMemberId"]+'</span>';
+                        if(groupData[i]["memberStatus"] == "Rejected"){
+                            groupData[i]["memberStatus"] = '<span style="color:red;font-weight:bold;">Rejected</span>';
+                            groupData[i]["memberName"] = '<span style="color:red;font-weight:bold;">'+groupData[i]["memberName"]+'</span>';
+                            groupData[i]["appMemberId"] = '<span style="color:red;font-weight:bold;">'+groupData[i]["appMemberId"]+'</span>';
+                        }
+                        if(groupData[i]["memberStatus"] == "Rework"){
+                            groupData[i]["memberStatus"] = '<span style="color:darkgoldenrod;font-weight:bold;">Rework</span>';
+                            groupData[i]["memberName"] = '<span style="color:darkgoldenrod;font-weight:bold;">'+groupData[i]["memberName"]+'</span>';
+                            groupData[i]["appMemberId"] = '<span style="color:darkgoldenrod;font-weight:bold;">'+groupData[i]["appMemberId"]+'</span>';
+                        }
+
                     }
                 }
-        }
                 if (document.getElementById("groupMemberDetails")) {
-                    $('#groupMemberDetails').dataTable({
-                        data: groupData,
-                        "bDestroy": true,
-                        "bJQueryUI": false,
-                        "bProcessing": true,
-                        "bSort": true,
-                        "bInfo": true,
-                        "bPaginate": false,
-                        "iDisplayLength": 10,
-                        "bSortClasses": false,
-                        "bAutoWidth": false,
-                        "searching": false,
-                        "sDom": '<"top">rt<"bottom"flp><"clear">',
-                        "bDeferRender": true,
-                        "aoColumns": [{
-                                "mData": "appMemberId",
-                                "sTitle": "App Member Id",
-                                "sWidth": "10%",
-                                className: "column"
-                            },
-                            {
-                                "mData": "memberName",
-                                "sTitle": "Member Name",
-                                "sWidth": "20%",
-                                className: "column"
-                            },
-                            {
-                                "mData": "age",
-                                "sTitle": "Age",
-                                "sWidth": "6%",
-                                className: "column"
-                            },
-                            {
-                                "mData": "address",
-                                "sTitle": "Address",
-                                "sWidth": "25%",
-                                className: "column"
-                            },
-                            {
-                                "mData": "villageName",
-                                "sTitle": "Village",
-                                "sWidth": "15%",
-                                className: "column"
-                            },
-                            {
-                                "mData": "pincode",
-                                "sTitle": "Pincode",
-                                "sWidth": "8%",
-                                className: "column"
-                            },
-                {
-                                "mData": "memberStatus",
-                                "sTitle": "Validation Status",
-                                "sWidth": "10%",
-                                className: "column"
-                            },
+                    if(taskName == "Add New Members"){
+                        $('#groupMemberDetails').dataTable({
+                            data: groupData,
+                            "bDestroy": true,
+                            "bJQueryUI": false,
+                            "bProcessing": true,
+                            "bSort": true,
+                            "bInfo": true,
+                            "bPaginate": false,
+                            "iDisplayLength": 10,
+                            "bSortClasses": false,
+                            "bAutoWidth": false,
+                            "searching": false,
+                            "sDom": '<"top">rt<"bottom"flp><"clear">',
+                            "bDeferRender": true,
+                            "aoColumns": [
+                                {   "mData": "appMemberId","sTitle": "App Member Id","sWidth": "10%",  className: "column" },
+                                {   "mData": "memberName", "sTitle": "Member Name", "sWidth": "20%", className: "column" },
+                                {   "mData": "age","sTitle": "Age", "sWidth": "6%",className: "column" },
+                                {   "mData": "address", "sTitle": "Address", "sWidth": "25%", className: "column"   },
+                                {   "mData": "villageName","sTitle": "Village","sWidth": "15%",className: "column"  },
+                                {   "mData": "pincode","sTitle": "Pincode","sWidth": "8%", className: "column" },
+                                {   "mData": "memberStatus","sTitle": "Validation Status", "sWidth": "10%", className: "column"  },
+                            ],
+                        });
+                    }
+                    else{
+                        $('#groupMemberDetails').dataTable({
+                            data: groupData,
+                            "bDestroy": true,
+                            "bJQueryUI": false,
+                            "bProcessing": true,
+                            "bSort": true,
+                            "bInfo": true,
+                            "bPaginate": false,
+                            "iDisplayLength": 10,
+                            "bSortClasses": false,
+                            "bAutoWidth": false,
+                            "searching": false,
+                            "sDom": '<"top">rt<"bottom"flp><"clear">',
+                            "bDeferRender": true,
+                            "aoColumns": [
+                                {   "mData": "appMemberId","sTitle": "App Member Id","sWidth": "10%",  className: "column" },
+                                {   "mData": "memberName", "sTitle": "Member Name", "sWidth": "20%", className: "column" },
+                                {   "mData": "age","sTitle": "Age", "sWidth": "6%",className: "column" },
+                                {   "mData": "address", "sTitle": "Address", "sWidth": "25%", className: "column"   },
+                                {   "mData": "villageName","sTitle": "Village","sWidth": "15%",className: "column"  },
+                                {   "mData": "pincode","sTitle": "Pincode","sWidth": "8%", className: "column" },
+                            ],
+                        });
 
-                        ],
-                    });
+                    }
                 }
             }
 
