@@ -53,6 +53,10 @@ $(function() {
      $("a[href=#groupPaymentHistory]").click(function() {
         getPaymentHistory("group",0,groupId);
     });
+    $("a[href=#SHGPaymentHist]").click(function() {
+        getSHGPaymentHistory(groupId);
+    });
+
 
 
 });
@@ -432,7 +436,7 @@ function DocumentDetails(data) {
                 if ($.inArray(memberDocumentsArray[key]["documentType"], imgFiles) != -1) {
                     if (memberDocumentsArray[key]["documentType"]) {
                         if (memberDocumentsArray[key]["documentType"] == "OVERLAPREPORT") {
-                            //$("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr('onClick', 'window.open(' + "'" + memberDocumentsArray[key]["documentPath"] + "'" + "," + memberDocumentsArray[key]["docId"] + "," + "config='width=500,height=500'" + ').focus();');
+                            $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr('onClick', 'window.open(' + "'" + memberDocumentsArray[key]["documentPath"] + "'" + "," + memberDocumentsArray[key]["docId"] + "," + "config='width=500,height=500'" + ').focus();');
                         }
                         if (memberDocumentsArray[key]["documentPath"] == null || memberDocumentsArray[key]["documentPath"] == 'Not uploaded') {
                             $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").css("display", "none");
@@ -1822,10 +1826,10 @@ function updateMembersCount() {
 function rmGroupMaster(groupId) {
     var url= '';
     if(taskName == "Add New Members"){
-    url = '/getAddNewMemTaskInfo/' + groupId + '/' + loanId + '/'+ processInstanceId;
+        url = '/getAddNewMemTaskInfo/' + groupId + '/' + loanId + '/'+ processInstanceId;
     }
     else{
-    url =  '/getGroupData/' + groupId + '/' + loanId + '/'+ taskName;
+        url =  '/getGroupData/' + groupId + '/' + loanId + '/'+ taskName;
    }
 
     $.ajax({
@@ -2552,6 +2556,8 @@ function clearMemberData() {
    $('#Animator').empty();
    $('#repm1').empty();
    $('#repm2').empty();
+    $('#creditLoadData tbody').remove();
+   
 
    $("#ADDRESSPROOF_docPath").css("display", "none");
    $("#ADDRESSPROOF_docPath").attr("src","");
@@ -3241,7 +3247,7 @@ function getGroupLevelInfo(groupId,loanId,taskName){
                         }
 
                         if (document.getElementById("groupMembersDropDown")) {
-                            $("#groupMembersDropDown").append('<a id="' + memberId + '" onclick="getMemberDetails(' + memberId + ',' + groupId + ',' + loanId + ');tabControl();loadGroupRoles('+groupId+','+ loanId+','+"'"+taskName+"'"+');" class="' + className + '" style="font-weight:bold;"> (' + groupData["data"]["groupMemDetail"][i]["sequenceNumber"] + ")  " + groupData["data"]["groupMemDetail"][i]["memberName"] + '</a>');
+                            $("#groupMembersDropDown").append('<a id="' + memberId + '" onclick="getMemberDetails(' + memberId + ',' + groupId + ',' + loanId + ');tabControl();" class="' + className + '" style="font-weight:bold;"> (' + groupData["data"]["groupMemDetail"][i]["sequenceNumber"] + ")  " + groupData["data"]["groupMemDetail"][i]["memberName"] + '</a>');
                         }
                         if (document.getElementById("groupName") && groupData["data"]["groupName"]) {
                             document.getElementById("groupName").innerHTML = groupData["data"]["groupName"];
@@ -3272,4 +3278,57 @@ function getGroupLevelInfo(groupId,loanId,taskName){
      		$.alert("Connection Time out");
         }
     });
+}
+
+function getSHGPaymentHistory(groupId){
+    $.ajax({
+        url: '/getSHGPaymentHistory/'+groupId,
+        type: 'post',
+        dataType: 'json',
+        beforeSend: function() {
+          $("#loading").show();
+        },
+        complete: function() {
+           $("#loading").hide();
+        },
+        success: function(data) {
+
+            var paymentHisData = data.data.paymentHistory;
+            var paymentHistoryData = [];
+            if(paymentHisData == "null" || paymentHisData == null){
+                paymentHistoryData  = []
+            }
+            else{
+                paymentHistoryData =  paymentHisData
+            }
+            $('#SHGPaymentHistoryData').dataTable({
+            "data": paymentHistoryData,
+            "bDestroy": true,
+            "bJQueryUI": false,
+            "bProcessing": true,
+            "bSort": true,
+            "bInfo": true,
+            "bPaginate": false,
+            "iDisplayLength": 10,
+            "bSortClasses": false,
+            "bAutoWidth": false,
+            "searching" :false,
+            "sDom": '<"top">rt<"bottom"flp><"clear">',
+            "bDeferRender": true,
+            "aoColumns": [
+                { "mData": "loanId", "sTitle": "Loan Id"},
+                { "mData": "loanType","sTitle": "Loan Type"},
+                { "mData": "loanAccNo","sTitle": "Loan Account Number"},
+                { "mData": "demand","sTitle": "Demand"},
+                { "mData": "balance","sTitle": "Balance"},
+                { "mData": "arrears","sTitle": "Arrears"},
+                ]
+            });
+        },
+         error: function (error) {
+            $("#loading").hide();
+            $.alert("Please try after sometime");
+         }
+    });
+
 }

@@ -594,3 +594,20 @@ def getmemberCreditEnq(request,memberId,loanId):
     except ShgInvalidRequest, e:
         errorLog.error("Exception raised inside getmemberCreditEnq(request,,memberId,loanId): %s" % e)
         return helper.bad_request('Unexpected error occurred while getting member credit history ')
+
+
+
+@csrf_exempt
+@session_required
+def getSHGPaymentHistory(request, groupId):
+    loggerInfo.info('------------------Entering getSHGPaymentHistory(request, groupId):---------------------- ')
+    try:
+        bodyData = {"groupId": str(groupId)}
+        serialized_data = sscoreClient._urllib2_request('workflowDetailView/GroupLoanPaymentHistory', bodyData,
+                                                        requestType='POST')
+        loggerInfo.info(
+            '------------------Exiting getSHGPaymentHistory(request, groupId):---------------------- ')
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        errorLog.error("Exception raised inside getSHGPaymentHistory(request, groupId): %s" % e)
+        return helper.bad_request('Unexpected error occurred while getting Loan group SHG PaymentHistory.')

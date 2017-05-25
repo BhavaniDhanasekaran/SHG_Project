@@ -99,7 +99,8 @@ kyc_urlpatterns = [
 
     url(r'^getLoanAccNo/(?P<processId>[^/]+)', kyc.getLoanAccNo, name='getLoanAccNo'),
     url(r'^getAddNewMemTaskInfo/(?P<groupId>[^/]+)/(?P<loanId>[^/]+)/(?P<processId>[^/]+)', kyc.getAddNewMemTaskInfo, name='getAddNewMemTaskInfo'),
-
+    url(r'^getSHGPaymentHistory/(?P<groupId>[^/]+)', kyc.getSHGPaymentHistory,
+        name='getSHGPaymentHistory'),
 
 ]
 urlpatterns += kyc_urlpatterns

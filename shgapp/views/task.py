@@ -84,7 +84,7 @@ def SHGForm(request, groupId, loanId, taskId, processId, taskName, loanTypeName,
             "Confirm disbursement"                       : "disburseDocsRead.html",
             "Resolve Confirm Disbursement Query"        : "disburseDocs.html",
             "Confirm Disbursement Query Response"       : "disburseDocsRead.html"
-
+            
         }
         loggerInfo \
             .info('------------------Exiting SHGForm(request,groupId,loanId,taskId,processId,taskName,loanTypeName,loanTypeId):---------------------- ')
