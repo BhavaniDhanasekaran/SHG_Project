@@ -551,17 +551,7 @@ function updateMemValidationStatus(status) {
     var comment = document.getElementById("comment").value;
     var memStatus = document.getElementById("memberValStatus").innerHTML;
     var loanTypeId = document.getElementById("loanTypeId1").innerHTML;
-    var loanAmount = document.getElementById("loanAmount").innerHTML;
-    var loanAmountInt = parseInt(loanAmount);
-    //console.log(loanAmountInt);
 
-    var loanAmountEligible = $(credit).find("td").eq(6).html();
-    var loanAmountEligibleInt = parseInt(loanAmountEligible);
-    //console.log(loanAmountEligibleInt);
-   
-	var roundOfNum = loanAmountEligibleInt;
-	roundOfNum = Math.floor(roundOfNum/1000)*1000;
-    //console.log("roundOfNum",roundOfNum);
     var commentCamunda = "";
     var dataObj = {};
     if (memStatus != "" && memStatus != "PEN") {
@@ -582,13 +572,8 @@ function updateMemValidationStatus(status) {
                 dataObj['message'] = commentCamunda;
             }
         }
-        if (taskName == "Conduct BAT- Member approval in CRM" || taskName == "Proposal scrutiny") {
+        if (taskName == "Conduct BAT- Member approval in CRM") {
             validationType = "CLM";
-            if (loanAmountInt > loanAmountEligibleInt)
-            {
-                $.alert("Your Loan Eligible Amount is : " + roundOfNum);
-                return false; 
-            }
         }
         if (taskName == "Resolve Credit Team Query") {
             validationType = "CLM";
@@ -752,25 +737,7 @@ function submitKYCForm(status) {
     var loanTypeId = document.getElementById("loanTypeId1").innerHTML;
     var sequenceNumber = document.getElementById("sequenceNumber").value;
 
-    var loanAmount = document.getElementById("loanAmount").value;
-    var loanAmountInt = parseInt(loanAmount);
-    console.log(loanAmountInt);
 
-    var loanAmountEligible = $(credit).find("td").eq(6).html();
-    var loanAmountEligibleInt = parseInt(loanAmountEligible);
-    console.log(loanAmountEligibleInt);
-   
-	var roundOfNum = loanAmountEligibleInt;
-	roundOfNum = Math.floor(roundOfNum/1000)*1000;
-    console.log("roundOfNum",roundOfNum);
-
-    if (taskName == "Proposal scrutiny" || taskName == "Resolve Credit Team Query") {
-        if (loanAmountInt > loanAmountEligibleInt)
-        {
-            $.alert("Your Loan Eligible Amount is : " + roundOfNum);
-            return false; 
-        }
-    } 
 
     var commentCamunda = "";
     if (validation == 1) {
