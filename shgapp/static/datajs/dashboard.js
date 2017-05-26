@@ -2,6 +2,12 @@ $(document).ready(function(){
 	$.ajax({
 		url : '/getDashboardData/',
         dataType: 'json',
+	 beforeSend: function() {
+            $("#loading").show();
+        },
+        complete: function() {
+            $("#loading").hide();
+        },
 		success: function (data) {
 			console.log(data);
             if(data["Task"]){
@@ -188,7 +194,7 @@ function viewGrpHistory(processInstanceId,groupName,shgId,loanId,loanTypeName){
                     var taskEndTime = convertmyDateTime(sortedData[i][1].endTime);
 					var taskEndTimeSplit = taskEndTime.split(" ");
 					taskEndTime = taskEndTimeSplit[0]+', '+taskEndTimeSplit[1]+'-'+taskEndTimeSplit[2]+'-'+taskEndTimeSplit[3]+', '+taskEndTimeSplit[4];
-                    sortedData[i][1].endTime = "Task has been completed on "+ taskEndTime;
+                    sortedData[i][1].endTime = "Task has been completed by " +'<label style="font-weight:bold;">'+sortedData[i][1]["assignee"]+ "</label>"+ " on "+ taskEndTime;
                 }
                 else{
                      sortedData[i][1].endTime = "Task has not been completed yet"
