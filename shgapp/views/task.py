@@ -301,29 +301,26 @@ def getDashboardData(request):
                 bodyLocationData = {"processVariables": [{"name": locationTypeId, "operator": "eq", "value": officeId}]}
 
             reworkTasksProVarDict = {
-                "KYC Check": '{"processVariables": [{"name": "kyc", "value": "resolved", "operator": "eq"},{"name": "' + str(
-                    locationTypeId) + '", "value": "' + str(
-                    officeId) + '", "operator": "eq"}],   "name": "KYC Check"}',
-                "Upload disbursement docs": '{"processVariables": [{"name": "disbursement", "value": "rework", "operator": "eq"},{"name": "' + str(
-                    locationTypeId) + '", "value": "' + str(
-                    officeId) + '", "operator": "eq"}],"name": "Upload disbursement docs"}',
-                "Proposal scrutiny": '{"processVariables": [{"name": "chekcbrespdate", "value": "resolved", "operator": "eq"},{"name": "' + str(
-                    locationTypeId) + '", "value": "' + str(
-                    officeId) + '", "operator": "eq"}],"name": "Proposal scrutiny"}',
-                "Confirm disbursement": '{"processVariables": [{"name": "disbursement", "value": "resolved", "operator": "eq"},{"name": "' + str(
-                    locationTypeId) + '", "value": "' + str(
-                    officeId) + '", "operator": "eq"}],"name": "Confirm disbursement"}'
+                "KYC Check": {"processVariables": [{"name": "kyc", "value": "resolved", "operator": "eq"},{"name": str(locationTypeId), "value":  int(officeId), "operator": "eq"}],   "name": "KYC Check"},
+                "Upload disbursement docs": {"processVariables": [{"name": "disbursement", "value": "rework", "operator": "eq"},{"name": str(locationTypeId), "value":  int(officeId), "operator": "eq"}],   "name": "Upload disbursement docs"},
+
+                "Proposal scrutiny": {"processVariables": [{"name": "chekcbrespdate", "value": "resolved", "operator": "eq"},{"name":str(locationTypeId), "value":int(officeId), "operator": "eq"}],"name": "Proposal scrutiny"},
+                "Confirm disbursement": {"processVariables": [{"name": "disbursement", "value": "resolved", "operator": "eq"},{"name": str(locationTypeId), "value": int(officeId), "operator": "eq"}],"name": "Confirm disbursement"}
             }
             myTasks = camundaClient._urllib2_request('task', bodyLocationData, requestType='POST')
             for data in myTasks:
                 if data["name"] in reworkTasksArray:
                     taskProVarList = {"name": data["name"],
                                       "processVariables": [{"name": locationTypeId, "operator": "eq", "value": officeId}]}
+                    loggerInfo.info(taskProVarList)
                     overallTaskCount = camundaClient._urllib2_request('task/count', taskProVarList, requestType='POST')
-                    rwrkProVarList = json.loads(reworkTasksProVarDict[data["name"]])
+                    loggerInfo.info("overallTaskCount"+str(overallTaskCount))
+                    rwrkProVarList = reworkTasksProVarDict[data["name"]]
                     rwrkTaskCount = camundaClient._urllib2_request('task/count', rwrkProVarList, requestType='POST')
+                    loggerInfo.info("rwrkTaskCount" + str(rwrkTaskCount))
                     taskCount[data["name"]] = overallTaskCount["count"] - rwrkTaskCount["count"]
                     taskCount[replaceTaskName[data["name"]]] = rwrkTaskCount["count"]
+
                 else:
                     if data["name"]:
                         if data["name"] in taskCount:
