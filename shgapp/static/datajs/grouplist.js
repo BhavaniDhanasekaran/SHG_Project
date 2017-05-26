@@ -560,10 +560,10 @@ function updateMemValidationStatus(status) {
     var loanAmountEligibleInt = parseInt(loanAmountEligible);
     //console.log(loanAmountEligibleInt);
 
-	var roundOfNum = loanAmountEligibleInt;
-	roundOfNum = Math.floor(roundOfNum/1000)*1000;
-    //console.log("roundOfNum",roundOfNum);
-
+    var roundOfNum = loanAmountEligibleInt;
+    roundOfNum = Math.floor(roundOfNum/1000)*1000;
+    //console.log("roundOfNum",roundOfNum);    
+    
     var commentCamunda = "";
     var dataObj = {};
     if (memStatus != "" && memStatus != "PEN") {
@@ -762,8 +762,8 @@ function submitKYCForm(status) {
     var loanAmountEligibleInt = parseInt(loanAmountEligible);
     console.log(loanAmountEligibleInt);
 
-	var roundOfNum = loanAmountEligibleInt;
-	roundOfNum = Math.floor(roundOfNum/1000)*1000;
+    var roundOfNum = loanAmountEligibleInt;
+    roundOfNum = Math.floor(roundOfNum/1000)*1000;
     console.log("roundOfNum",roundOfNum);
 
     if (taskName == "Proposal scrutiny" || taskName == "Resolve Credit Team Query") {
@@ -773,7 +773,6 @@ function submitKYCForm(status) {
             return false;
         }
     }
-
 
     var commentCamunda = "";
     if (validation == 1) {
