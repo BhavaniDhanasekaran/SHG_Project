@@ -584,14 +584,16 @@ function updateMemValidationStatus(status) {
                 dataObj['message'] = commentCamunda;
             }
         }
-        if (taskName == "Conduct BAT- Member approval in CRM" || taskName == "Proposal scrutiny") {
+        if (taskName == "Conduct BAT- Member approval in CRM") {
             validationType = "CLM";
+        }
+        if (taskName == "Proposal scrutiny") {
             if (loanAmountInt > loanAmountEligibleInt)
             {
                 $.alert("Your Loan Eligible Amount is : " + roundOfNum);
                 return false;
             }
-        }
+        }        
 
         if (taskName == "Resolve Credit Team Query") {
             validationType = "CLM";
