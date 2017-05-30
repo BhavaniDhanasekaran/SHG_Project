@@ -39,7 +39,13 @@ function loadUnassignedTaskList(data){
 		       date = moment.parseZone(createdDateTime).utc().format();
 			dateTime = moment(date).format("DD-MM-YYYY HH:mm:ss");
 			obj["taskDate"] = dateTime;
-			obj["taskId"]   = groupTaskdata[key]["id"]
+			obj["taskId"]   = groupTaskdata[key]["id"];
+			var StartDateTime = groupTaskdata[key]["processStartTime"];
+		    date2 = moment.parseZone(StartDateTime).utc().format();
+			dateTime2 = moment(date2).format("DD-MM-YYYY HH:mm:ss");
+			obj["StartDate"] = dateTime;
+			//console.log('start date',obj["StartDate"] );
+			//console.log('taskDate',obj["taskDate"] );
 
 		}
 		if(groupTaskdata[key]["customerData"]){
@@ -64,6 +70,8 @@ function loadUnassignedTaskList(data){
 				obj["centerName"] =customerData["centerName"];
 				obj["regionName"] =customerData["regionName"];
 				obj["loanAmount"] = customerData["loanAmount"];
+
+				obj["groupLoanId"] = obj["groupId"]+"_"+obj["loanId"]+"_"+groupTaskdata[key]["name"]+"_"+obj["taskId"]+"_"+obj["processInstanceId"]+"_"+groupTaskdata[key]["loanTypeName"]+"_"+customerData["loanTypeId"];
 				var loanAppDt = customerData["loanApplicationDate"].split("-");
 				var grpFormDt = customerData["groupFormationDate"].split("-");
 
@@ -71,7 +79,7 @@ function loadUnassignedTaskList(data){
 				obj["groupFormationDate"] =grpFormDt[2]+"-"+grpFormDt[1]+"-"+grpFormDt[0];
 
 			}
-		    obj["claim"] = '<button type="submit" onclick="claimconfirmBox('+"'"+obj["taskId"]+"'"+",'"+obj["shgName"]+"'"+');" class="btn btn-danger btn-md button">Claim</button>';
+		    obj["claim"] = '<button type="submit" onclick="claimconfirmBox('+"'"+obj["taskId"]+"'"+",'"+obj["shgName"]+"'"+",'"+obj["groupLoanId"]+"'"+');" class="btn btn-danger btn-md button">Claim</button>';
 		}
 		dataArray.push(obj);
 
@@ -91,6 +99,7 @@ function loadUnassignedTaskList(data){
             "aoColumns": [
                 { "mData": "taskName", "sTitle": "Task Name", "sWidth": "13%", className:"column"},
                 { "mData": "taskDate","sTitle": "Task Date"  , "sWidth": "8%", "sType": "date", className:"column"},
+                { "mData": "StartDate","sTitle": "Process Date"  , "sWidth": "8%", "sType": "date", className:"column"},
                 { "mData": "loanType","sTitle": "Product Name"  , "sWidth": "8%", className:"column"},
                 { "mData": "loanAmount","sTitle": "Loan Amt"  , "sWidth": "8%", className:"column"},
                 { "mData": "shgId","sTitle": "SHG ID"  , "sWidth": "8%", className:"column"},
@@ -109,7 +118,121 @@ function loadUnassignedTaskList(data){
             "pageLength": 50
         } );
       triggerLoadFunc();
+      GetAllData(dataArray);
  }
+
+
+
+
+
+
+ 
+var caldata;
+function GetAllData(data){
+
+caldata=data;
+
+
+if(data.length > 0){
+var group = _.groupBy(data, 'loanType')
+var result = _.map(_.keys(group), function(e) {
+  return _.reduce(group[e], function(r, o) {
+    return r.count += +o.loanAmount, r
+  }, {loanType: e, count: 0, sum: group[e].length})
+})
+
+
+
+  var html = "<table class='table table-striped table-bordered table-hover paymentTable'>";
+     html+="<thead class='thin-border-bottom'><tr><td style='text-align:center;valign='middle'><b>LOAN TYPE</b></td><td style='text-align:center;valign='middle'><b>TOTAL AMOUNT</b></td><td style='text-align:center;valign='middle'><b>NUMBER OF LOAN</b></td><td style='text-align:center;valign='middle'><b>VIEW</b></td></thead>";
+    for (var i = 0; i < result.length; i++) {
+        html+="<tr>"
+        html+="<td style='text-align:center;valign='middle'>"+result[i].loanType+"</td>";
+        html+="<td style='text-align:center;valign='middle'>"+result[i].count+"</td>";
+        html+="<td style='text-align:center;valign='middle'>"+result[i].sum+"</td>";
+        html+="<td style='text-align:center;valign='middle'><button type='button' class='btn btn-danger btn-md button' onclick=GetLoanType('"+result[i].loanType+"');>View</button></td>";
+        html+="</tr>";
+
+    }
+    html+="</table>";
+    $("#taskListTable2").html(html);
+
+}
+else{
+
+var html = "<table class='table table-striped table-bordered table-hover paymentTable'>";
+     html+="<thead class='thin-border-bottom'><tr><td style='text-align:center;valign='middle'><b>LOAN TYPE</b></td><td style='text-align:center;valign='middle'><b>TOTAL AMOUNT</b></td><td style='text-align:center;valign='middle'><b>NUMBER OF LOAN</b></td><td style='text-align:center;valign='middle'><b>VIEW</b></td></thead>";
+    
+        html+="<tr>"
+        html+="<td style='text-align:center;valign='middle'  colspan='4'><b>Data Not Avialable </b></td>";        
+        html+="</tr>";
+    html+="</table>";
+    $("#taskListTable2").html(html);
+}
+
+
+
+}
+
+function GetLoanType(data){
+var LoanType=data;
+         
+ var filterData= _.filter(caldata, function(o) { 
+    return o.loanType == LoanType; 
+ });  
+
+
+$("#tasktable1").show();
+$("#taskListTable2").hide();
+$('#taskListTable').empty();
+
+$.fn.dataTable.moment('DD-MM-YYYY HH:mm:ss');
+	var table = $('#taskListTable').dataTable({
+            data: filterData,
+	        "pageLength": 50,
+            rowId: "groupLoanId",
+            destroy: true,
+            "bProcessing": true,
+            "scrollY": true,
+            fixedHeader : true,
+            "sPaginationType": "full_numbers",
+            "bSortable": true,
+
+            "aoColumns": [
+                { "mData": "taskName", "sTitle": "Task Name", "sWidth": "13%", className:"column"},
+                { "mData": "taskDate","sTitle": "Task Date"  , "sWidth": "8%", "sType": "date", className:"column"},
+                { "mData": "StartDate","sTitle": "Process Date"  , "sWidth": "8%", "sType": "date", className:"column"},
+                { "mData": "loanType","sTitle": "Product Name"  , "sWidth": "8%", className:"column"},
+                { "mData": "loanAmount","sTitle": "Loan Amt"  , "sWidth": "8%", className:"column"},
+                { "mData": "shgId","sTitle": "SHG ID"  , "sWidth": "8%", className:"column"},
+                { "mData": "shgName","sTitle": "SHG Name"  , "sWidth": "10%", className:"column"},
+                { "mData": "loanApplicationDate","sTitle": "Loan App. Dt"  , "sWidth": "10%", className:"column"},
+                { "mData": "groupFormationDate","sTitle": "Grp Frmtn Dt"  , "sWidth": "10%", className:"column"},
+                { "mData": "memberCount","sTitle": "Total Members"  , "sWidth": "8%", className:"column"},
+                { "mData": "regionName","sTitle": "Region Name"  , "sWidth": "12%", className:"column"},
+                { "mData": "clusterName","sTitle": "Cluster Name"  , "sWidth": "12%", className:"column"},
+                { "mData": "centerName","sTitle": "Center Name"  , "sWidth": "12%", className:"column"},
+                { "mData": "claim","sTitle": "Claim"  , "sWidth": "10%", className:"column"},
+
+            ],
+        }).fnDestroy();
+        table = $('#taskListTable').DataTable( {
+            "pageLength": 50
+        } );
+      triggerLoadFunc();
+
+}
+
+
+
+
+
+
+
+
+
+
+
 
 function loadAssignedTaskList(){
 	$("#loading").hide();
@@ -154,11 +277,16 @@ function loadAssignedTaskList(){
 				obj["taskName"] = '<a class="tdViewData">'+myTaskdata[key]["name"]+'</a>';
 			}
 			var createdDateTime = myTaskdata[key]["created"];
-		       date = moment.parseZone(createdDateTime).utc().format();
+		    date = moment.parseZone(createdDateTime).utc().format();
 			dateTime = moment(date).format("DD-MM-YYYY HH:mm:ss");		
 			obj["taskDate"] = '<a class="tdViewData">'+dateTime+'</a>';
 			obj["taskId"]   = myTaskdata[key]["id"]
-			obj["processInstanceId"] = myTaskdata[key]["processInstanceId"]
+			obj["processInstanceId"] = myTaskdata[key]["processInstanceId"];
+
+			var StartDateTime = myTaskdata[key]["processStartTime"];
+		    date2 = moment.parseZone(StartDateTime).utc().format();
+			dateTime2 = moment(date2).format("DD-MM-YYYY HH:mm:ss");
+			obj["StartDate"] ='<a class="tdViewData">'+dateTime2+'</a>';
 		}
 		if(myTaskdata[key]["customerData"]){
 			var customerData;
@@ -217,6 +345,7 @@ function loadAssignedTaskList(){
             "aoColumns": [
                 { "mData": "taskName", "sTitle": "Task Name", "sWidth": "13%", className:"column"},
                 { "mData": "taskDate","sTitle": "Task Date"  , "sWidth": "8%", "sType": "date", className:"column"},
+                { "mData": "StartDate","sTitle": "Process Date"  , "sWidth": "8%", "sType": "date", className:"column"},
                 { "mData": "loanType","sTitle": "Product Name"  , "sWidth": "8%", className:"column"},
                 { "mData": "loanAmount","sTitle": "Loan Amt"  , "sWidth": "8%", className:"column"},
                 { "mData": "shgId","sTitle": "SHG ID"  , "sWidth": "8%", className:"column"},
@@ -334,6 +463,30 @@ function claim(d){
 	    }
 	});
 }
+
+
+function DirectClaimTask(d,alldata){
+	$.ajax({
+	    url: '/task/'+d+'/claim/user',
+	    dataType: 'json',
+	    success: function (data) {
+	    var groupLoanID = alldata;	
+		groupLoanIDSplit = groupLoanID.split("_");
+		groupID = groupLoanIDSplit[0];
+		loanID =  groupLoanIDSplit[1];
+		taskName =  groupLoanIDSplit[2];
+		taskId =  groupLoanIDSplit[3];
+		processInstanceId =  groupLoanIDSplit[4];
+		loanTypeName =  groupLoanIDSplit[5];
+		loanTypeId =  groupLoanIDSplit[6];	
+		window.location = '/SHGForm/'+groupID+'/'+loanID+'/'+taskId+'/'+processInstanceId+'/'+taskName+'/'+loanTypeName+'/'+loanTypeId;
+	   // window.location = '../SHGForm/23787/153229/29da9c61-30c6-11e7-86a5-0687f8408349/1305b912-1e92-11e7-94bf-065e2f655607/Approve%20Loan/ATL/2';
+		//window.location.reload();
+	    }
+	});
+}
+
+
 
 function unClaim(d){
 	$.ajax({
@@ -477,13 +630,31 @@ function unClaimconfirmBox(id,shgName){
 		     }
 		});
 }
-function claimconfirmBox(id,shgName){
+
+
+function claimconfirmBox(id,shgName,alldata){
 	$.confirm({
 		    title: 'Do you want to claim '+"'"+shgName+"'"+'?',
 		    confirmButton: 'Yes',
 		    cancelButton: 'No',
 		    confirm: function(){
-		    claim(id)
+		    		var groupLoanID = alldata;
+					groupLoanIDSplit = groupLoanID.split("_");
+					groupID = groupLoanIDSplit[0];
+					loanID =  groupLoanIDSplit[1];
+					taskName =  groupLoanIDSplit[2];
+					taskId =  groupLoanIDSplit[3];
+					processInstanceId =  groupLoanIDSplit[4];
+					loanTypeName =  groupLoanIDSplit[5];
+					loanTypeId =  groupLoanIDSplit[6];	
+		    if(taskName=="Proposal scrutiny"){
+				    DirectClaimTask(id,alldata);
+		    }
+		    else{
+
+		  		claim(id);
+		  	}	
+		    
 		    },
 		    cancel: function(){
 		     }

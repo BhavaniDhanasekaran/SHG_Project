@@ -322,6 +322,14 @@ def confirmDisburseRwrk(request):
             if data["processInstanceId"] in QRTaskDict:
                 QRTaskDict[data["processInstanceId"]][data["name"]] = data["value"]
 
+    
+    taskProVarList4 = camundaClient._urllib2_request('history/process-instance',{"processInstanceIds": proInstArrTrue}, requestType='POST')
+    
+    for data in taskProVarList4:
+        if data["id"] in QRTaskDict:
+            QRTaskDict[data["id"]]["processStartTime"] = data["startTime"]
+
+
     for key in QRTaskDict:
         if groupName == "CLM" or groupName == "BM" or groupName == "CMR":
             if QRTaskDict[key]["name"] == "Upload disbursement docs":
@@ -384,6 +392,14 @@ def queryRespTaskList(request):
         for data in taskProVarList[key]:
             if data["processInstanceId"] in QRTaskDict:
                 QRTaskDict[data["processInstanceId"]][data["name"]] = data["value"]
+
+    taskProVarList4 = camundaClient._urllib2_request('history/process-instance',{"processInstanceIds": proInstArrTrue}, requestType='POST')
+    
+    for data in taskProVarList4:
+        if data["id"] in QRTaskDict:
+            QRTaskDict[data["id"]]["processStartTime"] = data["startTime"]
+
+
 
     for key in QRTaskDict:
         if groupName == "DataSupportTeam":
@@ -518,7 +534,6 @@ def proposalScrutinyTaskList(request):
 
     for key in range(len(taskProVarList)):
         for data in taskProVarList[key]:
-            print data
             if data["processInstanceId"] in proposalScrutinyDict:
                 proposalScrutinyDict[data["processInstanceId"]][data["name"]] = data["value"]
             if groupName == "CreditTeam":
@@ -529,6 +544,12 @@ def proposalScrutinyTaskList(request):
                 if data["name"] == "disbursement":
                     if data["value"] == "rework":
                         processInstancesQRArr.append(data["processInstanceId"])
+
+    taskProVarList4 = camundaClient._urllib2_request('history/process-instance',{"processInstanceIds": proInstArrTrue}, requestType='POST')
+    
+    for data in taskProVarList4:
+        if data["id"] in proposalScrutinyDict:
+            proposalScrutinyDict[data["id"]]["processStartTime"] = data["startTime"]
 
     for key in proposalScrutinyDict:
         if key not in processInstancesQRArr:
@@ -588,6 +609,13 @@ def KYCTaskListByLoanType(request):
                 if data["name"] == "kyc":
                     if data["value"] == "resolved":
                         loanTypeProInstArr.append(data["processInstanceId"])
+
+            taskProVarList4 = camundaClient._urllib2_request('history/process-instance',{"processInstanceIds": proInstArrTrue}, requestType='POST')
+            
+        for data in taskProVarList4:
+            if data["id"] in groupTaskDict:
+                 groupTaskDict[data["id"]]["processStartTime"] = data["startTime"]                
+                        
 
         for key in groupTaskDict:
             if key not in loanTypeProInstArr:
@@ -769,6 +797,14 @@ def confDisburseQueryResponse(request):
             if data["processInstanceId"] in QRTaskDict:
                 QRTaskDict[data["processInstanceId"]][data["name"]] = data["value"]
 
+
+    taskProVarList4 = camundaClient._urllib2_request('history/process-instance',{"processInstanceIds": proInstArrTrue}, requestType='POST')
+    
+    for data in taskProVarList4:
+        if data["id"] in QRTaskDict:
+            QRTaskDict[data["id"]]["processStartTime"] = data["startTime"]
+
+
     for key in QRTaskDict:
         if groupName == "CreditTeam":
             if QRTaskDict[key]["name"] == "Confirm disbursement":
@@ -828,13 +864,21 @@ def confirmDisbursement(request):
 
     for key in range(len(taskProVarList)):
         for data in taskProVarList[key]:
-            print data
+            
             if data["processInstanceId"] in proposalScrutinyDict:
                 proposalScrutinyDict[data["processInstanceId"]][data["name"]] = data["value"]
             if groupName == "CreditTeam":
                 if data["name"] == "disbursement":
                     if data["value"] == "resolved":
                         processInstancesQRArr.append(data["processInstanceId"])
+
+    
+    taskProVarList4 = camundaClient._urllib2_request('history/process-instance',{"processInstanceIds": proInstArrTrue}, requestType='POST')
+    
+    for data in taskProVarList4:
+        if data["id"] in proposalScrutinyDict:
+            proposalScrutinyDict[data["id"]]["processStartTime"] = data["startTime"]
+                                
 
     for key in proposalScrutinyDict:
         if key not in processInstancesQRArr:
@@ -843,6 +887,3 @@ def confirmDisbursement(request):
     loggerInfo.info('------------------Exiting confirmDisbursement(request):---------------------- ')
     return HttpResponse(json.dumps(proposalScrutinyData), content_type="application/json")
 	
-
-
-
