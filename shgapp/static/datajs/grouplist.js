@@ -265,9 +265,9 @@ function highMarksList(memberId,loanId,memberDocData) {
          },
          success: function(data) {
             if(data.code == "2045"){
-
+		   var conflictDataCreditEnquiry = [];
                 if (data["data"] && data["data"][0]) {
-                    var conflictDataCreditEnquiry =data["data"];
+                    conflictDataCreditEnquiry =data["data"];
                     if (document.getElementById("CBStatus") && conflictDataCreditEnquiry[0]) {
                         document.getElementById("CBStatus").innerHTML = conflictDataCreditEnquiry[0]["status"];
                     }
@@ -296,7 +296,11 @@ function highMarksList(memberId,loanId,memberDocData) {
                             }
                         }
                     }
-                    if ($.fn.DataTable.isDataTable('#creditLoadData')) {
+                }
+		  else{
+			conflictDataCreditEnquiry = [];
+		  }
+		  if ($.fn.DataTable.isDataTable('#creditLoadData')) {
                         $("#creditLoadData").dataTable().fnDestroy();
                     }
                     $('#creditLoadData').dataTable({
@@ -411,7 +415,6 @@ function highMarksList(memberId,loanId,memberDocData) {
                             }
                             ],
                         });
-                    }
                 }
          }
     });
@@ -1669,7 +1672,7 @@ function approveLoan(updateloanData){
         "entityType": "LOAN",
         "validationType": "POST",
         "userId": userId,
-        "subStatus": "POST_KYC_VALIDATED",
+        "subStatus": "Approved",
         "installments": installment,
         "memberLoanDetails": eval(updateloanData),
         "bpmTaskId": taskId,
@@ -2519,6 +2522,7 @@ function clearMemberData() {
    $('#Animator').empty();
    $('#repm1').empty();
    $('#repm2').empty();
+   $('#creditLoadData tbody').remove();
 
    $("#ADDRESSPROOF_docPath").css("display", "none");
    $("#ADDRESSPROOF_docPath").attr("src","");
