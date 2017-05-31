@@ -124,6 +124,18 @@ function getGroupData(groupID, loanId) {
                         if (document.getElementById("groupId") && groupData["data"]["groupId"]) {
                             document.getElementById("groupId").innerHTML = groupData["data"]["groupId"];
                         }
+                        if (document.getElementById("center") && groupData["data"]["center"]) {
+                            document.getElementById("center").innerHTML = groupData["data"]["center"];                          
+                        }
+                        if (document.getElementById("region") && groupData["data"]["region"]) {
+                            document.getElementById("region").innerHTML = groupData["data"]["region"];                          
+                        }
+                        if (document.getElementById("cluster") && groupData["data"]["cluster"]) {
+                            document.getElementById("cluster").innerHTML = groupData["data"]["cluster"];                          
+                        }
+                        if (document.getElementById("groupLoanAmount") && groupData["data"]["groupLoanAmount"]) {
+                            document.getElementById("groupLoanAmount").innerHTML = groupData["data"]["groupLoanAmount"];                          
+                        }                        
                     }
                     var membersCount = document.getElementById("groupMembersDropDown").getElementsByTagName("a").length;
                     var approvedCount = $('.Approved').length;
