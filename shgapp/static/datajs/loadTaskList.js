@@ -43,7 +43,7 @@ function loadUnassignedTaskList(data){
 			var StartDateTime = groupTaskdata[key]["processStartTime"];
 		    date2 = moment.parseZone(StartDateTime).utc().format();
 			dateTime2 = moment(date2).format("DD-MM-YYYY HH:mm:ss");
-			obj["StartDate"] = dateTime;
+			obj["StartDate"] = dateTime2;
 			//console.log('start date',obj["StartDate"] );
 			//console.log('taskDate',obj["taskDate"] );
 
@@ -118,19 +118,38 @@ function loadUnassignedTaskList(data){
             "pageLength": 50
         } );
       triggerLoadFunc();
-      GetAllData(dataArray);
+     
+      if((dataArray.length > 0 ) && (taskName == "Proposal scrutiny")){	
+       		GetAllData(dataArray);
+    	}
+    	else{
+    		errortable();
+    	}
  }
 
 
 
+function errortable(){
+
+	var html = "<table class='table table-striped table-bordered table-hover paymentTable'>";
+     html+="<thead class='thin-border-bottom'><tr><td style='text-align:center;valign='middle'><b>LOAN TYPE</b></td><td style='text-align:center;valign='middle'><b>TOTAL AMOUNT</b></td><td style='text-align:center;valign='middle'><b>NUMBER OF LOAN</b></td><td style='text-align:center;valign='middle'><b>VIEW</b></td></thead>";
+    
+        html+="<tr>"
+        html+="<td style='text-align:center;valign='middle'  colspan='4'><b>Data Not Avialable </b></td>";        
+        html+="</tr>";
+    html+="</table>";
+    $("#taskListTable2").html(html);
+
+}
 
 
 
  
 var caldata;
 function GetAllData(data){
-
 caldata=data;
+//console.log("caldata",caldata);
+
 
 
 if(data.length > 0){
@@ -159,20 +178,16 @@ var result = _.map(_.keys(group), function(e) {
 
 }
 else{
+	errortable();
 
-var html = "<table class='table table-striped table-bordered table-hover paymentTable'>";
-     html+="<thead class='thin-border-bottom'><tr><td style='text-align:center;valign='middle'><b>LOAN TYPE</b></td><td style='text-align:center;valign='middle'><b>TOTAL AMOUNT</b></td><td style='text-align:center;valign='middle'><b>NUMBER OF LOAN</b></td><td style='text-align:center;valign='middle'><b>VIEW</b></td></thead>";
-    
-        html+="<tr>"
-        html+="<td style='text-align:center;valign='middle'  colspan='4'><b>Data Not Avialable </b></td>";        
-        html+="</tr>";
-    html+="</table>";
-    $("#taskListTable2").html(html);
 }
 
 
 
 }
+
+
+
 
 function GetLoanType(data){
 var LoanType=data;
