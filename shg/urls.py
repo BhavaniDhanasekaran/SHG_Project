@@ -43,6 +43,7 @@ task_urlpatterns = [
     url(r'^dsdatecount/', task.dsdatecount, name='dcount'),
     url(r'^dstasklist/', task.dstasklist, name='dstasklist'),
     url(r'^dstasklistByName/(?P<taskName>[^/]+)', task.dstasklistByName, name='dstasklistByName'),
+    url(r'^taskReassign/', task.taskReassign, name='taskReassign'),
     url(r'^mytask/', task.mytask, name='mytask'),
     url(
         r'^SHGForm/(?P<groupId>[^/]+)/(?P<loanId>[^/]+)/(?P<taskId>[^/]+)/(?P<processId>[^/]+)/(?P<taskName>[^/]+)/(?P<loanTypeName>[^/]+)/(?P<loanTypeId>[^/]+)',
@@ -54,6 +55,9 @@ task_urlpatterns = [
     url(r'^viewGroupHistoryDB/(?P<groupId>[^/]+)/(?P<loanId>[^/]+)/(?P<taskName>[^/]+)/(?P<loanTypeName>[^/]+)/(?P<processInstanceId>[^/]+)', task.viewGroupHistoryDB,
         name='viewGroupHistoryDB'),
     url(r'^getOverAllHistory/(?P<processInstanceId>[^/]+)', task.getOverAllHistory, name='getOverAllHistory'),
+    url(r'^getCTUsers/(?P<designation>[^/]+)', task.getCTUsers, name='getCTUsers'),
+    url(r'^listAssigneeTasks/', task.listAssigneeTasks, name='listAssigneeTasks'),
+    url(r'^reassignAllTasks/', task.reassignAllTasks, name='reassignAllTasks'),
     url(r'^getGroupLevelInfo/(?P<groupID>[^/]+)/(?P<loanId>[^/]+)/(?P<taskName>[^/]+)', task.getGroupLevelInfo,
         name='getGroupLevelInfo'),
 
@@ -91,7 +95,9 @@ kyc_urlpatterns = [
     url(r'^generateLOS/', kyc.generateLOS, name='generateLOS'),
     url(r'^disburseDocsData/(?P<loanId>[^/]+)', kyc.disburseDocsData, name='disburseDocsData'),
     url(r'^updateDisburseMemberData/', kyc.updateDisburseMemberData, name='updateDisburseMemberData'),
+    url(r'^approveDisburseDocs/', kyc.approveDisburseDocs, name='approveDisburseDocs'),
     url(r'^confirmChqDisbursement/', kyc.confirmChqDisbursement, name='confirmChqDisbursement'),
+    url(r'^confirmChqDisbursementRework/', kyc.confirmChqDisbursementRework, name='confirmChqDisbursementRework'),
 
     url(r'^LoanActiveMemberCount/(?P<loanId>[^/]+)', kyc.LoanActiveMemberCount, name='LoanActiveMemberCount'),
     url(r'^getmemberConflictHist/(?P<memberId>[^/]+)', kyc.getmemberConflictHist, name='getmemberConflictHist'),

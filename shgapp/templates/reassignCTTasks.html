@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block javascript %}
+<script src="/static/datajs/dashboard.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/loadTaskList.js?v={{JS_VERSION}}"></script>
+<script>
+        var taskList    = '{{ taskList | escapejs }}';
+        var group = '{{ group | escapejs }}';
+  	    var roleAction = '{{ roleAction | escapejs}}';
+
+
+        if(taskList){
+            taskList = JSON.parse(taskList);
+        }
+        $(document).ready(function(){
+            $('.datepicker').datepicker({
+            autoclose: true,
+            todayHighlight: true,
+            dateFormat :'dd/mm/yy'
+            }).next().on(ace.click_event, function(){
+                $(this).prev().focus();
+            });
+
+	        $.ajax({
+	            url: '/getCTUsers/CreditTeam',
+	            dataType :'json',
+	            success: function(data){
+	                if(data.code == '5008'){
+	                    console.log(data);
+	                    var userData = data.data;
+	                    $('.CTuserList').append('<option value="" > -- Select -- </option>');
+                        for(var i = 0; i < userData.length ; i++){
+                            $('.CTuserList').append('<option value="'+userData[i].userName+'">'+userData[i].userName+'</option>');
+                        }
+	                }
+
+	            }
+	        });
+            loadCTUserTasks(taskList);
+        });
+    </script>
+
+{% endblock %}
+{% block content %}
+
+<div class="main">
+    <div class="row">
+        <div style="margin-bottom:10px;float:left;margin-left:12px;width:65%">
+            <label>Search By </label>&nbsp;&nbsp;
+                <select id="searchBy" class="form-control selectpicker searchBy" style="display:-webkit-inline-box;width:20%;">
+                    <option value="">-- Select --</option>
+                    <option value=1>Task Name</option>
+                    <option value=2>Task Date</option>
+                    <option value=3>Process Start Date</option>
+                    <option value=4>Assignee</option>
+                </select>
+                <select id="taskNameSelect" class="form-control selectpicker" style="display:none;width:20%;">
+                    <option value="">-- Select --</option>
+                    <option value="Proposal scrutiny">Proposal Scrutiny</option>
+                    <option value="BM Reply">BM Reply</option>
+                    <option value="Confirm disbursement">Confirm Disbursement</option>
+                    <option value="Confirm Disbursement Query Response">Confirm Disb Query Resp</option>
+                </select>
+                <select id="taskAssignee" class="form-control selectpicker CTuserList"  style="display:none;width:25%;">
+                </select>&nbsp;&nbsp;
+                <div id="dateSelect" style="display:none;margin-right:-14%;">
+                    <label>Date From</label>&nbsp;&nbsp;
+                    <input id="dateFrom" class="form-control datepicker" style="width:20%;margin-top:-8px;" data-date-format="dd-mm-yyyy"/>&nbsp;&nbsp;
+                    <label>Date To</label>&nbsp;&nbsp;
+                    <input id="dateTo" class="form-control datepicker" style="width:20%;margin-top:-8px;" data-date-format="dd-mm-yyyy"/>&nbsp;&nbsp;
+                </div>
+                <button onclick="searchTasks();" class="btn btn-danger">Search</button>
+        </div>
+        <div style="margin-bottom:10px;">
+            <label>Re-Assign To : </label>
+             <select id="taskReassignee" class="form-control selectpicker CTuserList" style="display:-webkit-inline-box;width:15%;">
+            </select>&nbsp;&nbsp;
+            <button onclick="reassignAllTasks()" class="btn btn-danger">Re-assign</button>
+        </div>
+    <div class="col-xs-12 widget-container-col" id="widget-container-col-2">
+        <div class="widget-box widget-color-blue" id="widget-box-2">
+            <div class="widget-header">
+                <h5 class="widget-title bigger lighter">
+                    <i class="ace-icon fa fa-table"></i>
+                    Task List <span id="taskName"></span>
+                </h5>
+
+            </div>
+            <div class="widget-body" style="overflow-x:auto;">
+                <div class="widget-main no-padding">
+                    <table id="taskListTable" class="table table-striped table-bordered table-hover">
+
+                    </table>
+                </div>
+            </div>
+        </div>
+        </br>
+        </br>
+    </br>
+    </br>
+</div>
+</div>
+</div>
+
+{% endblock content %}

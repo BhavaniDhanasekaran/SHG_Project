@@ -155,7 +155,7 @@ function loadAssignedTaskList(){
 			}
 			var createdDateTime = myTaskdata[key]["created"];
 		       date = moment.parseZone(createdDateTime).utc().format();
-			dateTime = moment(date).format("DD-MM-YYYY HH:mm:ss");		
+			dateTime = moment(date).format("DD-MM-YYYY HH:mm:ss");
 			obj["taskDate"] = '<a class="tdViewData">'+dateTime+'</a>';
 			obj["taskId"]   = myTaskdata[key]["id"]
 			obj["processInstanceId"] = myTaskdata[key]["processInstanceId"]
@@ -274,7 +274,7 @@ $(document).ready(function (){
 
 function triggerLoadFunc(){
 	taskCount();
-	
+
 	$('.tdViewData').click(function() {
 	     var trId = $(this).closest('tr').attr('id');
 	     var groupLoanID = trId;
@@ -319,8 +319,8 @@ function taskCount(){
 	    },
        error: function (error) {
        		$("#loading").hide();
-       	 		$.alert("Connection Time out");	
-               
+       	 		$.alert("Connection Time out");
+
               }
 	});
 }
@@ -531,7 +531,270 @@ function getTaskList(taskName){
 	    },
 	    error: function (error) {
        	$("#loading").hide();
-       	$.alert("Connection Time out");	
+       	$.alert("Connection Time out");
         }
 	});
 }
+
+
+
+
+
+
+function loadCTUserTasks(data){
+	var groupTaskdata = data;
+
+	var dataArray = [];
+	$("#loading").hide();
+	for(var key in groupTaskdata){
+		var obj={};
+		if(groupTaskdata[key]["name"]  && groupTaskdata[key]["created"]){
+			obj["slNo"] = parseInt(key)+1;
+			obj["taskName"] = groupTaskdata[key]["name"];
+			var createdDateTime = groupTaskdata[key]["created"];
+		       date = moment.parseZone(createdDateTime).utc().format();
+			dateTime = moment(date).format("DD-MM-YYYY HH:mm:ss");
+			obj["taskDate"] = dateTime;
+			obj["taskId"]   = groupTaskdata[key]["id"]
+
+		}
+		if(groupTaskdata[key]["customerData"]){
+			var customerData;
+			if(typeof(groupTaskdata[key]["customerData"]) == "string") {
+				customerData = JSON.parse(groupTaskdata[key]["customerData"]);
+            }
+            if(typeof(groupTaskdata[key]["customerData"]) == "object"){
+				customerData = JSON.parse(groupTaskdata[key]["customerData"]["value"]);
+			}
+			var memberCount = customerData["memberDetails"].length;
+			for(var data in customerData){
+				obj["groupId"] = customerData["groupId"];
+				obj["loanId"] = customerData["loanId"];
+				obj["groupLocation"] = customerData["groupLocation"];
+				obj["loanType"] = groupTaskdata[key]["loanTypeName"];
+				obj["shgId"] = customerData["appGroupId"];
+				obj["shgName"] =customerData["groupName"];
+				obj["memberCount"] =memberCount;
+				obj["groupLoanId"] = obj["groupId"]+"_"+obj["loanId"];
+				obj["clusterName"] =customerData["clusterName"];
+				obj["centerName"] =customerData["centerName"];
+				obj["regionName"] =customerData["regionName"];
+				obj["loanAmount"] = customerData["loanAmount"];
+				var loanAppDt = customerData["loanApplicationDate"].split("-");
+				var grpFormDt = customerData["groupFormationDate"].split("-");
+			}
+		    obj["assign"] = '<input type="checkbox" class="checkBoxClass" id='+obj["taskId"]+' ></input>';
+
+		}
+		dataArray.push(obj);
+
+	}
+	$.fn.dataTable.moment('DD-MM-YYYY HH:mm:ss');
+	var table = $('#taskListTable').dataTable({
+            data: dataArray,
+	        "pageLength": 50,
+            rowId: "groupLoanId",
+            destroy: true,
+            "bProcessing": true,
+            "scrollY": true,
+            fixedHeader : true,
+            "sPaginationType": "full_numbers",
+            "bSortable": true,
+
+            "aoColumns": [
+                { "mData": "taskName", "sTitle": "Task Name", "sWidth": "15%",className:"column"},
+                { "mData": "taskDate","sTitle": "Task Date"  ,"sType": "date", className:"column"},
+                { "mData": "loanType","sTitle": "Product Name","sWidth": "5%"  , className:"column"},
+                { "mData": "loanAmount","sTitle": "Loan Amt"  ,lassName:"column"},
+                { "mData": "shgId","sTitle": "SHG ID"  ,  className:"column"},
+                { "mData": "shgName","sTitle": "SHG Name"  , className:"column"},
+                { "mData": "memberCount","sTitle": "Total Members" ,"sWidth": "3%", className:"column"},
+                { "mData": "regionName","sTitle": "Region Name"  , className:"column"},
+                { "mData": "clusterName","sTitle": "Cluster Name"  ,  className:"column"},
+                { "mData": "centerName","sTitle": "Center Name"  ,  className:"column"},
+                { "mData": "assign","sTitle":"<input type='checkbox' id='selectAll'> Re-Assign</input>" , "sWidth": "8%", className:"column"},
+
+            ],
+        }).fnDestroy();
+        table = $('#taskListTable').DataTable( {
+            "pageLength": 50
+        } );
+      triggerLoadFunc();
+ }
+
+function searchTasks(){
+    var dataObj = {};
+    var searchById;
+    if(document.getElementById("searchBy").value != ""){
+        searchById = document.getElementById("searchBy").value;
+    }else{
+        $.alert("Please choose search by parameter.");
+        return false;
+    }
+    if(searchById == 1){
+        var replaceTaskNames = {
+            "Proposal scrutiny" : "Proposal scrutiny",
+            "BM Reply" : "Proposal scrutiny",
+            "Confirm disbursement" : "Confirm disbursement",
+            "Confirm Disbursement Query Response" :  "Confirm disbursement"
+        }
+        if(document.getElementById("taskNameSelect")){
+
+            if(!document.getElementById("taskNameSelect").value){
+                $.alert("Please select the task name");
+                return false;
+            }
+            else{
+                dataObj["searchBy"] = searchById;
+                //dataObj["taskName"] = replaceTaskNames[document.getElementById("taskNameSelect").value];
+                dataObj["taskName"] = document.getElementById("taskNameSelect").value;
+            }
+        }
+	}
+	if(searchById == 2){
+        if(document.getElementById("dateFrom") && document.getElementById("dateTo")){
+            if(!document.getElementById("dateFrom").value){
+                $.alert("Please select from date");
+                return false;
+            }
+             if(!document.getElementById("dateTo").value){
+                $.alert("Please select to date");
+                return false;
+            }
+            dataObj["searchBy"] = searchById;
+            dataObj["taskFromDate"] = document.getElementById("dateFrom").value;
+            dataObj["taskToDate"] = document.getElementById("dateTo").value;
+        }
+	}
+	if(searchById == 3){
+        if(document.getElementById("dateFrom") && document.getElementById("dateTo")){
+            if(!document.getElementById("dateFrom").value){
+                $.alert("Please select from date");
+                return false;
+            }
+             if(!document.getElementById("dateTo").value){
+                $.alert("Please select to date");
+                return false;
+            }
+            dataObj["searchBy"] = searchById;
+            dataObj["processFromDate"] = document.getElementById("dateFrom").value;
+            dataObj["processToDate"] = document.getElementById("dateTo").value;
+        }
+	}
+    if(searchById == 4){
+        if(document.getElementById("taskAssignee")){
+
+            if(!document.getElementById("taskAssignee").value){
+                $.alert("Please select the assignee");
+                return false;
+            }
+            else{
+                dataObj["searchBy"] = searchById;
+                dataObj["assignee"] = document.getElementById("taskAssignee").value;
+            }
+        }
+	}
+    $.ajax({
+        url : '/listAssigneeTasks/',
+        dataType:'json',
+        type: "POST",
+        beforeSend : function(data){
+            $("#loading").show();
+        },
+        complete : function(data){
+            $("#loading").hide();
+        },
+        success: function(data){
+            console.log(data);
+            loadCTUserTasks(data);
+        },
+        data:JSON.stringify(dataObj),
+    });
+
+
+
+}
+
+$(document).on('click',"#selectAll", function (){
+    $(".checkBoxClass").prop('checked', $(this).prop('checked'));
+});
+
+
+function reassignAllTasks(){
+    var dataObj = {};
+    var arr = [];
+    $("input:checkbox").each(function(){
+		 if($(this).is(":checked")){
+			 var val =$(this).attr("id") ;
+			 if(val.startsWith("selectAll") != true){
+			    arr.push(val);
+			 }
+			}
+	});
+	console.log(arr);
+	if(arr.length  == 0){
+		$.alert('No task is checked to re-assign!');
+		return false;
+	}
+	if(document.getElementById("taskReassignee")){
+	    if(!document.getElementById("taskReassignee").value){
+            $.alert("Please select the re-assignee");
+            return false;
+	    }
+	    else{
+	    dataObj["reassignee"] = document.getElementById("taskReassignee").value;
+	    }
+	}
+
+	dataObj["taskIdArr"] = arr;
+    $.ajax({
+        url : '/reassignAllTasks/',
+        type:"POST",
+        success: function(data){
+            if( data == "Successful"){
+                $.alert({
+                    title: 'Tasks have been re-assigned successfully!',
+                    confirmButton: 'Yes',
+                    cancelButton: 'No',
+                    confirm: function(){
+                        window.location.reload();
+                    },
+                    cancel: function(){
+                    }
+                });
+            }
+
+        },
+        data : JSON.stringify(dataObj),
+    });
+}
+
+$(document).on("change",".searchBy",function(){
+
+		if(this.value == 1){
+		    $('#taskNameSelect').val("");
+			$('#taskNameSelect').css("display","-webkit-inline-box");
+			$('#taskAssignee').css("display","none");
+			$('#dateSelect').css("display","none");
+			searchById = 1;
+		}
+		else if(this.value == 3 || this.value == 2){
+		    $(".datepicker").val("");
+			$('#taskNameSelect').css("display","none");
+			$('#dateSelect').css("display","-webkit-inline-box");
+			$('#taskAssignee').css("display","none");
+			searchById = 2;
+		}
+		else if(this.value == 4){
+		    $('#taskAssignee').val("");
+			$('#taskNameSelect').css("display","none");
+			$('#dateSelect').css("display","none");
+			$('#taskAssignee').css("display","-webkit-inline-box");
+			searchById = 3;
+		}
+		else{
+		    $('#taskNameSelect').css("display","none");
+			$('#dateSelect').css("display","none");
+			$('#taskAssignee').css("display","none");
+		}
+	});

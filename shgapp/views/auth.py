@@ -78,6 +78,7 @@ def signin(request):
                     request.session["userName"] =  userName
                     request.session["userId"] = userId
                     request.session["userLogin"] = username
+                    request.session["userActions"] = loginResponse["data"]["userActions"]
                     request.session["loginTime"] = datetime.datetime.now()
                     if 'next' in request.GET:
                         return HttpResponseRedirect(request.GET['next'])

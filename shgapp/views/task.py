@@ -31,11 +31,16 @@ def dsdatecount(request):
 def dstasklist(request):
     loggerInfo.info('------------------Entering dstasklist(request):---------------------- ')
     username = request.session["userName"]
+    userAction = request.session["userActions"]
     userOfficeData = json.loads(request.session["userOfficeData"])
     groupName = userOfficeData["designation"]
+
     userId = request.session["userId"]
     loggerInfo.info('------------------Exiting dstasklist(request):---------------------- ')
-    return render(request, 'ds-tasklist.html', {"userId": userId, "group": groupName, "user": username})
+    if 'Loan-Edit' in userAction:
+        return render(request, 'ds-tasklist.html', {"userId": userId, "group": groupName, "user": username,'roleAction':'Loan-Edit'})
+    else:
+        return render(request, 'ds-tasklist.html', {"userId": userId, "group": groupName, "user": username})
 
 
 # @decryption_required
@@ -43,12 +48,32 @@ def dstasklist(request):
 def dstasklistByName(request, taskName):
     loggerInfo.info('------------------Entering dstasklistByName(request,taskName):---------------------- ')
     username = request.session["userName"]
+    userAction = request.session["userActions"]
     userOfficeData = json.loads(request.session["userOfficeData"])
     userId = request.session["userId"]
     groupName = userOfficeData["designation"]
     loggerInfo.info('------------------Exiting dstasklistByName(request,taskName):---------------------- ')
-    return render(request, 'ds-tasklist.html',
-                  {"userId": userId, "taskName": taskName, "group": groupName, "user": username})
+    if 'Loan-Edit' in userAction:
+        return render(request, 'ds-tasklist.html',
+                  {"userId": userId, "taskName": taskName, "group": groupName, "user": username,'roleAction' :'Loan-Edit'})
+    else:
+        return render(request, 'ds-tasklist.html',
+                      {"userId": userId, "taskName": taskName, "group": groupName, "user": username})
+
+
+@session_required
+def taskReassign(request):
+    loggerInfo.info('------------------Entering taskReassign(request):---------------------- ')
+    username = request.session["userName"]
+    userAction = request.session["userActions"]
+    userOfficeData = json.loads(request.session["userOfficeData"])
+    groupName = userOfficeData["designation"]
+    userId = request.session["userId"]
+    loggerInfo.info('------------------Exiting taskReassign(request):---------------------- ')
+    if 'Loan-Edit' in userAction:
+        return render(request, 'reassignCTTasks.html', {"userId": userId, "group": groupName, "user": username,'roleAction' :'Loan-Edit'})
+    else:
+        return render(request, 'reassignCTTasks.html', {"userId": userId, "group": groupName, "user": username})
 
 
 def mytask(request):
@@ -65,6 +90,7 @@ def SHGForm(request, groupId, loanId, taskId, processId, taskName, loanTypeName,
         username = request.session["userName"]
         userOfficeData = json.loads(request.session["userOfficeData"])
         groupName = userOfficeData["designation"]
+        userAction = request.session["userActions"]
         userId = request.session["userId"]
         templateName = {
             "KYC Check"		    			: "ds_groupview.html",
@@ -89,7 +115,13 @@ def SHGForm(request, groupId, loanId, taskId, processId, taskName, loanTypeName,
         loggerInfo \
             . \
             info('------------------Exiting SHGForm(request,groupId,loanId,taskId,processId,taskName,loanTypeName,loanTypeId):---------------------- ')
-        return render(request, templateName[
+        if 'Loan-Edit' in userAction:
+            return render(request, templateName[
+                taskName], {"userId": userId, "loanType": loanTypeName, "loanTypeId": loanTypeId, "groupId":
+                groupId, "loanId": loanId, "processInstanceId": processId, "taskId": taskId, "taskName":
+                                taskName, "group": groupName, "user": username,'roleAction' :'Loan-Edit'})
+        else:
+            return render(request, templateName[
             taskName], { "userId": userId,"loanType" : loanTypeName, "loanTypeId":loanTypeId, "groupId":
             groupId, "loanId": loanId,"processInstanceId" : processId,"taskId" : taskId, "taskName":
                              taskName, "group": groupName , "user":username})
@@ -107,9 +139,13 @@ def dashboard(request):
     username = request.session["userName"]
     userOfficeData = json.loads(request.session["userOfficeData"])
     groupName = userOfficeData["designation"]
+    userAction = request.session["userActions"]
     userId = request.session["userId"]
     loggerInfo.info('------------------Exiting dashboard(request):---------------------- ')
-    return render(request, 'tatReport.html', { "userId" : userId , "group" : groupName ,"user" :username})
+    if 'Loan-Edit' in userAction:
+        return render(request, 'tatReport.html', { "userId" : userId , "group" : groupName ,"user" :username,'roleAction' :'Loan-Edit'})
+    else:
+        return render(request, 'tatReport.html', {"userId": userId, "group": groupName, "user": username})
 
 
 @session_required
@@ -118,13 +154,15 @@ def redirectDBTasks( request,taskName):
     username = request.session["userName"]
     userOfficeData = json.loads(request.session["userOfficeData"])
     groupName = userOfficeData["designation"]
+    userAction = request.session["userActions"]
     userId = request.session["userId"]
     loggerInfo.info('------------------Exiting redirectDBTasks(request):---------------------- ')
-    return render(request,
-                  'viewDBTasks.html', { "taskName": taskName,"userId": userId, "group": groupName, "user":
-
-
-username})
+    if 'Loan-Edit' in userAction:
+        return render(request,
+                      'viewDBTasks.html', {"taskName": taskName, "userId": userId, "group": groupName, "user":username,'roleAction' :'Loan-Edit'})
+    else:
+        return render(request,
+                  'viewDBTasks.html', { "taskName": taskName,"userId": userId, "group": groupName, "user":username})
 
 @csrf_exempt
 @session_required
@@ -134,6 +172,7 @@ def viewTasksData (request,taskName):
         userOfficeData = json.loads(request.session["userOfficeData"])
         groupName = userOfficeData["designation"]
         officeId = userOfficeData["officeId"]
+        userAction = request.session["userActions"]
         processInstancesArr = []
         proInstArrFalse = []
         proInstArrTrue = []
@@ -423,14 +462,19 @@ def viewGroupHistoryDB(request ,groupId ,loanId ,taskName ,loanTypeName ,process
     loggerInfo.info \
         ('------------------Entering viewGroupHistoryDB(request,groupId,loanId,taskName,loanTypeName):---------------------- ')
     username = request.session["userName"]
+    userAction = request.session["userActions"]
     userOfficeData = json.loads(request.session["userOfficeData"])
     userId = request.session["userId"]
     groupName = userOfficeData["designation"]
     loggerInfo.info \
         ('------------------ Exiting viewGroupHistoryDB(request,groupId,loanId,taskName,loanTypeName):---------------------- ')
-    return render(request, 'viewGrpMembersInfo.html',
-                  {"userId": userId, "taskName": taskName, "group": groupName, "user": username ,"groupId": groupId, "loanId": loanId ,"loanType": loanTypeName ,"processInstanceId" :processInstanceId})
-
+    if 'Loan-Edit' in userAction:
+        return render(request, 'viewGrpMembersInfo.html',
+                      {"userId": userId, "taskName": taskName, "group": groupName, "user": username ,"groupId": groupId, "loanId": loanId ,"loanType": loanTypeName ,"processInstanceId" :processInstanceId,'roleAction':'Loan-Edit'})
+    else:
+        return render(request, 'viewGrpMembersInfo.html',
+                      {"userId": userId, "taskName": taskName, "group": groupName, "user": username, "groupId": groupId,
+                       "loanId": loanId, "loanType": loanTypeName, "processInstanceId": processInstanceId})
 
 
 @session_required
@@ -482,4 +526,154 @@ def getGroupLevelInfo(request, groupID, loanId, taskName):
     except ShgInvalidRequest, e:
         errorLog.error("Exception raised inside getGroupLevelInfo(request, groupID, loanId, taskName): %s" % e)
         return helper.bad_request('Unexpected error occurred while searching group.')
+
+@csrf_exempt
+@session_required
+def listAssigneeTasks(request):
+    loggerInfo.info('------------------Entering listAssigneeTasks(request)---------------------- ')
+    try:
+        username = request.session["userName"]
+        userOfficeData = json.loads(request.session["userOfficeData"])
+        groupName = userOfficeData["designation"]
+        userId = request.session["userId"]
+        userAction = request.session["userActions"]
+        processInstancesArr = []
+        taskProVarList = []
+        myTaskDict = {}
+        myTaskData = []
+        proInstArrFalse = []
+        proInstArrTrue = []
+        bodyData = {}
+        actualTaskName = ''
+        replaceTaskNames = {
+            "Proposal scrutiny": "Proposal scrutiny",
+            "BM Reply": "Proposal scrutiny",
+            "Confirm disbursement": "Confirm disbursement",
+            "Confirm Disbursement Query Response": "Confirm disbursement"
+        }
+        variableDict = {
+            "Confirm Disbursement Query Response": "disbursement",
+            "BM Reply": "chekrespdate"
+        }
+        if request.method == "POST":
+            formData = json.loads(request.body)
+            if formData.has_key("searchBy"):
+                searchById = formData["searchBy"]
+
+                print "searchById"
+                print searchById
+                if searchById == "4":
+                    assignee = formData["assignee"]
+                    print "assignee"
+                    print assignee
+                    myTaskList = camundaClient._urllib2_request('task?&assignee=' + str(assignee), {}, requestType='GET')
+
+                    for data in myTaskList:
+                        processInstancesArr.append(data["processInstanceId"])
+                        myTaskDict[data["processInstanceId"]] = data
+                if searchById == "1":
+                    actualTaskName  = formData["taskName"]
+                    bodyData = {"name" : replaceTaskNames[actualTaskName]}
+                    myTaskList = camundaClient._urllib2_request('task', bodyData, requestType='POST')
+                    print "myTaskList"
+                    print myTaskList
+                    for data in myTaskList:
+                        processInstancesArr.append(data["processInstanceId"])
+                        myTaskDict[data["processInstanceId"]] = data
+
+                bodyData = {"processInstanceIdIn": processInstancesArr, "variableName": "groupstatus"}
+                groupStatusList = camundaClient._urllib2_request('variable-instance', bodyData, requestType='POST')
+                for data in groupStatusList:
+                    if data["value"] == "false":
+                        proInstArrFalse.append(data["processInstanceId"])
+
+                    else:
+                        proInstArrTrue.append(data["processInstanceId"])
+                if proInstArrFalse:
+                    if proInstArrFalse[0]:
+                        taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false'
+                                                                         ,{"processInstanceIdIn": proInstArrFalse}, requestType='POST')
+                        taskProVarList.append(taskProVarList1)
+                if proInstArrTrue:
+                    if proInstArrTrue[0]:
+                        taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=true'
+                                                                         ,{"processInstanceIdIn": proInstArrTrue}, requestType='POST')
+                        taskProVarList.append(taskProVarList1)
+                for key in range(len(taskProVarList)):
+                    for data in taskProVarList[key]:
+                        if data["processInstanceId"] in myTaskDict:
+                            myTaskDict[data["processInstanceId"]][data["name"]] = data["value"]
+
+                if searchById == "4":
+                    for key in myTaskDict:
+                        if myTaskDict[key].has_key("chekrespdate"):
+                            if myTaskDict[key]["chekrespdate"] == "resolved":
+                                myTaskDict[key]["name"] = "BM Reply"
+                        if myTaskDict[key].has_key("disbursement"):
+                            if myTaskDict[key]["disbursement"] == "resolved":
+                                myTaskDict[key]["name"] = "Confirm Disbursement Query Response"
+                        myTaskData.append(myTaskDict[key])
+                if searchById == "1":
+                    queryProInstArr = []
+                    for key in myTaskDict:
+                        if myTaskDict[key].has_key("chekrespdate"):
+                            if myTaskDict[key]["chekrespdate"] == "resolved":
+                                queryProInstArr.append(key)
+                        if myTaskDict[key].has_key("disbursement"):
+                            if myTaskDict[key]["disbursement"] == "resolved":
+                                queryProInstArr.append(key)
+
+                    for key in myTaskDict:
+                        if myTaskDict[key]["assignee"]:
+                            if actualTaskName in ["Confirm disbursement","Proposal scrutiny"]:
+                                if key not in queryProInstArr:
+                                    myTaskData.append(myTaskDict[key])
+                            if actualTaskName in ["Confirm Disbursement Query Response", "BM Reply"]:
+                                if key in queryProInstArr:
+                                    myTaskDict[key]["name"] = actualTaskName
+                                    myTaskData.append(myTaskDict[key])
+
+
+
+                loggerInfo.info( "myTaskData")
+                loggerInfo.info( myTaskData)
+                loggerInfo.info('------------------Exiting listAssigneeTasks(request)---------------------- ')
+                return HttpResponse(json.dumps(myTaskData), content_type="application/json")
+    except ShgInvalidRequest, e:
+        errorLog.error("Exception raised inside listAssigneeTasks(request):  %s" % e)
+        return helper.bad_request('Unexpected error occurred while listing credit assignee tasks')
+
+
+@session_required
+def getCTUsers(request,designation):
+    loggerInfo.info('------------------Entering getCTUsers(request,designation):------------------- ')
+    try:
+        serialized_data = sscoreClient._urllib2_request \
+            ('User/UsersByDesignation', {"designation" : str(designation)}, requestType='POST')
+        loggerInfo.info \
+            ('------------------Exiting getCTUsers(request,designation):--------------------- ')
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        errorLog.error("Exception raised inside  getCTUsers(request,designation): %s" % e)
+        return helper.bad_request('Unexpected error occurred while getting history.')
+
+
+@csrf_exempt
+@session_required
+def reassignAllTasks(request):
+    loggerInfo.info('------------------Entering reassignAllTasks(request):------------------- ')
+    try:
+        if request.method == "POST":
+            formData = json.loads(request.body)
+            assignee = formData["reassignee"]
+            taskIdArr = formData["taskIdArr"]
+            dataObjAssignee = {"userId": str(assignee)}
+            for i in range(len(taskIdArr)):
+                assignTask = camundaClient._urllib2_request('task/' + taskIdArr[i] + '/assignee', dataObjAssignee, requestType='POST')
+            return HttpResponse(json.dumps(assignTask), content_type="application/json")
+    except ShgInvalidRequest, e:
+        errorLog.error("Exception raised inside  reassignAllTasks(request): %s" % e)
+        return helper.bad_request('Unexpected error occurred while getting history.')
+
+
 

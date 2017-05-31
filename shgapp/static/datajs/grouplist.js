@@ -270,9 +270,9 @@ function highMarksList(memberId,loanId,memberDocData) {
          },
          success: function(data) {
             if(data.code == "2045"){
-
+                var conflictDataCreditEnquiry = [];
                 if (data["data"] && data["data"][0]) {
-                    var conflictDataCreditEnquiry =data["data"];
+                     conflictDataCreditEnquiry =data["data"];
                     if (document.getElementById("CBStatus") && conflictDataCreditEnquiry[0]) {
                         document.getElementById("CBStatus").innerHTML = conflictDataCreditEnquiry[0]["status"];
                     }
@@ -300,6 +300,12 @@ function highMarksList(memberId,loanId,memberDocData) {
                                 }
                             }
                         }
+                    }
+
+
+                    }
+                    else{
+                        conflictDataCreditEnquiry = [];
                     }
                     if ($.fn.DataTable.isDataTable('#creditLoadData')) {
                         $("#creditLoadData").dataTable().fnDestroy();
@@ -416,7 +422,6 @@ function highMarksList(memberId,loanId,memberDocData) {
                             }
                             ],
                         });
-                    }
                 }
          }
     });
@@ -1712,7 +1717,7 @@ function approveLoan(updateloanData){
         "entityType": "LOAN",
         "validationType": "POST",
         "userId": userId,
-        "subStatus": "POST_KYC_VALIDATED",
+        "subStatus": "Approved",
         "installments": installment,
         "memberLoanDetails": eval(updateloanData),
         "bpmTaskId": taskId,
@@ -2557,7 +2562,7 @@ function clearMemberData() {
    $('#repm1').empty();
    $('#repm2').empty();
     $('#creditLoadData tbody').remove();
-   
+
 
    $("#ADDRESSPROOF_docPath").css("display", "none");
    $("#ADDRESSPROOF_docPath").attr("src","");
@@ -2670,15 +2675,7 @@ function loadDisburseDocData(){
         }
     });
 
-    $('.date-picker').datepicker({
-            autoclose: true,
-            todayHighlight: true,
-            minDate : new Date(disbDocData[0]["loanApprovalDate"])
-        })
-        //show datepicker when clicking on the icon
-        .next().on(ace.click_event, function(){
-            $(this).prev().focus();
-        });
+
     var html = '<tr>';
     var innerHTMLBank = '';
     var selectOptValArray = [];
@@ -2703,14 +2700,24 @@ function loadDisburseDocData(){
 
     var innerHTMLMemAvailLoan = '<option value="null" > Select</option><option value="true"> Yes </option><option value="false"> No </option>';
 
-
+console.log(disbDocData);
     if(disbDocData && disbDocData[0]){
+	$('.datepicker').datepicker({
+            autoclose: true,
+            todayHighlight: true,
+            minDate : new Date(disbDocData[0]["loanApprovalDate"]),
+	     dateFormat:'dd/mm/yy'
+        })
+        //show datepicker when clicking on the icon
+        .next().on(ace.click_event, function(){
+            $(this).prev().focus();
+        });
         for(var key in disbDocData){
          if(disbDocData[0]["oldDos"] == null || disbDocData[0]["oldDos"] == "null"){
-                  document.getElementById("dateOfDisbursement").value = disbDocData[0]["loanApprovalDate"].split("-")[1]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[2]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[0];
+                  document.getElementById("dateOfDisbursement").value = disbDocData[0]["loanApprovalDate"].split("-")[2]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[1]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[0];
          }else{
           var dd = disbDocData[0]["oldDos"].split(" ")[0];
-          document.getElementById("dateOfDisbursement").value = dd.split("-")[1]+"/"+dd.split("-")[2]+"/"+dd.split("-")[0];
+          document.getElementById("dateOfDisbursement").value = dd.split("-")[2]+"/"+dd.split("-")[1]+"/"+dd.split("-")[0];
          }
             document.getElementById("loanSancDate").innerHTML = disbDocData[0]["loanApprovalDate"].split("-")[2]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[1]+"/"+disbDocData[0]["loanApprovalDate"].split("-")[0];
             var obj = {};
@@ -2742,7 +2749,7 @@ function loadDisburseDocData(){
     }
 }
 
-function updateChequeInfo(){
+function updateChequeInfo(status,operationId){
     $(".setBGColor").css("border","1px solid #D5D5D5");
     $("#disburseDocData td").removeClass("setBGColor");
     var flag = 0;
@@ -2811,41 +2818,140 @@ function updateChequeInfo(){
         $.alert("Highlighted fields cannot be empty")
         return false;
     }
-    var updateCheqData=convertChequeDataToJson();
-    var dataObj = {};
-    dataObj["cheqData"] = eval(updateCheqData);
-
-
-
-
-    return $.ajax({
-        url: '/updateDisburseMemberData/',
-        dataType: 'json',
-        type : "POST",
-        beforeSend: function() {
-            $("#loading").show();
-        },
-        complete: function() {
-            $("#loading").hide();
-        },
-        success: function(data) {
-            if(data.code == "12001"){
-                $.alert("Cheque details updated successfully");
-                $("#disburseDocData").dataTable().fnDestroy();
-                loadDisburseDocData();
-
+    var comment = '';
+    if(status != "Update"){
+        if(taskName == "Resolve Confirm Disbursement Query"){
+            if(document.getElementById("comment")){
+                if(document.getElementById("comment").value){
+                    comment = document.getElementById("comment").value;
+                }
+                else{
+                    $.alert("Please input comment!");
+                    return false;
+                }
             }
-        },
-        data: JSON.stringify(dataObj)
-    });
+        }
+    }
+    if(taskName == "Confirm disbursement" || taskName == "Confirm Disbursement Query Response"){
+        if(document.getElementById("comment")){
+            if(document.getElementById("comment").value){
+                comment = document.getElementById("comment").value;
+            }
+            else{
+                $.alert("Please input comment!");
+                return false;
+            }
+        }
+    }
 
 
+    if(operationId == 1 || operationId == 2){
+        var updateCheqData=convertChequeDataToJson();
+        var dataObj = {};
+        var updateChqInfo = {
+            "lId": loanId,
+            "comment": comment,
+            "userId": userId ,
+            "validationStatus": "APP",
+            "validationType": "POST",
+            "bpmProcessId": processInstanceId,
+            "bpmTaskId": taskId,
+            "bpmTaskName": taskName,
+            "disbursMemberDetails" :  eval(updateCheqData)
+        };
+	}
+	 if(operationId == 3){
+        var dataObj = {};
+        var updateChqInfo = {
+            "lId": loanId,
+            "comment": comment,
+            "userId": userId ,
+            "validationStatus": "RWRK",
+            "validationType": "POST",
+            "bpmProcessId": processInstanceId,
+            "bpmTaskId": taskId,
+            "bpmTaskName": taskName
+        };
+	}
+    dataObj["cheqData"] = updateChqInfo;
+    if(operationId == 1){
+        return $.ajax({
+            url: '/updateDisburseMemberData/',
+            dataType: 'json',
+            type : "POST",
+            beforeSend: function() {
+                $("#loading").show();
+            },
+            complete: function() {
+                $("#loading").hide();
+            },
+            success: function(data) {
+                if(data.code == "12001"){
+                    $.alert("Cheque details updated successfully");
+                    $("#disburseDocData").dataTable().fnDestroy();
+                    loadDisburseDocData();
+
+                }
+            },
+            data: JSON.stringify(dataObj)
+        });
+    }
+    if(operationId == 2 || operationId == 3){
+        var fontColor = '';
+        var url = '';
+        var statusUpdate = '';
+        var groupName = document.getElementById("groupName_groupRole").innerHTML;
+        if(status == "rework"){
+         fontColor = 'darkgoldenrod';
+            statusUpdate = "'"+groupName+"'"+'  has been sent for rework';
+            url = '/confirmChqDisbursementRework/';
+        }
+        if(status == "send"){
+         fontColor = 'green';
+            statusUpdate = "'"+groupName+"'"+' has been approved';
+            url =  '/approveDisburseDocs/';
+        }
+        if(status == "resolved"){
+         fontColor = 'green';
+            statusUpdate = groupName+"'s query"+'  has been resolved';
+            url =  '/approveDisburseDocs/';
+        }
+
+
+        dataObj["taskId"] = taskId;
+        dataObj["processUpdate"] = { 'variables': { 'disbursement': {   'value': status     },     }     };
+            $.ajax({
+            url: url,
+            dataType: 'json',
+            type: "post",
+            beforeSend: function() {
+                $("#loading").show();
+            },
+            complete: function() {
+                $("#loading").hide();
+            },
+            success: function(data) {
+               if(data["code"] == "12003" || data["code"] == "12004"){
+                    $("#validationMessage").addClass("center");
+                    document.getElementById("validationMessage").innerHTML ='<span style="color:'+fontColor+'" " class="bigger-50"><i class="ace-icon fa fa-check-circle bigger-125"></i> &nbsp&nbsp'+statusUpdate+'</span>';
+                    document.getElementById("gStatus").innerHTML = '<h3  class="lighter center smaller">Task has been completed successfully!  <i class="ace-icon glyphicon glyphicon-thumbs-up bigger-150"></i> </h3>';
+                    document.getElementById("taskValBtn").innerHTML = '<a href="/assignedTaskList/" class="btn btn-primary"> <i class="glyphicon glyphicon-user"></i> Go to My Tasks </a>';
+                    $("#successPanel").show();
+                    $("#defaultDisplay").hide();
+                    $("#defaultDisplay1").hide();
+                } else {
+                    $.alert("Failed due to some Issue . Please try after sometime or contact your Administrator");
+                }
+            },
+            data: JSON.stringify(dataObj)
+        });
+    }
 }
 function convertChequeDataToJson(){
     var rows = [];
     var disbursementDate = document.getElementById("dateOfDisbursement").value;
     disbursementDateSplit = disbursementDate.split("/");
-    disbursementDate = disbursementDateSplit[2]+"-"+disbursementDateSplit[0]+"-"+disbursementDateSplit[1];
+    disbursementDate = disbursementDateSplit[2]+"-"+disbursementDateSplit[1]+"-"+disbursementDateSplit[0];
     $('table.disburseDocData tr').not('thead tr').each(function(i, n){
         var $row = $(n);
         rows.push({
@@ -2861,7 +2967,7 @@ function convertChequeDataToJson(){
     return JSON.stringify(rows);
 }
 
-
+/*
 function approveDisburseDocs(status){
     var flag = 0;
 
@@ -2876,7 +2982,7 @@ function approveDisburseDocs(status){
         $('.tabbable a[href="#upload"]').tab('show');
         return false;
     }else{
-        updateChequeInfo().done(function(result) { if(result.code == 12001)
+        updateChequeInfo(status).done(function(result) { if(result.code == 12001)
         {
             $( ".confirmBtn" ).click();
             $.confirm({
@@ -2897,6 +3003,20 @@ function approveDisburseDocs(status){
 }
 
 
+function approveDisburseDocs(status){
+    var flag = 0;
+    var count = $('#records_table').children('tr').length;
+    if(count != 0){
+        $.alert("Please upload all the documents before approving.");
+        $('.tabbable a[href="#upload"]').tab('show');
+        return false;
+    }else{
+
+    }
+
+}
+
+*/
 function loadDisburseDocDataRead(){
     var disbDocData;
     $.ajax({
@@ -2928,7 +3048,13 @@ function loadDisburseDocDataRead(){
             }
             var obj = {};
             totalMemberIdArray.push(disbDocData[key]["appMemberId"]+"_memberAvailedLoan");
+            if (disbDocData[key]["modeOfPayment"] == "null"){
+                disbDocData[key]["modeOfPayment"] = '';
+            }
             obj[disbDocData[key]["appMemberId"]+"_modeOfPayment"] = disbDocData[key]["modeOfPayment"];
+            if (disbDocData[key]["bank"] == "null"){
+                disbDocData[key]["bank"] = '';
+            }
             obj[disbDocData[key]["appMemberId"]+"_bank"] = disbDocData[key]["bank"];
             obj[disbDocData[key]["appMemberId"]+"_memberAvailedLoan"] = disbDocData[key]["memberAvailedLoan"];
             selectOptValArray.push(obj);
@@ -2985,17 +3111,34 @@ function confirmLoan(status){
                 });
 
                 var dataObj = {};
-                dataObj["cheqData"] = eval(JSON.stringify(rows));
-                dataObj["processUpdate"] = { 'variables': { 'disbursement': {   'value': status     },     }     };
-          dataObj["taskId"] = taskId;
+                var comment = '';
+                if(document.getElementById("comment")){
+                    if(document.getElementById("comment").value){
+                        comment = document.getElementById("comment").value;
+                    }
+                }
 
+                dataObj["processUpdate"] = { 'variables': { 'disbursement': {   'value': status     },     }     };
+                dataObj["taskId"] = taskId;
+                var updateChqInfo = {
+                    "lId": loanId,
+                    "comment": comment,
+                    "userId": userId ,
+                    "validationStatus": "APP",
+                    "validationType": "POST",
+                    "bpmProcessId": processInstanceId,
+                    "bpmTaskId": taskId,
+                    "bpmTaskName": taskName,
+                    "disbursMemberDetails" :  eval(JSON.stringify(rows))
+                };
+                dataObj["cheqData"] = updateChqInfo;
                 $.ajax({
                     url : '/confirmChqDisbursement/',
                     dataType: 'json',
                     type: 'POST',
                     success: function(data){
                         if(data["code"] == "12002"){
-                var groupName = document.getElementById("groupName_groupRole").innerHTML;
+                            var groupName = document.getElementById("groupName_groupRole").innerHTML;
                             $("#validationMessage").addClass("center");
                              document.getElementById("validationMessage").innerHTML ='<span style="color:green" " class="bigger-50"><i class="ace-icon fa fa-check-circle bigger-125"></i> &nbsp&nbsp'+"'"+ groupName +"'" + " has been approved"+'</span>';
                              document.getElementById("gStatus").innerHTML = '<h3  class="lighter center smaller">Loan process has been completed successfully!  <i class="ace-icon glyphicon glyphicon-thumbs-up bigger-150"></i> </h3>';

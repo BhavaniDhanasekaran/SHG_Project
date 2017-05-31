@@ -335,6 +335,19 @@
             </a>
             <b class="arrow"></b>
         </li>
+<!--
+        {% if roleAction == "Loan-Edit" %}
+	    <li class="">
+            <a href="{% url 'taskReassign' %}">
+                 <i class="menu-icon fa fa-tasks"></i>
+                <span class="menu-text">Re-Assign Tasks
+                    <span class="badge badge-danger"></span>
+                </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+        {% endif %}
+-->
         <li class="">
             <a href="{% url 'assignedTaskList' %}">
                 <i class="menu-icon fa fa-pencil-square-o"></i>
@@ -393,7 +406,10 @@
                 </span>
             </a>
             <b class="arrow"></b>
+
         </li>
+
+
 
     </ul>
     <!-- /.nav-list -->

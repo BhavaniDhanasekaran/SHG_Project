@@ -4,6 +4,8 @@
 {% block javascript %}
     <script>
         var group = '{{group | escapejs}}';
+        var roleAction = '{{ roleAction | escapejs}}';
+
 
         $(document).ready(function(){
             taskCount();
@@ -204,7 +206,7 @@
             </div>
             <!-- BOX3BEGINS -->
             <!-- BOX 4BEGINS -->
-            
+
             <div class="col-lg-3 col-md-6">
                 <div class="panel panel-gray">
                     <div class="panel-heading">
@@ -277,13 +279,13 @@
                     </a>
                 </div>
             </div>
-            
-            
 
-             
-            
-            
-            
+
+
+
+
+
+
         </div>
 
     {% endif %}
@@ -427,8 +429,8 @@
                 </div>
             </div>
             <!-- BOX2 BEGINS -->
-           
-                
+
+
             <div class="col-lg-3 col-md-6">
                 <div class="panel panel-gray">
                     <div class="panel-heading">
