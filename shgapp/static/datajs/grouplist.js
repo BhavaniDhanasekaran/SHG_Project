@@ -124,6 +124,18 @@ function getGroupData(groupID, loanId) {
                         if (document.getElementById("groupId") && groupData["data"]["groupId"]) {
                             document.getElementById("groupId").innerHTML = groupData["data"]["groupId"];
                         }
+                        if (document.getElementById("center") && groupData["data"]["center"]) {
+                            document.getElementById("center").innerHTML = groupData["data"]["center"];                          
+                        }
+                        if (document.getElementById("region") && groupData["data"]["region"]) {
+                            document.getElementById("region").innerHTML = groupData["data"]["region"];                          
+                        }
+                        if (document.getElementById("cluster") && groupData["data"]["cluster"]) {
+                            document.getElementById("cluster").innerHTML = groupData["data"]["cluster"];                          
+                        }
+                        if (document.getElementById("groupLoanAmount") && groupData["data"]["groupLoanAmount"]) {
+                            document.getElementById("groupLoanAmount").innerHTML = groupData["data"]["groupLoanAmount"];                          
+                        }                        
                     }
                     var membersCount = document.getElementById("groupMembersDropDown").getElementsByTagName("a").length;
                     var approvedCount = $('.Approved').length;
@@ -559,16 +571,31 @@ function updateMemValidationStatus(status) {
     var loanTypeId = document.getElementById("loanTypeId1").innerHTML;
     var loanAmount = document.getElementById("loanAmount").innerHTML;
     var loanAmountInt = parseInt(loanAmount);
-    //console.log(loanAmountInt);
+    console.log("loanAmountInt",loanAmountInt);
 
-    var loanAmountEligible = $(credit).find("td").eq(6).html();
+    var loanAmountEligible;
+    $("#creditLoadData tbody tr").each(function() {
+    loanAmountEligible = $(this).find("td").eq(6).html();
+    });
     var loanAmountEligibleInt = parseInt(loanAmountEligible);
-    //console.log(loanAmountEligibleInt);
+    console.log("loanAmountEligibleInt:",loanAmountEligibleInt);
 
-	var roundOfNum = loanAmountEligibleInt;
-	roundOfNum = Math.floor(roundOfNum/1000)*1000;
-    //console.log("roundOfNum",roundOfNum);
+    var roundOfNum = loanAmountEligibleInt;
+    roundOfNum = Math.floor(roundOfNum/1000)*1000;
+    console.log("roundOfNum",roundOfNum);
 
+    if (taskName == "Proposal scrutiny") {
+        if (loanAmountInt > loanAmountEligibleInt)
+        {
+            $.alert("Your Loan Eligible Amount is : " + roundOfNum);
+            return false;
+        }
+    }   
+    if (taskName == "Conduct BAT- Member approval in CRM") {
+    validationType = "CLM";
+    } 
+    
+    
     var commentCamunda = "";
     var dataObj = {};
     if (memStatus != "" && memStatus != "PEN") {
@@ -587,14 +614,6 @@ function updateMemValidationStatus(status) {
             } else {
                 commentCamunda = comment + "*@*" + memberName + "*@*" + appMemberId;
                 dataObj['message'] = commentCamunda;
-            }
-        }
-        if (taskName == "Conduct BAT- Member approval in CRM" || taskName == "Proposal scrutiny") {
-            validationType = "CLM";
-            if (loanAmountInt > loanAmountEligibleInt)
-            {
-                $.alert("Your Loan Eligible Amount is : " + roundOfNum);
-                return false;
             }
         }
 
@@ -761,14 +780,17 @@ function submitKYCForm(status) {
 
     var loanAmount = document.getElementById("loanAmount").value;
     var loanAmountInt = parseInt(loanAmount);
-    console.log(loanAmountInt);
+    console.log("loanAmountInt",loanAmountInt);    
 
-    var loanAmountEligible = $(credit).find("td").eq(6).html();
+    var loanAmountEligible;
+    $("#creditLoadData tbody tr").each(function() {
+    loanAmountEligible = $(this).find("td").eq(6).html();
+    });
     var loanAmountEligibleInt = parseInt(loanAmountEligible);
-    console.log(loanAmountEligibleInt);
+    console.log("loanAmountEligibleInt:",loanAmountEligibleInt);
 
-	var roundOfNum = loanAmountEligibleInt;
-	roundOfNum = Math.floor(roundOfNum/1000)*1000;
+    var roundOfNum = loanAmountEligibleInt;
+    roundOfNum = Math.floor(roundOfNum/1000)*1000;
     console.log("roundOfNum",roundOfNum);
 
     if (taskName == "Proposal scrutiny" || taskName == "Resolve Credit Team Query") {
@@ -778,7 +800,6 @@ function submitKYCForm(status) {
             return false;
         }
     }
-
 
     var commentCamunda = "";
     if (validation == 1) {
