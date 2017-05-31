@@ -103,7 +103,7 @@ function loanDocument(loanTypeId) {
                         var sizeobj= _.size(diff_data);
                        // console.log(sizeobj);
                         var current = 0;
-                        if(sizeobj>1){
+                        if(sizeobj>0){
                           $('#docments_table').show();
                          }
                          else{
