@@ -454,7 +454,7 @@ def generateLOS(request):
 def disburseDocsData(request, loanId):
     loggerInfo.info('------------------Entering disburseDocsData(request, loanId):---------------------- ')
     try:
-        bodyData = {"loanId": str(loanId)}
+        bodyData = {"lId": str(loanId)}
         serialized_data = sscoreClient._urllib2_request('ChequeDisbursement/MemberDetails', bodyData,
                                                         requestType='POST')
         loggerInfo.info('------------------Exiting disburseDocsData(request, loanId):---------------------- ')
@@ -478,6 +478,26 @@ def updateDisburseMemberData(request):
             return HttpResponse(json.dumps(serialized_data), content_type="application/json")
     except ShgInvalidRequest, e:
         errorLog.error("Exception raised inside updateDisburseMemberData(request): %s" % e)
+        return helper.bad_request('Unexpected error occurred while updating disburse doc details')
+
+@csrf_exempt
+@session_required
+def approveDisburseDocs(request):
+    loggerInfo.info('------------------Entering approveDisburseDocs(request):---------------------- ')
+    try:
+        if request.method == "POST":
+            formData = json.loads(request.body)
+            bodyData = formData["cheqData"]
+            taskId = formData["taskId"]
+            processUpdate = formData["processUpdate"]
+            serialized_data = sscoreClient._urllib2_request('ChequeDisbursement/ValidateDisbursement', bodyData,
+                                                            requestType='POST')
+            if serialized_data["code"] == 12003:
+                taskComplete(request, processUpdate, taskId)
+            loggerInfo.info('------------------Exiting approveDisburseDocs(request):---------------------- ')
+            return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        errorLog.error("Exception raised inside approveDisburseDocs(request): %s" % e)
         return helper.bad_request('Unexpected error occurred while updating disburse doc details')
 
 
@@ -504,6 +524,31 @@ def confirmChqDisbursement(request):
     except ShgInvalidRequest, e:
         errorLog.error("Exception raised inside confirmChqDisbursement(request): %s" % e)
         return helper.bad_request('Unexpected error occurred while confirming disbursement')
+
+@csrf_exempt
+@session_required
+def confirmChqDisbursementRework(request):
+    loggerInfo.info('------------------Entering confirmChqDisbursementRework(request):--------------------- ')
+    try:
+        if request.method == "POST":
+            formData = json.loads(request.body)
+            bodyData = formData["cheqData"]
+            taskId = formData["taskId"]
+            processUpdate = formData["processUpdate"]
+            print "processUpdate"
+            print processUpdate
+
+            serialized_data = sscoreClient._urllib2_request('ChequeDisbursement/confirmDisbursRework', bodyData,
+                                                            requestType='POST')
+
+            if serialized_data["code"] == 12004:
+                taskComplete(request, processUpdate, taskId)
+            loggerInfo.info('------------------Exiting confirmChqDisbursementRework(request):--------------------- ')
+            return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        errorLog.error("Exception raised inside confirmChqDisbursementRework(request): %s" % e)
+        return helper.bad_request('Unexpected error occurred while confirming disbursement')
+
 
 
 @session_required

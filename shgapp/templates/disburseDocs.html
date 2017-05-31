@@ -32,9 +32,10 @@
         
         loanDocument(loanTypeId);
         taskCount();
-        $('.date-picker').datepicker({
+        $('.datepicker').datepicker({
             autoclose: true,
-            todayHighlight: true
+            todayHighlight: true,
+            dateFormat :'dd/mm/yy'
      })
         //show datepicker when clicking on the icon
         .next().on(ace.click_event, function(){
@@ -81,7 +82,7 @@
                         <div class="profile-info-value">
                             <div class="col-xs-8 col-sm-11">
                                 <div class="input-group date" id="dateOfDisbursementDiv">
-                                    <input class="form-control date-picker" 
+                                    <input class="form-control datepicker" 
                                     id="dateOfDisbursement" data-date-format="dd-mm-yyyy" />
            
 
@@ -150,6 +151,9 @@
                                     <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
                                         <div class="form-group vertical-center">
                                             <label for="comment">Comment:</label>
+						  {% if taskName == "Resolve Confirm Disbursement Query" %}
+							<font class="mandatory">*</font>
+						  {% endif %}
                                             <textarea class="form-control limited sample" 
                                             maxlength="3000"  rows="3" id="comment"></textarea>
 
@@ -158,12 +162,12 @@
                                     </div>
                                 </div>
                                 <div style="margin-left:10px;">
-                                    <button type="button" class="btn btn-danger updateBtn" onclick="updateChequeInfo();">Update</button>&nbsp
+                                    <button type="button" class="btn btn-danger updateBtn" onclick="updateChequeInfo('Update',1);">Update</button>&nbsp
                                     {% if taskName == "Upload disbursement docs" %}
-                                        <button type="button" class="btn btn-danger" onclick="approveDisburseDocs('send');">Approve</button>
+                                        <button type="button" class="btn btn-danger" onclick="updateChequeInfo('send',2);">Approve</button>
                                     {% endif %}
                                     {% if taskName == "Resolve Confirm Disbursement Query" %}
-                                        <button type="button" class="btn btn-danger" onclick="approveDisburseDocs('resolved');">Resolve</button>
+                                        <button type="button" class="btn btn-danger" onclick="updateChequeInfo('resolved',2);">Resolve</button>
                                     {% endif %}
                                 </div>
                             </div>
