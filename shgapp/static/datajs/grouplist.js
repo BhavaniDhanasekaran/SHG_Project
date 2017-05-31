@@ -2858,6 +2858,14 @@ function updateChequeInfo(status,operationId){
         });
     }
     if(operationId == 2 || operationId == 3){
+	if(taskName == "Upload disbursement docs" || taskName == "Resolve Confirm Disbursement Query"){
+	  	var count = $('#records_table').children('tr').length;
+        	if(count != 0){
+           	 	$.alert("Please upload all the documents before approving.");
+           	 	$('.tabbable a[href="#upload"]').tab('show');
+            		return false;
+       	 }
+	}
         var fontColor = '';
         var url = '';
         var statusUpdate = '';
@@ -2913,7 +2921,7 @@ function convertChequeDataToJson(){
     var rows = [];
     var disbursementDate = document.getElementById("dateOfDisbursement").value;
     disbursementDateSplit = disbursementDate.split("/");
-    disbursementDate = disbursementDateSplit[2]+"-"+disbursementDateSplit[0]+"-"+disbursementDateSplit[1];
+    disbursementDate = disbursementDateSplit[2]+"-"+disbursementDateSplit[1]+"-"+disbursementDateSplit[0];
     $('table.disburseDocData tr').not('thead tr').each(function(i, n){
         var $row = $(n);
         rows.push({
@@ -2929,42 +2937,7 @@ function convertChequeDataToJson(){
     return JSON.stringify(rows);
 }
 
-/*
-function approveDisburseDocs(status){
-    var flag = 0;
 
-    var count = $('#records_table').children('tr').length;
-        //console.log("count");
-        //console.log(count);
-
-
-
-    if(count != 0){
-        $.alert("Please upload all the documents before approving.");
-        $('.tabbable a[href="#upload"]').tab('show');
-        return false;
-    }else{
-        updateChequeInfo().done(function(result) { if(result.code == 12001)
-        {
-            $( ".confirmBtn" ).click();
-            $.confirm({
-            title: 'Do you really want to approve the group?',
-            confirmButton: 'Yes',
-            cancelButton: 'No',
-            confirm: function(){
-                 completeTask(status);
-            },
-            cancel: function(){
-            }
-        });
-
-        }
-        }).fail(function() {  flag = 0; });
-    }
-
-}
-
-*/
 function loadDisburseDocDataRead(){
     var disbDocData;
     $.ajax({
