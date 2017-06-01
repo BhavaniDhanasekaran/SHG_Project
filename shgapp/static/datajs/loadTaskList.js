@@ -26,6 +26,7 @@ $(document).ajaxError(function(e, xhr, settings, exception) {
 
 
 function loadUnassignedTaskList(data){
+
 	var groupTaskdata = data;
 
 	var dataArray = [];
@@ -35,6 +36,7 @@ function loadUnassignedTaskList(data){
 		if(groupTaskdata[key]["name"]  && groupTaskdata[key]["created"]){
 			obj["slNo"] = parseInt(key)+1;
 			obj["taskName"] = groupTaskdata[key]["name"];
+			obj["processInstanceId"] = groupTaskdata[key]["processInstanceId"];
 			var createdDateTime = groupTaskdata[key]["created"];
 		       date = moment.parseZone(createdDateTime).utc().format();
 			dateTime = moment(date).format("DD-MM-YYYY HH:mm:ss");
@@ -252,6 +254,7 @@ $.fn.dataTable.moment('DD-MM-YYYY HH:mm:ss');
 function loadAssignedTaskList(){
 	$("#loading").hide();
 	var myTaskdata = JSON.parse(myTaskList);
+	console.log("myTaskdata",myTaskdata);
 
 	var dataArray = [];
 	for(var key in myTaskdata){
@@ -304,6 +307,8 @@ function loadAssignedTaskList(){
 		    date2 = moment.parseZone(StartDateTime).utc().format();
 			dateTime2 = moment(date2).format("DD-MM-YYYY HH:mm:ss");
 			obj["StartDate"] ='<a class="tdViewData">'+dateTime2+'</a>';
+			
+
 		}
 		if(myTaskdata[key]["customerData"]){
 			var customerData;

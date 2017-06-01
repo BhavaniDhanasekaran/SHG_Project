@@ -207,6 +207,13 @@ def assignedTaskList(request):
             else:
                 if data["processInstanceId"] in myTaskDict:
                     myTaskDict[data["processInstanceId"]][data["name"]] = data["value"]
+
+
+    taskProVarList4 = camundaClient._urllib2_request('history/process-instance',{"processInstanceIds": proInstArrTrue}, requestType='POST')
+    for data in taskProVarList4:
+        if data["id"] in myTaskDict:
+                myTaskDict[data["id"]]["processStartTime"] = data["startTime"]
+                
     for key in myTaskDict:
         if groupName == "DataSupportTeam":
             if myTaskDict[key].has_key("kyc"):
