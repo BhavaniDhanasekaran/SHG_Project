@@ -121,7 +121,7 @@ function loadUnassignedTaskList(data){
         } );
       triggerLoadFunc();
      
-      if((dataArray.length > 0 ) && (taskName == "Proposal scrutiny")){	
+      if((dataArray.length > 0 ) && (taskName == "Proposal scrutiny" || taskName == "Approve Loan")){	
        		GetAllData(dataArray);
     	}
     	else{
@@ -669,7 +669,7 @@ function claimconfirmBox(id,shgName,alldata){
 					processInstanceId =  groupLoanIDSplit[4];
 					loanTypeName =  groupLoanIDSplit[5];
 					loanTypeId =  groupLoanIDSplit[6];	
-		    if(taskName=="Proposal scrutiny"){
+		    if (group == "CreditTeam") {
 				    DirectClaimTask(id,alldata);
 		    }
 		    else{
