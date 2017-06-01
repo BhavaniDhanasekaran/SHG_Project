@@ -2450,6 +2450,57 @@ function getGroupComments(processInstanceId, loanId) {
         } //success part end
     });
 }
+
+function getLoanLevelComments(processInstanceId, loanId) {
+    var commentsHtml = '';
+    $('#profile-feed-3').html('');
+    $("#ajax_loader2").show();
+    $.ajax({
+        url: '/getLoanLevelComments/' + processInstanceId + '/' + loanId,
+        dataType: 'json',
+        beforeSend: function() {
+          $("#ajax_loader2").show();
+          $("#widget-body-3").addClass("widget-box-overlay");
+        },
+        complete: function() {
+           $("#ajax_loader2").hide();
+           $("#widget-body-3").removeClass("widget-box-overlay");
+        },
+        success: function(data) {
+            var jsondata = data;
+	     if(jsondata.code == "2051"){
+            	if(jsondata.data.comments[0]){
+                if (jsondata.data.comments.length>0) {
+			var loanId = jsondata.data.loanId;
+                    	commentsHtml += '<div style="font-size:12px; font-weight:bold;color:darkslategrey;"><i class="fa fa-user fa-3" aria-hidden="true"></i> &nbsp<span style="font-size:13px;color:darkblue; align:center"><b>Loan Id :' + loanId + '</b></span> </div>';
+                    $.each(jsondata.data.comments, function(key, value) {
+                        if (value.comments != "") {
+                            commentsHtml += '' +
+                            '<div class="profile-activity clearfix"><div><span style="font-weight:bold; font-size:11px;color:#981b1b;"><b>' +
+                                '' + value.userName + '</b>:</span> ' +
+                                '<span style="color:black;,font-size:8px; "><b>' + value.taskName + '<b></span>' +
+                                '<span style="font-style:italic;"><br>' +
+                                '<i class="fa fa-comments" style="color:darkslategrey;" aria-hidden="true"></i>&nbsp<b>' + value.comments +
+                                '</b></span> <div class="time"><i class="ace-icon fa fa-clock-o bigger-110"></i><span > &nbsp&nbsp' +
+                                value.validatedDate + '</span></div></div></div>';
+                        }
+                    });
+                  
+	         }	
+            }
+            else
+            {
+                 commentsHtml += 'No Comments';
+            }
+
+	   }	
+          $('#profile-feed-3').html(commentsHtml);
+        } //success part end
+    });
+}
+
+
+
 function loadNextMem(){
     $('.spanClearClass').text('');
     clearMemberData();
@@ -2562,6 +2613,10 @@ function reloadComments(id) {
     if(id == 2){
         getGroupComments(processInstanceId,loanId);
     }
+    if(id == 3){
+        getLoanLevelComments(processInstanceId,loanId);
+    }
+
 }
 
 function generateLOS(){
@@ -2721,18 +2776,19 @@ function updateChequeInfo(status,operationId){
         return false;
     }
     else{
-        $("#dateOfDisbursementDiv").css("border","0px solid #D5D5D5");
-    }
-    if(document.getElementById("loanSancDate")){
-        var LSD = new Date(document.getElementById("loanSancDate").innerHTML);
-        var DD = new Date( disbursementDate);
-        if(DD < LSD){
+	 if(document.getElementById("loanSancDate")){
+             var LSD = document.getElementById("loanSancDate").innerHTML;
+             LSD = LSD.split("/")[0]+"-"+LSD.split("/")[1]+"-"+ LSD.split("/")[2];
+             var DD  = disbursementDate.split("/")[0]+"-"+disbursementDate.split("/")[1]+"-"+disbursementDate.split("/")[2];
+             if(DD < LSD){
                 $.alert("Date of disbursement cannot be less than Loan Sanction Date!");
                 return false;
+             }
+
         }
-
+        $("#dateOfDisbursementDiv").css("border","0px solid #D5D5D5");
     }
-
+    
     memberAvailedLoanFalseArr = [];
     for(var i in totalMemberIdArray){
 

@@ -396,6 +396,20 @@ def getGroupComments(request, processId, loanId):
         return helper.bad_request('Unexpected error occurred while getting getGroupComments')
 
 
+@session_required
+def getLoanLevelComments(request, processId, loanId):
+    loggerInfo.info('------------------Entering getLoanLevelComments(request, processId, loanId):---------------------- ')
+    try:
+        bodyData = {"processId": str(processId), "loanId": str(loanId)}
+        serialized_data = sscoreClient._urllib2_request('workflowDetailView/LoanComments', bodyData,
+                                                        requestType='POST')
+        loggerInfo.info(
+            '------------------Exiting getLoanLevelComments(request, processId, loanId):---------------------- ')
+        return HttpResponse(json.dumps(serialized_data), content_type="application/json")
+    except ShgInvalidRequest, e:
+        errorLog.error("Exception raised inside getLoanLevelComments(request, processId, loanId): %s" % e)
+        return helper.bad_request('Unexpected error occurred while getting LoanLevelComments')
+
 @csrf_exempt
 @session_required
 def getLoanMemberPaymentHistory(request, memberId, groupId):
