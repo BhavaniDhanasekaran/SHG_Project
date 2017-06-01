@@ -1867,7 +1867,14 @@ function rmGroupMaster(groupId) {
         complete: function() {
             $("#loading").hide();
         },
+        error: function() {
+            $("#loading").hide();
+            $.alert("connnection Timeout");
+        },
         success: function(data) {
+                 $('#Animator').empty();
+                 $('#repm1').empty();
+                 $('#repm2').empty();
             var groupViewData2 = data;
             if (groupViewData2["data"]["groupMemDetail"]) {
                 var groupData = groupViewData2["data"]["groupMemDetail"];
@@ -1908,6 +1915,7 @@ function rmGroupMaster(groupId) {
                         }
                     }
                  }
+
                 $.each(found_names, function(key, value) {
                     $('#Animator').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
                     $('#repm1').append('<option value="' + value.memberId + '">' + value.memberName + '</option>');
