@@ -991,3 +991,44 @@ $(document).on("change",".searchBy",function(){
 			$('#taskAssignee').css("display","none");
 		}
 	});
+function RejectConfirmBox(status){
+        var statusKey = '';
+        if(status == "Rejected"){
+            statusKey = ' reject ';
+        }           
+        if(status == "Approved"){
+            statusKey = ' approve ';
+        }
+        if(status == "Rework"){
+            statusKey = ' rework ';
+        }        
+        $.confirm({
+            title: 'Do you really want to '+statusKey+'',
+            confirmButton: 'Yes',
+            cancelButton: 'No',
+            confirm: function(){
+                updateMemValidationStatus(status);
+            },
+            cancel: function(){
+            }
+        });
+    }    
+function ApproveConfirmBox(status){
+        var statusKey = '';
+        if(status == "Approved"){
+            statusKey = ' approve ';
+        }
+        if(status == "Rework"){
+            statusKey = ' rework ';
+        }
+        $.confirm({
+            title: 'Do you really want to '+statusKey+'',
+            confirmButton: 'Yes',
+            cancelButton: 'No',
+            confirm: function(){
+                submitKYCForm(status);
+            },
+            cancel: function(){
+            }
+        });
+    } 
