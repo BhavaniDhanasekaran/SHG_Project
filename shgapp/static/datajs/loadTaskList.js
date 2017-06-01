@@ -254,7 +254,7 @@ $.fn.dataTable.moment('DD-MM-YYYY HH:mm:ss');
 function loadAssignedTaskList(){
 	$("#loading").hide();
 	var myTaskdata = JSON.parse(myTaskList);
-	console.log("myTaskdata",myTaskdata);
+	//console.log("myTaskdata",myTaskdata);
 
 	var dataArray = [];
 	for(var key in myTaskdata){
