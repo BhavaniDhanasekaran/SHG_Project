@@ -2723,6 +2723,16 @@ function updateChequeInfo(status,operationId){
     else{
         $("#dateOfDisbursementDiv").css("border","0px solid #D5D5D5");
     }
+    if(document.getElementById("loanSancDate")){
+        var LSD = new Date(document.getElementById("loanSancDate").innerHTML);
+        var DD = new Date( disbursementDate);
+        if(DD < LSD){
+                $.alert("Date of disbursement cannot be less than Loan Sanction Date!");
+                return false;
+        }
+
+    }
+
     memberAvailedLoanFalseArr = [];
     for(var i in totalMemberIdArray){
 
