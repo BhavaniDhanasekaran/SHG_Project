@@ -86,8 +86,8 @@ function viewTasksData(taskName){
                         obj["groupFormationDate"] =grpFormDt[2]+"-"+grpFormDt[1]+"-"+grpFormDt[0];
 
                     }
-                    obj["history"] = '<button type="submit" onclick="viewGrpInfo('+"'"+obj["groupId"]+"'"+",'"+obj["loanId"]+"'"+",'"+obj["taskName"]+"'"+",'"+groupTaskdata[key]["loanTypeName"]+"'"+",'"+groupTaskdata[key]["processInstanceId"]+"'"+');" class="btn" style="background:#981b1b;">View</button>&nbsp&nbsp'
-                                     +'<a href="#" onclick="viewGrpHistory('+"'"+groupTaskdata[key]["processInstanceId"]+"'"+",'"+obj["shgName"]+"'"+",'"+obj["shgId"]+"'"+",'"+obj["loanId"]+"'"+",'"+groupTaskdata[key]["loanTypeName"]+"'"+')" ><i class="fa fa-history" style="color:#981b1b;font-size:large;"></i></a>';
+                    obj["history"] = '<button type="submit" onclick="viewGrpInfo('+"'"+obj["groupId"]+"'"+",'"+obj["loanId"]+"'"+",'"+obj["taskName"]+"'"+",'"+groupTaskdata[key]["loanTypeName"]+"'"+",'"+groupTaskdata[key]["processInstanceId"]+"'"+');" class="btn btn-danger btn-md">View</button>&nbsp&nbsp'
+                                     +'<a href="#" onclick="viewGrpHistory('+"'"+groupTaskdata[key]["processInstanceId"]+"'"+",'"+obj["shgName"]+"'"+",'"+obj["shgId"]+"'"+",'"+obj["loanId"]+"'"+",'"+groupTaskdata[key]["loanTypeName"]+"'"+')" ><i class="fa fa-history" style="color:#307ECC;font-size:large;"></i></a>';
                     }
                 dataArray.push(obj);
 
@@ -160,7 +160,7 @@ function viewGrpHistory(processInstanceId,groupName,shgId,loanId,loanTypeName){
             });
             var sortedData= historyList.sort((function (a, b) { return new Date(a[1].startTime) - new Date(b[1].startTime) }));
 
-            html += '<div class="classmemberDetails">'+groupName+'<div><font >Group ID : '+shgId+'</font>&nbsp&nbsp&nbsp&nbsp<font>Loan ID : '+loanId+'</font>&nbsp&nbsp&nbsp&nbsp<font>Loan Type : '+loanTypeName+'</font></div></div><div class="history_main"><ul class="cbp_tmtimeline">';
+            html += '<div class="classmemberDetails">'+groupName+'<div><font >Group ID : '+shgId+'</font>&nbsp&nbsp&nbsp&nbsp<font>Loan ID : '+loanId+'</font>&nbsp&nbsp&nbsp&nbsp<font>Loan Type : '+loanTypeName+'</font></div></div><br><div class="history_main"><ul class="cbp_tmtimeline">';
             var reworkTasksList = ["KYC Check","Proposal scrutiny","Upload disbursement docs","Confirm disbursement"];
             var replaceTaskName = {
                 "KYC Check"                                 : "Query Response",

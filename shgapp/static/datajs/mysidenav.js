@@ -20,6 +20,7 @@ function toggleNav() {
     if(sidenav.style.width == "270px" && main.style.marginRight == "240px"){
         getMemberComments(processInstanceId,loanId);
         getGroupComments(processInstanceId,loanId);
+	 getLoanLevelComments(processInstanceId,loanId);
     }
     $(" .footer .footer-inner .footer-content").css("right", "270px");
 

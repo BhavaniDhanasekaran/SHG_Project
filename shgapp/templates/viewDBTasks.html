@@ -21,9 +21,8 @@
     background-color: #fefefe;
     margin: auto;
     border: 5px solid #981b1b;
-    width: 50%;
+    width: 45%;
     height: 90%;
-    overflow: auto;
 }
 
 .classmemberDetails {
@@ -37,11 +36,12 @@
     margin: auto;
     padding: 10px;
     vertical-align: middle;
-    position: absolute;
     top: 65px;
     bottom: 32px;
     right: 0;
     left: 0;
+    max-height:570px;   
+    overflow: auto;
 }
     </style>
     <script>
@@ -75,7 +75,7 @@
 {% block content %}
     <div class="col-xs-12 widget-container-col" id="widget-container-col-2">
     <div class="widget-box widget-color-blue" id="widget-box-2" >
-        <div class="widget-header" style="background:#981b1b;border-color:#981b1b">
+        <div class="widget-header">
             <h5 class="widget-title bigger lighter">
                 <i class="ace-icon fa fa-tachometer"></i>
                 Dashboard - <span id="taskName">{{ taskName }} </span>
