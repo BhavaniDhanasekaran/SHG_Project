@@ -125,17 +125,17 @@ function getGroupData(groupID, loanId) {
                             document.getElementById("groupId").innerHTML = groupData["data"]["groupId"];
                         }
                         if (document.getElementById("center") && groupData["data"]["center"]) {
-                            document.getElementById("center").innerHTML = groupData["data"]["center"];                          
+                            document.getElementById("center").innerHTML = groupData["data"]["center"];
                         }
                         if (document.getElementById("region") && groupData["data"]["region"]) {
-                            document.getElementById("region").innerHTML = groupData["data"]["region"];                          
+                            document.getElementById("region").innerHTML = groupData["data"]["region"];
                         }
                         if (document.getElementById("cluster") && groupData["data"]["cluster"]) {
-                            document.getElementById("cluster").innerHTML = groupData["data"]["cluster"];                          
+                            document.getElementById("cluster").innerHTML = groupData["data"]["cluster"];
                         }
                         if (document.getElementById("groupLoanAmount") && groupData["data"]["groupLoanAmount"]) {
-                            document.getElementById("groupLoanAmount").innerHTML = groupData["data"]["groupLoanAmount"];                          
-                        }                        
+                            document.getElementById("groupLoanAmount").innerHTML = groupData["data"]["groupLoanAmount"];
+                        }
                     }
                     var membersCount = document.getElementById("groupMembersDropDown").getElementsByTagName("a").length;
                     var approvedCount = $('.Approved').length;
@@ -203,8 +203,8 @@ function getMemberDetails(memberId, groupId, loanId) {
         },
         success: function(data) {
             if (data.code == "2019") {
-               
-              
+
+
 
                 MemberDatadisplay(data);
                 highMarksList(memberId,loanId,data["data"]["memberDocumentDetails"]);
@@ -298,56 +298,41 @@ function highMarksList(memberId,loanId,memberDocData) {
                     var docPath = ''
                     var docId = ''
 
-                       
+
                     if(conflictDataCreditEnquiry.length == memberDocumentDetails.length){
-                        console.log("hello");
                         for (var j = 0; j < memberDocumentDetails.length; j++) {
                             if (memberDocumentDetails[j]["documentType"] == "OVERLAPREPORT") {
-                                        docPath = memberDocumentDetails[j]["documentPath"];
-                                        docId = memberDocumentDetails[j]["docId"];
+                                docPath = memberDocumentDetails[j]["documentPath"];
+                                docId = memberDocumentDetails[j]["docId"];
                                 conflictDataCreditEnquiry[j]["overLapReportURL"] = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + docId + "," + "config='width=500,height=500'" + ');return false;">View</button>';
-                                
+
                             }
                         }
                     }
                     else{
-                       
-                    if(memberDocumentDetails.length>0){
-                        for (var k = 0; k < conflictDataCreditEnquiry.length; k++) {
-                            for (var j = 0; j < memberDocumentDetails.length; j++) {
-
-                                if (memberDocumentDetails[j]["documentType"] == "OVERLAPREPORT") {
-                                            docPath = memberDocumentDetails[j]["documentPath"];
-                                            docId = memberDocumentDetails[j]["docId"];
-                                    conflictDataCreditEnquiry[k]["overLapReportURL"] = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + docId + "," + "config='width=500,height=500'" + ');return false;">View</button>';
-                                   
+                        if(memberDocumentDetails.length>0){
+                            for (var k = 0; k < conflictDataCreditEnquiry.length; k++) {
+                                for (var j = 0; j < memberDocumentDetails.length; j++) {
+                                    if (memberDocumentDetails[j]["documentType"] == "OVERLAPREPORT") {
+                                        var docPath = memberDocumentDetails[j]["documentPath"];
+                                        var docId = memberDocumentDetails[j]["docId"];
+                                        conflictDataCreditEnquiry[j]["overLapReportURL"] = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + docId + "," + "config='width=500,height=500'" + ');return false;">View</button>';
+                                    }
                                 }
                             }
                         }
 
-
-                    }
-                    else {
-
-                        
-
-                        conflictDataCreditEnquiry[0]["overLapReportURL"] = '<button type="button" class="btn btn-info btn-md btn-danger btn btn-info disabled" >View</button>';
+                        else {
+                               conflictDataCreditEnquiry[0]["overLapReportURL"] = '<button type="button" class="btn btn-info btn-md btn-danger btn btn-info disabled" >View</button>';
+                            }
                         }
-
-
                     }
 
-
-                    }
                     else{
                         conflictDataCreditEnquiry = [];
 
                     }
-
-
-
-
-
+                    console.log(conflictDataCreditEnquiry);
                     if ($.fn.DataTable.isDataTable('#creditLoadData')) {
                         $("#creditLoadData").dataTable().fnDestroy();
                     }
@@ -472,7 +457,7 @@ function highMarksList(memberId,loanId,memberDocData) {
 
 function DocumentDetails(data) {
     var memberData = data;
-    var imgFiles = ["MEMBERPHOTO", "IDPROOF", "IDPROOF_2", "ADDRESSPROOF", "ADDRESSPROOF_2", "SBACCOUNTPASSBOOK", "OVERLAPREPORT"];
+    var imgFiles = ["MEMBERPHOTO", "IDPROOF", "IDPROOF_2", "ADDRESSPROOF", "ADDRESSPROOF_2", "SBACCOUNTPASSBOOK"];
 
     if (memberData["data"]["memberDocumentDetails"]) {
         if (memberData["data"]["memberDocumentDetails"][0]) {
@@ -482,7 +467,7 @@ function DocumentDetails(data) {
                 if ($.inArray(memberDocumentsArray[key]["documentType"], imgFiles) != -1) {
                     if (memberDocumentsArray[key]["documentType"]) {
                         if (memberDocumentsArray[key]["documentType"] == "OVERLAPREPORT") {
-                            $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr('onClick', 'window.open(' + "'" + memberDocumentsArray[key]["documentPath"] + "'" + "," + memberDocumentsArray[key]["docId"] + "," + "config='width=500,height=500'" + ').focus();');
+                            //$("#" + memberDocumentsArray[key]["documentType"] + "_docPath").attr('onClick', 'window.open(' + "'" + memberDocumentsArray[key]["documentPath"] + "'" + "," + memberDocumentsArray[key]["docId"] + "," + "config='width=500,height=500'" + ').focus();');
                         }
                         if (memberDocumentsArray[key]["documentPath"] == null || memberDocumentsArray[key]["documentPath"] == 'Not uploaded') {
                             $("#" + memberDocumentsArray[key]["documentType"] + "_docPath").css("display", "none");
@@ -619,12 +604,12 @@ function updateMemValidationStatus(status) {
             $.alert("Your Loan Eligible Amount is : " + roundOfNum);
             return false;
         }
-    }   
+    }
     if (taskName == "Conduct BAT- Member approval in CRM") {
     validationType = "CLM";
-    } 
-    
-    
+    }
+
+
     var commentCamunda = "";
     var dataObj = {};
     if (memStatus != "" && memStatus != "PEN") {
@@ -809,7 +794,7 @@ function submitKYCForm(status) {
 
     var loanAmount = document.getElementById("loanAmount").value;
     var loanAmountInt = parseInt(loanAmount);
-    console.log("loanAmountInt",loanAmountInt);    
+    console.log("loanAmountInt",loanAmountInt);
 
     var loanAmountEligible;
     $("#creditLoadData tbody tr").each(function() {
@@ -2581,15 +2566,15 @@ function getLoanLevelComments(processInstanceId, loanId) {
                                 value.validatedDate + '</span></div></div></div>';
                         }
                     });
-                  
-	         }	
+
+	         }
             }
             else
             {
                  commentsHtml += 'No Comments';
             }
 
-	   }	
+	   }
           $('#profile-feed-3').html(commentsHtml);
         } //success part end
     });
