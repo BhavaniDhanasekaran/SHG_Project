@@ -551,10 +551,6 @@ def listAssigneeTasks(request):
             "Confirm disbursement": "Confirm disbursement",
             "Confirm Disbursement Query Response": "Confirm disbursement"
         }
-        variableDict = {
-            "Confirm Disbursement Query Response": "disbursement",
-            "BM Reply": "chekrespdate"
-        }
         if request.method == "POST":
             formData = json.loads(request.body)
             if formData.has_key("searchBy"):
@@ -564,22 +560,50 @@ def listAssigneeTasks(request):
                 print searchById
                 if searchById == "4":
                     assignee = formData["assignee"]
-                    print "assignee"
-                    print assignee
                     myTaskList = camundaClient._urllib2_request('task?&assignee=' + str(assignee), {}, requestType='GET')
 
                     for data in myTaskList:
                         processInstancesArr.append(data["processInstanceId"])
                         myTaskDict[data["processInstanceId"]] = data
+
+                if searchById == "2":
+                    taskFromDate = formData["taskFromDate"]
+                    taskToDate = formData["taskToDate"]
+                    bodyData = {"createdAfter" : taskFromDate, "createdBefore" : taskToDate, "candidateGroup" : "CreditTeam", "includeAssignedTasks" : "true"}
+                    myTaskList = camundaClient._urllib2_request('task?firstResult=0', bodyData, requestType='POST')
+                    for data in myTaskList:
+                        #if data["assignee"]:
+                        processInstancesArr.append(data["processInstanceId"])
+                        myTaskDict[data["processInstanceId"]] = data
+
+                if searchById == "3":
+                    processFromDate = formData["processFromDate"]
+                    processToDate = formData["processToDate"]
+                    bodyData = {"startedAfter" : processFromDate, "startedBefore" : processToDate, "unfinished" : "true"}
+                    myTaskList = camundaClient._urllib2_request('history/process-instance', bodyData, requestType='POST')
+                    for data in myTaskList:
+                        bodyData1 = {"processInstanceId" : data["id"]}
+                        myTaskList1 = camundaClient._urllib2_request('task', bodyData1, requestType='POST')
+                        if myTaskList1:
+                            if myTaskList1[0]:
+                                if myTaskList1[0]["name"] in ["Proposal scrutiny","Approve Loan","Confirm disbursement"]:
+                                    data["processInstanceId"] = data["id"]
+                                    data["id"] = myTaskList1[0]["id"]
+                                    data["name"] = myTaskList1[0]["name"]
+                                    data["assignee"] = myTaskList1[0]["assignee"]
+                                    data["created"] = myTaskList1[0]["created"]
+                                    processInstancesArr.append(data["processInstanceId"])
+                                    myTaskDict[data["processInstanceId"]] = data
+
+
                 if searchById == "1":
                     actualTaskName  = formData["taskName"]
                     bodyData = {"name" : replaceTaskNames[actualTaskName]}
                     myTaskList = camundaClient._urllib2_request('task', bodyData, requestType='POST')
-                    print "myTaskList"
-                    print myTaskList
                     for data in myTaskList:
-                        processInstancesArr.append(data["processInstanceId"])
-                        myTaskDict[data["processInstanceId"]] = data
+                        #if data["assignee"]:
+                         processInstancesArr.append(data["processInstanceId"])
+                         myTaskDict[data["processInstanceId"]] = data
 
                 bodyData = {"processInstanceIdIn": processInstancesArr, "variableName": "groupstatus"}
                 groupStatusList = camundaClient._urllib2_request('variable-instance', bodyData, requestType='POST')
@@ -604,10 +628,16 @@ def listAssigneeTasks(request):
                         if data["processInstanceId"] in myTaskDict:
                             myTaskDict[data["processInstanceId"]][data["name"]] = data["value"]
 
+                if searchById == "1" or searchById == "2" or searchById == "4":
+                    taskProVarList4 = camundaClient._urllib2_request('history/process-instance',  {"processInstanceIds": proInstArrTrue}, requestType='POST')
+                    for data in taskProVarList4:
+                        if data["id"] in myTaskDict:
+                            myTaskDict[data["id"]]["startTime"] = data["startTime"]
+
                 if searchById == "4":
                     for key in myTaskDict:
-                        if myTaskDict[key].has_key("chekrespdate"):
-                            if myTaskDict[key]["chekrespdate"] == "resolved":
+                        if myTaskDict[key].has_key("chekcbrespdate"):
+                            if myTaskDict[key]["chekcbrespdate"] == "resolved":
                                 myTaskDict[key]["name"] = "BM Reply"
                         if myTaskDict[key].has_key("disbursement"):
                             if myTaskDict[key]["disbursement"] == "resolved":
@@ -616,23 +646,31 @@ def listAssigneeTasks(request):
                 if searchById == "1":
                     queryProInstArr = []
                     for key in myTaskDict:
-                        if myTaskDict[key].has_key("chekrespdate"):
-                            if myTaskDict[key]["chekrespdate"] == "resolved":
+                        if myTaskDict[key].has_key("chekcbrespdate"):
+                            if myTaskDict[key]["chekcbrespdate"] == "resolved":
                                 queryProInstArr.append(key)
                         if myTaskDict[key].has_key("disbursement"):
                             if myTaskDict[key]["disbursement"] == "resolved":
                                 queryProInstArr.append(key)
 
                     for key in myTaskDict:
-                        if myTaskDict[key]["assignee"]:
-                            if actualTaskName in ["Confirm disbursement","Proposal scrutiny"]:
-                                if key not in queryProInstArr:
-                                    myTaskData.append(myTaskDict[key])
-                            if actualTaskName in ["Confirm Disbursement Query Response", "BM Reply"]:
-                                if key in queryProInstArr:
-                                    myTaskDict[key]["name"] = actualTaskName
-                                    myTaskData.append(myTaskDict[key])
+                        if actualTaskName in ["Confirm disbursement","Proposal scrutiny"]:
+                            if key not in queryProInstArr:
+                                myTaskData.append(myTaskDict[key])
+                        if actualTaskName in ["Confirm Disbursement Query Response", "BM Reply"]:
+                            if key in queryProInstArr:
+                                myTaskDict[key]["name"] = actualTaskName
+                                myTaskData.append(myTaskDict[key])
 
+                if searchById == "2" or searchById == "3":
+                    for key in myTaskDict:
+                        if myTaskDict[key].has_key("chekcbrespdate"):
+                            if myTaskDict[key]["chekcbrespdate"] == "resolved":
+                                myTaskDict[key]["name"] = "BM Reply"
+                        if myTaskDict[key].has_key("disbursement"):
+                            if myTaskDict[key]["disbursement"] == "resolved":
+                                myTaskDict[key]["name"] = "Confirm Disbursement Query Response"
+                        myTaskData.append(myTaskDict[key])
 
 
                 loggerInfo.info( "myTaskData")

@@ -154,7 +154,7 @@ function viewGrpHistory(processInstanceId,groupName,shgId,loanId,loanTypeName){
 
                 }
 		    }
-		    console.log(historyDict);
+
 		    var historyList = Object.keys(historyDict).map(function(key) {
               return [key, historyDict[key]];
             });
@@ -225,8 +225,8 @@ function convertmyDateTime(date){
     var dateStr = new Date(localTime * 1000 * 60);
     dateStr = dateStr.toString("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
     return dateStr;
-}
 
+}
 
 
 
