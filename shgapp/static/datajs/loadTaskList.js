@@ -669,13 +669,10 @@ function claimconfirmBox(id,shgName,alldata){
 					taskId =  groupLoanIDSplit[3];
 					processInstanceId =  groupLoanIDSplit[4];
 					loanTypeName =  groupLoanIDSplit[5];
-<<<<<<< HEAD
-					loanTypeId =  groupLoanIDSplit[6];
-		    if(taskName=="Proposal scrutiny"){
-=======
+
 					loanTypeId =  groupLoanIDSplit[6];	
 		    if (group == "CreditTeam") {
->>>>>>> 28a949ae8de4ff269cb23d727bdba02a8336c613
+
 				    DirectClaimTask(id,alldata);
 		    }
 		    else{
