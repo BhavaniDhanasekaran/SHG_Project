@@ -203,7 +203,10 @@ function getMemberDetails(memberId, groupId, loanId) {
         },
         success: function(data) {
             if (data.code == "2019") {
-                MemberDatadisplay(data)
+               
+              
+
+                MemberDatadisplay(data);
                 highMarksList(memberId,loanId,data["data"]["memberDocumentDetails"]);
                 DocumentDetails(data);
                 $("#loading").hide();
@@ -281,6 +284,7 @@ function highMarksList(memberId,loanId,memberDocData) {
             $("#loading").show();
          },
          success: function(data) {
+           //console.log("highMarksList",data);
             if(data.code == "2045"){
                 var conflictDataCreditEnquiry = [];
                 if (data["data"] && data["data"][0]) {
@@ -289,19 +293,26 @@ function highMarksList(memberId,loanId,memberDocData) {
                         document.getElementById("CBStatus").innerHTML = conflictDataCreditEnquiry[0]["status"];
                     }
                     var memberDocumentDetails = memberDocData;
+                    console.log(memberDocumentDetails);
                     var memberOverlapLink = ''
                     var docPath = ''
                     var docId = ''
+
+                       
                     if(conflictDataCreditEnquiry.length == memberDocumentDetails.length){
+                        console.log("hello");
                         for (var j = 0; j < memberDocumentDetails.length; j++) {
                             if (memberDocumentDetails[j]["documentType"] == "OVERLAPREPORT") {
                                         docPath = memberDocumentDetails[j]["documentPath"];
                                         docId = memberDocumentDetails[j]["docId"];
                                 conflictDataCreditEnquiry[j]["overLapReportURL"] = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + docId + "," + "config='width=500,height=500'" + ');return false;">View</button>';
+                                
                             }
                         }
                     }
                     else{
+                       
+                    if(memberDocumentDetails.length>0){
                         for (var k = 0; k < conflictDataCreditEnquiry.length; k++) {
                             for (var j = 0; j < memberDocumentDetails.length; j++) {
 
@@ -309,16 +320,34 @@ function highMarksList(memberId,loanId,memberDocData) {
                                             docPath = memberDocumentDetails[j]["documentPath"];
                                             docId = memberDocumentDetails[j]["docId"];
                                     conflictDataCreditEnquiry[k]["overLapReportURL"] = '<button type="button" class="btn btn-info btn-md btn-danger" onclick="window.open(' + "'" + docPath + "'" + "," + docId + "," + "config='width=500,height=500'" + ');return false;">View</button>';
+                                   
                                 }
                             }
                         }
+
+
+                    }
+                    else {
+
+                        
+
+                        conflictDataCreditEnquiry[0]["overLapReportURL"] = '<button type="button" class="btn btn-info btn-md btn-danger btn btn-info disabled" >View</button>';
+                        }
+
+
                     }
 
 
                     }
                     else{
                         conflictDataCreditEnquiry = [];
+
                     }
+
+
+
+
+
                     if ($.fn.DataTable.isDataTable('#creditLoadData')) {
                         $("#creditLoadData").dataTable().fnDestroy();
                     }
