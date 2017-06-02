@@ -120,8 +120,9 @@ function loadUnassignedTaskList(data){
             "pageLength": 50
         } );
       triggerLoadFunc();
+     
+      if((dataArray.length > 0 ) && (taskName == "Proposal scrutiny" || taskName == "Approve Loan")){	
 
-      if((dataArray.length > 0 ) && (taskName == "Proposal scrutiny")){
        		GetAllData(dataArray);
     	}
     	else{
@@ -254,7 +255,7 @@ $.fn.dataTable.moment('DD-MM-YYYY HH:mm:ss');
 function loadAssignedTaskList(){
 	$("#loading").hide();
 	var myTaskdata = JSON.parse(myTaskList);
-	console.log("myTaskdata",myTaskdata);
+	//console.log("myTaskdata",myTaskdata);
 
 	var dataArray = [];
 	for(var key in myTaskdata){
@@ -668,8 +669,13 @@ function claimconfirmBox(id,shgName,alldata){
 					taskId =  groupLoanIDSplit[3];
 					processInstanceId =  groupLoanIDSplit[4];
 					loanTypeName =  groupLoanIDSplit[5];
+<<<<<<< HEAD
 					loanTypeId =  groupLoanIDSplit[6];
 		    if(taskName=="Proposal scrutiny"){
+=======
+					loanTypeId =  groupLoanIDSplit[6];	
+		    if (group == "CreditTeam") {
+>>>>>>> 28a949ae8de4ff269cb23d727bdba02a8336c613
 				    DirectClaimTask(id,alldata);
 		    }
 		    else{
@@ -1036,6 +1042,7 @@ $(document).on("change",".searchBy",function(){
 		}
 	});
 
+
 function setPrevNextDate(date,key)
 {
 	if(key == "prev"){
@@ -1058,3 +1065,46 @@ function setPrevNextDate(date,key)
     var back_date=  b_yyyy + '-' + b_mm + '-' + b_dd;
 	return back_date;
 }
+
+function RejectConfirmBox(status){
+        var statusKey = '';
+        if(status == "Rejected"){
+            statusKey = ' reject ';
+        }           
+        if(status == "Approved"){
+            statusKey = ' approve ';
+        }
+        if(status == "Rework"){
+            statusKey = ' rework ';
+        }        
+        $.confirm({
+            title: 'Do you really want to '+statusKey+'',
+            confirmButton: 'Yes',
+            cancelButton: 'No',
+            confirm: function(){
+                updateMemValidationStatus(status);
+            },
+            cancel: function(){
+            }
+        });
+    }    
+function ApproveConfirmBox(status){
+        var statusKey = '';
+        if(status == "Approved"){
+            statusKey = ' approve ';
+        }
+        if(status == "Rework"){
+            statusKey = ' rework ';
+        }
+        $.confirm({
+            title: 'Do you really want to '+statusKey+'',
+            confirmButton: 'Yes',
+            cancelButton: 'No',
+            confirm: function(){
+                submitKYCForm(status);
+            },
+            cancel: function(){
+            }
+        });
+    } 
+
