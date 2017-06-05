@@ -38,7 +38,8 @@ def dstasklist(request):
     userId = request.session["userId"]
     loggerInfo.info('------------------Exiting dstasklist(request):---------------------- ')
     if 'Loan-Edit' in userAction:
-        return render(request, 'ds-tasklist.html', {"userId": userId, "group": groupName, "user": username,'roleAction':'Loan-Edit'})
+        return render(request, 'ds-tasklist.html',
+                      {"userId": userId, "group": groupName, "user": username, 'roleAction': 'Loan-Edit'})
     else:
         return render(request, 'ds-tasklist.html', {"userId": userId, "group": groupName, "user": username})
 
@@ -55,7 +56,8 @@ def dstasklistByName(request, taskName):
     loggerInfo.info('------------------Exiting dstasklistByName(request,taskName):---------------------- ')
     if 'Loan-Edit' in userAction:
         return render(request, 'ds-tasklist.html',
-                  {"userId": userId, "taskName": taskName, "group": groupName, "user": username,'roleAction' :'Loan-Edit'})
+                      {"userId": userId, "taskName": taskName, "group": groupName, "user": username,
+                       'roleAction': 'Loan-Edit'})
     else:
         return render(request, 'ds-tasklist.html',
                       {"userId": userId, "taskName": taskName, "group": groupName, "user": username})
@@ -71,7 +73,8 @@ def taskReassign(request):
     userId = request.session["userId"]
     loggerInfo.info('------------------Exiting taskReassign(request):---------------------- ')
     if 'Loan-Edit' in userAction:
-        return render(request, 'reassignCTTasks.html', {"userId": userId, "group": groupName, "user": username,'roleAction' :'Loan-Edit'})
+        return render(request, 'reassignCTTasks.html',
+                      {"userId": userId, "group": groupName, "user": username, 'roleAction': 'Loan-Edit'})
     else:
         return render(request, 'reassignCTTasks.html', {"userId": userId, "group": groupName, "user": username})
 
@@ -93,10 +96,9 @@ def SHGForm(request, groupId, loanId, taskId, processId, taskName, loanTypeName,
         userAction = request.session["userActions"]
         userId = request.session["userId"]
         templateName = {
-            "KYC Check"		    			: "ds_groupview.html",
-            "Query Response"        				    : "ds_groupview.html","Conduct BAT- Member approval in CRM"       :
-            "queryResponseDS.html","Upload loan documents in Web application"	: "BMUploadDocs.html",
-            "Resolve Data Support Team Query"			:"queryResponseDS.html",
+            "KYC Check"		    		: "ds_groupview.html",
+            "Query Response"        				    : "ds_groupview.html","Conduct BAT- Member approval in CRM"       : "queryResponseDS.html","Upload loan documents in Web application"	:"BMUploadDocs.html",
+            "Resolve Data Support Team Query"			: "queryResponseDS.html",
             "Add New Members"					        :"BMAddNewMemberRead.html",
             "Print Loan Documents & FSR"			    : "BMAddNewMember.html",
             "Prepare Loan Documents"			        : "BMAddNewMember.html",
@@ -119,19 +121,19 @@ def SHGForm(request, groupId, loanId, taskId, processId, taskName, loanTypeName,
             return render(request, templateName[
                 taskName], {"userId": userId, "loanType": loanTypeName, "loanTypeId": loanTypeId, "groupId":
                 groupId, "loanId": loanId, "processInstanceId": processId, "taskId": taskId, "taskName":
-                                taskName, "group": groupName, "user": username,'roleAction' :'Loan-Edit'})
+                                taskName, "group": groupName, "user": username, 'roleAction' :'Loan-Edit'})
         else:
-            return render(request, templateName[
-            taskName], { "userId": userId,"loanType" : loanTypeName, "loanTypeId":loanTypeId, "groupId":
-            groupId, "loanId": loanId,"processInstanceId" : processId,"taskId" : taskId, "taskName":
-                             taskName, "group": groupName , "user":username})
+            return render(request, templateName[taskName], { "userId": userId,"loanType" :loanTypeName, "loanTypeId":loanTypeId , "groupId":
+                groupId, "loanId": loanId, "processInstanceId" :processId,"taskId" : taskId,"taskName":
+                                 taskName, "group": groupName , "user":username})
     except ShgInvalidRequest, e:
         errorLog. \
-            error("Exception raised inside SHGForm(request,groupId,loanId,taskId,processId,taskName,loanTypeName,loanTypeId):" + e)
+            error( \
+            "Exception raised inside SHGForm(request,groupId,loanId,taskId,processId,taskName,loanTypeName,loanTypeId):" + e)
         return helper.bad_request('Unexpected error occurred.'
 
 
-)
+                                  )
 
 @session_required
 def dashboard(request):
@@ -143,7 +145,7 @@ def dashboard(request):
     userId = request.session["userId"]
     loggerInfo.info('------------------Exiting dashboard(request):---------------------- ')
     if 'Loan-Edit' in userAction:
-        return render(request, 'tatReport.html', { "userId" : userId , "group" : groupName ,"user" :username,'roleAction' :'Loan-Edit'})
+        return render(request,'tatReport.html', { "userId" : userId ,"group" :groupName ,"user" : username, 'roleAction' : 'Loan-Edit'})
     else:
         return render(request, 'tatReport.html', {"userId": userId, "group": groupName, "user": username})
 
@@ -159,15 +161,16 @@ def redirectDBTasks( request,taskName):
     loggerInfo.info('------------------Exiting redirectDBTasks(request):---------------------- ')
     if 'Loan-Edit' in userAction:
         return render(request,
-                      'viewDBTasks.html', {"taskName": taskName, "userId": userId, "group": groupName, "user":username,'roleAction' :'Loan-Edit'})
+                      'viewDBTasks.html', {"taskName": taskName, "userId": userId, "group": groupName, "user":username, 'roleAction'
+                                           :'Loan-Edit'})
     else:
         return render(request,
-                  'viewDBTasks.html', { "taskName": taskName,"userId": userId, "group": groupName, "user":username})
+                      'viewDBTasks.html', { "taskName":taskName,"userId": userId, "group": groupName , "user":username})
 
 @csrf_exempt
-@session_required
+@ session_required
 def viewTasksData (request,taskName):
-    loggerInfo.info('------------------Entering viewTasksData(request):---------------------- ')
+    loggerInfo.info( '------------------Entering viewTasksData(request):---------------------- ')
     try:
         userOfficeData = json.loads(request.session["userOfficeData"])
         groupName = userOfficeData["designation"]
@@ -181,15 +184,15 @@ def viewTasksData (request,taskName):
         taskList = []
         processData = []
         originalTasksName = {
-            "KYC Check"                                 : "KYC Check",
-            "Upload disbursement docs"                  : "Upload disbursement docs",
+            "KYC Check"                                 : "KYC Check","Upload disbursement docs"                  :"Upload disbursement docs",
             "Proposal scrutiny"                         : "Proposal scrutiny",
             "Confirm disbursement"                      : "Confirm disbursement",
             "Query Response"                            : "KYC Check",
             "Resolve Confirm Disbursement Query"        : "Upload disbursement docs",
             "BM Reply"                                  : "Proposal scrutiny",
             "Confirm Disbursement Query Response"       : "Confirm disbursement",
-            "Conduct BAT- Member approval in CRM"       : "Conduct BAT- Member approval in CRM","Upload loan documents in Web application"  : "Upload loan documents in Web application",
+            "Conduct BAT- Member approval in CRM"       :
+            "Conduct BAT- Member approval in CRM","Upload loan documents in Web application"  : "Upload loan documents in Web application",
             "Resolve Data Support Team Query"           :"Resolve Data Support Team Query",
             "Add New Members"                           : "Add New Members",
             "Prepare Loan Documents"                    : "Prepare Loan Documents",
@@ -205,7 +208,7 @@ def viewTasksData (request,taskName):
                             "processVariables": [{"name": "clusterId", "operator": "eq", "value": officeId}]}
             if groupName == "RM":
                 bodyData = {"name" : originalTasksName[
-                            taskName], "processVariables": [{"name": "regionId", "operator": "eq", "value": officeId}]}
+                    taskName], "processVariables": [{"name": "regionId", "operator": "eq", "value": officeId}]}
             loggerInfo.info(bodyData)
             processList = camundaClient._urllib2_request('task', bodyData, requestType='POST')
             loggerInfo.info("task list")
@@ -224,9 +227,9 @@ def viewTasksData (request,taskName):
             userLogin = request.session["userLogin"]
             if groupName == "DataSupportTeam":
                 bodyDataDST = {"name": "KYC Check", "taskAssignee": userLogin, "active":
-                               "true", "processUnfinished": "true"}
-            if groupName =="CreditTeam":
-                bodyDataDST = {"taskAssignee": userLogin, "active": "true","processUnfinished": "true"}
+                    "true", "processUnfinished": "true"}
+            if groupName == "CreditTeam":
+                bodyDataDST = {"taskAssignee": userLogin, "active": "true", "processUnfinished": "true"}
             myTasksDST = camundaClient._urllib2_request('history/task', bodyDataDST, requestType='POST')
             for data in myTasksDST:
                 if data["processInstanceId"] not in processInstancesArr:
@@ -239,7 +242,6 @@ def viewTasksData (request,taskName):
                     finalProcessArr.append(taskInstance)
                     if taskInstance["name"] == originalTasksName[taskName]:
                         processDict[instance] = taskInstance
-
 
         loggerInfo.info("processInstancesArr*****************************************")
         loggerInfo.info(processInstancesArr)
@@ -265,7 +267,6 @@ def viewTasksData (request,taskName):
                                                                  requestType='POST')
                 taskList.append(taskProVarList2)
 
-
         for key in range(len(taskList)):
             for data in taskList[key]:
                 if groupName == "CMR" or groupName == "CLM" or groupName == "BM":
@@ -275,7 +276,6 @@ def viewTasksData (request,taskName):
                 else:
                     if data["processInstanceId"] in processDict:
                         processDict[data["processInstanceId"]][data["name"]] = data["value"]
-
 
         loggerInfo.info("processDict")
         loggerInfo.info(processDict)
@@ -301,7 +301,6 @@ def viewTasksData (request,taskName):
                     if processDict[key]["disbursement"] == "resolved":
                         processDict[key]["name"] = "Confirm Disbursement Query Response"
 
-
         for key in processDict:
             if taskName == processDict[key]["name"]:
                 processData.append(processDict[key])
@@ -325,11 +324,11 @@ def getDashboardData(request):
         incrementTaskCount = 0
         bodyLocationData = {}
         locationTypeId = ''
-        replaceTaskName = {"KYC Check" : "Query Response",
-            "Upload disbursement docs": "Resolve Confirm Disbursement Query",
-            "Proposal scrutiny": "BM Reply",
-            "Confirm disbursement": "Confirm Disbursement Query Response"
-        }
+        replaceTaskName = {"KYC Check": "Query Response",
+                           "Upload disbursement docs": "Resolve Confirm Disbursement Query",
+                           "Proposal scrutiny": "BM Reply",
+                           "Confirm disbursement": "Confirm Disbursement Query Response"
+                           }
         reworkTasksArray = ["KYC Check", "Upload disbursement docs", "Proposal scrutiny", "Confirm disbursement"]
         if groupName == "CLM" or groupName == "BM" or groupName == "CMR" or groupName == "RM" or groupName == "rm":
             if groupName == "CLM" or groupName == "BM" or groupName == "CMR":
@@ -340,20 +339,32 @@ def getDashboardData(request):
                 bodyLocationData = {"processVariables": [{"name": locationTypeId, "operator": "eq", "value": officeId}]}
 
             reworkTasksProVarDict = {
-                "KYC Check": {"processVariables": [{"name": "kyc", "value": "resolved", "operator": "eq"},{"name": str(locationTypeId), "value":  int(officeId), "operator": "eq"}],   "name": "KYC Check"},
-                "Upload disbursement docs": {"processVariables": [{"name": "disbursement", "value": "rework", "operator": "eq"},{"name": str(locationTypeId), "value":  int(officeId), "operator": "eq"}],   "name": "Upload disbursement docs"},
+                "KYC Check": {"processVariables": [{"name": "kyc", "value": "resolved", "operator": "eq"},
+                                                   {"name": str(locationTypeId), "value": int(officeId),
+                                                    "operator": "eq"}], "name": "KYC Check"},
+                "Upload disbursement docs": {
+                    "processVariables": [{"name": "disbursement", "value": "rework", "operator": "eq"},
+                                         {"name": str(locationTypeId), "value": int(officeId), "operator": "eq"}],
+                    "name": "Upload disbursement docs"},
 
-                "Proposal scrutiny": {"processVariables": [{"name": "chekcbrespdate", "value": "resolved", "operator": "eq"},{"name":str(locationTypeId), "value":int(officeId), "operator": "eq"}],"name": "Proposal scrutiny"},
-                "Confirm disbursement": {"processVariables": [{"name": "disbursement", "value": "resolved", "operator": "eq"},{"name": str(locationTypeId), "value": int(officeId), "operator": "eq"}],"name": "Confirm disbursement"}
+                "Proposal scrutiny": {
+                    "processVariables": [{"name": "chekcbrespdate", "value": "resolved", "operator": "eq"},
+                                         {"name": str(locationTypeId), "value": int(officeId), "operator": "eq"}],
+                    "name": "Proposal scrutiny"},
+                "Confirm disbursement": {
+                    "processVariables": [{"name": "disbursement", "value": "resolved", "operator": "eq"},
+                                         {"name": str(locationTypeId), "value": int(officeId), "operator": "eq"}],
+                    "name": "Confirm disbursement"}
             }
             myTasks = camundaClient._urllib2_request('task', bodyLocationData, requestType='POST')
             for data in myTasks:
                 if data["name"] in reworkTasksArray:
                     taskProVarList = {"name": data["name"],
-                                      "processVariables": [{"name": locationTypeId, "operator": "eq", "value": officeId}]}
+                                      "processVariables": [
+                                          {"name": locationTypeId, "operator": "eq", "value": officeId}]}
                     loggerInfo.info(taskProVarList)
                     overallTaskCount = camundaClient._urllib2_request('task/count', taskProVarList, requestType='POST')
-                    loggerInfo.info("overallTaskCount"+str(overallTaskCount))
+                    loggerInfo.info("overallTaskCount" + str(overallTaskCount))
                     rwrkProVarList = reworkTasksProVarDict[data["name"]]
                     rwrkTaskCount = camundaClient._urllib2_request('task/count', rwrkProVarList, requestType='POST')
                     loggerInfo.info("rwrkTaskCount" + str(rwrkTaskCount))
@@ -378,8 +389,8 @@ def getDashboardData(request):
             processInstancesArr = []
             userLogin = request.session["userLogin"]
             if groupName == "DataSupportTeam":
-                bodyDataDST = {"name" : "KYC Check", "taskAssignee" :userLogin, "active": "true",
-                               "processUnfinished" :"true" }
+                bodyDataDST = {"name": "KYC Check", "taskAssignee": userLogin, "active": "true",
+                               "processUnfinished": "true"}
             if groupName == "CreditTeam":
                 bodyDataDST = {"taskAssignee": userLogin, "active": "true", "processUnfinished": "true"}
             myTasksDST = camundaClient._urllib2_request('history/task', bodyDataDST, requestType='POST')
@@ -389,43 +400,43 @@ def getDashboardData(request):
                     processInstancesArr.append(data["processInstanceId"])
             finalProcessArr = []
             for instance in processInstancesArr:
-                taskBody = {"processInstanceId" :instance}
+                taskBody = {"processInstanceId": instance}
                 taskInfo = camundaClient._urllib2_request('task', taskBody, requestType='POST')
                 for taskInstance in taskInfo:
                     finalProcessArr.append(taskInstance)
             for data in finalProcessArr:
                 if data["name"]:
                     if data["name"] == "KYC Check":
-                        queryBody = {"processInstanceId" : data["processInstanceId"] ,
+                        queryBody = {"processInstanceId": data["processInstanceId"],
                                      "processVariables": [{"name": "kyc", "value": "resolved", "operator": "eq"}],
                                      "name": "KYC Check"}
                         queryData = camundaClient._urllib2_request('task/count', queryBody, requestType='POST')
                         if queryData["count"] != 0:
-                            QRcount = QRcount+1
+                            QRcount = QRcount + 1
                     if data["name"] == "Upload disbursement docs":
-                        queryBody = {"processInstanceId" :data["processInstanceId"] , "processVariables": [{
+                        queryBody = {"processInstanceId": data["processInstanceId"], "processVariables": [{
                             "name": "disbursement", "value": "rework", "operator": "eq"}],
                                      "name": "Upload disbursement docs"}
                         queryData = camundaClient._urllib2_request('task/count', queryBody, requestType='POST')
                         if queryData["count"] != 0:
                             loggerInfo.info(queryData["count"])
-                            RCDQcount = RCDQcount+1
+                            RCDQcount = RCDQcount + 1
                     if data["name"] == "Confirm disbursement":
-                        queryBody = {"processInstanceId" :data["processInstanceId"] , "processVariables": [{
+                        queryBody = {"processInstanceId": data["processInstanceId"], "processVariables": [{
                             "name": "disbursement", "value": "resolved", "operator": "eq"}],
                                      "name": "Confirm disbursement"}
                         queryData = camundaClient._urllib2_request('task/count', queryBody, requestType='POST')
                         if queryData["count"] != 0:
                             loggerInfo.info(queryData["count"])
-                            CDQRcount = CDQRcount+1
+                            CDQRcount = CDQRcount + 1
                     if data["name"] == "Proposal scrutiny":
-                        queryBody = {"processInstanceId" :data["processInstanceId"] , "processVariables": [{
+                        queryBody = {"processInstanceId": data["processInstanceId"], "processVariables": [{
                             "name": "chekcbrespdate", "value": "resolved", "operator": "eq"}],
                                      "name": "Proposal scrutiny"}
                         queryData = camundaClient._urllib2_request('task/count', queryBody, requestType='POST')
                         if queryData["count"] != 0:
                             loggerInfo.info(queryData["count"])
-                            BMRcount = BMRcount+ 1
+                            BMRcount = BMRcount + 1
                     if data["name"] in taskCount:
                         taskCount[data["name"]] = taskCount[data["name"]] + 1
                     else:
@@ -457,20 +468,25 @@ def getDashboardData(request):
         errorLog.error('Exception raised inside getDashboardData(request):  %s' % e)
         return helper.bad_request('Unexpected error occurred.')
 
+
 @session_required
-def viewGroupHistoryDB(request ,groupId ,loanId ,taskName ,loanTypeName ,processInstanceId):
+def viewGroupHistoryDB(request, groupId, loanId, taskName, loanTypeName, processInstanceId):
     loggerInfo.info \
-        ('------------------Entering viewGroupHistoryDB(request,groupId,loanId,taskName,loanTypeName):---------------------- ')
+        (
+            '------------------Entering viewGroupHistoryDB(request,groupId,loanId,taskName,loanTypeName):---------------------- ')
     username = request.session["userName"]
     userAction = request.session["userActions"]
     userOfficeData = json.loads(request.session["userOfficeData"])
     userId = request.session["userId"]
     groupName = userOfficeData["designation"]
     loggerInfo.info \
-        ('------------------ Exiting viewGroupHistoryDB(request,groupId,loanId,taskName,loanTypeName):---------------------- ')
+        (
+            '------------------ Exiting viewGroupHistoryDB(request,groupId,loanId,taskName,loanTypeName):---------------------- ')
     if 'Loan-Edit' in userAction:
         return render(request, 'viewGrpMembersInfo.html',
-                      {"userId": userId, "taskName": taskName, "group": groupName, "user": username ,"groupId": groupId, "loanId": loanId ,"loanType": loanTypeName ,"processInstanceId" :processInstanceId,'roleAction':'Loan-Edit'})
+                      {"userId": userId, "taskName": taskName, "group": groupName, "user": username, "groupId": groupId,
+                       "loanId": loanId, "loanType": loanTypeName, "processInstanceId": processInstanceId,
+                       'roleAction': 'Loan-Edit'})
     else:
         return render(request, 'viewGrpMembersInfo.html',
                       {"userId": userId, "taskName": taskName, "group": groupName, "user": username, "groupId": groupId,
@@ -478,11 +494,11 @@ def viewGroupHistoryDB(request ,groupId ,loanId ,taskName ,loanTypeName ,process
 
 
 @session_required
-def getOverAllHistory(request ,processInstanceId):
+def getOverAllHistory(request, processInstanceId):
     loggerInfo.info('------------------Entering getOverAllHistory(request,processInstanceId):------------------- ')
     try:
         serialized_data = camundaClient._urllib2_request \
-            ( 'history/activity-instance?processInstanceId=' +str(processInstanceId), {}, requestType='GET')
+            ('history/activity-instance?processInstanceId=' + str(processInstanceId), {}, requestType='GET')
         loggerInfo.info \
             ('------------------Exiting  getOverAllHistory(request,processInstanceId):--------------------- ')
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
@@ -504,8 +520,8 @@ def getGroupLevelInfo(request, groupID, loanId, taskName):
                         "Resolve Confirm Disbursement Query"]
         DSTTasksArr = ["KYC Check", "Query Response"]
         RMTasksArr = ["Approve or Reject Group"]
-        CTTasksArr = ["Proposal scrutiny" ,'BM Reply' ,'Confirm disbursement' ,"Confirm Disbursement Query Response"
-                      ,"Approve Loan"]
+        CTTasksArr = ["Proposal scrutiny", 'BM Reply', 'Confirm disbursement', "Confirm Disbursement Query Response"
+            , "Approve Loan"]
         userOfficeData = json.loads(request.session["userOfficeData"])
         if taskName in rwrkTasksArr:
             validationLevel = "RWRK"
@@ -526,6 +542,7 @@ def getGroupLevelInfo(request, groupID, loanId, taskName):
     except ShgInvalidRequest, e:
         errorLog.error("Exception raised inside getGroupLevelInfo(request, groupID, loanId, taskName): %s" % e)
         return helper.bad_request('Unexpected error occurred while searching group.')
+
 
 @csrf_exempt
 @session_required
@@ -548,6 +565,7 @@ def listAssigneeTasks(request):
         replaceTaskNames = {
             "Proposal scrutiny": "Proposal scrutiny",
             "BM Reply": "Proposal scrutiny",
+            "Approve Loan" : "Approve Loan",
             "Confirm disbursement": "Confirm disbursement",
             "Confirm Disbursement Query Response": "Confirm disbursement"
         }
@@ -560,7 +578,8 @@ def listAssigneeTasks(request):
                 print searchById
                 if searchById == "4":
                     assignee = formData["assignee"]
-                    myTaskList = camundaClient._urllib2_request('task?&assignee=' + str(assignee), {}, requestType='GET')
+                    myTaskList = camundaClient._urllib2_request('task?&assignee=' + str(assignee), {},
+                                                                requestType='GET')
 
                     for data in myTaskList:
                         processInstancesArr.append(data["processInstanceId"])
@@ -569,24 +588,27 @@ def listAssigneeTasks(request):
                 if searchById == "2":
                     taskFromDate = formData["taskFromDate"]
                     taskToDate = formData["taskToDate"]
-                    bodyData = {"createdAfter" : taskFromDate, "createdBefore" : taskToDate, "candidateGroup" : "CreditTeam", "includeAssignedTasks" : "true"}
+                    bodyData = {"createdAfter": taskFromDate, "createdBefore": taskToDate,
+                                "candidateGroup": "CreditTeam", "includeAssignedTasks": "true"}
                     myTaskList = camundaClient._urllib2_request('task?firstResult=0', bodyData, requestType='POST')
                     for data in myTaskList:
-                        #if data["assignee"]:
+                        # if data["assignee"]:
                         processInstancesArr.append(data["processInstanceId"])
                         myTaskDict[data["processInstanceId"]] = data
 
                 if searchById == "3":
                     processFromDate = formData["processFromDate"]
                     processToDate = formData["processToDate"]
-                    bodyData = {"startedAfter" : processFromDate, "startedBefore" : processToDate, "unfinished" : "true"}
-                    myTaskList = camundaClient._urllib2_request('history/process-instance', bodyData, requestType='POST')
+                    bodyData = {"startedAfter": processFromDate, "startedBefore": processToDate, "unfinished": "true"}
+                    myTaskList = camundaClient._urllib2_request('history/process-instance', bodyData,
+                                                                requestType='POST')
                     for data in myTaskList:
-                        bodyData1 = {"processInstanceId" : data["id"]}
+                        bodyData1 = {"processInstanceId": data["id"]}
                         myTaskList1 = camundaClient._urllib2_request('task', bodyData1, requestType='POST')
                         if myTaskList1:
                             if myTaskList1[0]:
-                                if myTaskList1[0]["name"] in ["Proposal scrutiny","Approve Loan","Confirm disbursement"]:
+                                if myTaskList1[0]["name"] in ["Proposal scrutiny", "Approve Loan",
+                                                              "Confirm disbursement"]:
                                     data["processInstanceId"] = data["id"]
                                     data["id"] = myTaskList1[0]["id"]
                                     data["name"] = myTaskList1[0]["name"]
@@ -595,15 +617,14 @@ def listAssigneeTasks(request):
                                     processInstancesArr.append(data["processInstanceId"])
                                     myTaskDict[data["processInstanceId"]] = data
 
-
                 if searchById == "1":
-                    actualTaskName  = formData["taskName"]
-                    bodyData = {"name" : replaceTaskNames[actualTaskName]}
+                    actualTaskName = formData["taskName"]
+                    bodyData = {"name": replaceTaskNames[actualTaskName]}
                     myTaskList = camundaClient._urllib2_request('task', bodyData, requestType='POST')
                     for data in myTaskList:
-                        #if data["assignee"]:
-                         processInstancesArr.append(data["processInstanceId"])
-                         myTaskDict[data["processInstanceId"]] = data
+                        # if data["assignee"]:
+                        processInstancesArr.append(data["processInstanceId"])
+                        myTaskDict[data["processInstanceId"]] = data
 
                 bodyData = {"processInstanceIdIn": processInstancesArr, "variableName": "groupstatus"}
                 groupStatusList = camundaClient._urllib2_request('variable-instance', bodyData, requestType='POST')
@@ -616,12 +637,14 @@ def listAssigneeTasks(request):
                 if proInstArrFalse:
                     if proInstArrFalse[0]:
                         taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=false'
-                                                                         ,{"processInstanceIdIn": proInstArrFalse}, requestType='POST')
+                                                                         , {"processInstanceIdIn": proInstArrFalse},
+                                                                         requestType='POST')
                         taskProVarList.append(taskProVarList1)
                 if proInstArrTrue:
                     if proInstArrTrue[0]:
                         taskProVarList1 = camundaClient._urllib2_request('variable-instance?deserializeValues=true'
-                                                                         ,{"processInstanceIdIn": proInstArrTrue}, requestType='POST')
+                                                                         , {"processInstanceIdIn": proInstArrTrue},
+                                                                         requestType='POST')
                         taskProVarList.append(taskProVarList1)
                 for key in range(len(taskProVarList)):
                     for data in taskProVarList[key]:
@@ -629,7 +652,9 @@ def listAssigneeTasks(request):
                             myTaskDict[data["processInstanceId"]][data["name"]] = data["value"]
 
                 if searchById == "1" or searchById == "2" or searchById == "4":
-                    taskProVarList4 = camundaClient._urllib2_request('history/process-instance',  {"processInstanceIds": proInstArrTrue}, requestType='POST')
+                    taskProVarList4 = camundaClient._urllib2_request('history/process-instance',
+                                                                     {"processInstanceIds": proInstArrTrue},
+                                                                     requestType='POST')
                     for data in taskProVarList4:
                         if data["id"] in myTaskDict:
                             myTaskDict[data["id"]]["startTime"] = data["startTime"]
@@ -654,13 +679,17 @@ def listAssigneeTasks(request):
                                 queryProInstArr.append(key)
 
                     for key in myTaskDict:
-                        if actualTaskName in ["Confirm disbursement","Proposal scrutiny"]:
+                        if actualTaskName in ["Confirm disbursement", "Proposal scrutiny"]:
                             if key not in queryProInstArr:
                                 myTaskData.append(myTaskDict[key])
                         if actualTaskName in ["Confirm Disbursement Query Response", "BM Reply"]:
                             if key in queryProInstArr:
                                 myTaskDict[key]["name"] = actualTaskName
                                 myTaskData.append(myTaskDict[key])
+                        if actualTaskName in ["Approve Loan"]:
+                            myTaskDict[key]["name"] = actualTaskName
+                            myTaskData.append(myTaskDict[key])
+
 
                 if searchById == "2" or searchById == "3":
                     for key in myTaskDict:
@@ -672,9 +701,8 @@ def listAssigneeTasks(request):
                                 myTaskDict[key]["name"] = "Confirm Disbursement Query Response"
                         myTaskData.append(myTaskDict[key])
 
-
-                loggerInfo.info( "myTaskData")
-                loggerInfo.info( myTaskData)
+                loggerInfo.info("myTaskData")
+                loggerInfo.info(myTaskData)
                 loggerInfo.info('------------------Exiting listAssigneeTasks(request)---------------------- ')
                 return HttpResponse(json.dumps(myTaskData), content_type="application/json")
     except ShgInvalidRequest, e:
@@ -683,11 +711,11 @@ def listAssigneeTasks(request):
 
 
 @session_required
-def getCTUsers(request,designation):
+def getCTUsers(request, designation):
     loggerInfo.info('------------------Entering getCTUsers(request,designation):------------------- ')
     try:
         serialized_data = sscoreClient._urllib2_request \
-            ('User/UsersByDesignation', {"designation" : str(designation)}, requestType='POST')
+            ('User/UsersByDesignation', {"designation": str(designation)}, requestType='POST')
         loggerInfo.info \
             ('------------------Exiting getCTUsers(request,designation):--------------------- ')
         return HttpResponse(json.dumps(serialized_data), content_type="application/json")
@@ -707,7 +735,8 @@ def reassignAllTasks(request):
             taskIdArr = formData["taskIdArr"]
             dataObjAssignee = {"userId": str(assignee)}
             for i in range(len(taskIdArr)):
-                assignTask = camundaClient._urllib2_request('task/' + taskIdArr[i] + '/assignee', dataObjAssignee, requestType='POST')
+                assignTask = camundaClient._urllib2_request('task/' + taskIdArr[i] + '/assignee', dataObjAssignee,
+                                                            requestType='POST')
             return HttpResponse(json.dumps(assignTask), content_type="application/json")
     except ShgInvalidRequest, e:
         errorLog.error("Exception raised inside  reassignAllTasks(request): %s" % e)

@@ -839,6 +839,7 @@ function searchTasks(){
         var replaceTaskNames = {
             "Proposal scrutiny" : "Proposal scrutiny",
             "BM Reply" : "Proposal scrutiny",
+	     "Approve Loan" : "Approve Loan",
             "Confirm disbursement" : "Confirm disbursement",
             "Confirm Disbursement Query Response" :  "Confirm disbursement"
         }
