@@ -65,6 +65,7 @@
     <div class="breadcrumbs ace-save-state" id="breadcrumbs" >
         <ul class="breadcrumb">
             <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="{% url 'hello' %}">Home </a> </li>
+	     <li> <i class="ace-icon"> </i> <a href="{% url 'dashboard' %}"> Dashboard </a> </li>
             <li> <i class="ace-icon"> </i> <span>{{ taskName }} </span> </li>
         </ul>
 	       <div  style="float:right;"><div id="notificationDiv" class="notificationBox" style="float:left;display:none">
@@ -222,13 +223,8 @@
     <div class="breadcrumbs ace-save-state" id="breadcrumbs">
         <ul class="breadcrumb">
             <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="{% url 'hello' %}">Home </a> </li>
-            <li> <i class="ace-icon"> </i> <span>
-                {% if taskName == "Print Loan Documents & FSR" or taskName == "Prepare Loan Documents" %}
-                    Prepare Loan Documents
-                {% else %}
-                    {{ taskName }}
-                {% endif %}
-            </span> </li>
+	     <li> <i class="ace-icon"> </i> <a href="{% url 'dashboard' %}"> Dashboard </a> </li>
+            <li> <i class="ace-icon"> </i> <span>{{ taskName }} </span> </li>
         </ul>
                 <div  style="float:right;"><div id="notificationDiv" class="notificationBox" style="float:left;display:none">
 			<div class="simple-marquee-container">
@@ -313,6 +309,7 @@
     <div class="breadcrumbs ace-save-state" id="breadcrumbs">
         <ul class="breadcrumb">
             <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="{% url 'hello' %}">Home </a> </li>
+	     <li> <i class="ace-icon"> </i> <a href="{% url 'dashboard' %}"> Dashboard </a> </li>
             <li> <i class="ace-icon"> </i> <span>{{ taskName }}  </span> </li>
 
         </ul>
@@ -458,6 +455,7 @@
     <div class="breadcrumbs ace-save-state" id="breadcrumbs">
         <ul class="breadcrumb">
             <li> <i class="ace-icon fa fa-home home-icon"> </i> <a href="{% url 'hello' %}">Home </a> </li>
+	     <li> <i class="ace-icon"> </i> <a href="{% url 'dashboard' %}"> Dashboard </a> </li>
             <li> <i class="ace-icon"> </i> <span>{{ taskName }} </span> </li>
 
         </ul>

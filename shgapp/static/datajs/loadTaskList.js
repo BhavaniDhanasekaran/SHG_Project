@@ -46,9 +46,6 @@ function loadUnassignedTaskList(data){
 		    date2 = moment.parseZone(StartDateTime).utc().format();
 			dateTime2 = moment(date2).format("DD-MM-YYYY HH:mm:ss");
 			obj["StartDate"] = dateTime2;
-			//console.log('start date',obj["StartDate"] );
-			//console.log('taskDate',obj["taskDate"] );
-
 		}
 		if(groupTaskdata[key]["customerData"]){
 			var customerData;
@@ -138,7 +135,7 @@ function errortable(){
      html+="<thead class='thin-border-bottom'><tr><td style='text-align:center;valign='middle'><b>LOAN TYPE</b></td><td style='text-align:center;valign='middle'><b>TOTAL AMOUNT</b></td><td style='text-align:center;valign='middle'><b>NUMBER OF LOAN</b></td><td style='text-align:center;valign='middle'><b>VIEW</b></td></thead>";
 
         html+="<tr>"
-        html+="<td style='text-align:center;valign='middle'  colspan='4'><b>Data Not Avialable </b></td>";
+        html+="<td style='text-align:center;valign='middle'  colspan='4'><b>Data Not Available </b></td>";
         html+="</tr>";
     html+="</table>";
     $("#taskListTable2").html(html);

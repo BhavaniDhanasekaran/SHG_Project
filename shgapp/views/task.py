@@ -74,9 +74,9 @@ def taskReassign(request):
     loggerInfo.info('------------------Exiting taskReassign(request):---------------------- ')
     if 'Loan-Edit' in userAction:
         return render(request, 'reassignCTTasks.html',
-                      {"userId": userId, "group": groupName, "user": username, 'roleAction': 'Loan-Edit'})
+                      {"userId": userId, "group": groupName, "user": username, 'roleAction': 'Loan-Edit',"taskName" : "Re-Assign Tasks"})
     else:
-        return render(request, 'reassignCTTasks.html', {"userId": userId, "group": groupName, "user": username})
+        return render(request, 'reassignCTTasks.html', {"userId": userId, "group": groupName, "user": username,"taskName" : "Re-Assign Tasks"})
 
 
 def mytask(request):
@@ -97,7 +97,9 @@ def SHGForm(request, groupId, loanId, taskId, processId, taskName, loanTypeName,
         userId = request.session["userId"]
         templateName = {
             "KYC Check"		    		: "ds_groupview.html",
-            "Query Response"        				    : "ds_groupview.html","Conduct BAT- Member approval in CRM"       : "queryResponseDS.html","Upload loan documents in Web application"	:"BMUploadDocs.html",
+            "Query Response"        				    : "ds_groupview.html",
+            "Conduct BAT- Member approval in CRM"       : "queryResponseDS.html",
+            "Upload loan documents in Web application"	:"BMUploadDocs.html",
             "Resolve Data Support Team Query"			: "queryResponseDS.html",
             "Add New Members"					        :"BMAddNewMemberRead.html",
             "Print Loan Documents & FSR"			    : "BMAddNewMember.html",
@@ -145,9 +147,9 @@ def dashboard(request):
     userId = request.session["userId"]
     loggerInfo.info('------------------Exiting dashboard(request):---------------------- ')
     if 'Loan-Edit' in userAction:
-        return render(request,'tatReport.html', { "userId" : userId ,"group" :groupName ,"user" : username, 'roleAction' : 'Loan-Edit'})
+        return render(request,'tatReport.html', { "userId" : userId ,"group" :groupName ,"user" : username, 'roleAction' : 'Loan-Edit', "taskName": "Dashboard"})
     else:
-        return render(request, 'tatReport.html', {"userId": userId, "group": groupName, "user": username})
+        return render(request, 'tatReport.html', {"userId": userId, "group": groupName, "user": username, "taskName": "Dashboard"})
 
 
 @session_required
