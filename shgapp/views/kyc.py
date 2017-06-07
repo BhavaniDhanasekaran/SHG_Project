@@ -28,8 +28,9 @@ errorLog = logging.getLogger(__name__)
 def getGroupData(request, groupID, loanId, taskName):
     loggerInfo.info("--------------------Entering getGroupData(request):-------------------")
     try:
+        validationLevel = ''
         username = request.session["userName"]
-        BMTasksArray = ["Generate repayment chart", "Upload disbursement docs", "Conduct BAT- Member approval in CRM",
+        '''BMTasksArray = ["Generate repayment chart", "Upload disbursement docs", "Conduct BAT- Member approval in CRM",
                         "Prepare Loan Documents", "Upload loan documents in Web application", "Add New Members"]
         rwrkTasksArr = ["Resolve Data Support Team Query", "Resolve Credit Team Query",
                         "Resolve Confirm Disbursement Query"]
@@ -45,7 +46,29 @@ def getGroupData(request, groupID, loanId, taskName):
         if groupName == "CreditTeam":
             validationLevel = "CREDITTEAM"
         if groupName == "RM" or groupName == "rm":
+            validationLevel = "BM"'''
+
+        userOfficeData = json.loads(request.session["userOfficeData"])
+        groupName = userOfficeData["designation"]
+        BMTasksArray = ["Generate repayment chart", "Upload disbursement docs", "Conduct BAT- Member approval in CRM",
+                        "Prepare Loan Documents", "Upload loan documents in Web application", "Add New Members"]
+        rwrkTasksArr = ["Resolve Data Support Team Query", "Resolve Credit Team Query",
+                        "Resolve Confirm Disbursement Query"]
+        DSTTasksArr = ["KYC Check", "Query Response"]
+        RMTasksArr = ["Approve or Reject Group"]
+        CTTasksArr = ["Proposal scrutiny", 'BM Reply', 'Confirm disbursement', "Confirm Disbursement Query Response"
+            , "Approve Loan"]
+        if taskName in rwrkTasksArr:
+            validationLevel = "RWRK"
+        if taskName in BMTasksArray:
             validationLevel = "BM"
+        if taskName in DSTTasksArr:
+            validationLevel = "KYC"
+        if taskName in RMTasksArr:
+            validationLevel = "BM"
+        if taskName in CTTasksArr:
+            validationLevel = "CREDITTEAM"
+
         bodyData = {"groupId": groupID, "validationLevel": validationLevel, "loanId": loanId}
         groupMembersData = sscoreClient._urllib2_request('workflowDetailView/getallmembers', bodyData,
                                                          requestType='POST')

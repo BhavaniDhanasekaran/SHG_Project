@@ -3177,12 +3177,25 @@ function loadDisburseDocDataRead(){
     var innerHTMLBank = '';
     var selectOptValArray = [];
     if(disbDocData && disbDocData[0]){
+	 var dateSplit = disbDocData[0]["loanApprovalDate"].split("-");
+        dateSplit = dateSplit[2].split(" ")[0]+"-"+dateSplit[1]+"-"+dateSplit[0];
+        if(document.getElementById("loanSancDate")){
+           document.getElementById("loanSancDate").innerHTML = dateSplit;
+        }
+
         for(var key in disbDocData){
             if(disbDocData[0]["oldDos"]){
                 if(disbDocData[0]["oldDos"] != "" || disbDocData[0]["oldDos"] != null){
                     var dateSplit = disbDocData[0]["oldDos"].split("-");
                     dateSplit = dateSplit[2].split(" ")[0]+"-"+dateSplit[1]+"-"+dateSplit[0];
-                    document.getElementById("dateOfDisbursement").innerHTML = dateSplit;
+		       var tagname = document.getElementById("dateOfDisbursement").tagName;
+                	if (tagname == "INPUT") {
+                    		document.getElementById("dateOfDisbursement").value = dateSplit;                	
+			}
+			else{
+				document.getElementById("dateOfDisbursement").innerHTML = dateSplit;
+			}
+
                 }
                 else{
                     var dateSplit = disbDocData[0]["oldDos"].split("-");
@@ -3194,9 +3207,6 @@ function loadDisburseDocDataRead(){
                 var dateSplit = disbDocData[0]["loanApprovalDate"].split("-");
                 dateSplit = dateSplit[2].split(" ")[0]+"-"+dateSplit[1]+"-"+dateSplit[0];
                 document.getElementById("dateOfDisbursement").value = dateSplit;
-                if(document.getElementById("loanSancDate")){
-                    document.getElementById("loanSancDate").innerHTML = dateSplit;
-                }
             }
             var obj = {};
             totalMemberIdArray.push(disbDocData[key]["appMemberId"]+"_memberAvailedLoan");
