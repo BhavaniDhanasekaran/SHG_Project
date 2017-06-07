@@ -2082,7 +2082,7 @@ function rmGroupMaster(groupId) {
 
             }
             else{
-                $.alert(data["message"]);
+                //$.alert(data["message"]);
                 groupData = [];
                 $("#loading").hide();
             }
