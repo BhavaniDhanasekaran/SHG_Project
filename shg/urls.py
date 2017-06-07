@@ -3,6 +3,7 @@ from django.contrib import admin
 from shgapp.views import index, task, kyc, auth, masterData, camundaViews, BMOperations, mfupload, customError, \
     decorator
 
+
 handler400 = customError.bad_request
 handler403 = customError.permission_denied
 handler404 = customError.page_not_found
