@@ -52,7 +52,7 @@ task_urlpatterns = [
     url(r'^getDashboardData/', task.getDashboardData, name='getDashboardData'),
     url(r'^redirectDBTasks/(?P<taskName>[^/]+)', task.redirectDBTasks, name='redirectDBTasks'),
     url(r'^viewTasksData/(?P<taskName>[^/]+)', task.viewTasksData, name='viewTasksData'),
-    url(r'^viewGroupHistoryDB/(?P<groupId>[^/]+)/(?P<loanId>[^/]+)/(?P<taskName>[^/]+)/(?P<loanTypeName>[^/]+)/(?P<processInstanceId>[^/]+)', task.viewGroupHistoryDB,
+    url(r'^viewGroupHistoryDB/(?P<groupId>[^/]+)/(?P<loanId>[^/]+)/(?P<taskName>[^/]+)/(?P<loanTypeName>[^/]+)/(?P<processInstanceId>[^/]+)/(?P<loanTypeId>[^/]+)', task.viewGroupHistoryDB,
         name='viewGroupHistoryDB'),
     url(r'^getOverAllHistory/(?P<processInstanceId>[^/]+)', task.getOverAllHistory, name='getOverAllHistory'),
     url(r'^getCTUsers/(?P<designation>[^/]+)', task.getCTUsers, name='getCTUsers'),

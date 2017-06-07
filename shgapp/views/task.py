@@ -472,7 +472,7 @@ def getDashboardData(request):
 
 
 @session_required
-def viewGroupHistoryDB(request, groupId, loanId, taskName, loanTypeName, processInstanceId):
+def viewGroupHistoryDB(request, groupId, loanId, taskName, loanTypeName, processInstanceId,loanTypeId):
     loggerInfo.info \
         (
             '------------------Entering viewGroupHistoryDB(request,groupId,loanId,taskName,loanTypeName):---------------------- ')
@@ -481,17 +481,37 @@ def viewGroupHistoryDB(request, groupId, loanId, taskName, loanTypeName, process
     userOfficeData = json.loads(request.session["userOfficeData"])
     userId = request.session["userId"]
     groupName = userOfficeData["designation"]
+    templateName = {
+        "KYC Check"		    : "viewGrpMembersInfo.html",
+        "Query Response"        				    : "viewGrpMembersInfo.html",
+        "Conduct BAT- Member approval in CRM"       : "viewGrpMembersInfo.html",
+        "Upload loan documents in Web application"	: "DBUploadDocs.html",
+        "Resolve Data Support Team Query"			:"viewGrpMembersInfo.html",
+        "Add New Members"					        : "DBAddNewMembers.html",
+        "Prepare Loan Documents"			        : "DBPrepareLoanDocs.html",
+        "Approve or Reject Group"                   : "DBAppOrRejGroup.html",
+        "Proposal scrutiny"                         : "viewGrpMembersInfo.html",
+        "BM Reply"                                  : "viewGrpMembersInfo.html",
+        "Resolve Credit Team Query"                 : "viewGrpMembersInfo.html",
+        "Approve Loan"                              : "DBApproveLoan.html",
+        "Upload disbursement docs"                  : "DBDisburseDocs.html",
+        "Generate repayment chart"                  : "DBGenRepayChart.html",
+        "Confirm disbursement"                      : "DBDisburseDocsRead.html",
+        "Resolve Confirm Disbursement Query"        : "DBDisburseDocs.html",
+        "Confirm Disbursement Query Response"       : "DBDisburseDocsRead.html"
+
+    }
     loggerInfo.info \
         (
             '------------------ Exiting viewGroupHistoryDB(request,groupId,loanId,taskName,loanTypeName):---------------------- ')
     if 'Loan-Edit' in userAction:
-        return render(request, 'viewGrpMembersInfo.html',
-                      {"userId": userId, "taskName": taskName, "group": groupName, "user": username, "groupId": groupId,
+        return render(request, templateName[taskName],
+                      {"userId": userId, "taskName": taskName, "loanTypeId":loanTypeId, "group": groupName, "user": username, "groupId": groupId,
                        "loanId": loanId, "loanType": loanTypeName, "processInstanceId": processInstanceId,
                        'roleAction': 'Loan-Edit'})
     else:
-        return render(request, 'viewGrpMembersInfo.html',
-                      {"userId": userId, "taskName": taskName, "group": groupName, "user": username, "groupId": groupId,
+        return render(request, templateName[taskName],
+                      {"userId": userId, "taskName": taskName, "loanTypeId":loanTypeId, "group": groupName, "user": username, "groupId": groupId,
                        "loanId": loanId, "loanType": loanTypeName, "processInstanceId": processInstanceId})
 
 
@@ -743,6 +763,3 @@ def reassignAllTasks(request):
     except ShgInvalidRequest, e:
         errorLog.error("Exception raised inside  reassignAllTasks(request): %s" % e)
         return helper.bad_request('Unexpected error occurred while getting history.')
-
-
-

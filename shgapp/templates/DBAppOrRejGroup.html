@@ -1,0 +1,335 @@
+{% extends 'base_dashboard.html' %}
+{% load staticfiles %}
+{% block javascript %}
+
+<script src="/static/datajs/grouplist.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/loadTaskList.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/mysidenav.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/masterData.js?v={{JS_VERSION}}"></script>
+<script>
+    var groupId = '{{ groupId | escapejs }}';
+    var group= '{{ group | escapejs }}';
+    var loanId = '{{ loanId | escapejs }}';
+    var userId = '{{ userId | escapejs }}';
+    var taskName = '{{ taskName | escapejs }}';
+    var taskId = '{{ taskId | escapejs }}';
+    var processInstanceId = '{{ processInstanceId | escapejs }}';
+
+    $(document).ready(function(){
+        $("#commentSpanId").css("display","inline-block");
+        loadGroupRoles(groupId,loanId,taskName);
+        creditHistory(loanId);
+        documentView(loanId);
+        getPaymentHistory("group",0,groupId);
+    });
+</script>
+{% endblock %}
+
+<!-- PAGE CONTENT BEGINS -->
+{% block content %}
+
+<div class="row" id="main">
+    <!--2row Start-->
+    <div class="col-lg-12 col-sm-12 col-xs-12" >
+        <!--2row Start col-10 start-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span id="groupName_groupRole"></span>  &nbsp&nbsp&nbsp(
+                <span id="appGroupId1"></span> )
+                <span id="groupId" style="visibility:hidden;"></span>
+                <span id="loanTypeId1" style="visibility:hidden;"></span>
+
+            </div>
+             <div class="row" id="successPanel" style="display:none;">
+            <div class="error-container">
+                <div class="well">
+                        <h2 id="validationMessage" class="grey center lighter smaller">   </h2>
+
+                    <hr />
+                    <div id="gStatus">
+                        <!--h3  class="lighter bigger">Task has not been completed yet!  <i class="ace-icon glyphicon glyphicon-thumbs-down bigger-125"></i> </h3-->
+                    </div>
+                    <div class="space"></div>
+
+                    <hr />
+                    <div class="space"></div>
+                    <div class="center" id="taskValBtn">
+                        <!--a href="javascript:history.back()" class="btn btn-grey"> <i class="ace-icon fa fa-arrow-left"></i> Go Back </a-->
+                        <!--a href="#" onclick="loadNextMem();" class="btn btn-primary"> <i class="ace-icon fa fa-arrow-right"></i> Next Member </a-->
+                    </div>
+                </div>
+            </div>
+            <!-- PAGE CONTENT ENDS -->
+    </div>
+            <div class="panel-body-danger">
+                <!--2row panel body start-->
+                <div id="defaultDisplay">
+                <div class="tabbable">
+                    <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
+                        <li class="active">
+                            <a data-toggle="tab" href="#home4">Group Detail</a>
+                        </li>
+                         <li><a data-toggle="tab" href="#memberDetails">Member Details</a></li>
+                        <li>
+                            <a data-toggle="tab" href="#profile4">SHG Credit History</a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#dropdown14">Documents</a>
+                        </li>
+                        <li><a data-toggle="tab" href="#groupPaymentHistory">Payment History</a></li>
+
+                    </ul>
+                    <!--- first tab started-->
+                    <div class="tab-content">
+
+                         <div id="memberDetails" class="tab-pane">
+                            <div class="page-content1">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <!-- PAGE CONTENT BEGINS -->
+                                        <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
+                                            <div class="widget-box widget-color-blue" id="widget-box-2">
+
+                                                <div class="widget-body"  style="overflow: auto;">
+                                                    <div class="widget-main no-padding">
+                                                        <table class="table table-striped table-bordered table-hover" id="groupMemberDetails">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.span -->
+                                    </div>
+                                    <!-- /.row -->
+                                    <!-- PAGE CONTENT ENDS -->
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                        </div>
+                        <div id="home4" class="tab-pane in active">
+                            <!-- form start-->
+                            <section >
+                                <div class="row">
+                                    <!--secnod div started-->
+                                    <div class="col-md-5">
+                                        <div class="space-12"></div>
+                                        <div class="profile-user-info profile-user-info-striped">
+                                            <div class="profile-info-row">
+                                                <div class="profile-info-name"> Formation Date </div>
+                                                <div class="profile-info-value">
+                                                    <span class="editable" id="groupFormationDate_groupRole"></span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-info-row">
+                                                <div class="profile-info-name"> SHG Address </div>
+                                                <div class="profile-info-value">
+                                                    <span class="editable" id="shgaddress_groupRole"></span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-info-row">
+                                                <div class="profile-info-name"> Animator </div>
+                                                <div class="profile-info-value">
+                                                    <span class="editable" id="animator_groupRole">
+
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-info-row">
+                                                <div class="profile-info-name"> Rep 1</div>
+                                                <div class="profile-info-value">
+                                                    <span class="editable" id="rep1_groupRole">
+
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-info-row">
+                                                <div class="profile-info-name"> Rep 2</div>
+                                                <div class="profile-info-value">
+                                                    <span class="editable" id="rep2_groupRole">
+
+                                                    </span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--secnod div ended-->
+                                    <div class="col-md-5">
+                                        <div class="space-12"></div>
+                                        <div class="profile-user-info profile-user-info-striped">
+                                            <div class="profile-info-row">
+                                                <div class="profile-info-name"> First Meet Day </div>
+                                                <div class="profile-info-value">
+                                                    <span class="editable" id="firstMeetDay_groupRole"></span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-info-row">
+                                                <div class="profile-info-name"> SHG Id </div>
+                                                <div class="profile-info-value">
+                                                    <span class="editable" id="appGroupId_groupRole"></span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-info-row">
+                                                <div class="profile-info-name"> MDA </div>
+                                                <div class="profile-info-value">
+                                                    <span class="editable" id="mda_groupRole"></span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-info-row">
+                                                <div class="profile-info-name"> MWA</div>
+                                                <div class="profile-info-value">
+                                                    <span class="editable" id="mwa_groupRole"></span>
+                                                </div>
+                                            </div>
+                                            <div class="profile-info-row">
+                                                <div class="profile-info-name"> Village </div>
+                                                <div class="profile-info-value">
+                                                    <span class="editable" id="villageName_groupRole"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- ROW END -->
+                                <br>
+                                    <div class="row ">
+
+                                        <div class="row-centered">
+
+                                        </div>
+                                    </section>
+                                    <!-- SECTION END -->
+                                    <!-- CONATINER END -->
+                                    <!--form End-->
+                                </div>
+                                <!--firt tab ended-->
+                                <!-- Document tab start  -->
+                                <div id="dropdown14" class="tab-pane">
+                                    <div class="page-content">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <!-- PAGE CONTENT BEGINS -->
+                                                <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
+                                                    <div class="widget-box widget-color-blue" id="widget-box-2">
+
+                                                        <div class="widget-body">
+                                                            <div class="widget-main no-padding">
+                                                                <table class="table table-striped table-bordered table-hover" id="docments_table">
+                                                                    <thead class="thin-border-bottom">
+                                                                        <tr>
+                                                                            <th>S.No</th>
+                                                                            <th>Document Name</th>
+                                                                            <th>View</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody></tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- /.span -->
+                                            </div>
+                                            <!-- /.row -->
+                                            <!-- PAGE CONTENT ENDS -->
+                                        </div>
+                                        <!-- /.col -->
+                                    </div>
+                                </div>
+                        <div id="groupPaymentHistory" class="tab-pane">
+                            <div class="page-content">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <!-- PAGE CONTENT BEGINS -->
+                                    <div class="col-xs-12 col-sm-12  col-md-12 widget-container-col" id="widget-container-col-2">
+                                        <div class="widget-box widget-color-blue" id="widget-box-2">
+
+                                            <div class="widget-body">
+                                                        <div class="widget-main no-padding" style="overflow: auto;">
+                                                            <table class="table table-striped table-bordered table-hover" id="paymentHistoryLoadData">  </table>
+
+                                                        </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.span -->
+                                </div>
+                                <!-- /.row -->
+                                <!-- PAGE CONTENT ENDS -->
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                    </div>
+                                <!-- Document tab ens  -->
+                                <div id="profile4" class="tab-pane">
+                                    <!--TAB MENU2 CONTENT START-->
+                                    <div class="page-content1">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <!-- PAGE CONTENT BEGINS -->
+                                                <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
+                                                    <div class="widget-box widget-color-blue" id="widget-box-2">
+                                                            <div class="widget-body">
+                                                                <div class="widget-main no-padding" style="overflow: auto;">
+                                                                    <table id="creditTableID" class="table table-striped table-bordered table-hover">
+                                                                        <thead class="thin-border-bottom">
+                                                                            <tr>
+                                                                                <th>OverLap Report</th>
+                                                                                <th>Member ID</th>
+                                                                                <th>Member Name</th>
+                                                                                <th>Product</th>
+                                                                                <th>Status</th>
+                                                                                <th>Remarks</th>
+                                                                                <th>HM Response Date</th>
+                                                                                <th>Existing Loan Limit</th>
+                                                                                <th>Loan Amount Eligible</th>
+                                                                                <th>MFI Eligible</th>
+                                                                                <th>MFI 1 Name</th>
+                                                                                <th>Overdue_1</th>
+                                                                                <th>Loan Amount_1</th>
+                                                                                <th>Balance_1</th>
+                                                                                <th>MFI 2 Name</th>
+                                                                                <th>Overdue_2</th>
+                                                                                <th>Loan Amount_2</th>
+                                                                                <th>Balance_2</th>
+                                                                                <th>MFI 3 Name</th>
+                                                                                <th>Overdue_3</th>
+                                                                                <th>Loan Amount_3</th>
+                                                                                <th>Balance_3</th>
+                                                                                <th>MFI 4 Name</th>
+                                                                                <th>Overdue_4</th>
+                                                                                <th>Loan Amount_4</th>
+                                                                                <th>Balance_4</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="creditData"></tbody>
+                                                                    </table>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /.span -->
+                                                </div>
+                                                <!-- /.row -->
+                                                <!-- PAGE CONTENT ENDS -->
+                                            </div>
+                                        </div>
+                                        <!-- /.col -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--TAB MENU2 CONTENT END-->
+                    </div>
+                    <!-- TAB END-->
+                </div>
+        </div>
+                <!--2row panel body end-->
+            </div>
+        </div>
+        <!--2row Start col-10 End-->
+    </div>
+    <!--2row End-->
+</div>
+{% include 'query.html' %}
+{% endblock content %}

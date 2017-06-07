@@ -86,7 +86,7 @@ function viewTasksData(taskName){
                         obj["groupFormationDate"] =grpFormDt[2]+"-"+grpFormDt[1]+"-"+grpFormDt[0];
 
                     }
-                    obj["history"] = '<button type="submit" onclick="viewGrpInfo('+"'"+obj["groupId"]+"'"+",'"+obj["loanId"]+"'"+",'"+obj["taskName"]+"'"+",'"+groupTaskdata[key]["loanTypeName"]+"'"+",'"+groupTaskdata[key]["processInstanceId"]+"'"+');" class="btn btn-danger btn-md">View</button>&nbsp&nbsp'
+                    obj["history"] = '<button type="submit" onclick="viewGrpInfo('+"'"+obj["groupId"]+"'"+",'"+obj["loanId"]+"'"+",'"+obj["taskName"]+"'"+",'"+groupTaskdata[key]["loanTypeName"]+"'"+",'"+groupTaskdata[key]["processInstanceId"]+"'"+",'"+customerData["loanTypeId"]+"'"+');" class="btn btn-danger btn-md">View</button>&nbsp&nbsp'
                                      +'<a href="#" onclick="viewGrpHistory('+"'"+groupTaskdata[key]["processInstanceId"]+"'"+",'"+obj["shgName"]+"'"+",'"+obj["shgId"]+"'"+",'"+obj["loanId"]+"'"+",'"+groupTaskdata[key]["loanTypeName"]+"'"+')" ><i class="fa fa-history" style="color:#307ECC;font-size:large;"></i></a>';
                     }
                 dataArray.push(obj);
@@ -130,8 +130,8 @@ function viewTasksData(taskName){
 }
 
 
-function viewGrpInfo(groupId,loanId,taskName,loanTypeName,processInstanceId){
-    window.location = '/viewGroupHistoryDB/'+groupId+'/'+loanId+'/'+taskName+'/'+loanTypeName+'/'+processInstanceId;
+function viewGrpInfo(groupId,loanId,taskName,loanTypeName,processInstanceId,loanTypeId){
+    window.location = '/viewGroupHistoryDB/'+groupId+'/'+loanId+'/'+taskName+'/'+loanTypeName+'/'+processInstanceId+'/'+loanTypeId;
 }
 
 
@@ -178,13 +178,18 @@ function viewGrpHistory(processInstanceId,groupName,shgId,loanId,loanTypeName){
                 "Generate repayment chart"                  : "Generate repayment chart"
             };
             var existsList = [];
+	     var addNewMemberInd = 0;
             for(var i=0;i<sortedData.length;i++){
                 var date= convertmyDateTime(sortedData[i][1].startTime);
                 var dateCreatedSplit = date.split(" ");
                 var onlyDate = dateCreatedSplit[1]+'-'+dateCreatedSplit[2]+'-'+dateCreatedSplit[3];
                 var onlyTime = dateCreatedSplit[4];
+		  if(sortedData[i][1].activityName == "Add New Members"){
+			addNewMemberInd= i+1;	
+		  }
                 if($.inArray(sortedData[i][1].activityName, existsList) != -1){
                     sortedData[i][1].activityName = replaceTaskName[sortedData[i][1].activityName]
+		      sortedData[addNewMemberInd][1].activityName = "KYC Check";
                 }
                 else{
                     existsList.push(sortedData[i][1].activityName);

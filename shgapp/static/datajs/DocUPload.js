@@ -3,6 +3,7 @@ var loanTypeId;
 var asyncVal = false;
 
 function loanDocument(loanTypeId) {
+console.log(loanTypeId);
     loanTypeId = loanTypeId;
 
     var docURLDict = {};
@@ -14,6 +15,7 @@ function loanDocument(loanTypeId) {
         async:asyncVal,
         success: function(data) {
             docUploadedDict = data["data"];
+console.log(data);
 
             uploadedDocsCount = docUploadedDict.length;
             for (var key in docUploadedDict) {
@@ -21,6 +23,7 @@ function loanDocument(loanTypeId) {
                 var docName = docUploadedDict[key]["documentName"].split("*")[0];
                 docURLDict[docUploadedDict[key]["documentName"]] = docUploadedDict[key]["documentPath"] + '*' + docUploadedDict[key]["docId"];
             }
+console.log(loanTypeId);
 
             $.ajax({
                 url: '/loanDocument/' + loanTypeId,
@@ -29,6 +32,8 @@ function loanDocument(loanTypeId) {
                 success: function(data) {
                     var documentData = data["data"];
                     totLoanDocCount = documentData.length;
+console.log(loanTypeId);
+
                     var docRow = '';
                     var countArray = [];
 

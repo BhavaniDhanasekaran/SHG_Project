@@ -1,0 +1,180 @@
+{% extends 'base_dashboard.html' %}
+{% load staticfiles %}
+{% block javascript %}
+<script src="/static/datajs/grouplist.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/loadTaskList.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/masterData.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/mysidenav.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/DocUPload.js?v={{JS_VERSION}}"></script>
+<script>
+    var groupId = '{{ groupId | escapejs }}';
+    var loanId = '{{ loanId | escapejs }}';
+    var taskId = '{{ taskId | escapejs }}';
+    var taskName = '{{ taskName | escapejs }}';
+    var group = '{{ group | escapejs }}';
+    var userId = '{{ userId | escapejs }}';
+    var loanType = '{{ loanType | escapejs }}';
+    var loanTypeId = '{{ loanTypeId | escapejs }}';
+    var processInstanceId = '{{ processInstanceId | escapejs }}';
+    $(document).ready(function (){
+        $("#commentSpanId").css("display","inline-block");
+        documentView(loanId);
+        loadGroupRoles(groupId,loanId,taskName);
+        $("#loading").hide();
+
+    });
+</script>
+{% endblock %}
+{% block content %}
+<div class="row" id="main">
+    <div class="col-lg-12 col-sm-12 col-xs-12" >
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span id="groupName_groupRole"></span>
+                &nbsp&nbsp&nbsp( <span id="appGroupId1"></span> )
+                <span id="groupId" style="visibility:hidden;"></span>
+                <span id="loanTypeId1" style="visibility:hidden;"></span>
+
+            </div>
+            <div class="row" id="successPanel" style="display:none;">
+                <div class="error-container">
+                    <div class="well">
+                            <h2 id="validationMessage" class="grey center lighter smaller">   </h2>
+                        <hr />
+                        <div id="gStatus"></div>
+                        <div class="space"></div>
+                        <hr />
+                        <div class="space"></div>
+                        <div class="center" id="taskValBtn"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body-danger">
+                <div id="defaultDisplay">
+                    <div class="tabbable">
+                        <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
+                            <li id="tab1" class="active">
+                                <a data-toggle="tab" href="#upload">Upload Doc</a>
+                            </li>
+                            <li id="tab2" >
+                                <a data-toggle="tab" href="#groupDetail">Group Details</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+
+                            <div id="groupDetail" class="tab-pane">
+                                <section>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="space-12"></div>
+                                                <div class="profile-user-info profile-user-info-striped">
+                                                    <div class="profile-info-row">
+                                                        <div class="profile-info-name"> Formation Date</div>
+                                                        <div class="profile-info-value">
+                                                            <span class="editable" id="groupFormationDate_groupRole"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="profile-info-row">
+                                                        <div class="profile-info-name"> SHG Address</div>
+                                                        <div class="profile-info-value">
+                                                            <span class="editable" id="shgaddress_groupRole"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="profile-info-row">
+                                                        <div class="profile-info-name"> Animator</div>
+                                                        <div class="profile-info-value">
+                                                            <span class="editable" id="animator_groupRole">
+
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="profile-info-row">
+                                                        <div class="profile-info-name"> Rep 1</div>
+                                                        <div class="profile-info-value">
+                                                            <span class="editable" id="rep1_groupRole">
+
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="profile-info-row">
+                                                        <div class="profile-info-name"> Rep 2</div>
+                                                        <div class="profile-info-value">
+                                                            <span class="editable" id="rep2_groupRole">
+
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--secnod div ended-->
+                                            <div class="col-md-5">
+                                                <div class="space-12"></div>
+                                                <div class="profile-user-info profile-user-info-striped">
+                                                    <div class="profile-info-row">
+                                                        <div class="profile-info-name"> First Meet Day</div>
+                                                        <div class="profile-info-value">
+                                                            <span class="editable" id="firstMeetDay_groupRole"></span>
+                                                        </div>
+                                                    </div>                                                
+                                                    <div class="profile-info-row">
+                                                        <div class="profile-info-name"> SHG Id</div>
+                                                        <div class="profile-info-value">
+                                                            <span class="editable" id="appGroupId_groupRole"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="profile-info-row">
+                                                        <div class="profile-info-name"> MDA</div>
+                                                        <div class="profile-info-value">
+                                                            <span class="editable" id="mda_groupRole"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="profile-info-row">
+                                                        <div class="profile-info-name"> MWA</div>
+                                                        <div class="profile-info-value">
+                                                            <span class="editable" id="mwa_groupRole"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="profile-info-row">
+                                                        <div class="profile-info-name"> Village</div>
+                                                        <div class="profile-info-value">
+                                                            <span class="editable" id="villageName_groupRole"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                                <div id="upload" class="tab-pane in active">
+                                    <section>
+                                        <div class="page-content">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <form name = "form" enctype = "multipart/form-data" action = "{% url "ajax_progress_bar_upload" %}" method = "POST" >{% csrf_token %}
+                                                        <table class="table table-bordered" id="docments_table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Doc ID</th>
+                                                                    <th>Document Name</th>
+                                                                    <th>Upload / View Doc</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="records_table">
+                                                            </tbody>
+                                                        </table>
+                                                    </form>
+                                                    <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2"> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'query.html' %}
+    {% endblock content %}

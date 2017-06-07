@@ -1,0 +1,178 @@
+{% extends 'base_dashboard.html' %}
+{% load staticfiles %}
+{% block javascript %}
+<script src="/static/datajs/grouplist.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/loadTaskList.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/masterData.js?v={{JS_VERSION}}"></script>
+<script src="/static/datajs/mysidenav.js?v={{JS_VERSION}}"></script>
+<script>
+    var groupId = '{{ groupId | escapejs }}';
+    var group = '{{ group | escapejs }}';
+    var loanId = '{{ loanId | escapejs }}';
+    var userId = '{{ userId | escapejs }}';
+    var taskName = '{{ taskName | escapejs }}';
+    var taskId = '{{ taskId | escapejs }}';
+    var processInstanceId = '{{ processInstanceId | escapejs }}';
+
+    $(document).ready(function(){
+        $("#commentSpanId").css("display","inline-block");
+        loadGroupRoles(groupId,loanId,taskName);
+        $('textarea.limited').inputlimiter({
+            remText: '%n character%s remaining...',
+            limitText: 'max allowed : %n.'
+        });
+    });
+</script>
+{% endblock %}
+{% block content %}
+<div class="row" id="main">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span id="groupName_groupRole"></span>&nbsp&nbsp&nbsp
+            ( <span id="appGroupId1"></span> )
+            <span id="groupId" style="visibility:hidden;"></span>
+            <span id="loanTypeId1" style="visibility:hidden;"></span>
+	     <br>
+            Total : <span id="totCount">0</span>&nbsp; &nbsp;&nbsp;
+	     Eligible : <span id="eligibleCount">0</span>&nbsp; &nbsp;&nbsp;
+            Rejected : <span id="rejectedCount">0</span>&nbsp; &nbsp;&nbsp;
+	     New members : <span id="newMemCount">0</span>&nbsp; &nbsp;&nbsp;
+            Min mem req : <span id="minimumrem">0</span>&nbsp; &nbsp;&nbsp;
+
+
+        </div>
+        <div class="row" id="successPanel" style="display:none;">
+            <div class="error-container">
+                <div class="well">
+                    <h2 id="validationMessage" class="grey center lighter smaller">   </h2> <hr />
+                    <div id="gStatus"> </div>
+                    <div class="space"></div> <hr />
+                    <div class="space"></div>
+                    <div class="center" id="taskValBtn"></div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body-danger">
+            <div id="defaultDisplay">
+                <div class="tabbable">
+                    <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
+                        <li class="active">
+                            <a data-toggle="tab" href="#upload">Group Details</a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#memberDetails">Member Details</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="memberDetails" class="tab-pane">
+                            <div class="page-content">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="col-xs-12 col-sm-6  col-md-12 widget-container-col" id="widget-container-col-2">
+                                            <div class="widget-box widget-color-blue" id="widget-box-2">
+                                                <div class="widget-body"  style="overflow: auto;">
+                                                    <div class="widget-main no-padding">
+                                                        <table class="table table-striped table-bordered table-hover" id="groupMemberDetails">
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="upload" class="tab-pane in active">
+                            <section>
+				<div class="row">
+                            <div class="col-md-5">
+                                <div class="space-12"></div>
+                                <div class="profile-user-info profile-user-info-striped">
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> Formation Date </div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="groupFormationDate_groupRole"></span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> SHG Address </div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="shgaddress_groupRole"></span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> Animator </div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="animator_groupRole">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> Rep 1</div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="rep1_groupRole">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> Rep 2</div>
+                                        <div class="profile-info-value">
+                                            <span class="editable"  id="rep2_groupRole">
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="space-12"></div>
+                                <div class="profile-user-info profile-user-info-striped">
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> First Meeting Day </div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="firstMeetDay_groupRole"></span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> SHG Id </div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="appGroupId_groupRole"></span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> MDA </div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="mda_groupRole"></span>
+                                        </div>
+                                        </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> MWA</div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="mwa_groupRole"></span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name"> Village </div>
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="villageName_groupRole"></span>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+
+                        </div>
+                        <!-- ROW END -->
+                        </section>                            <!--form End-->
+                    </div>
+                    <!-- TAB END-->
+                </div>
+                <!--2row panel body end-->
+            </div>
+            </div>
+        </div>
+        <!--2row Start col-10 End-->
+    </div>
+    <!--2row End-->
+</div>
+</div>
+{% include 'query.html' %}
+{% endblock content %}
