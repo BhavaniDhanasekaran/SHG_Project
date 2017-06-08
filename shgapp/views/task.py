@@ -228,10 +228,16 @@ def viewTasksData (request,taskName):
         if groupName == "DataSupportTeam" or groupName =="CreditTeam":
             userLogin = request.session["userLogin"]
             if groupName == "DataSupportTeam":
-                bodyDataDST = {"name": "KYC Check", "taskAssignee": userLogin, "active":
+                if 'Loan-CLMApproval' in userAction:
+                    bodyDataDST = {"name": "KYC Check", "active":"true", "processUnfinished": "true"}
+                else:
+                    bodyDataDST = {"name": "KYC Check", "taskAssignee": userLogin, "active":
                     "true", "processUnfinished": "true"}
             if groupName == "CreditTeam":
-                bodyDataDST = {"taskAssignee": userLogin, "active": "true", "processUnfinished": "true"}
+                if 'Loan-Edit' in userAction:
+                    bodyDataDST = {"taskAssignee": userLogin, "active": "true", "processUnfinished": "true"}
+                else:
+                    bodyDataDST = {"active": "true", "processUnfinished": "true"}
             myTasksDST = camundaClient._urllib2_request('history/task', bodyDataDST, requestType='POST')
             for data in myTasksDST:
                 if data["processInstanceId"] not in processInstancesArr:
@@ -383,6 +389,8 @@ def getDashboardData(request):
                         taskCount[data["name"]] = 0
 
         if groupName == "DataSupportTeam" or groupName == "CreditTeam":
+            userAction = request.session["userActions"]
+
             QRcount = 0
             RCDQcount = 0
             BMRcount = 0
@@ -391,10 +399,16 @@ def getDashboardData(request):
             processInstancesArr = []
             userLogin = request.session["userLogin"]
             if groupName == "DataSupportTeam":
-                bodyDataDST = {"name": "KYC Check", "taskAssignee": userLogin, "active": "true",
+                if "Loan-CLMApproval" in userAction:
+                    bodyDataDST = {"name": "KYC Check", "active": "true", "processUnfinished": "true"}
+                else:
+                    bodyDataDST = {"name": "KYC Check", "taskAssignee": userLogin, "active": "true",
                                "processUnfinished": "true"}
             if groupName == "CreditTeam":
-                bodyDataDST = {"taskAssignee": userLogin, "active": "true", "processUnfinished": "true"}
+                if 'Loan-Edit' in userAction:
+                    bodyDataDST = {"taskName":"Proposal scrutiny","active": "true", "processUnfinished": "true"}
+                else:
+                    bodyDataDST = {"taskAssignee": userLogin, "active": "true", "processUnfinished": "true"}
             myTasksDST = camundaClient._urllib2_request('history/task', bodyDataDST, requestType='POST')
             for data in myTasksDST:
                 processData[data["processInstanceId"]] = data

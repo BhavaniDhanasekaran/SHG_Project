@@ -51,10 +51,12 @@ function viewTasksData(taskName){
                     obj["slNo"] = parseInt(key)+1;
                     obj["taskName"] = groupTaskdata[key]["name"];
                     var createdDateTime = groupTaskdata[key]["created"];
-                       date = moment.parseZone(createdDateTime).utc().format();
+                    date = moment.parseZone(createdDateTime).utc().format();
                     dateTime = moment(date).format("DD-MM-YYYY HH:mm:ss");
                     obj["taskDate"] = dateTime;
                     obj["taskId"]   = groupTaskdata[key]["id"]
+     		      obj["assignee"]   = groupTaskdata[key]["assignee"]
+
 
                 }
                 if(groupTaskdata[key]["customerData"]){
@@ -117,6 +119,7 @@ function viewTasksData(taskName){
                         { "mData": "regionName","sTitle": "Region Name"  , className:"column"},
                         { "mData": "clusterName","sTitle": "Cluster Name"  , className:"column"},
                         { "mData": "centerName","sTitle": "Center Name"  , className:"column"},
+			   { "mData": "assignee","sTitle": "Assignee"  , className:"column"},
                         { "mData": "history","sTitle": "History"  , "sWidth": "9%", className:"column"},
 
                     ],
@@ -180,10 +183,13 @@ function viewGrpHistory(processInstanceId,groupName,shgId,loanId,loanTypeName){
             var existsList = [];
 	     var addNewMemberInd = 0;
             for(var i=0;i<sortedData.length;i++){
-                var date= convertmyDateTime(sortedData[i][1].startTime);
+                var startDateTime = sortedData[i][1].startTime;
+                date = moment.parseZone(startDateTime).utc().format();
+                dateTime = moment(date).format("DD-MM-YYYY HH:mm:ss");
+                var date= dateTime;
                 var dateCreatedSplit = date.split(" ");
-                var onlyDate = dateCreatedSplit[1]+'-'+dateCreatedSplit[2]+'-'+dateCreatedSplit[3];
-                var onlyTime = dateCreatedSplit[4];
+                var onlyDate = dateCreatedSplit[0];
+                var onlyTime = dateCreatedSplit[1];
 		  if(sortedData[i][1].activityName == "Add New Members"){
 			addNewMemberInd= i+1;	
 		  }
@@ -196,9 +202,12 @@ function viewGrpHistory(processInstanceId,groupName,shgId,loanId,loanTypeName){
                     sortedData[i][1].activityName = sortedData[i][1].activityName;
                 }
                 if(sortedData[i][1].endTime != null){
-                    var taskEndTime = convertmyDateTime(sortedData[i][1].endTime);
+                    var endDateTime = sortedData[i][1].endTime;
+                    date = moment.parseZone(endDateTime).utc().format();
+                    dateTime = moment(date).format("DD-MM-YYYY HH:mm:ss");
+                    var taskEndTime = dateTime;
 					var taskEndTimeSplit = taskEndTime.split(" ");
-					taskEndTime = taskEndTimeSplit[0]+', '+taskEndTimeSplit[1]+'-'+taskEndTimeSplit[2]+'-'+taskEndTimeSplit[3]+', '+taskEndTimeSplit[4];
+					taskEndTime = taskEndTimeSplit[0]+', '+taskEndTimeSplit[1];
                     sortedData[i][1].endTime = "Task has been completed by " +'<label style="font-weight:bold;">'+sortedData[i][1]["assignee"]+ "</label>"+ " on "+ taskEndTime;
                 }
                 else{
@@ -216,20 +225,6 @@ function viewGrpHistory(processInstanceId,groupName,shgId,loanId,loanTypeName){
             }
 		}
 	});
-
-}
-
-
-function convertmyDateTime(date){
-    var dt = new Date(Date.parse(date));
-    var localDate = dt;
-    var min = localDate.getTime() / 1000 / 60; // convert gmt date to minutes
-    var localNow = new Date().getTimezoneOffset(); // get the timezone
-    var localTime = min+localNow; // get the local time
-
-    var dateStr = new Date(localTime * 1000 * 60);
-    dateStr = dateStr.toString("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-    return dateStr;
 
 }
 

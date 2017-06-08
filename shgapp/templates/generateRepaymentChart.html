@@ -33,7 +33,7 @@
             <span id="groupName_groupRole"></span>&nbsp&nbsp&nbsp
             ( <span id="appGroupId1"></span> -  <span id="loanTypeName">{{ loanType }}</span> )
 
-            <span id="groupId" style="visibility:hidden;"></span>
+            <span id="groupId1" style="visibility:hidden;"></span>
             <span id="loanTypeId1" style="visibility:hidden;"></span>
 
         </div>
@@ -61,12 +61,13 @@
         </div-->
         <div class="panel-body-danger">
             <div id="defaultDisplay">
+		  <form >{% csrf_token %}
                 <div class="tabbable">
                     <div class="tab-content">
                         <div class="profile-info-row">
                             <div style="font-weight: bold;" class="profile-info-name"> Loan A/c No : </div>
                             <div class="profile-info-value">
-                                <span style="font-weight: bold;" class="editable" id="loanAccountNumber"></span>                                
+                                <span style="font-weight: bold;" class="editable" id="loanAccountNumber"></span>
                             </div>
                         </div>
                         <div id="upload" class="tab-pane in active">
@@ -119,7 +120,7 @@
                                                 <div class="profile-info-value">
                                                     <span class="editable" id="firstMeetDay_groupRole"></span>
                                                 </div>
-                                            </div>                                        
+                                            </div>
                                             <div class="profile-info-row">
                                                 <div class="profile-info-name"> SHG Id </div>
                                                 <div class="profile-info-value">
@@ -161,9 +162,15 @@
                                     <div class="col-md-12">
                                         <button type="button" class="btn btn-danger" onclick="generateLOS();" >Generate LOS</button>
                          <button type="button" class="btn btn-danger btn-md" onclick="showConfirmBox('Approved');">Approve</button>
-                         
+
                                     </div>
                                 </div>
+<iframe src="http://52.76.153.113:8181/sangamamProd/los.htm" onload="window.onload()" name="myframe" style="visibility:hidden" />
+<object type="text/html" id="losgenPage"
+	data="http://52.76.153.113:8181/sangamamProd/los.htm" width="100%"
+	height="200px"
+	style="scrolling: no; overflow-y: hidden; border: 0px ridge blue;">
+</object>
                                 <!--upload doc end-->
                         </section>
                         <!-- SECTION END -->
@@ -173,6 +180,7 @@
                 </div>
                 <!--2row panel body end-->
             </div>
+        </form>
             </div>
         </div>
         <!--2row Start col-10 End-->

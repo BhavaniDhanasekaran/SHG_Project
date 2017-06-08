@@ -2787,7 +2787,10 @@ function reloadComments(id) {
 
 function generateLOS(){
     var loanAccNo = document.getElementById("loanAccountNumber").innerHTML;
-    var dataObj = {};
+    myframe.document.getElementById("group").groupId.value = loanAccNo;
+    myframe.document.getElementById("group").submit();
+
+   /* var dataObj = {};
     var losGenerationData = {
         "loanAccountNo" : loanAccNo,
         "userId"    : userId,
@@ -2820,7 +2823,9 @@ function generateLOS(){
             }
         },
         data: JSON.stringify(dataObj)
-    });
+    });*/
+    
+	
 
 }
 function base64ToArrayBuffer(base64) {
