@@ -2786,11 +2786,9 @@ function reloadComments(id) {
 }
 
 function generateLOS(){
-    var loanAccNo = document.getElementById("loanAccountNumber").innerHTML;
-    myframe.document.getElementById("group").groupId.value = loanAccNo;
-    myframe.document.getElementById("group").submit();
 
-   /* var dataObj = {};
+    var loanAccNo = document.getElementById("loanAccountNumber").innerHTML;
+    var dataObj = {};
     var losGenerationData = {
         "loanAccountNo" : loanAccNo,
         "userId"    : userId,
@@ -2818,12 +2816,11 @@ function generateLOS(){
                 }
             }
             if(data["code"] == "11001"){
-          //$.alert(data["message"]);
                 $.alert(data.data.message[0]);
             }
         },
         data: JSON.stringify(dataObj)
-    });*/
+    });
     
 	
 
@@ -3651,3 +3648,4 @@ function getSHGPaymentHistory(groupId){
     });
 
 }
+

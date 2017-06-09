@@ -1005,7 +1005,7 @@ pre.prettyprint {
     -webkit-box-shadow: none;
     box-shadow: none;
     min-height: 45px;
-    background: #981b1b    /* header color previous: 438EB9*/
+    background: #7D1935/*#981b1b    /* header color previous: 438EB9*/
 }
 .navbar .navbar-link,
 .navbar .navbar-text {
@@ -1113,12 +1113,12 @@ pre.prettyprint {
     background-color: #2c7659
 }
 .ace-nav>li.light-blue>a {
-    background-color: #981b1b  /* previous:62A8D1; */
+    background-color: #7D1935  /* previous:62A8D1; */
 }
 .ace-nav>li.light-blue>a:focus,
 .ace-nav>li.light-blue>a:hover,
 .ace-nav>li.open.light-blue>a {
-    background-color: #981b1b
+    background-color: #7D1935
 }
 .ace-nav>li.light-blue2>a {
     background-color: #42A8E1
@@ -4788,6 +4788,7 @@ body.mob-safari .sidebar.sidebar-fixed {
     .nav-search .nav-search-input:active,
     .nav-search .nav-search-input:focus,
     .nav-search .nav-search-input:hover,
+
     .nav-search:hover .nav-search-input {
         opacity: 1;
         filter: alpha(opacity=100);
@@ -15903,6 +15904,7 @@ img.editable-click:hover {
     font-family: FontAwesome;
     font-size: 15px;
     position: absolute;
+
     margin-top: -9px;
     width: 16px;
     height: 30px;
