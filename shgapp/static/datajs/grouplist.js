@@ -588,8 +588,9 @@ function updateMemValidationStatus(status) {
     console.log("loanAmountInt",loanAmountInt);
 
     var loanAmountEligible;
-    $("#creditLoadData tbody tr").each(function() {
-    loanAmountEligible = $(this).find("td").eq(6).html();
+    $("#creditLoadData tbody").each(function() {
+    //loanAmountEligible = $(this).find("td").eq(6).html();
+    loanAmountEligible = $(this).find("tr:first td:eq(6)").html();
     });
     var loanAmountEligibleInt = parseInt(loanAmountEligible);
     console.log("loanAmountEligibleInt:",loanAmountEligibleInt);
@@ -797,8 +798,9 @@ function submitKYCForm(status) {
     console.log("loanAmountInt",loanAmountInt);
 
     var loanAmountEligible;
-    $("#creditLoadData tbody tr").each(function() {
-    loanAmountEligible = $(this).find("td").eq(6).html();
+    $("#creditLoadData tbody").each(function() {
+    //loanAmountEligible = $(this).find("td").eq(6).html();
+    loanAmountEligible = $(this).find("tr:first td:eq(6)").html();
     });
     var loanAmountEligibleInt = parseInt(loanAmountEligible);
     console.log("loanAmountEligibleInt:",loanAmountEligibleInt);

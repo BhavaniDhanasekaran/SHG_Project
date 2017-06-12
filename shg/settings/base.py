@@ -14,8 +14,8 @@ SECRET_KEY = 'j(eizq_b!dk+rse4!94x5$caj3dux31ks*xj8im(c&jpbkomud'
 ALLOWED_HOSTS = ['*']
 import time
 from datetime import datetime
+JS_VERSION  = time.time()
 
-JS_VERSION = time.time()
 
 # Application definition
 
@@ -27,7 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'urlcrypt',
+    #'urlcrypt',
 ]
 
 MIDDLEWARE = [
@@ -44,7 +44,7 @@ MIDDLEWARE = [
 
 RUNNING_TESTS = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 30 * 60  #
+SESSION_COOKIE_AGE = 30 * 60 #
 SESSION_SAVE_EVERY_REQUEST = True
 ROOT_URLCONF = 'shg.urls'
 SESSION_IDLE_TIMEOUT = 20 * 60
@@ -67,7 +67,9 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'shg.wsgi.application'
+
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
@@ -90,6 +92,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
@@ -102,6 +105,7 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
@@ -118,12 +122,13 @@ STATICFILES_DIRS = [
     '/var/www/static/',
 ]
 
+
 LOGGING = {
     'version': 1,
     'formatters': {
         'verbose': {
-            'format': "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-            'datefmt': "%d/%b/%Y %H:%M:%S"
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
         },
         'simple': {
             'format': '%(levelname)s %(message)s'
@@ -147,11 +152,10 @@ LOGGING = {
         'null': {
             'class': 'logging.NullHandler',
         },
-        'log_file': {
+        'log_file':{
             'level': 'DEBUG',
             'class': 'logging.handlers.TimedRotatingFileHandler',
-            'filename': os.path.join('/opt/shgbpm/shgdjango_logs/', 'djangoLog.log'),
-            #'filename': os.path.join('/opt/shgbpm/Bhavani_SHG_V1.1/shg_bpm_portal/Logs/', 'djangoLog.log'),
+            'filename': os.path.join('/opt/shgbpm/vellog/', 'djangoLog.log'),
             'when': 'midnight',
             'backupCount': 15,
             'formatter': 'verbose'
@@ -161,7 +165,7 @@ LOGGING = {
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler',
             'include_html': True,
-
+            
         }
     },
     'loggers': {
@@ -169,17 +173,18 @@ LOGGING = {
             'handlers': ['console'],
         },
         'shgapp.views': {
-            'handlers': ['console', 'log_file'],
-        },
+            'handlers': ['console','log_file'],
+         },
         'dba': {
-            'handlers': ['console', 'log_file'],
+            'handlers': ['console','log_file'],
         },
         'django': {
-            'handlers': ['console', 'log_file'],
+            'handlers': ['console','log_file'],
         },
         'py.warnings': {
-            'handlers': ['console', 'log_file'],
+            'handlers': ['console','log_file'],
         },
-
+	 
+        
     }
 }
