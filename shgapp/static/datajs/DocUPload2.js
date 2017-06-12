@@ -119,7 +119,7 @@ function loanDocument(loanTypeId) {
                                 $('<td>' + current + '</td>' +
                                     '<td>' + value.documentName + '</td>' +
                                     '<td><input type = "file"   accept="application/pdf" name = "' + value.documentName + '" id = "' + value.documentId + '" style="display: none;" /></input>' +
-                                    '<span><button type="button" class="btn btn-primary js-upload-photos" id = "' + value.documentDate + '_1' + '" name="' + value.documentName + '_' + value.documentId + '"></span>' +
+                                    '<span><button type="button" class="btn btn-primary js-upload-photos" id = "' + value.documentId + '_1' + '" name="' + value.documentName + '_' + value.documentId + '"></span>' +
                                     '<span class="glyphicon glyphicon-cloud-upload"></span> Upload  </button>').appendTo(tr);
                                 tr.appendTo('#docments_table');
                             }
