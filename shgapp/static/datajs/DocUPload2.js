@@ -75,7 +75,7 @@ function loanDocument(loanTypeId) {
 
                                 '<input type = "file"   accept="application/pdf"  id = "' + value.docId + "_Edit" + '" style="display: none;" /></input>' +
                                 '<span>   <button type="button"  class="btn btn-success js-upload-photos2" id = "' + value.docId + '_3' + '" name="' + value.docId + '"></span>' +
-                                '<span class="glyphicon glyphicon-edit"></span> Edit  </button></td></tr> ').appendTo(tr);
+                                '<span class="glyphicon glyphicon-edit"></span> Edit  </button></td>' + '<td>' + value.documentDate + '</td>' + '</tr> ').appendTo(tr);
                             tr.appendTo('#records_table2');
                         });
 
@@ -119,7 +119,7 @@ function loanDocument(loanTypeId) {
                                 $('<td>' + current + '</td>' +
                                     '<td>' + value.documentName + '</td>' +
                                     '<td><input type = "file"   accept="application/pdf" name = "' + value.documentName + '" id = "' + value.documentId + '" style="display: none;" /></input>' +
-                                    '<span><button type="button" class="btn btn-primary js-upload-photos" id = "' + value.documentId + '_1' + '" name="' + value.documentName + '_' + value.documentId + '"></span>' +
+                                    '<span><button type="button" class="btn btn-primary js-upload-photos" id = "' + value.documentDate + '_1' + '" name="' + value.documentName + '_' + value.documentId + '"></span>' +
                                     '<span class="glyphicon glyphicon-cloud-upload"></span> Upload  </button>').appendTo(tr);
                                 tr.appendTo('#docments_table');
                             }
