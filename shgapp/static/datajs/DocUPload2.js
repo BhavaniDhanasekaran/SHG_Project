@@ -75,7 +75,7 @@ function loanDocument(loanTypeId) {
 
                                 '<input type = "file"   accept="application/pdf"  id = "' + value.docId + "_Edit" + '" style="display: none;" /></input>' +
                                 '<span>   <button type="button"  class="btn btn-success js-upload-photos2" id = "' + value.docId + '_3' + '" name="' + value.docId + '"></span>' +
-                                '<span class="glyphicon glyphicon-edit"></span> Edit  </button></td></tr> ').appendTo(tr);
+                                '<span class="glyphicon glyphicon-edit"></span> Edit  </button></td>' + '<td>' + value.documentDate + '</td>' + '</tr> ').appendTo(tr);
                             tr.appendTo('#records_table2');
                         });
 

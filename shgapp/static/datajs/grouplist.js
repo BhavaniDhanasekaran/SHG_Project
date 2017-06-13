@@ -588,8 +588,9 @@ function updateMemValidationStatus(status) {
     console.log("loanAmountInt",loanAmountInt);
 
     var loanAmountEligible;
-    $("#creditLoadData tbody tr").each(function() {
-    loanAmountEligible = $(this).find("td").eq(6).html();
+    $("#creditLoadData tbody").each(function() {
+    //loanAmountEligible = $(this).find("td").eq(6).html();
+    loanAmountEligible = $(this).find("tr:first td:eq(6)").html();
     });
     var loanAmountEligibleInt = parseInt(loanAmountEligible);
     console.log("loanAmountEligibleInt:",loanAmountEligibleInt);
@@ -797,8 +798,9 @@ function submitKYCForm(status) {
     console.log("loanAmountInt",loanAmountInt);
 
     var loanAmountEligible;
-    $("#creditLoadData tbody tr").each(function() {
-    loanAmountEligible = $(this).find("td").eq(6).html();
+    $("#creditLoadData tbody").each(function() {
+    //loanAmountEligible = $(this).find("td").eq(6).html();
+    loanAmountEligible = $(this).find("tr:first td:eq(6)").html();
     });
     var loanAmountEligibleInt = parseInt(loanAmountEligible);
     console.log("loanAmountEligibleInt:",loanAmountEligibleInt);
@@ -1382,7 +1384,7 @@ function documentView(groupId) {
                 $.each(groupDocData.data, function(key, value) {
                     var tr = $('<tr></tr>');
                     current++;
-                    $('<td>' + current + '</td><td>' + value.documentName + '</td><td> <button type="button" class="btn btn-danger" id = "' + value.docId + '" onclick="window.open(' + "'" + value.documentPath + "'" + "," + value.docId + "," + "config='width=500,height=500'" + ');return false;"><span class="glyphicon glyphicon-cloud-upload"></span> View  </button></td> ').appendTo(tr);
+                    $('<td>' + current + '</td><td>' + value.documentName + '</td><td> <button type="button" class="btn btn-danger" id = "' + value.docId + '" onclick="window.open(' + "'" + value.documentPath + "'" + "," + value.docId + "," + "config='width=500,height=500'" + ');return false;"><span class="glyphicon glyphicon-cloud-upload"></span> View  </button></td><td>' + value.documentDate + '</td> ').appendTo(tr);
                     tr.appendTo('#docments_table');
                 });
             } else {

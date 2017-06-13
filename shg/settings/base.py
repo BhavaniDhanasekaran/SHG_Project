@@ -151,7 +151,6 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.handlers.TimedRotatingFileHandler',
             'filename': os.path.join('/opt/shgbpm/shgdjango_logs/', 'djangoLog.log'),
-            #'filename': os.path.join('/opt/shgbpm/Bhavani_SHG_V1.1/shg_bpm_portal/Logs/', 'djangoLog.log'),
             'when': 'midnight',
             'backupCount': 15,
             'formatter': 'verbose'
